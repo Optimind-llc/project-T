@@ -5,3 +5,4 @@ Homestead.yaml
 Homestead.json
 .env
 xdebug.log
+.DS_Store
