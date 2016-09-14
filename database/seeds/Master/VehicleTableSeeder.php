@@ -5,13 +5,13 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class UserTableSeeder
+ * Class VehicleTableSeeder
  */
-class UserTableSeeder extends Seeder
+class VehicleTableSeeder extends Seeder
 {
     public function run()
     {
-        $table_name = 'users';
+        $table_name = 'vehicles';
         $now = Carbon::now();
 
         if (env('DB_CONNECTION') == 'mysql') {
@@ -29,8 +29,8 @@ class UserTableSeeder extends Seeder
 
         $data = [
             [
-                'name'       => 'admin',
-                'password'   => bcrypt('admin'),
+                'name'       => '',
+                'number'     => '680A',
                 'created_at' => $now,
                 'updated_at' => $now
             ],

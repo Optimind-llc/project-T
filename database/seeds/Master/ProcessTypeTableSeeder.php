@@ -5,13 +5,13 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class UserTableSeeder
+ * Class ProcessTypeTableSeeder
  */
-class UserTableSeeder extends Seeder
+class ProcessTypeTableSeeder extends Seeder
 {
     public function run()
     {
-        $table_name = 'users';
+        $table_name = 'process_types';
         $now = Carbon::now();
 
         if (env('DB_CONNECTION') == 'mysql') {
@@ -29,8 +29,23 @@ class UserTableSeeder extends Seeder
 
         $data = [
             [
-                'name'       => 'admin',
-                'password'   => bcrypt('admin'),
+                'name'       => '成型工程１',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '成型工程２',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '穴あけ工程',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '接着工程１',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '接着工程２',
                 'created_at' => $now,
                 'updated_at' => $now
             ],

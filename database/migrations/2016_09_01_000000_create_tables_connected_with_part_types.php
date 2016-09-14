@@ -24,15 +24,28 @@ class CreateTablesConnectedWithPartTypes extends Migration
             $table->timestamps();
         });
 
+        Schema::create('parts_families', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->unique();
+            $table->integer('division_id')->unsigned();
+            $table->timestamps();
+
+            /**
+             * Add Foreign
+             */
+            $table->foreign('division_id')
+                ->references('id')
+                ->on('divisions')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+        });
+
         Schema::create('part_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('pn');     //品番:67119
-            $table->string('name');    //品名
+            $table->integer('pn')->unique();            //品番:67119
+            $table->string('name');                     //品名
             $table->integer('vehicle_id')->unsigned();
-            $table->integer('division_id')->unsigned();
-            $table->integer('molding_image_id')->unsigned();
-            $table->integer('holing_image_id')->unsigned();
-            $table->integer('bonding_image_id')->unsigned();
+            $table->integer('parts_family_id')->unsigned();
             $table->timestamps();
 
             /**
@@ -44,9 +57,9 @@ class CreateTablesConnectedWithPartTypes extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
 
-            $table->foreign('division_id')
+            $table->foreign('parts_family_id')
                 ->references('id')
-                ->on('divisions')
+                ->on('parts_families')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });
@@ -64,7 +77,7 @@ class CreateTablesConnectedWithPartTypes extends Migration
             $table->timestamps();
         });
 
-        Schema::create('figure_partTypes', function (Blueprint $table) {
+        Schema::create('figure_part_types', function (Blueprint $table) {
             $table->integer('part_type_id')->unsigned();
             $table->integer('process_type_id')->unsigned();
             $table->integer('figure_id')->unsigned()->unique();
@@ -123,9 +136,11 @@ class CreateTablesConnectedWithPartTypes extends Migration
      */
     public function down()
     {
-        Schema::drop('part_types');
         Schema::drop('holes');
-        Schema::drop('images');
+        Schema::drop('figure_part_types');
+        Schema::drop('figures');
+        Schema::drop('process_types');
+        Schema::drop('part_types');
         Schema::drop('divisions');
         Schema::drop('vehicles');
     }
