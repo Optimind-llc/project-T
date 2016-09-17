@@ -24,6 +24,24 @@ Route::get('/home', 'HomeController@index');
 // Publicly accessible routes
 Route::get('/user/confirm/{token}', 'User\Auth\AuthController@confirmAccount');
 
+$api->version('v1', ['prefix' => 'cliant', 'namespace' => 'App\Http\Controllers\Cliant'], function ($api) {
+    $api->get('base/{process}/{inspector}/{division}', 'CliantController@getBaseInfo');
+
+    $api->post('inspection_families', 'AuthController@signup');
+    $api->post('/signin', 'AuthController@signin');
+    $api->post('/signin/{provider}', 'AuthController@signinThirdParty');
+
+    $api->post('/password/initialize', 'PasswordController@initialize');
+    $api->get('/password/reset', 'PasswordController@reset');
+
+    $api->get('/refresh', 'AuthController@refresh');
+});
+
+
+
+
+
+
 $api->version('v1', ['namespace' => 'App\Http\Controllers\User\Auth'], function ($api) {
     $api->get('/schools', 'AuthController@schools');
 
