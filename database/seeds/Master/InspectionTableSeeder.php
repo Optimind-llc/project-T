@@ -5,13 +5,13 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class HoleTableSeeder
+ * Class InspectionTableSeeder
  */
-class HoleTableSeeder extends Seeder
+class InspectionTableSeeder extends Seeder
 {
     public function run()
     {
-        $table_name = 'holes';
+        $table_name = 'inspections';
         $now = Carbon::now();
 
         if (env('DB_CONNECTION') == 'mysql') {
@@ -29,73 +29,48 @@ class HoleTableSeeder extends Seeder
 
         $data = [
             [
-                'x'          => 100,
-                'y'          => 100,
-                'sort'       => 1,
-                'figure_id'  => 3,
+                'name'       => '検査',
+                'en'         => 'check',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 200,
-                'y'          => 200,
-                'sort'       => 2,
-                'figure_id'  => 3,
+                'name'       => 'インライン検査',
+                'en'         => 'inline',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 300,
-                'y'          => 300,
-                'sort'       => 3,
-                'figure_id'  => 3,
+                'name'       => '検査',
+                'en'         => 'check',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 400,
-                'y'          => 400,
-                'sort'       => 4,
-                'figure_id'  => 3,
+                'name'       => 'インライン検査',
+                'en'         => 'inline',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 500,
-                'y'          => 500,
-                'sort'       => 5,
-                'figure_id'  => 3,
+                'name'       => '止水',
+                'en'         => 'water_stop',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 100,
-                'y'          => 100,
-                'sort'       => 1,
-                'figure_id'  => 4,
+                'name'       => '仕上',
+                'en'         => 'finish',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 100,
-                'y'          => 100,
-                'sort'       => 1,
-                'figure_id'  => 5,
+                'name'       => '点検',
+                'en'         => 'check',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 100,
-                'y'          => 100,
-                'sort'       => 1,
-                'figure_id'  => 6,
+                'name'       => '特検',
+                'en'         => 'special_check',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 100,
-                'y'          => 100,
-                'sort'       => 1,
-                'figure_id'  => 10,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 100,
-                'y'          => 100,
-                'sort'       => 1,
-                'figure_id'  => 11,
+                'name'       => '手直し',
+                'en'         => 'adjust',
                 'created_at' => $now,
                 'updated_at' => $now
             ],

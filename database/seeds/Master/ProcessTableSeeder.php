@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\DB;
 /**
  * Class DivisionTableSeeder
  */
-class DivisionTableSeeder extends Seeder
+class ProcessTableSeeder extends Seeder
 {
     public function run()
     {
-        $table_name = 'divisions';
         $now = Carbon::now();
+        $table_name = 'processes';
 
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -29,18 +29,21 @@ class DivisionTableSeeder extends Seeder
 
         $data = [
             [
-                'name'       => 'インナ―',
-                'en'         => 'inner',
+                'name'       => '成型',
+                'en'         => 'molding',
+                'sort'       => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '小部品',
-                'en'         => 'small',
+                'name'       => '穴あけ',
+                'en'         => 'holing',
+                'sort'       => 2,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'ASSY',
-                'en'         => 'inner_assy',
+                'name'       => '接着',
+                'en'         => 'jointing',
+                'sort'       => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],

@@ -21,13 +21,21 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call(UserTableSeeder::class);
-        $this->call(VehicleTableSeeder::class);
+
+        $this->call(ProcessTableSeeder::class);
+        $this->call(InspectorGroupTableSeeder::class);
+        $this->call(InspectorTableSeeder::class);
+        $this->call(InspectionTableSeeder::class);
         $this->call(DivisionTableSeeder::class);
+        $this->call(InspectionGroupTableSeeder::class);
+        $this->call(FigureTableSeeder::class);
+        $this->call(PageTypeTableSeeder::class);
+        $this->call(VehicleTableSeeder::class);
         $this->call(PartTypeTableSeeder::class);
-        $this->call(ProcessTypeTableSeeder::class);
-        // $this->call(FigureTableSeeder::class);
-        // $this->call(FigurePartTypeTableSeeder::class);
-        // $this->call(HoleTableSeeder::class);
+        $this->call(FailureTableSeeder::class);
+        $this->call(HoleTableSeeder::class);
+
+
 
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');

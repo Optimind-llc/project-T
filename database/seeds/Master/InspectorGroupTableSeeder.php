@@ -5,14 +5,14 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class ProcessTypeTableSeeder
+ * Class InspectorGroupTableSeeder
  */
-class ProcessTypeTableSeeder extends Seeder
+class InspectorGroupTableSeeder extends Seeder
 {
     public function run()
     {
-        $table_name = 'process_types';
         $now = Carbon::now();
+        $table_name = 'inspector_groups';
 
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -29,23 +29,17 @@ class ProcessTypeTableSeeder extends Seeder
 
         $data = [
             [
-                'name'       => '成型工程１',
+                'name'       => '黄直',
+                'code'       => 'Y',
+                'start_at'   => 6,
+                'end_at'     => 14,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '成型工程２',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '穴あけ工程',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '接着工程１',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '接着工程２',
+                'name'       => '白直',
+                'code'       => 'W',
+                'start_at'   => 15,
+                'end_at'     => 23,
                 'created_at' => $now,
                 'updated_at' => $now
             ],
