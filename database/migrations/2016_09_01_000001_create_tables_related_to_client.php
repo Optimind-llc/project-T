@@ -24,14 +24,14 @@ class CreateTablesRelatedToClient extends Migration
              */
             $table->foreign('inspection_group_id')
                 ->references('id')
-                ->on('inspector_groups')
+                ->on('inspection_groups')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });
 
         Schema::create('pages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('table');
+            $table->string('table')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->integer('family_id')->unsigned();
             $table->integer('page_type_id')->unsigned();
@@ -113,6 +113,7 @@ class CreateTablesRelatedToClient extends Migration
         Schema::create('hole_page', function (Blueprint $table) {
             $table->integer('hole_id')->unsigned();
             $table->integer('page_id')->unsigned();
+            $table->integer('status')->unsigned();
 
             /**
              * Add Foreign
@@ -153,8 +154,8 @@ class CreateTablesRelatedToClient extends Migration
 
         Schema::create('failure_page', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('x');
-            $table->integer('y');
+            $table->string('point');
+            $table->string('point_sub');
             $table->integer('page_id')->unsigned();
             $table->integer('failure_id')->unsigned();
             $table->integer('comment_id')->unsigned()->nullable();
@@ -185,15 +186,15 @@ class CreateTablesRelatedToClient extends Migration
         Schema::create('photos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('path');
-            $table->integer('page_id')->unsigned();
+            $table->integer('family_id')->unsigned();
             $table->timestamps();
 
             /**
              * Add Foreign
              */
-            $table->foreign('page_id')
+            $table->foreign('family_id')
                 ->references('id')
-                ->on('pages')
+                ->on('inspection_families')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });

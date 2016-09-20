@@ -31,46 +31,64 @@ class InspectionTableSeeder extends Seeder
             [
                 'name'       => '検査',
                 'en'         => 'check',
+                'sort'       => 1,
+                'process_id' => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'インライン検査',
                 'en'         => 'inline',
+                'sort'       => 2,
+                'process_id' => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '検査',
                 'en'         => 'check',
+                'sort'       => 1,
+                'process_id' => 2,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'インライン検査',
                 'en'         => 'inline',
+                'sort'       => 1,
+                'process_id' => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '止水',
                 'en'         => 'water_stop',
+                'sort'       => 2,
+                'process_id' => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '仕上',
                 'en'         => 'finish',
+                'sort'       => 3,
+                'process_id' => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '点検',
                 'en'         => 'check',
+                'sort'       => 4,
+                'process_id' => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '特検',
                 'en'         => 'special_check',
+                'sort'       => 5,
+                'process_id' => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '手直し',
                 'en'         => 'adjust',
+                'sort'       => 6,
+                'process_id' => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],

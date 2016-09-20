@@ -29,71 +29,61 @@ class HoleTableSeeder extends Seeder
 
         $data = [
             [
-                'x'          => 100,
-                'y'          => 100,
+                'point'      => "100,100",
                 'sort'       => 1,
                 'figure_id'  => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 200,
-                'y'          => 200,
+                'point'      => "200,200",
                 'sort'       => 2,
                 'figure_id'  => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 300,
-                'y'          => 300,
+                'point'      => "300,300",
                 'sort'       => 3,
                 'figure_id'  => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 400,
-                'y'          => 400,
+                'point'      => "400,400",
                 'sort'       => 4,
                 'figure_id'  => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 500,
-                'y'          => 500,
+                'point'      => "500,500",
                 'sort'       => 5,
                 'figure_id'  => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 100,
-                'y'          => 100,
+                'point'      => "100,100",
                 'sort'       => 1,
                 'figure_id'  => 4,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 100,
-                'y'          => 100,
+                'point'      => "100,100",
                 'sort'       => 1,
                 'figure_id'  => 5,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 100,
-                'y'          => 100,
+                'point'      => "100,100",
                 'sort'       => 1,
                 'figure_id'  => 6,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 100,
-                'y'          => 100,
+                'point'      => "100,100",
                 'sort'       => 1,
                 'figure_id'  => 10,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 100,
-                'y'          => 100,
+                'point'      => "100,100",
                 'sort'       => 1,
                 'figure_id'  => 11,
                 'created_at' => $now,

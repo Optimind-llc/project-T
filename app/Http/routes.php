@@ -20,55 +20,62 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index');
 
 
+$api->version('v1', ['prefix' => 'client', 'namespace' => 'App\Http\Controllers\Client'], function ($api) {
+    $api->get('inspectorGroup', 'InspectionController@inspectorGroup');
+    $api->get('inspection', 'InspectionController@inspection');
 
-// Publicly accessible routes
-Route::get('/user/confirm/{token}', 'User\Auth\AuthController@confirmAccount');
-
-$api->version('v1', ['prefix' => 'cliant', 'namespace' => 'App\Http\Controllers\Cliant'], function ($api) {
-    $api->get('base/{process}/{inspector}/{division}', 'CliantController@getBaseInfo');
-
-    $api->post('inspection_families', 'AuthController@signup');
-    $api->post('/signin', 'AuthController@signin');
-    $api->post('/signin/{provider}', 'AuthController@signinThirdParty');
-
-    $api->post('/password/initialize', 'PasswordController@initialize');
-    $api->get('/password/reset', 'PasswordController@reset');
-
-    $api->get('/refresh', 'AuthController@refresh');
+    $api->post('inspection', 'InspectionController@saveInspection');
 });
 
 
+// // Publicly accessible routes
+// Route::get('/user/confirm/{token}', 'User\Auth\AuthController@confirmAccount');
+
+// $api->version('v1', ['prefix' => 'cliant', 'namespace' => 'App\Http\Controllers\Cliant'], function ($api) {
+//     $api->get('base/{process}/{inspector}/{division}', 'CliantController@getBaseInfo');
+
+//     $api->post('inspection_families', 'AuthController@signup');
+//     $api->post('/signin', 'AuthController@signin');
+//     $api->post('/signin/{provider}', 'AuthController@signinThirdParty');
+
+//     $api->post('/password/initialize', 'PasswordController@initialize');
+//     $api->get('/password/reset', 'PasswordController@reset');
+
+//     $api->get('/refresh', 'AuthController@refresh');
+// });
 
 
 
 
-$api->version('v1', ['namespace' => 'App\Http\Controllers\User\Auth'], function ($api) {
-    $api->get('/schools', 'AuthController@schools');
 
-    $api->post('/signup', 'AuthController@signup');
-    $api->post('/signin', 'AuthController@signin');
-    $api->post('/signin/{provider}', 'AuthController@signinThirdParty');
 
-    $api->post('/password/initialize', 'PasswordController@initialize');
-    $api->get('/password/reset', 'PasswordController@reset');
+// $api->version('v1', ['namespace' => 'App\Http\Controllers\User\Auth'], function ($api) {
+//     $api->get('/schools', 'AuthController@schools');
 
-    $api->get('/refresh', 'AuthController@refresh');
-});
+//     $api->post('/signup', 'AuthController@signup');
+//     $api->post('/signin', 'AuthController@signin');
+//     $api->post('/signin/{provider}', 'AuthController@signinThirdParty');
 
-// JWT Protected routes
-$api->version('v1', ['middleware' => 'api.auth', 'namespace' => 'App\Http\Controllers', 'providers' => 'jwt'], function ($api) {
-	$api->get('/confirm/resend', 'User\Auth\AuthController@resendConfirmationEmail');
-    $api->post('/password/change', 'User\Auth\PasswordController@change');
+//     $api->post('/password/initialize', 'PasswordController@initialize');
+//     $api->get('/password/reset', 'PasswordController@reset');
 
-    $api->get('/decode', 'PagesController@decode');
-    $api->get('/show', 'PagesController@show');
+//     $api->get('/refresh', 'AuthController@refresh');
+// });
 
-    $api->group(['namespace' => 'User'], function ($api) {
-        $api->get('/points', 'BasicController@points');
-        $api->post('/start', 'BasicController@start');
-        $api->post('/end', 'BasicController@end');
-    });
-});
+// // JWT Protected routes
+// $api->version('v1', ['middleware' => 'api.auth', 'namespace' => 'App\Http\Controllers', 'providers' => 'jwt'], function ($api) {
+// 	$api->get('/confirm/resend', 'User\Auth\AuthController@resendConfirmationEmail');
+//     $api->post('/password/change', 'User\Auth\PasswordController@change');
+
+//     $api->get('/decode', 'PagesController@decode');
+//     $api->get('/show', 'PagesController@show');
+
+//     $api->group(['namespace' => 'User'], function ($api) {
+//         $api->get('/points', 'BasicController@points');
+//         $api->post('/start', 'BasicController@start');
+//         $api->post('/end', 'BasicController@end');
+//     });
+// });
 
 // Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 

@@ -231,8 +231,7 @@ class CreateTablesRelatedToManager extends Migration
 
         Schema::create('holes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('x');
-            $table->integer('y');
+            $table->string('point');
             $table->integer('sort')->unsigned();
             $table->integer('figure_id')->unsigned();
             $table->timestamps();
