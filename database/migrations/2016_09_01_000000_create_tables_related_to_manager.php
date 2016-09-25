@@ -13,8 +13,8 @@ class CreateTablesRelatedToManager extends Migration
     {
         Schema::create('processes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('en')->unique();
             $table->string('name')->unique();
+            $table->string('en')->unique();
             $table->integer('sort')->unsigned()->default(1);
             $table->timestamps();
         });
@@ -23,15 +23,13 @@ class CreateTablesRelatedToManager extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('code')->unique();
-            $table->tinyInteger('start_at');
-            $table->tinyInteger('end_at');
             $table->timestamps();
         });
 
         Schema::create('inspectors', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('code');
-            $table->string('name');
+            $table->string('name')->unique();
+            $table->integer('code')->unsigned()->unique();
             $table->integer('group_id')->unsigned();
             $table->timestamps();
 
@@ -48,6 +46,7 @@ class CreateTablesRelatedToManager extends Migration
         Schema::create('inspector_process', function (Blueprint $table) {
             $table->integer('inspector_id')->unsigned();
             $table->integer('process_id')->unsigned();
+            $table->timestamps();
 
             /**
              * Add Foreign
@@ -72,8 +71,8 @@ class CreateTablesRelatedToManager extends Migration
 
         Schema::create('inspections', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('en');
             $table->string('name');
+            $table->string('en');
             $table->integer('sort')->unsigned()->default(1);
             $table->integer('process_id')->unsigned();
             $table->timestamps();
@@ -156,8 +155,8 @@ class CreateTablesRelatedToManager extends Migration
 
         Schema::create('part_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('pn')->unique();            //品番:67119
-            $table->string('name');                     //品名
+            $table->integer('pn')->unique()->unsigned();
+            $table->string('name')->unique();
             $table->integer('vehicle_id')->unsigned();
             $table->timestamps();
 
@@ -174,6 +173,7 @@ class CreateTablesRelatedToManager extends Migration
         Schema::create('part_type_page_type', function (Blueprint $table) {
             $table->integer('part_type_id')->unsigned();
             $table->integer('page_type_id')->unsigned();
+            $table->timestamps();
 
             /**
              * Add Foreign
@@ -196,10 +196,26 @@ class CreateTablesRelatedToManager extends Migration
             $table->primary(['part_type_id', 'page_type_id']);
         });
 
+        Schema::create('comments', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('message');
+            $table->integer('inspection_id')->unsigned();
+            $table->timestamps();
+
+            /**
+             * Add Foreign
+             */
+            $table->foreign('inspection_id')
+                ->references('id')
+                ->on('inspections')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+        });
+
         Schema::create('failures', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->integer('sort')->default(1);
+            $table->integer('sort')->unsigned()->default(1);
             $table->timestamps();
         });
 
@@ -207,6 +223,7 @@ class CreateTablesRelatedToManager extends Migration
             $table->integer('failure_id')->unsigned();
             $table->integer('process_id')->unsigned();
             $table->tinyInteger('type')->unsigned()->default(1);
+            $table->timestamps();
 
             /**
              * Add Foreign
@@ -232,7 +249,7 @@ class CreateTablesRelatedToManager extends Migration
         Schema::create('holes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('point');
-            $table->integer('sort')->unsigned();
+            $table->integer('sort')->unsigned()->default(1);
             $table->integer('figure_id')->unsigned();
             $table->timestamps();
 
@@ -257,6 +274,7 @@ class CreateTablesRelatedToManager extends Migration
         Schema::drop('holes');
         Schema::drop('failure_process');
         Schema::drop('failures');
+        Schema::drop('comments');
         Schema::drop('part_type_page_type');
         Schema::drop('part_types');
         Schema::drop('vehicles');

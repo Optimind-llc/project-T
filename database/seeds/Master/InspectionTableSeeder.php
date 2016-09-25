@@ -36,7 +36,7 @@ class InspectionTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'インライン検査',
+                'name'       => 'インライン精度検査',
                 'en'         => 'inline',
                 'sort'       => 2,
                 'process_id' => 1,
@@ -50,7 +50,7 @@ class InspectionTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'インライン検査',
+                'name'       => 'インライン精度検査',
                 'en'         => 'inline',
                 'sort'       => 1,
                 'process_id' => 3,
