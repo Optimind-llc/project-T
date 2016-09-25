@@ -14,6 +14,7 @@ class CreateTablesRelatedToClient extends Migration
         Schema::create('inspection_families', function (Blueprint $table) {
             $table->increments('id');
             $table->tinyInteger('line')->nullable()->unsigned();
+            $table->string('inspector_group')->nullable();
             $table->string('created_by');
             $table->string('updated_by')->nullable();
             $table->integer('inspection_group_id')->unsigned();
