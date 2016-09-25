@@ -9,7 +9,9 @@
         "laravel/framework": "5.2.*",
         "dingo/api": "1.0.*@dev",
         "tymon/jwt-auth": "0.5.*",
-        "zizaco/entrust": "5.2.x-dev"
+        "zizaco/entrust": "5.2.x-dev",
+        "tecnickcom/tcpdf": "^6.2",
+        "setasign/fpdi": "^1.6"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
