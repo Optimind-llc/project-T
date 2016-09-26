@@ -39,14 +39,14 @@ class InspectionController extends Controller
         return $process;
     }
 
-    protected function findInspectionByEn($en, Process $process) {
+    protected function findInspectionByEn($en, Process $process, $division_id) {
         $inspection = $process->inspections()->where('en', $en)->first();
 
         if (!$inspection instanceof Inspection) {
             throw new NotFoundHttpException('Inspection not found');
         }
 
-        return $inspection;
+        return $inspection->getByDivisionWithRelated($division_id);
     }
 
     protected function findDivisionByEn($en) {
@@ -83,8 +83,7 @@ class InspectionController extends Controller
         $inspector_group = new InspectorGroup;
         $inspector_groups = $inspector_group->findInspectorsByProcessEn($request->process);
 
-        $inspection_group = $this->findInspectionByEn($request->inspection, $process)
-            ->getByDivisionWithRelated($division_id);
+        $inspection_group = $this->findInspectionByEn($request->inspection, $process, $division_id);
 
         return [
             'group' => [
