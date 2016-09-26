@@ -59,33 +59,6 @@ class InspectionController extends Controller
         return $division;
     }
 
-    protected function findInspectorsByProcess($process) {
-        $inspectors = InspectorGroup::with([
-                'inspectors' => function ($q) use ($process) {
-                    $q->whereHas('processes', function ($q) use ($process) {
-                        $q->where('en', $process);
-                    })
-                    ->get();
-                }
-            ])
-            ->where('id', '>', 0)
-            ->get()
-            ->map(function ($group, $key) {
-                return [
-                    'name' => $group->name,
-                    'code' => $group->code,
-                    'inspectors' => $group['inspectors']->map(function ($inspector, $key) {
-                        return [
-                            'name' => $inspector->name,
-                            'code' => $inspector->code
-                        ];
-                    })
-                ];
-            });
-
-        return $inspectors;
-    }
-
     /**
      * Get user from JWT token
      */
@@ -107,7 +80,8 @@ class InspectionController extends Controller
         $division_id = $this->findDivisionByEn($request->division)->id;
         $process = $this->findProcessByEn($request->process);
 
-        $inspectors = $this->findInspectorsByProcess($request->process);
+        $inspector_group = new InspectorGroup;
+        $inspector_groups = $inspector_group->findInspectorsByProcessEn($request->process);
 
         $inspection_groups = $this->findInspectionByEn($request->inspection, $process)
             ->groups()
@@ -121,10 +95,10 @@ class InspectionController extends Controller
                 'inspection.process.failures'
             ])
             ->get()
-            ->map(function ($group, $key) use ($inspectors) {
+            ->map(function ($group, $key) use ($inspector_groups) {
                 return [
                     'id' => $group->id,
-                    'inspectors' => $inspectors,
+                    'inspectorGroups' => $inspector_groups,
                     'failures' => $group->inspection->process->failures->map(function ($failure, $key) {
                         return [
                             'id' => $failure->id,
@@ -187,6 +161,7 @@ class InspectionController extends Controller
         $newFamily = new InspectionFamily;
         $newFamily->inspection_group_id = $family['groupId'];
         $newFamily->line = $family['line'];
+        $newFamily->inspector_group = $family['inspectorGroup'];
         $newFamily->created_by = $family['inspector'];
         $newFamily->save();
 
