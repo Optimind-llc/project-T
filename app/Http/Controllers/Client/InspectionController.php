@@ -59,34 +59,31 @@ class InspectionController extends Controller
         return $division;
     }
 
-    /**
-     * Get user from JWT token
-     */
-    public function inspectorGroup()
-    {
-        return InspectorGroup::with([
-                'inspector' => function ($query) {
-                    $query->select('inspectors.id', 'inspectors.group_id', 'name', 'code');
+    protected function findInspectorsByProcess($process) {
+        $inspectors = InspectorGroup::with([
+                'inspectors' => function ($q) use ($process) {
+                    $q->whereHas('processes', function ($q) use ($process) {
+                        $q->where('en', $process);
+                    })
+                    ->get();
                 }
             ])
+            ->where('id', '>', 0)
             ->get()
             ->map(function ($group, $key) {
                 return [
-                    'id' => $group->id,
                     'name' => $group->name,
                     'code' => $group->code,
-                    'startAt' => $group->start_at,
-                    'endAt' => $group->end_at,
-                    'inspectors' => $group['inspector']->map(function ($inspector, $key) {
+                    'inspectors' => $group['inspectors']->map(function ($inspector, $key) {
                         return [
-                            'id' => $inspector->id,
                             'name' => $inspector->name,
                             'code' => $inspector->code
                         ];
                     })
                 ];
-            })
-            ->toArray();
+            });
+
+        return $inspectors;
     }
 
     /**
@@ -109,9 +106,11 @@ class InspectionController extends Controller
 
         $division_id = $this->findDivisionByEn($request->division)->id;
         $process = $this->findProcessByEn($request->process);
-        $inspection = $this->findInspectionByEn($request->inspection, $process);
 
-        $inspection_groups = $inspection->groups()
+        $inspectors = $this->findInspectorsByProcess($request->process);
+
+        $inspection_groups = $this->findInspectionByEn($request->inspection, $process)
+            ->groups()
             ->where('division_id', $division_id)
             ->with([
                 'pageTypes',
@@ -122,9 +121,10 @@ class InspectionController extends Controller
                 'inspection.process.failures'
             ])
             ->get()
-            ->map(function ($group, $key) {
+            ->map(function ($group, $key) use ($inspectors) {
                 return [
                     'id' => $group->id,
+                    'inspectors' => $inspectors,
                     'failures' => $group->inspection->process->failures->map(function ($failure, $key) {
                         return [
                             'id' => $failure->id,
@@ -156,12 +156,9 @@ class InspectionController extends Controller
                         ];
                     })
                 ];
-            })
-            ->toArray();
+            });
 
-        return [
-            "group" => $inspection_groups[0]
-        ];
+        return [ "group" => $inspection_groups[0]];
     }
 
     /**
@@ -169,7 +166,7 @@ class InspectionController extends Controller
      */
     public function saveInspection(Request $request)
     {
-        $family = $request['family'];
+        $family = $request->family;
 
         //duplicate detection
         $dupIF = InspectionFamily::where('inspection_group_id', $family['groupId'])->first();
@@ -218,12 +215,12 @@ class InspectionController extends Controller
             }
 
             // create failure
-            DB::table('failure_page')->insert(array_map(function($n) use ($newPage) {
+            DB::table('failure_positions')->insert(array_map(function($n) use ($newPage) {
                     return [
                         'page_id' => $newPage->id,
                         'failure_id' => $n['id'],
                         'point' => $n['point'],
-                        'point_sub' => $n['point_sub']
+                        'point_sub' => $n['pointSub']
                     ];
                 },
                 $page['failures'])

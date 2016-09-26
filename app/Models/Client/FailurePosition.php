@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class FailurePage
  * @package App\Models
  */
-class FailurePage extends Model
+class FailurePosition extends Model
 {
     /**
      * The attributes that are not mass assignable.
@@ -31,15 +31,6 @@ class FailurePage extends Model
         return $this->belongsTo(
             'App\Models\Client\Page',
             'page_id',
-            'id'
-        );
-    }
-
-    public function comment()
-    {
-        return $this->belongsTo(
-            'App\Models\Client\Comment',
-            'comment_id',
             'id'
         );
     }

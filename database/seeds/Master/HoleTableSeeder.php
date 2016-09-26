@@ -27,69 +27,25 @@ class HoleTableSeeder extends Seeder
             DB::statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
         }
 
-        $data = [
-            [
-                'point'      => "100,100",
-                'sort'       => 1,
-                'figure_id'  => 3,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'point'      => "200,200",
-                'sort'       => 2,
-                'figure_id'  => 3,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'point'      => "300,300",
-                'sort'       => 3,
-                'figure_id'  => 3,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'point'      => "400,400",
-                'sort'       => 4,
-                'figure_id'  => 3,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'point'      => "500,500",
-                'sort'       => 5,
-                'figure_id'  => 3,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'point'      => "100,100",
-                'sort'       => 1,
-                'figure_id'  => 4,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'point'      => "100,100",
-                'sort'       => 1,
-                'figure_id'  => 5,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'point'      => "100,100",
-                'sort'       => 1,
-                'figure_id'  => 6,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'point'      => "100,100",
-                'sort'       => 1,
-                'figure_id'  => 10,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'point'      => "100,100",
-                'sort'       => 1,
-                'figure_id'  => 11,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],
-        ];
+        /***** HARD CODE *****/
+        $img = ["x" => 1280, "y" => 1024, "margin" => 100, "arrow" => 80];
+        $hasHoles = [3, 4, 5, 6, 10, 11];
+
+        $data = [];
+        foreach ($hasHoles as $id) {
+            for ($i = 1; $i <= 100; $i++) { 
+                $x = rand($img["margin"], $img["x"] - $img["margin"]);
+                $y = rand($img["margin"], $img["y"] - $img["margin"]);
+
+                array_push($data, [
+                    'point'      => $x . ',' . $y,
+                    'sort'       => $i,
+                    'figure_id'  => $id,
+                    'created_at' => $now,
+                    'updated_at' => $now
+                ]);
+            }
+        }
 
         DB::table($table_name)->insert($data);
 

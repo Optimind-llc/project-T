@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FailureTableSeeder::class);
         $this->call(HoleTableSeeder::class);
 
-
+        $this->call(DummyInspectionsSeeder::class);
 
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');

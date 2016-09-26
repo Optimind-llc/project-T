@@ -56,9 +56,14 @@ class CreateTablesRelatedToClient extends Migration
 
         Schema::create('parts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('panel_id')->unique();
+            $table->string('panel_id');
             $table->integer('part_type_id')->unsigned();
             $table->timestamps();
+
+            /**
+             * Add Index
+             */
+            $table->unique(['panel_id','part_type_id']);
 
             /**
              * Add Foreign

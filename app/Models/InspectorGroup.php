@@ -17,7 +17,7 @@ class InspectorGroup extends Model
      */
     protected $guarded = ['id'];
 
-    public function inspector()
+    public function inspectors()
     {
         return $this->hasMany(
             'App\Models\Inspector',
