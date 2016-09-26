@@ -34,4 +34,19 @@ class Inspection extends Model
             'id'
         );
     }
+
+    public function getByDivisionWithRelated($division_id)
+    {
+        return $this->groups()
+            ->where('division_id', $division_id)
+            ->with([
+                'pageTypes',
+                'pageTypes.partTypes',
+                'pageTypes.partTypes.vehicle',
+                'pageTypes.figure',
+                'pageTypes.figure.holes',
+                'inspection.process.failures'
+            ])
+            ->first();
+    }
 }

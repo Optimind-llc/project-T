@@ -83,56 +83,45 @@ class InspectionController extends Controller
         $inspector_group = new InspectorGroup;
         $inspector_groups = $inspector_group->findInspectorsByProcessEn($request->process);
 
-        $inspection_groups = $this->findInspectionByEn($request->inspection, $process)
-            ->groups()
-            ->where('division_id', $division_id)
-            ->with([
-                'pageTypes',
-                'pageTypes.partTypes',
-                'pageTypes.partTypes.vehicle',
-                'pageTypes.figure',
-                'pageTypes.figure.holes',
-                'inspection.process.failures'
-            ])
-            ->get()
-            ->map(function ($group, $key) use ($inspector_groups) {
-                return [
-                    'id' => $group->id,
-                    'inspectorGroups' => $inspector_groups,
-                    'failures' => $group->inspection->process->failures->map(function ($failure, $key) {
-                        return [
-                            'id' => $failure->id,
-                            'name' => $failure->name,
-                            'type' => $failure->pivot->type
-                        ];
-                    }),
-                    'pages' => $group->pageTypes->map(function ($page, $key) {
-                        return [
-                            'id' => $page->id,
-                            'parts' => $page->partTypes->map(function ($part, $key) {
-                                return [
-                                    'id' => $part->id,
-                                    'name' => $part->name,
-                                    'pn' => $part->pn,
-                                    'vehicle' => $part->vehicle->number
-                                ];
-                            }),
-                            'figure' => [
-                                'id' => $page->figure->id,
-                                'path' => 'images/figures/'.$page->figure->path,
-                                'holes' => $page->figure->holes->map(function ($hole, $key) {
-                                    return [
-                                        'id' => $hole->id,
-                                        'point' => $hole->point
-                                    ];
-                                })
-                            ]
-                        ];
-                    })
-                ];
-            });
+        $inspection_group = $this->findInspectionByEn($request->inspection, $process)
+            ->getByDivisionWithRelated($division_id);
 
-        return [ "group" => $inspection_groups[0]];
+        return [
+            'group' => [
+                'id' => $inspection_group->id,
+                'inspectorGroups' => $inspector_groups,
+                'failures' => $inspection_group->inspection->process->failures->map(function ($failure) {
+                    return [
+                        'id' => $failure->id,
+                        'name' => $failure->name,
+                        'type' => $failure->pivot->type
+                    ];
+                }),
+                'pages' => $inspection_group->pageTypes->map(function ($page) {
+                    return [
+                        'id' => $page->id,
+                        'parts' => $page->partTypes->map(function ($part) {
+                            return [
+                                'id' => $part->id,
+                                'name' => $part->name,
+                                'pn' => $part->pn,
+                                'vehicle' => $part->vehicle->number
+                            ];
+                        }),
+                        'figure' => [
+                            'id' => $page->figure->id,
+                            'path' => 'images/figures/'.$page->figure->path,
+                            'holes' => $page->figure->holes->map(function ($hole) {
+                                return [
+                                    'id' => $hole->id,
+                                    'point' => $hole->point
+                                ];
+                            })
+                        ]
+                    ];
+                })
+            ]
+        ];
     }
 
     /**
@@ -214,7 +203,7 @@ class InspectionController extends Controller
                 );
             }
 
-            // create comments
+            // // create comments
             // if (isset($page['holes'])) {
             //     $newPage->holes()->attach(1);
             //     DB::table('hole_page')->insert(array_map(function($n) use ($newPage) {

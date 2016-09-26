@@ -39,8 +39,8 @@ class Process extends Model
         return $this->belongsToMany(
             'App\Models\Failure',
             'failure_process',
-            'failure_id',
-            'process_id'
+            'process_id',
+            'failure_id'
         )
         ->withPivot('type');
     }
