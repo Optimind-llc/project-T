@@ -11,14 +11,13 @@
 |
 */
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// Route::get('/home', 'HomeController@index');
+
 $api = app('Dingo\Api\Routing\Router');
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/home', 'HomeController@index');
-
 
 $api->version('v1', ['prefix' => 'client', 'namespace' => 'App\Http\Controllers\Client'], function ($api) {
     $api->get('inspectorGroup', 'InspectionController@inspectorGroup');
