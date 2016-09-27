@@ -20,17 +20,17 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index');
 
 
-// $api->version('v1', ['prefix' => 'client', 'namespace' => 'App\Http\Controllers\Client'], function ($api) {
-//     $api->get('inspectorGroup', 'InspectionController@inspectorGroup');
+$api->version('v1', ['prefix' => 'client', 'namespace' => 'App\Http\Controllers\Client'], function ($api) {
+    $api->get('inspectorGroup', 'InspectionController@inspectorGroup');
 
-//     $api->get('inspection', 'InspectionController@inspection');
-//     $api->post('inspection', 'InspectionController@saveInspection');
+    $api->get('inspection', 'InspectionController@inspection');
+    $api->post('inspection', 'InspectionController@saveInspection');
 
-//     $api->post('print1', 'PrintController@print');
-//     $api->post('print2', 'PrintController@printByTemplate');
-//     $api->post('print3', 'PrintController@printByHtml');
+    $api->post('print1', 'PrintController@print');
+    $api->post('print2', 'PrintController@printByTemplate');
+    $api->post('print3', 'PrintController@printByHtml');
 
-// });
+});
 
 
 // // Publicly accessible routes
