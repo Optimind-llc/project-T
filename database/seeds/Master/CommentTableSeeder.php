@@ -5,13 +5,13 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class InspectionGroupTableSeeder
+ * Class CommentTableSeeder
  */
-class InspectionGroupTableSeeder extends Seeder
+class CommentTableSeeder extends Seeder
 {
     public function run()
     {
-        $table_name = 'inspection_groups';
+        $table_name = 'comments';
         $now = Carbon::now();
 
         if (env('DB_CONNECTION') == 'mysql') {
@@ -29,62 +29,62 @@ class InspectionGroupTableSeeder extends Seeder
 
         $data = [
             [
-                'division_en'   => 'inner',
-                'inspection_id' => 1,
+                'message'       => '手直し１',
+                'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'division_en'   => 'inner',
-                'inspection_id' => 2,
+                'message'       => '手直し２',
+                'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'division_en'   => 'inner',
-                'inspection_id' => 3,
+                'message'       => '手直し３',
+                'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'division_en'   => 'small',
-                'inspection_id' => 1,
+                'message'       => '手直し４',
+                'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'division_en'   => 'small',
-                'inspection_id' => 2,
+                'message'       => '手直し５',
+                'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'division_en'   => 'small',
-                'inspection_id' => 3,
+                'message'       => '手直し６',
+                'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'division_en'   => 'inner_assy',
-                'inspection_id' => 4,
+                'message'       => '手直し７',
+                'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'division_en'   => 'inner_assy',
-                'inspection_id' => 5,
+                'message'       => '手直し８',
+                'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'division_en'   => 'inner_assy',
-                'inspection_id' => 6,
+                'message'       => '手直し９',
+                'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'division_en'   => 'inner_assy',
-                'inspection_id' => 7,
+                'message'       => '手直し１０',
+                'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'division_en'   => 'inner_assy',
-                'inspection_id' => 8,
+                'message'       => '手直し１１',
+                'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'division_en'   => 'inner_assy',
+                'message'       => '手直し１２',
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now

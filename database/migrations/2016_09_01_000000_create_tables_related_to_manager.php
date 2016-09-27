@@ -88,23 +88,24 @@ class CreateTablesRelatedToManager extends Migration
         });
 
         Schema::create('divisions', function (Blueprint $table) {
-            $table->increments('id');
             $table->string('name')->unique();
-            $table->string('en')->unique();
+            $table->string('en');
             $table->timestamps();
+
+            $table->primary('en');
         });
 
         Schema::create('inspection_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('division_id')->unsigned();
+            $table->string('division_en');
             $table->integer('inspection_id')->unsigned();
             $table->timestamps();
 
             /**
              * Add Foreign
              */
-            $table->foreign('division_id')
-                ->references('id')
+            $table->foreign('division_en')
+                ->references('en')
                 ->on('divisions')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');

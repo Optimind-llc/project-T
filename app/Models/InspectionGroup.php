@@ -47,7 +47,7 @@ class InspectionGroup extends Model
     public function families()
     {
         return $this->hasMany(
-            'App\Models\InspectionFamily',
+            'App\Models\Client\InspectionFamily',
             'inspection_group_id',
             'id'
         );

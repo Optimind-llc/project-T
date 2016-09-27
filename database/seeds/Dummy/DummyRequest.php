@@ -12,13 +12,15 @@ class DummyRequest extends Request
     public $process = '';
     public $inspection = '';
     public $division = '';
+    public $panelId = '';
     public $family = '';
 
-    public function set($p, $i, $d)
+    public function set($p, $i, $d, $pi = '')
     {
         $this->process = $p;
         $this->inspection = $i;
         $this->division = $d;
+        $this->panelId = $pi;
     }
 
     public function setFamily($f)
@@ -31,7 +33,8 @@ class DummyRequest extends Request
         return [
             'process' => $this->process,
             'inspection' => $this->inspection,
-            'division' => $this->division
+            'division' => $this->division,
+            'panelId' => $this->panelId
         ];
     }
 }

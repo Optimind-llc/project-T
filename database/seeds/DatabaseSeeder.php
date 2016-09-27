@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PartTypeTableSeeder::class);
         $this->call(FailureTableSeeder::class);
         $this->call(HoleTableSeeder::class);
+        $this->call(CommentTableSeeder::class);
 
         $this->call(DummyInspectionsSeeder::class);
 

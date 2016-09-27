@@ -45,6 +45,15 @@ class Page extends Model
         );
     }
 
+    public function failurePositions()
+    {
+        return $this->hasMany(
+            'App\Models\Client\FailurePosition',
+            'page_id',
+            'id'
+        );
+    }
+
     public function holes()
     {
         return $this->belongsToMany(

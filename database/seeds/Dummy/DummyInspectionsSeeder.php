@@ -30,9 +30,9 @@ class DummyInspectionsSeeder extends Seeder
                 $y = rand($img['margin'], $img['y'] - $img['margin']);
 
                 array_push($F, [
-                    'id' => $failures[array_rand($failures->toArray(), 1)]['id'],
+                    'id' => $failures->random()['id'],
                     'point' => $x . ',' . $y,
-                    'pointSub' => $x + $img['arrow'] . ',' . $y + $img['arrow']
+                    'pointSub' => $x+$img['arrow'] . ',' . $y+$img['arrow']
                 ]);
             }
 
@@ -46,15 +46,28 @@ class DummyInspectionsSeeder extends Seeder
             ];
         };
 
-        $createPage = function($page) use ($img, $id, $createPart, $createFailures, $createHole, $group) {
+        $createComments = function($comments, $history) {
+            $C = [];
+
+            foreach (array_rand($history, 10) as $k) {
+                array_push($C, [
+                    'failurePositionId' => $history[$k]['failurePositionId'],
+                    'commentId' => $comments->random()['id'],
+                ]);
+            }
+
+            return $C;
+        };
+
+        $createPage = function($page) use ($img, $id, $createPart, $createFailures, $createHole, $createComments, $group) {
             return [
                 'pageId' => $page['id'],
                 'status' => 1,
                 'table' => 'A',
                 'parts' => $page['parts']->map($createPart),
-                'figureId' => $page['figure']['id'],
-                'failures' => $createFailures($group['failures']),
-                'holes' => $page['figure']['holes']->count() ? array_map($createHole, $page['figure']['holes']->toArray()) : null
+                'failures' => $group['failures']->count() ? $createFailures($group['failures']) : null,
+                'holes' => $page['figure']['holes']->count() ? array_map($createHole, $page['figure']['holes']->toArray()) : null,
+                'comments' => $group['comments']->count() ? $createComments($group['comments'], $page['history']) : null
             ];
         };
 
@@ -118,7 +131,7 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);        
         }
 
-        //接着：検査：インナASSY
+        //接着：止水：インナASSY
         $request->set('jointing', 'water_stop', 'inner_assy');
         $group = $controller->inspection($request);
 
@@ -126,6 +139,46 @@ class DummyInspectionsSeeder extends Seeder
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        
+        }
+
+        //接着：仕上：インナASSY
+        $request->set('jointing', 'finish', 'inner_assy');
+        $group = $controller->inspection($request);
+
+        for ($id = 1; $id <= 10; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
+
+        //接着：点検：インナASSY
+        $request->set('jointing', 'check', 'inner_assy');
+        $group = $controller->inspection($request);
+
+        for ($id = 1; $id <= 10; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
+
+        //接着：特検：インナASSY
+        $request->set('jointing', 'special_check', 'inner_assy');
+        $group = $controller->inspection($request);
+
+        for ($id = 1; $id <= 10; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
+
+        //接着：手直し：インナASSY
+        for ($id = 1; $id <= 1; $id++) {
+            $request->set('jointing', 'adjust', 'inner_assy', 'A'.str_pad($id, 7, 0, STR_PAD_LEFT));
+            $group = $controller->inspection($request);
+
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);
         }
     }
 }

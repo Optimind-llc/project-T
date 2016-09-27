@@ -35,17 +35,27 @@ class Inspection extends Model
         );
     }
 
-    public function getByDivisionWithRelated($division_id)
+    public function comments()
+    {
+        return $this->hasMany(
+            'App\Models\Comment',
+            'inspection_id',
+            'id'
+        );
+    }
+
+    public function getByDivisionWithRelated($division_en)
     {
         return $this->groups()
-            ->where('division_id', $division_id)
+            ->where('division_en', $division_en)
             ->with([
                 'pageTypes',
                 'pageTypes.partTypes',
                 'pageTypes.partTypes.vehicle',
                 'pageTypes.figure',
                 'pageTypes.figure.holes',
-                'inspection.process.failures'
+                'inspection.process.failures',
+                'inspection.comments'
             ])
             ->first();
     }

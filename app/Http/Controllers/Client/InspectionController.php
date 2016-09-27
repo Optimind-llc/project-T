@@ -11,6 +11,7 @@ use App\Models\Process;
 use App\Models\Inspector;
 use App\Models\InspectorGroup;
 use App\Models\Inspection;
+use App\Models\InspectionGroup;
 use App\Models\Division;
 use App\Models\Client\InspectionFamily;
 use App\Models\Client\Page;
@@ -39,14 +40,20 @@ class InspectionController extends Controller
         return $process;
     }
 
-    protected function findInspectionByEn($en, Process $process, $division_id) {
-        $inspection = $process->inspections()->where('en', $en)->first();
+    protected function findInspectionByEn($inspection_en, Process $process, $division_en) {
+        $inspection = $process->inspections()->where('en', $inspection_en)->first();
 
         if (!$inspection instanceof Inspection) {
             throw new NotFoundHttpException('Inspection not found');
         }
 
-        return $inspection->getByDivisionWithRelated($division_id);
+        $group = $inspection->getByDivisionWithRelated($division_en);
+
+        if (!$group instanceof InspectionGroup) {
+            throw new NotFoundHttpException('Inspection group not found');
+        }
+
+        return $group;
     }
 
     protected function findDivisionByEn($en) {
@@ -57,6 +64,95 @@ class InspectionController extends Controller
         }
 
         return $division;
+    }
+
+    protected function adjust(Request $request, $inspection_group, $inspector_groups)
+    {
+        $validator = app('validator')->make(
+            $request->all(),
+            ['panelId' => ['required', 'alpha_dash']]
+        );
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Validation error', $validator->errors());
+        }
+
+        $filterInspection = function($i) {
+            return $i->groups[0]->families->count() > 0;
+        };
+
+        $mapInspection = function ($i) {
+            return $i->groups[0]
+                ->families
+                ->filter(function ($f) {
+                    return $f->pages->count() > 0;
+                })[0]
+                ->pages[0]
+                ->failurePositions
+                ->map(function ($fp) use ($i){
+                    return [
+                        'failurePositionId' => $fp->id,
+                        'inspectionName' => $i->name,
+                        'failureName' => $fp->failure->name,                            
+                        'point' => $fp->point,
+                        'point_sub' => $fp->point_sub
+                    ];
+                })
+                ->toArray();
+        };
+
+        $mergeToOne = function ($a, $b) {
+            return array_merge($a, $b);
+        };
+
+        $history = $this->findProcessByEn($request->process)
+            ->getAllInspectionswithRelated($request->division, $request->panelId)
+            ->filter($filterInspection)
+            ->map($mapInspection)
+            ->reduce($mergeToOne, []);
+
+        return [
+            'group' => [
+                'id' => $inspection_group->id,
+                'inspectorGroups' => $inspector_groups,
+                'failures' => $inspection_group->inspection->process->failures->map(function ($failure) {
+                    return [
+                        'id' => $failure->id,
+                        'name' => $failure->name,
+                        'type' => $failure->pivot->type
+                    ];
+                }),
+                'comments' => $inspection_group->inspection->comments->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'message' => $comment->message
+                    ];
+                }),
+                'pages' => $inspection_group->pageTypes->map(function ($page) use ($history) {
+                    return [
+                        'id' => $page->id,
+                        'parts' => $page->partTypes->map(function ($part) use ($history) {
+                            return [
+                                'id' => $part->id,
+                                'name' => $part->name,
+                                'pn' => $part->pn,
+                                'vehicle' => $part->vehicle->number
+                            ];
+                        }),
+                        'figure' => [
+                            'path' => 'images/figures/'.$page->figure->path,
+                            'holes' => $page->figure->holes->map(function ($hole) {
+                                return [
+                                    'id' => $hole->id,
+                                    'point' => $hole->point
+                                ];
+                            })
+                        ],
+                        'history' => $history
+                    ];
+                })
+            ]
+        ];
     }
 
     /**
@@ -77,13 +173,20 @@ class InspectionController extends Controller
             throw new StoreResourceFailedException('Validation error', $validator->errors());
         }
 
-        $division_id = $this->findDivisionByEn($request->division)->id;
         $process = $this->findProcessByEn($request->process);
 
         $inspector_group = new InspectorGroup;
         $inspector_groups = $inspector_group->findInspectorsByProcessEn($request->process);
 
-        $inspection_group = $this->findInspectionByEn($request->inspection, $process, $division_id);
+        $inspection_group = $this->findInspectionByEn(
+            $request->inspection,
+            $process,
+            $request->division
+        );
+
+        if ($request->inspection == 'adjust') {
+            return $this->adjust($request, $inspection_group, $inspector_groups);
+        }
 
         return [
             'group' => [
@@ -94,6 +197,12 @@ class InspectionController extends Controller
                         'id' => $failure->id,
                         'name' => $failure->name,
                         'type' => $failure->pivot->type
+                    ];
+                }),
+                'comments' => $inspection_group->inspection->comments->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'message' => $comment->message
                     ];
                 }),
                 'pages' => $inspection_group->pageTypes->map(function ($page) {
@@ -108,7 +217,6 @@ class InspectionController extends Controller
                             ];
                         }),
                         'figure' => [
-                            'id' => $page->figure->id,
                             'path' => 'images/figures/'.$page->figure->path,
                             'holes' => $page->figure->holes->map(function ($hole) {
                                 return [
@@ -178,12 +286,12 @@ class InspectionController extends Controller
             }
 
             // create failure
-            DB::table('failure_positions')->insert(array_map(function($n) use ($newPage) {
+            DB::table('failure_positions')->insert(array_map(function($f) use ($newPage) {
                     return [
                         'page_id' => $newPage->id,
-                        'failure_id' => $n['id'],
-                        'point' => $n['point'],
-                        'point_sub' => $n['pointSub']
+                        'failure_id' => $f['id'],
+                        'point' => $f['point'],
+                        'point_sub' => $f['pointSub']
                     ];
                 },
                 $page['failures'])
@@ -191,30 +299,29 @@ class InspectionController extends Controller
 
             // create holes
             if (isset($page['holes'])) {
-                DB::table('hole_page')->insert(array_map(function($n) use ($newPage) {
+                DB::table('hole_page')->insert(array_map(function($h) use ($newPage) {
                         return [
                             'page_id' => $newPage->id,
-                            'hole_id' => $n['id'],
-                            'status' => $n['status']
+                            'hole_id' => $h['id'],
+                            'status' => $h['status']
                         ];
                     },
                     $page['holes'])
                 );
             }
 
-            // // create comments
-            // if (isset($page['holes'])) {
-            //     $newPage->holes()->attach(1);
-            //     DB::table('hole_page')->insert(array_map(function($n) use ($newPage) {
-            //             return [
-            //                 'page_id' => $newPage->id,
-            //                 'hole_id' => $n['id'],
-            //                 'status' => $n['status']
-            //             ];
-            //         },
-            //         $page['failures'])
-            //     );
-            // }
+            // create comments
+            if (isset($page['comments'])) {
+                DB::table('comment_failure_position')->insert(array_map(function($c) use ($newPage) {
+                        return [
+                            'page_id' => $newPage->id,
+                            'failure_position_id' => $c['failurePositionId'],
+                            'comment_id' => $c['commentId']
+                        ];
+                    },
+                    $page['comments'])
+                );
+            }
         }
 
         return $family;

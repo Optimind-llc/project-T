@@ -24,7 +24,6 @@ $api->version('v1', ['prefix' => 'client', 'namespace' => 'App\Http\Controllers\
     $api->get('inspectorGroup', 'InspectionController@inspectorGroup');
 
     $api->get('inspection', 'InspectionController@inspection');
-
     $api->post('inspection', 'InspectionController@saveInspection');
 
     $api->post('print1', 'PrintController@print');
