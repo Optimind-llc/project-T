@@ -15,8 +15,6 @@
 //     return view('welcome');
 // });
 
-// Route::get('/home', 'HomeController@index');
-
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', ['prefix' => 'client', 'namespace' => 'App\Http\Controllers\Client'], function ($api) {
@@ -31,6 +29,9 @@ $api->version('v1', ['prefix' => 'client', 'namespace' => 'App\Http\Controllers\
 
 });
 
+$api->version('v1', ['prefix' => 'manager', 'namespace' => 'App\Http\Controllers\Manager'], function ($api) {
+    $api->get('/', 'ReferenceController@index');
+});
 
 // // Publicly accessible routes
 // Route::get('/user/confirm/{token}', 'User\Auth\AuthController@confirmAccount');

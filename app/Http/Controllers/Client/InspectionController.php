@@ -12,7 +12,6 @@ use App\Models\Inspector;
 use App\Models\InspectorGroup;
 use App\Models\Inspection;
 use App\Models\InspectionGroup;
-use App\Models\Division;
 use App\Models\Client\InspectionFamily;
 use App\Models\Client\Page;
 use App\Models\Client\Part;
@@ -54,16 +53,6 @@ class InspectionController extends Controller
         }
 
         return $group;
-    }
-
-    protected function findDivisionByEn($en) {
-        $division = Division::where('en', $en)->first();
-
-        if (!$division instanceof Division) {
-            throw new NotFoundHttpException('Division not found');
-        }
-
-        return $division;
     }
 
     protected function adjust(Request $request, $inspection_group, $inspector_groups)

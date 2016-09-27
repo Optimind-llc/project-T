@@ -227,7 +227,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 6,
                 'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 7,
                 'process_id' => 1,
@@ -239,164 +239,80 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 7,
                 'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 8,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 8,
-                'process_id' => 2,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 8,
                 'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 9,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 9,
-                'process_id' => 2,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 9,
                 'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 10,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 10,
-                'process_id' => 2,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 10,
                 'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 11,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 11,
-                'process_id' => 2,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 11,
                 'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 12,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 12,
-                'process_id' => 2,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 12,
                 'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 13,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 13,
-                'process_id' => 2,
-                'type'       => 1
-            ],[
-                'failure_id' => 13,
-                'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 14,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 14,
-                'process_id' => 2,
-                'type'       => 1
-            ],[
-                'failure_id' => 14,
-                'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 15,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 15,
-                'process_id' => 2,
-                'type'       => 1
-            ],[
-                'failure_id' => 15,
-                'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 16,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 16,
-                'process_id' => 2,
-                'type'       => 1
-            ],[
-                'failure_id' => 16,
-                'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 17,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 17,
-                'process_id' => 2,
-                'type'       => 1
-            ],[
-                'failure_id' => 17,
-                'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 18,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 18,
-                'process_id' => 2,
-                'type'       => 1
-            ],[
-                'failure_id' => 18,
-                'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 19,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 19,
-                'process_id' => 2,
-                'type'       => 1
-            ],[
-                'failure_id' => 19,
-                'process_id' => 3,
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 20,
                 'process_id' => 1,
-                'type'       => 1
-            ],[
-                'failure_id' => 20,
-                'process_id' => 2,
-                'type'       => 1
-            ],[
-                'failure_id' => 20,
-                'process_id' => 3,
-                'type'       => 1
-            ],
+                'type'       => 2
+            ]
         ];
 
         DB::table($table_name)->insert($data);
