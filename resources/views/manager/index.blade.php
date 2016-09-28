@@ -7,23 +7,16 @@
     <meta name="_token" content="{!! csrf_token() !!}" />
     <meta name="domain" content="{{$domain}}" />
     <title>品質不良マッピングシステム</title>
-    <!-- Webpack compiled -->
-    @if ($env === 'local')
-        <link rel="stylesheet" href="http://localhost:3000/static/bundle.css">
-    @elseif ($env === 'production')
-        <link rel="stylesheet" href="/dist/audience/bundle.css">
-    @endif
     <!-- google Roboto font -->
     <!--<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'> -->
     <!--<link href='http://fonts.googleapis.com/earlyaccess/notosansjp.css' rel='stylesheet' type='text/css'> -->
   </head>
-  <body style="padding-bottom: 0;">
-    <p>aaa</p>
+  <body>
     <div id="root"></div>
     @if ($env === 'local')
-        <script src="http://localhost:3000/static/bundle.js"></script>
+        <script src="http://localhost:3001/static/app.js"></script>
     @elseif ($env === 'production')
-        <script src="/dist/audience/bundle.js"></script>
+        <script src="/build/app.js"></script>
     @endif
   </body>
 </html>
