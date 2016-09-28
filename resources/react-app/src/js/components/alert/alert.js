@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { TransitionMotion, spring, presets } from 'react-motion';
-import styles from './alert.css';
+import styles from './alert.scss';
 
 class Alert extends Component {
   getDefaultValue() {
@@ -60,7 +60,7 @@ class Alert extends Component {
         willLeave={this.willLeave.bind(this)}
         willEnter={this.willEnter.bind(this)}>
         {alerts =>
-          <div className={styles.wrap}>
+          <div id="alerts-wrap">
             {alerts.map(({ key, data: {status, message}, style }) => {
               return (
                 <div className={styles.alert} style={style} key={key}>

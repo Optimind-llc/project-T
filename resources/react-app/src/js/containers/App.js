@@ -22,6 +22,12 @@ class App extends Component {
 
   render() {
     const { children, routes, alerts, actions } = this.props;
+
+    const links = [
+      { en: 'dashboard', name: 'ダッシュボード' },
+      { en: 'reference', name: '検査結果照会' }
+    ]
+
     const nameList = [
       '品質不良マッピングシステム',
       routes[0].name,
@@ -53,7 +59,7 @@ class App extends Component {
             rounded={false}
             style={styles.nav}
           >
-            <Navigation/>
+            <Navigation links={links}/>
           </Paper>
           <div style={styles.content}>
             <Breadcrumbs nameList={nameList}/>
@@ -73,6 +79,7 @@ App.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
+  console.log(ownProps);
   return {
     routes: ownProps.routes,
     alerts: state.alert,

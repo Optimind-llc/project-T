@@ -1,21 +1,33 @@
 import React, { PropTypes, Component } from 'react';
-import styles from './navigation.css';
+import { Link } from 'react-router';
+import styles from './navigation.scss';
 import logo from './toyota-logo.svg';
 
 class Navigation extends Component {
   render() {
-    const { nameList } = this.props;
+    const { links } = this.props;
 
     return (
-      <div>
-        <img src={logo} width="38" height="38" alt="React"/>
+      <div id="navigation">
+        <div className="header">
+          <img src={logo} alt="logo"/>
+        </div>
+        <ul>
+          {
+            links.map((link, i) => 
+              <li>
+                <Link activeClassName="active" key={i} to={`/manager/${link.en}`}>{link.name}</Link>
+              </li>
+            )
+          }
+        </ul>
       </div>
     );
   }
 }
 
 Navigation.propTypes = {
-  nameList: PropTypes.array.isRequired
+  links: PropTypes.array.isRequired
 };
 
 export default Navigation;
