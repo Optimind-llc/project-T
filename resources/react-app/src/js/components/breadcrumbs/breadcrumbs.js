@@ -1,12 +1,12 @@
 import React, { PropTypes, Component } from 'react';
-// import styles from './breadcrumbs.css';
+import styles from './breadcrumbs.css';
 
 class Breadcrumbs extends Component {
   render() {
     const { nameList } = this.props;
 
     return (
-      <div className="breadcrumb">
+      <div id="breadcrumb">
         <ul className="breadcrumbsTop">
           {
             nameList.map((name, i) => 

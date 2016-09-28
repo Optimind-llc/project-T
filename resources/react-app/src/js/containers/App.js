@@ -13,7 +13,7 @@ import SocialPublic from 'material-ui/svg-icons/social/public';
 // Components
 import Alert from '../components/alert/alert';
 import Navigation from '../components/navigation/navigation';
-import Breadcrumbs from '../components/breadcrumbs/breadcrumbs.js';
+import Breadcrumbs from '../components/breadcrumbs/breadcrumbs';
 
 class App extends Component {
   constructor(props, context) {
