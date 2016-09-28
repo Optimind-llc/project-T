@@ -11,30 +11,34 @@
 |
 */
 
-$api = app('Dingo\Api\Routing\Router');
-
-$api->version('v1', ['prefix' => '/'], function ($api) {
-    $api->get('/', function () {
-	    return 'Hello World';
-	});
-
-    $api->get('/a', function () {
-	    return 'a';
-	});
+Route::get('/', function () {
+    return 'Hello World';
 });
 
-$api->version('v1', ['prefix' => 'client', 'namespace' => 'App\Http\Controllers\Client'], function ($api) {
-    $api->get('inspectorGroup', 'InspectionController@inspectorGroup');
+Route::get('client/inspection', 'Client\InspectionController@inspection');
+Route::post('client/inspection', 'Client\InspectionController@saveInspection');
 
-    $api->get('inspection', 'InspectionController@inspection');
-    $api->post('inspection', 'InspectionController@saveInspection');
+Route::get('manager', 'Manager\ReferenceController@index');
+Route::get('manager/dashboard', 'Manager\ReferenceController@index');
+Route::get('manager/reference', 'Manager\ReferenceController@index');
+Route::get('manager/mapping', 'Manager\ReferenceController@index');
+Route::get('manager/report', 'Manager\ReferenceController@index');
 
-    $api->post('print1', 'PrintController@print');
-    $api->post('print2', 'PrintController@printByTemplate');
-    $api->post('print3', 'PrintController@printByHtml');
 
-});
+// $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', ['prefix' => 'manager', 'namespace' => 'App\Http\Controllers\Manager'], function ($api) {
-    $api->get('/', 'ReferenceController@index');
-});
+// $api->version('v1', ['prefix' => 'client', 'namespace' => 'App\Http\Controllers\Client'], function ($api) {
+//     $api->get('inspectorGroup', 'InspectionController@inspectorGroup');
+
+//     $api->get('inspection', 'InspectionController@inspection');
+//     $api->post('inspection', 'InspectionController@saveInspection');
+
+//     $api->post('print1', 'PrintController@print');
+//     $api->post('print2', 'PrintController@printByTemplate');
+//     $api->post('print3', 'PrintController@printByHtml');
+
+// });
+
+// $api->version('v1', ['prefix' => 'manager', 'namespace' => 'App\Http\Controllers\Manager'], function ($api) {
+//     $api->get('/', 'ReferenceController@index');
+// });

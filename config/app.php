@@ -158,14 +158,14 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        // Dingo Laravel Service Provider
-        Dingo\Api\Provider\LaravelServiceProvider::class,
+        // // Dingo Laravel Service Provider
+        // Dingo\Api\Provider\LaravelServiceProvider::class,
 
-        // Zizaco Entrust Provider
-        Zizaco\Entrust\EntrustServiceProvider::class,
+        // // Zizaco Entrust Provider
+        // Zizaco\Entrust\EntrustServiceProvider::class,
 
-        // Tymondesigns JWT Auth Provider
-        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        // // Tymondesigns JWT Auth Provider
+        // Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
     ],
 
     /*

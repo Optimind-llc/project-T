@@ -1,15 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { TransitionMotion, spring, presets } from 'react-motion';
+import styles from './alert.css';
 
 class Alert extends Component {
-  componentDidMount() {
-    // setInterval(() => {
-    //   const { alerts: {access}, deleteAccessAlerts } = this.props;
-    //   const shouldDelete = Object.keys(access).filter(key => key < Date.now() - 3000);
-    //   deleteAccessAlerts(shouldDelete)
-    // }, 5000);
-  }
-
   getDefaultValue() {
     const { alerts } = this.props;
     return alerts.map(alert => ({
@@ -67,12 +60,12 @@ class Alert extends Component {
         willLeave={this.willLeave.bind(this)}
         willEnter={this.willEnter.bind(this)}>
         {alerts =>
-          <div className="alert-wrap">
+          <div className={styles.wrap}>
             {alerts.map(({ key, data: {status, message}, style }) => {
               return (
-                <div className={`alert custom-alert alert-${status}`} style={style} key={key}>
+                <div className={styles.alert} style={style} key={key}>
                   <p>{message}</p>
-                  <span className="btn-close" title={key} onClick={this.handleClick.bind(this, key)}>×</span>
+                  <span className={styles.close} title={key} onClick={this.handleClick.bind(this, key)}>×</span>
                 </div>
               );
             })}

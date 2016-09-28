@@ -69,8 +69,6 @@ export default store => next => action => {
       }
     },
     error => {
-      console.log('in fetch middleware error = ', error);
-
       next(actionWith({
         type: failureType,
         payload: {

@@ -7,6 +7,11 @@
     <meta name="_token" content="{!! csrf_token() !!}" />
     <meta name="domain" content="{{$domain}}" />
     <title>品質不良マッピングシステム</title>
+    @if ($env === 'local')
+    <link rel="stylesheet" href="http://localhost:3000/static/bundle.css">
+    @elseif ($env === 'production')
+    <link rel="stylesheet" href="/dist/bundle.css">
+    @endif
     <!-- google Roboto font -->
     <!--<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'> -->
     <!--<link href='http://fonts.googleapis.com/earlyaccess/notosansjp.css' rel='stylesheet' type='text/css'> -->
@@ -14,9 +19,9 @@
   <body>
     <div id="root"></div>
     @if ($env === 'local')
-        <script src="http://localhost:3001/static/app.js"></script>
+        <script src="http://localhost:3000/static/bundle.js"></script>
     @elseif ($env === 'production')
-        <script src="/build/app.js"></script>
+        <script src="/dist/bundle.js"></script>
     @endif
   </body>
 </html>

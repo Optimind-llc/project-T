@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import { CSRF_TOKEN, DOMAIN_NAME, SCHOOL_NAME } from '../../config/env';
+import { CSRF_TOKEN, DOMAIN_NAME } from '../../config/env';
 import { keyToSnake } from './ChangeCaseUtils';
 import { camelizeKeys } from 'humps';
 

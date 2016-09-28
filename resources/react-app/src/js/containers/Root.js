@@ -4,12 +4,9 @@ import { Provider, connect } from 'react-redux';
 //import DevTools from './DevTools';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
-
-// Config
-import { SCHOOL_NAME } from '../../config/env';
 //Components
 import App from './App';
-import Dashboard from '../components/Dashboard/Dashboard';
+import Reference from '../modules/reference/containers/reference';
 
 class Root extends Component {
   render() {
@@ -17,8 +14,8 @@ class Root extends Component {
     return (
       <Provider store={store}>
         <Router history={history}>
-          <Route name="Top" path="manager" component={App}>
-            <Route path="/" component={Dashboard}/>
+          <Route name="閲覧" path="manager" component={App}>
+            <Route name="検査結果照会" path="reference" component={Reference}/>
           </Route>
         </Router>
         {/*<DevTools/>*/}
@@ -34,3 +31,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Root);
+
+            //<Route path="dashboard" component={Dashboard}/>
+            //<Route path="mapping" component={Mapping}/>
+            //<Route path="report" component={Report}/>

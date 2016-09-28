@@ -6,14 +6,14 @@ var autoprefixer = require('autoprefixer');
 module.exports = {
   devtool: 'cheap-module-source-map',
   entry: [
-    'webpack-hot-middleware/client?path=http://localhost:3001/__webpack_hmr',
+    'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
     'bootstrap-loader',
     './src/index',
   ],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: 'http://localhost:3001/static/'
+    publicPath: 'http://localhost:3000/static/'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
