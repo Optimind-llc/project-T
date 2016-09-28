@@ -57,14 +57,11 @@ module.exports = {
       }, {
         test: /glyphicons-halflings-regular\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url?limit=10000&mimetype=image/svg+xml"
-      },
-      /* font-awesome */
-      {
+      }, {
         test: /fontawesome-webfont\.(otf|eot|svg|ttf|woff)\??/,
         loader: "url-loader?limit=8192"
       }, {
-        test: /\.jpg$/,
-        loader: "url-loader?mimetype=image/jpg"
+        test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/, loader: 'url-loader?limit=10000'
       }
     ]
   },

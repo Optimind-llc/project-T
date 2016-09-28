@@ -1,18 +1,21 @@
 import React, { PropTypes, Component } from 'react';
-// import styles from './breadcrumbs.css';
+import styles from './navigation.css';
+import logo from './toyota-logo.svg';
 
-class Breadcrumbs extends Component {
+class Navigation extends Component {
   render() {
     const { nameList } = this.props;
 
     return (
-      <p>a</p>
+      <div>
+        <img src={logo} width="38" height="38" alt="React"/>
+      </div>
     );
   }
 }
 
-Breadcrumbs.propTypes = {
+Navigation.propTypes = {
   nameList: PropTypes.array.isRequired
 };
 
-export default Breadcrumbs;
+export default Navigation;
