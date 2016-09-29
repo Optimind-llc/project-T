@@ -31,8 +31,8 @@ class PartType extends Model
     {
         return $this->belongsTo(
             'App\Models\Vehicle',
-            'vehicle_id',
-            'id'
+            'vehicle_num',
+            'number'
         );
     }
 }

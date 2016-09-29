@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 // Models
+use App\Models\Vehicle;
 use App\Models\Process;
 use App\Models\Inspector;
 use App\Models\InspectorGroup;
@@ -42,8 +43,9 @@ class ReferenceController extends Controller
     /**
      * Get user from JWT token
      */
-    public function inspection(Request $request)
+    public function vehiclesAndGroups(Request $request)
     {
+        $vehicles = Vehicle::select('')
         return $family;
     }
     

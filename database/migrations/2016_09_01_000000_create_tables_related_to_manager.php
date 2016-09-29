@@ -153,25 +153,29 @@ class CreateTablesRelatedToManager extends Migration
         });
 
         Schema::create('vehicles', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('number')->unique();
+            $table->string('number');
             $table->string('name')->unique()->nullable();
             $table->integer('sort')->unsigned()->defaul(1);
             $table->timestamps();
+
+            /**
+             * Add Primary
+             */
+            $table->primary('number');
         });
 
         Schema::create('part_types', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('pn')->unique()->unsigned();
             $table->string('name')->unique();
-            $table->integer('vehicle_id')->unsigned();
+            $table->string('vehicle_num');
             $table->timestamps();
 
             /**
              * Add Foreign
              */
-            $table->foreign('vehicle_id')
-                ->references('id')
+            $table->foreign('vehicle_num')
+                ->references('number')
                 ->on('vehicles')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');

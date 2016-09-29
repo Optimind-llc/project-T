@@ -35,43 +35,43 @@ class PartTypeTableSeeder extends Seeder
             [
                 'pn'          => 67149,
                 'name'        => 'バックドアインナ',
-                'vehicle_id'  => 1,
+                'vehicle_num' => '680A',
                 'created_at'  => $now,
                 'updated_at'  => $now
             ],[
                 'pn'          => 67119,
                 'name'        => 'アッパー',
-                'vehicle_id'  => 1,
+                'vehicle_num' => '680A',
                 'created_at'  => $now,
                 'updated_at'  => $now
             ],[
                 'pn'          => 67175,
                 'name'        => 'サイドR',
-                'vehicle_id'  => 1,
+                'vehicle_num' => '680A',
                 'created_at'  => $now,
                 'updated_at'  => $now
             ],[
                 'pn'          => 67176,
                 'name'        => 'サイドL',
-                'vehicle_id'  => 1,
+                'vehicle_num' => '680A',
                 'created_at'  => $now,
                 'updated_at'  => $now
             ],[
                 'pn'          => 67177,
                 'name'        => 'ロアR',
-                'vehicle_id'  => 1,
+                'vehicle_num' => '680A',
                 'created_at'  => $now,
                 'updated_at'  => $now
             ],[
                 'pn'          => 67178,
                 'name'        => 'ロアL',
-                'vehicle_id'  => 1,
+                'vehicle_num' => '680A',
                 'created_at'  => $now,
                 'updated_at'  => $now
             ],[
                 'pn'          => 67007,
                 'name'        => 'バックドアインナASSY',
-                'vehicle_id'  => 1,
+                'vehicle_num' => '680A',
                 'created_at'  => $now,
                 'updated_at'  => $now
             ]
