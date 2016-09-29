@@ -80,22 +80,49 @@ class InspectionController extends Controller
             throw new StoreResourceFailedException('Validation error', $validator->errors());
         }
 
-        $filterInspection = function($i) {
-            return $i->groups[0]->families->count() > 0;
+        // inspection内のgroups配列を取り出す、inner_assyでfilltering済み
+        $map1 = function ($i) {
+            return $i->groups->filter(function ($g) {
+                return $g->division_en == 'inner_assy';
+            });
         };
 
-        $mapInspection = function ($i) {
-            return $i->groups[0]
-                ->families
-                ->filter(function ($f) {
-                    return $f->pages->count() > 0;
-                })[0]
-                ->pages[0]
+        // inner_assyでないgroupsを削除
+        $filter1 = function ($g) {
+            return $g->count() > 0;
+        };
+
+        // groups[0] が inner_assyなので、そのfamilyを取り出す
+        $map2 = function ($g) {
+            return $g[0]->families;
+        };
+
+        // familyのないgroupsを削除
+        $filter2 = function ($f) {
+            return $f->count() > 0;
+        };
+
+        // pagesが0以上のもののみにする
+        $map3 = function ($f) {
+            return $f->filter(function ($f) {
+                return $f->pages->count() > 0;
+            });
+        };
+
+        // pageのないfamilyを削除
+        $filter3 = function ($f) {
+            return $f->count() > 0;
+        };
+
+        // pagesが0以上のもののみにする
+        $map4 = function ($f) {
+            return $f->first()
+                ->pages
+                ->first()
                 ->failurePositions
-                ->map(function ($fp) use ($i){
+                ->map(function ($fp) {
                     return [
                         'failurePositionId' => $fp->id,
-                        'inspectionName' => $i->name,
                         'failureName' => $fp->failure->name,                            
                         'point' => $fp->point,
                         'point_sub' => $fp->point_sub
@@ -104,14 +131,23 @@ class InspectionController extends Controller
                 ->toArray();
         };
 
+        $filterInspection = function($i) {
+            return $i->en != 'adjust' && $i->groups[0]->families->count() > 0;
+        };
+
         $mergeToOne = function ($a, $b) {
             return array_merge($a, $b);
         };
 
         $history = $this->findProcessByEn($request->process)
             ->getAllInspectionswithRelated($request->division, $request->panelId)
-            ->filter($filterInspection)
-            ->map($mapInspection)
+            ->map($map1)
+            ->filter($filter1)
+            ->map($map2)
+            ->filter($filter2)
+            ->map($map3)
+            ->filter($filter3)
+            ->map($map4)
             ->reduce($mergeToOne, []);
 
         return [

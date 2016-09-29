@@ -172,7 +172,7 @@ class DummyInspectionsSeeder extends Seeder
         }
 
         //接着：手直し：インナASSY
-        for ($id = 1; $id <= 1; $id++) {
+        for ($id = 1; $id <= 10; $id++) {
             $request->set('jointing', 'adjust', 'inner_assy', 'A'.str_pad($id, 7, 0, STR_PAD_LEFT));
             $group = $controller->inspection($request);
 
