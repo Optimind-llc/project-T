@@ -21,8 +21,8 @@ class InspectorGroup extends Model
     {
         return $this->hasMany(
             'App\Models\Inspector',
-            'group_id',
-            'id'
+            'group_code',
+            'code'
         );
     }
 
@@ -35,7 +35,7 @@ class InspectorGroup extends Model
                     ->get();
                 }
             ])
-            ->where('id', '>', 0)
+            ->where('status', 1)
             ->get()
             ->map(function ($group, $key) {
                 return [

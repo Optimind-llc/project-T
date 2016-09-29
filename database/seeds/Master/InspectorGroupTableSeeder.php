@@ -31,11 +31,13 @@ class InspectorGroupTableSeeder extends Seeder
             [
                 'name'       => '黄直',
                 'code'       => 'Y',
+                'status'     => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '白直',
                 'code'       => 'W',
+                'status'     => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],

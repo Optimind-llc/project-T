@@ -35,49 +35,49 @@ class InspectorTableSeeder extends Seeder
             [
                 'name'       => '中田',
                 'code'       => '0001',
-                'group_id'   => 1,
+                'group_code'   => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '前田',
                 'code'       => '0002',
-                'group_id'   => 1,
+                'group_code'   => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '吉田',
                 'code'       => '0003',
-                'group_id'   => 1,
+                'group_code'   => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '山田',
                 'code'       => '0004',
-                'group_id'   => 1,
+                'group_code'   => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '佐藤',
                 'code'       => '0005',
-                'group_id'   => 2,
+                'group_code'   => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '斉藤',
                 'code'       => '0006',
-                'group_id'   => 2,
+                'group_code'   => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '加藤',
                 'code'       => '0007',
-                'group_id'   => 2,
+                'group_code'   => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '後藤',
                 'code'       => '0008',
-                'group_id'   => 2,
+                'group_code'   => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ]

@@ -20,24 +20,29 @@ class CreateTablesRelatedToManager extends Migration
         });
 
         Schema::create('inspector_groups', function (Blueprint $table) {
-            $table->increments('id');
+            $table->string('code');
             $table->string('name')->unique();
-            $table->string('code')->unique();
+            $table->tinyInteger('status')->unsigned()->default(1);
             $table->timestamps();
+
+            /**
+             * Add Primary
+             */
+            $table->primary('code');
         });
 
         Schema::create('inspectors', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->integer('code')->unsigned()->unique();
-            $table->integer('group_id')->unsigned();
+            $table->string('group_code');
             $table->timestamps();
 
             /**
              * Add Foreign
              */
-            $table->foreign('group_id')
-                ->references('id')
+            $table->foreign('group_code')
+                ->references('code')
                 ->on('inspector_groups')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');

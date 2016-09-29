@@ -21,8 +21,8 @@ class Inspector extends Model
     {
         return $this->belongsTo(
             'App\Models\InspectorGroup',
-            'group_id',
-            'id'
+            'group_code',
+            'code'
         );
     }
 
