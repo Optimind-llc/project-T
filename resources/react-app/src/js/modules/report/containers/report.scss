@@ -1,0 +1,52 @@
+#reportWrap {
+    padding: 40px;
+    min-width: 710px;
+
+    > div.bg-white {
+        padding: 20px;
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: space-between;
+
+        > div {
+            margin-right: 10px;
+
+            > div {
+                float: left;
+                width: 180px;
+            }
+
+            > p {
+                display: inline-block;
+                float: left;
+                width: 50px;
+                line-height: 36px;
+                margin: 0;
+            }
+
+            &:after {
+                content: "";
+                display: block;
+                clear: both;
+            }
+        }
+    }
+}
+
+.serchBtn {
+    height: 34px;
+    width: 100px;
+    background-color: #FFF;
+    border: 2px solid #4A4A4A;
+    border-radius: 4px; 
+    text-align: center;
+    line-height: 28px;
+    color: #4A4A4A;
+
+    &:hover {
+        background-color: #CCD1D9;
+        color: #4A4A4A;
+    }
+}
+
+

@@ -7,6 +7,7 @@ injectTapEventPlugin();
 //Components
 import App from './App';
 import Reference from '../modules/reference/containers/reference';
+import Report from '../modules/report/containers/report';
 
 class Root extends Component {
   render() {
@@ -16,6 +17,7 @@ class Root extends Component {
         <Router history={history}>
           <Route name="閲覧" path="manager" component={App}>
             <Route name="検査結果照会" path="reference" component={Reference}/>
+            <Route name="直レポート印刷" path="report" component={Report}/>
           </Route>
         </Router>
         {/*<DevTools/>*/}
@@ -34,4 +36,3 @@ export default connect(mapStateToProps)(Root);
 
             //<Route path="dashboard" component={Dashboard}/>
             //<Route path="mapping" component={Mapping}/>
-            //<Route path="report" component={Report}/>

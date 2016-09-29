@@ -25,7 +25,8 @@ class App extends Component {
 
     const links = [
       { en: 'dashboard', name: 'ダッシュボード' },
-      { en: 'reference', name: '検査結果照会' }
+      { en: 'reference', name: '検査結果照会' },
+      { en: 'report', name: '直レポート印刷' }
     ]
 
     const nameList = [
@@ -36,6 +37,7 @@ class App extends Component {
 
     const styles = {
       nav: {
+        zIndex: 1000,
         position: 'fixed',
         top: 0,
         left: 0,
@@ -44,7 +46,6 @@ class App extends Component {
       },
       content: {
         paddingLeft: 210, 
-        width: '100%',
         height: '100%',
         backgroundColor: 'rgba(231,236,245,1)'
       }
