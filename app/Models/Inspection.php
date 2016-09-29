@@ -50,6 +50,7 @@ class Inspection extends Model
             ->where('division_en', $division_en)
             ->with([
                 'pageTypes',
+                'inspectors',
                 'pageTypes.partTypes',
                 'pageTypes.partTypes.vehicle',
                 'pageTypes.figure',

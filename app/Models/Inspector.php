@@ -26,13 +26,13 @@ class Inspector extends Model
         );
     }
 
-    public function processes()
+    public function inspectionGroup()
     {
         return $this->belongsToMany(
-            'App\Models\Process',
-            'inspector_process',
+            'App\Models\InspectionGroup',
+            'inspector_inspection_group',
             'inspector_id',
-            'process_id'
-        );
+            'inspection_g_id'
+        )->withPivot('sort');
     }
 }

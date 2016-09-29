@@ -17,6 +17,16 @@ class InspectionGroup extends Model
      */
     protected $guarded = ['id'];
 
+    public function inspectors()
+    {
+        return $this->belongsToMany(
+            'App\Models\Inspector',
+            'inspector_inspection_group',
+            'inspection_g_id',
+            'inspector_id'
+        )->withPivot('sort');
+    }
+
     public function inspection()
     {
         return $this->belongsTo(

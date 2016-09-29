@@ -25,29 +25,4 @@ class InspectorGroup extends Model
             'code'
         );
     }
-
-    public function findInspectorsByProcessEn($process_en) {
-        return $this->with([
-                'inspectors' => function ($q) use ($process_en) {
-                    $q->whereHas('processes', function ($q) use ($process_en) {
-                        $q->where('en', $process_en);
-                    })
-                    ->get();
-                }
-            ])
-            ->where('status', 1)
-            ->get()
-            ->map(function ($group, $key) {
-                return [
-                    'name' => $group->name,
-                    'code' => $group->code,
-                    'inspectors' => $group['inspectors']->map(function ($inspector, $key) {
-                        return [
-                            'name' => $inspector->name,
-                            'code' => $inspector->code
-                        ];
-                    })
-                ];
-            });
-    }
 }

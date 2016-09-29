@@ -24,16 +24,6 @@ class Process extends Model
         );
     }
 
-    public function inspectors()
-    {
-        return $this->belongsToMany(
-            'App\Models\Inspector',
-            'inspector_process',
-            'process_id',
-            'inspector_id'
-        );
-    }
-
     public function failures()
     {
         return $this->belongsToMany(

@@ -23,11 +23,11 @@ class DatabaseSeeder extends Seeder
         $this->call(UserTableSeeder::class);
 
         $this->call(ProcessTableSeeder::class);
-        $this->call(InspectorGroupTableSeeder::class);
-        $this->call(InspectorTableSeeder::class);
         $this->call(InspectionTableSeeder::class);
         $this->call(DivisionTableSeeder::class);
         $this->call(InspectionGroupTableSeeder::class);
+        $this->call(InspectorGroupTableSeeder::class);
+        $this->call(InspectorTableSeeder::class);
         $this->call(FigureTableSeeder::class);
         $this->call(PageTypeTableSeeder::class);
         $this->call(VehicleTableSeeder::class);

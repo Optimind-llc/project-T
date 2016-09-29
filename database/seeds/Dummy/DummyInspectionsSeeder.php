@@ -74,8 +74,8 @@ class DummyInspectionsSeeder extends Seeder
         return [
             'groupId' => $group['id'],
             'line' => 1,
-            'inspectorGroup' => $group['inspectorGroups'][0]['name'],
-            'inspector' => $group['inspectorGroups'][0]['name'].','.$group['inspectorGroups'][0]['inspectors'][0]['name'].','.$group['inspectorGroups'][0]['inspectors'][0]['code'],
+            'inspectorGroup' => '黄直',
+            'inspector' => '黄直,'.$group['inspectorGroups']['Y'][0]['name'].','.$group['inspectorGroups']['Y'][0]['code'],
             'pages' => $group['pages']->map($createPage),
             'photos' => [
                 'example1.jpg',

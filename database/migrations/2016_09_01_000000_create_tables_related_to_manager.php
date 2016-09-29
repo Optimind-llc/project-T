@@ -19,61 +19,6 @@ class CreateTablesRelatedToManager extends Migration
             $table->timestamps();
         });
 
-        Schema::create('inspector_groups', function (Blueprint $table) {
-            $table->string('code');
-            $table->string('name')->unique();
-            $table->tinyInteger('status')->unsigned()->default(1);
-            $table->timestamps();
-
-            /**
-             * Add Primary
-             */
-            $table->primary('code');
-        });
-
-        Schema::create('inspectors', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->unique();
-            $table->integer('code')->unsigned()->unique();
-            $table->string('group_code');
-            $table->timestamps();
-
-            /**
-             * Add Foreign
-             */
-            $table->foreign('group_code')
-                ->references('code')
-                ->on('inspector_groups')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-        });
-
-        Schema::create('inspector_process', function (Blueprint $table) {
-            $table->integer('inspector_id')->unsigned();
-            $table->integer('process_id')->unsigned();
-            $table->timestamps();
-
-            /**
-             * Add Foreign
-             */
-            $table->foreign('inspector_id')
-                ->references('id')
-                ->on('inspectors')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-
-            $table->foreign('process_id')
-                ->references('id')
-                ->on('processes')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-
-            /**
-             * Add Primary
-             */
-            $table->primary(['inspector_id', 'process_id']);
-        });
-
         Schema::create('inspections', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -120,6 +65,62 @@ class CreateTablesRelatedToManager extends Migration
                 ->on('inspections')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
+        });
+
+        Schema::create('inspector_groups', function (Blueprint $table) {
+            $table->string('code');
+            $table->string('name')->unique();
+            $table->tinyInteger('status')->unsigned()->default(1);
+            $table->timestamps();
+
+            /**
+             * Add Primary
+             */
+            $table->primary('code');
+        });
+
+        Schema::create('inspectors', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->unique();
+            $table->string('code')->unique();
+            $table->string('group_code');
+            $table->timestamps();
+
+            /**
+             * Add Foreign
+             */
+            $table->foreign('group_code')
+                ->references('code')
+                ->on('inspector_groups')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+        });
+
+        Schema::create('inspector_inspection_group', function (Blueprint $table) {
+            $table->integer('inspector_id')->unsigned();
+            $table->integer('inspection_g_id')->unsigned();
+            $table->integer('sort')->unsigned()->default(1);
+            $table->timestamps();
+
+            /**
+             * Add Foreign
+             */
+            $table->foreign('inspector_id')
+                ->references('id')
+                ->on('inspectors')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('inspection_g_id')
+                ->references('id')
+                ->on('inspection_groups')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            /**
+             * Add Primary
+             */
+            $table->primary(['inspector_id', 'inspection_g_id']);
         });
 
         Schema::create('figures', function (Blueprint $table) {
@@ -286,12 +287,12 @@ class CreateTablesRelatedToManager extends Migration
         Schema::drop('vehicles');
         Schema::drop('page_types');
         Schema::drop('figures');
+        Schema::drop('inspector_inspection_group');
+        Schema::drop('inspectors');
+        Schema::drop('inspector_groups');
         Schema::drop('inspection_groups');
         Schema::drop('divisions');
         Schema::drop('inspections');
-        Schema::drop('inspector_process');
-        Schema::drop('inspectors');
-        Schema::drop('inspector_groups');
         Schema::drop('processes');
     }
 }

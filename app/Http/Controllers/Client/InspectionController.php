@@ -16,7 +16,6 @@ use App\Models\Client\InspectionFamily;
 use App\Models\Client\Page;
 use App\Models\Client\Part;
 use App\Models\Client\FailurePage;
-
 // Exceptions
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -39,7 +38,7 @@ class InspectionController extends Controller
         return $process;
     }
 
-    protected function findInspectionByEn($inspection_en, Process $process, $division_en) {
+    protected function findInspectionGroup($inspection_en, Process $process, $division_en) {
         $inspection = $process->inspections()->where('en', $inspection_en)->first();
 
         if (!$inspection instanceof Inspection) {
@@ -55,7 +54,22 @@ class InspectionController extends Controller
         return $group;
     }
 
-    protected function adjust(Request $request, $inspection_group, $inspector_groups)
+    protected function formatInspectors($inspectors) {
+
+        return $inspectors->map(function ($i) {
+                return [
+                    'id' => $i->id,
+                    'name' => $i->name,
+                    'code' => $i->code,
+                    'group' => $i->group_code,
+                    'sort' => $i->pivot->sort
+                ];
+            })
+            ->sortBy('sort')
+            ->groupBy('group');
+    }
+
+    protected function adjust(Request $request, $inspection_group)
     {
         $validator = app('validator')->make(
             $request->all(),
@@ -103,7 +117,7 @@ class InspectionController extends Controller
         return [
             'group' => [
                 'id' => $inspection_group->id,
-                'inspectorGroups' => $inspector_groups,
+                'inspectorGroups' => $this->formatInspectors($inspection_group->inspectors),
                 'failures' => $inspection_group->inspection->process->failures->map(function ($failure) {
                     return [
                         'id' => $failure->id,
@@ -163,24 +177,20 @@ class InspectionController extends Controller
         }
 
         $process = $this->findProcessByEn($request->process);
-
-        $inspector_group = new InspectorGroup;
-        $inspector_groups = $inspector_group->findInspectorsByProcessEn($request->process);
-
-        $inspection_group = $this->findInspectionByEn(
+        $inspection_group = $this->findInspectionGroup(
             $request->inspection,
             $process,
             $request->division
         );
 
         if ($request->inspection == 'adjust') {
-            return $this->adjust($request, $inspection_group, $inspector_groups);
+            return $this->adjust($request, $inspection_group);
         }
 
         return [
             'group' => [
                 'id' => $inspection_group->id,
-                'inspectorGroups' => $inspector_groups,
+                'inspectorGroups' => $this->formatInspectors($inspection_group->inspectors),
                 'failures' => $inspection_group->inspection->process->failures->map(function ($failure) {
                     return [
                         'id' => $failure->id,

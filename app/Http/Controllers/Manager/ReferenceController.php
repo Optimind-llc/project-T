@@ -16,7 +16,6 @@ use App\Models\Client\InspectionFamily;
 use App\Models\Client\Page;
 use App\Models\Client\Part;
 use App\Models\Client\FailurePage;
-
 // Exceptions
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
