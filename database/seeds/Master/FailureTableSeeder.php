@@ -259,6 +259,10 @@ class FailureTableSeeder extends Seeder
                 'process_id' => 'molding',
                 'type'       => 2
             ],[
+                'failure_id' => 30,
+                'process_id' => 'molding',
+                'type'       => 2
+            ],[
                 'failure_id' => 16,
                 'process_id' => 'holing',
                 'type'       => 2
@@ -272,6 +276,10 @@ class FailureTableSeeder extends Seeder
                 'type'       => 2
             ],[
                 'failure_id' => 19,
+                'process_id' => 'holing',
+                'type'       => 2
+            ],[
+                'failure_id' => 30,
                 'process_id' => 'holing',
                 'type'       => 2
             ],[
@@ -336,6 +344,10 @@ class FailureTableSeeder extends Seeder
                 'type'       => 2
             ],[
                 'failure_id' => 29,
+                'process_id' => 'jointing',
+                'type'       => 2
+            ],[
+                'failure_id' => 30,
                 'process_id' => 'jointing',
                 'type'       => 2
             ],

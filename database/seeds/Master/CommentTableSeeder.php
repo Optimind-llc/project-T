@@ -29,62 +29,32 @@ class CommentTableSeeder extends Seeder
 
         $data = [
             [
-                'message'       => '手直し１',
+                'message'       => '削り',
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'message'       => '手直し２',
+                'message'       => '除去',
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'message'       => '手直し３',
+                'message'       => '樹脂盛り',
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'message'       => '手直し４',
+                'message'       => '交換',
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'message'       => '手直し５',
+                'message'       => '再接着',
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'message'       => '手直し６',
-                'inspection_id' => 9,
-                'created_at'    => $now,
-                'updated_at'    => $now
-            ],[
-                'message'       => '手直し７',
-                'inspection_id' => 9,
-                'created_at'    => $now,
-                'updated_at'    => $now
-            ],[
-                'message'       => '手直し８',
-                'inspection_id' => 9,
-                'created_at'    => $now,
-                'updated_at'    => $now
-            ],[
-                'message'       => '手直し９',
-                'inspection_id' => 9,
-                'created_at'    => $now,
-                'updated_at'    => $now
-            ],[
-                'message'       => '手直し１０',
-                'inspection_id' => 9,
-                'created_at'    => $now,
-                'updated_at'    => $now
-            ],[
-                'message'       => '手直し１１',
-                'inspection_id' => 9,
-                'created_at'    => $now,
-                'updated_at'    => $now
-            ],[
-                'message'       => '手直し１２',
+                'message'       => 'その他',
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now

@@ -121,15 +121,15 @@ class CreateTablesRelatedToClient extends Migration
             $table->increments('id');
             $table->string('data');
             $table->tinyInteger('status')->unsigned()->default(1);
-            $table->integer('page_id')->unsigned();
+            $table->integer('part_id')->unsigned();
             $table->timestamps();
 
             /**
              * Add Foreign
              */
-            $table->foreign('page_id')
+            $table->foreign('part_id')
                 ->references('id')
-                ->on('pages')
+                ->on('parts')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });
@@ -138,22 +138,22 @@ class CreateTablesRelatedToClient extends Migration
             $table->increments('id');
             $table->string('point');
             $table->string('point_sub');
-            $table->integer('page_id')->unsigned();
             $table->integer('failure_id')->unsigned();
+            $table->integer('page_id')->unsigned();
             $table->timestamps();
 
             /**
              * Add Foreign
              */
-            $table->foreign('page_id')
-                ->references('id')
-                ->on('pages')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-
             $table->foreign('failure_id')
                 ->references('id')
                 ->on('failures')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('page_id')
+                ->references('id')
+                ->on('pages')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });
@@ -184,7 +184,6 @@ class CreateTablesRelatedToClient extends Migration
                 ->on('comments')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
-
             /**
              * Add Primary
              */
