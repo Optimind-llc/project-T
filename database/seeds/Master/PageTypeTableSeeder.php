@@ -97,37 +97,37 @@ class PageTypeTableSeeder extends Seeder
             ],[
                 'number'     => 1,
                 'group_id'   => 7,
-                'figure_id'  => 12,
+                'figure_id'  => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'number'     => 1,
                 'group_id'   => 8,
-                'figure_id'  => 13,
+                'figure_id'  => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'number'     => 1,
                 'group_id'   => 9,
-                'figure_id'  => 14,
+                'figure_id'  => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'number'     => 1,
                 'group_id'   => 10,
-                'figure_id'  => 15,
+                'figure_id'  => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'number'     => 1,
                 'group_id'   => 11,
-                'figure_id'  => 16,
+                'figure_id'  => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'number'     => 1,
                 'group_id'   => 12,
-                'figure_id'  => 17,
+                'figure_id'  => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],
