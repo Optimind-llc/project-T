@@ -49,9 +49,22 @@ class CreateTablesRelatedToManager extends Migration
             $table->primary('en');
         });
 
+        Schema::create('vehicles', function (Blueprint $table) {
+            $table->string('number');
+            $table->string('name')->unique()->nullable();
+            $table->integer('sort')->unsigned()->defaul(1);
+            $table->timestamps();
+
+            /**
+             * Add Primary
+             */
+            $table->primary('number');
+        });
+
         Schema::create('inspection_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('division_en');
+            $table->string('vehicle_num');
             $table->integer('inspection_id')->unsigned();
             $table->timestamps();
 
@@ -61,6 +74,12 @@ class CreateTablesRelatedToManager extends Migration
             $table->foreign('division_en')
                 ->references('en')
                 ->on('divisions')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('vehicle_num')
+                ->references('number')
+                ->on('vehicles')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
 
@@ -154,18 +173,6 @@ class CreateTablesRelatedToManager extends Migration
                 ->on('figures')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
-        });
-
-        Schema::create('vehicles', function (Blueprint $table) {
-            $table->string('number');
-            $table->string('name')->unique()->nullable();
-            $table->integer('sort')->unsigned()->defaul(1);
-            $table->timestamps();
-
-            /**
-             * Add Primary
-             */
-            $table->primary('number');
         });
 
         Schema::create('part_types', function (Blueprint $table) {
@@ -293,13 +300,13 @@ class CreateTablesRelatedToManager extends Migration
         Schema::drop('comments');
         Schema::drop('part_type_page_type');
         Schema::drop('part_types');
-        Schema::drop('vehicles');
         Schema::drop('page_types');
         Schema::drop('figures');
         Schema::drop('inspector_inspection_group');
         Schema::drop('inspectors');
         Schema::drop('inspector_groups');
         Schema::drop('inspection_groups');
+        Schema::drop('vehicles');
         Schema::drop('divisions');
         Schema::drop('inspections');
         Schema::drop('processes');

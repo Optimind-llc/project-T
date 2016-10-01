@@ -30,61 +30,73 @@ class InspectionGroupTableSeeder extends Seeder
         $data = [
             [
                 'division_en'   => 'inner',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 1,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'division_en'   => 'inner',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 2,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'division_en'   => 'inner',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 3,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'division_en'   => 'small',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 1,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'division_en'   => 'small',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 2,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'division_en'   => 'small',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 3,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'division_en'   => 'inner_assy',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 4,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'division_en'   => 'inner_assy',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 5,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'division_en'   => 'inner_assy',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 6,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'division_en'   => 'inner_assy',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 7,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'division_en'   => 'inner_assy',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 8,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'division_en'   => 'inner_assy',
+                'vehicle_num'   => '680A',
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now

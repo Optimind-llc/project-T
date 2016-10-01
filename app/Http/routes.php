@@ -26,7 +26,7 @@ Route::get('manager/report', 'Manager\ReferenceController@index');
 Route::get('manager/report/list', 'Manager\ReferenceController@getPrintList');
 
 Route::get('show', 'ShowController@showTableData');
-Route::get('show/test', 'ShowController@test');
+Route::get('show/inspectionGroup', 'ShowController@inspectionGroup');
 
 // $api = app('Dingo\Api\Routing\Router');
 

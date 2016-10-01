@@ -111,8 +111,21 @@ class ShowController extends Controller
         return ['data' => $data];
     }
 
-    public function test(Request $request)
+    public function inspectionGroup(Request $request)
     {
+        $validator = app('validator')->make(
+            $request->all(),
+            [
+                'date' => ['required', 'date'],
+                'vehicle' => ['required', 'alpha_dash'],
+                'inspectorG' => ['required', 'alpha']
+            ]
+        );
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Validation error', $validator->errors());
+        }
+
         return Failure::first()->processes()->get();
         // return Process::first()->failures()->get();
 

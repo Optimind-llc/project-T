@@ -37,7 +37,7 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export function getPrintList() {
+export function getInspectionGroups() {
   return {
     [CALL_API]: {
       types: [
@@ -45,7 +45,7 @@ export function getPrintList() {
         REDUEST_PRINT_LIST_SUCCESS,
         REDUEST_PRINT_LIST_FAIL
       ],
-      endpoint: 'show?vehicle=all&inspectorG=all',
+      endpoint: 'inspectionGroup/',
       method: 'GET',
       body: null
     }
