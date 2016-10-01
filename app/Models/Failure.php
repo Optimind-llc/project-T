@@ -17,7 +17,7 @@ class Failure extends Model
      */
     protected $guarded = ['id'];
 
-    public function failures()
+    public function processes()
     {
         return $this->belongsToMany(
             'App\Models\Process',

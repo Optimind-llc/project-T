@@ -18,12 +18,15 @@ Route::get('/', function () {
 Route::get('client/inspection', 'Client\InspectionController@inspection');
 Route::post('client/inspection', 'Client\InspectionController@saveInspection');
 
-Route::get('manager', 'Manager\ReferenceController@index');
 Route::get('manager/dashboard', 'Manager\ReferenceController@index');
 Route::get('manager/reference', 'Manager\ReferenceController@index');
 Route::get('manager/mapping', 'Manager\ReferenceController@index');
 Route::get('manager/report', 'Manager\ReferenceController@index');
 
+Route::get('manager/report/list', 'Manager\ReferenceController@getPrintList');
+
+Route::get('show', 'ShowController@showTableData');
+Route::get('show/test', 'ShowController@test');
 
 // $api = app('Dingo\Api\Routing\Router');
 

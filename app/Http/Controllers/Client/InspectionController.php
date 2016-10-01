@@ -29,7 +29,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class InspectionController extends Controller
 {
     protected function findProcessByEn($en) {
-        $process = Process::where('en', $en)->first();
+        $process = Process::where('id', $en)->first();
 
         if (!$process instanceof Process) {
             throw new NotFoundHttpException('Process not found');
@@ -38,8 +38,11 @@ class InspectionController extends Controller
         return $process;
     }
 
-    protected function findInspectionGroup($inspection_en, Process $process, $division_en) {
-        $inspection = $process->inspections()->where('en', $inspection_en)->first();
+    protected function findInspectionGroup($inspection_en, $process_en, $division_en) {
+        $inspection = $this->findProcessByEn($process_en)
+            ->inspections()
+            ->where('en', $inspection_en)
+            ->first();
 
         if (!$inspection instanceof Inspection) {
             throw new NotFoundHttpException('Inspection not found');
@@ -212,10 +215,9 @@ class InspectionController extends Controller
             throw new StoreResourceFailedException('Validation error', $validator->errors());
         }
 
-        $process = $this->findProcessByEn($request->process);
         $inspection_group = $this->findInspectionGroup(
             $request->inspection,
-            $process,
+            $request->process,
             $request->division
         );
 

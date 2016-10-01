@@ -95,7 +95,7 @@ class DummyInspectionsSeeder extends Seeder
         $request->set('molding', 'check', 'inner');
         $group = $controller->inspection($request);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 1; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        

@@ -16,11 +16,15 @@ class Process extends Model
      * @var array
      */
     protected $guarded = ['id'];
+    protected $primaryKey = 'id';
+    public $incrementing = false;
 
     public function inspections()
     {
         return $this->hasMany(
-            'App\Models\Inspection'
+            'App\Models\Inspection',
+            'process_id',
+            'id'
         );
     }
 

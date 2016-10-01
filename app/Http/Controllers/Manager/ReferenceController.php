@@ -41,12 +41,30 @@ class ReferenceController extends Controller
     }
 
     /**
-     * Get user from JWT token
+     * Get plint list
      */
-    public function vehiclesAndGroups(Request $request)
+    public function getPrintList(Request $request)
     {
-        $vehicles = Vehicle::select('')
-        return $family;
-    }
-    
+        $validator = app('validator')->make(
+            $request->all(),
+            [
+                'vehicle' => ['required', 'alpha_num'],
+                'group' => ['required', 'alpha_num'],
+                'date' => ['required', 'alpha_num']
+            ]
+        );
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Validation error', $validator->errors());
+        }
+
+        $date = Carbon::createFromFormat('Y,m,d', '2016,9,30')->today();
+// return $date->addDay();
+        $inspection_group = InspectionGroup::with(['families'])
+            ->where('created_at', '>=', $date)
+            ->where('created_at', '<', $date->copy()->addDay(1))
+            ->get();
+
+        return $inspection_group;
+    }   
 }

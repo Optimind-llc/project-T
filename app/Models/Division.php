@@ -15,14 +15,15 @@ class Division extends Model
      *
      * @var array
      */
-    protected $guarded = ['id'];
+    protected $primaryKey = 'en';
+    public $incrementing = false;
 
     public function inspectionGroups()
     {
         return $this->hasMany(
             'App\Models\InspectionGroup',
-            'division_id',
-            'id'
+            'division_en',
+            'en'
         );
     }
 }

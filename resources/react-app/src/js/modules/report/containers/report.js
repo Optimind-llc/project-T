@@ -14,11 +14,25 @@ import './report.scss';
 class Report extends Component {
   constructor(props, context) {
     super(props, context);
+    const { getVEandITORGdata } = props.actions;
+    getVEandITORGdata();
 
     this.state = {
       open: true,
-      value: 1,
+      vehicle: null,
+      inspectorG: null,
+      date: null,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.VEandITORGdata.data !== null) {
+      const { vehicle, inspectorG } = nextProps.VEandITORGdata.data
+      this.setState({
+        vehicle: vehicle[0].c,
+        inspectorG: inspectorG[0].c
+      })
+    }
   }
 
   serch() {
@@ -27,56 +41,62 @@ class Report extends Component {
   }
 
   render() {
-    // const { conference } = this.props;
+    const { VEandITORGdata } = this.props;
     const now = moment();
-    const styles = {
-      customWidth: {
-        width: 150,
-      },
-    };
-    const options = {
-      vehicle: [
-        { value: 1, label: '680A' }
-      ],
-      inspectorGroup: [
-        { value: 1, label: '黄直' },
-        { value: 2, label: '白直' }
-      ]
-    };
 
     return (
       <div id="reportWrap">
-        <div className="bg-white">
-          <div>
-            <p>車両*</p>
-            <Select
-              name="vehicle"
-              clearable={false}
-              Searchable={true}
-              value={this.state.value}
-              options={options.vehicle}
-              onChange={value => this.setState({value: value.value})}
-            />
+        {VEandITORGdata.data !== null &&
+          <div className="bg-white">
+            <div>
+              <p>車種*</p>
+              <Select
+                name="車種"
+                placeholder="選択してください"
+                clearable={false}
+                Searchable={true}
+                value={this.state.vehicle}
+                options={VEandITORGdata.data.vehicle.map(v => {
+                  return { value: v.c, label: v.c }
+                })}
+                onChange={value => this.setState({
+                  vehicle: value.value
+                })}
+              />
+            </div>
+            <div>
+              <p>日付*</p>
+              <MyCalendar
+                defaultValue={now}
+                setState={(date) => this.setState({date})}
+              />
+            </div>
+            <div>
+              <p>直*</p>
+              <Select
+                name="直"
+                placeholder="選択してください"
+                clearable={false}
+                Searchable={true}
+                value={this.state.inspectorG}
+                options={VEandITORGdata.data.inspectorG.map(i => {
+                  return { value: i.c, label: i.n }
+                })}
+                onChange={value => this.setState({
+                  inspectorG: value.value
+                })}
+              />
+            </div>
+            <div>
+              <button
+                className="serchBtn"
+                onClick={() => this.serch()}
+              >
+                検索
+              </button>
+            </div>
           </div>
-          <div>
-            <p>日付*</p>
-            <MyCalendar defaultValue={now}/>
-          </div>
-          <div>
-            <p>直*</p>
-            <Select
-              name="vehicle"
-              clearable={false}
-              Searchable={true}
-              value={this.state.value}
-              options={options.inspectorGroup}
-              onChange={value => this.setState({value: value.value})}
-            />
-          </div>
-          <div>
-            <button className="serchBtn">検索</button>
-          </div>
-        </div>
+        }
         <div className="bg-white">
 
         </div>
@@ -87,14 +107,14 @@ class Report extends Component {
 
 Report.propTypes = {
   // id: PropTypes.string.isRequired,
-  // application: PropTypes.object.isRequired,
+  VEandITORGdata: PropTypes.object.isRequired,
   // conference: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     // id: ownProps.params.id,
-    // application: state.application,
+    VEandITORGdata: state.VEandITORGdata,
     // conference: state.conference,
   };
 }

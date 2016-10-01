@@ -1,18 +1,14 @@
 import { combineReducers } from 'redux';
 import { routeReducer } from 'react-router-redux';
 //my reducers
-import status from './status';
-import application from './application';
+// import application from './application';
 import alert from './alert';
-import disposable from './disposable';
-import conference from './conference';
-import displayInfo from './displayInfo';
+import VEandITORGdata from '../modules/report/ducks/report';
+
 
 const rootReducer = combineReducers(Object.assign({
-  status, application, alert, disposable, conference, displayInfo
-}, {
-  routing: routeReducer
-}
-));
+  alert,
+  VEandITORGdata
+}));
 
 export default rootReducer;

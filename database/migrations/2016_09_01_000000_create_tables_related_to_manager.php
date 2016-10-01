@@ -12,11 +12,15 @@ class CreateTablesRelatedToManager extends Migration
     public function up()
     {
         Schema::create('processes', function (Blueprint $table) {
-            $table->increments('id');
             $table->string('name')->unique();
-            $table->string('en')->unique();
+            $table->string('id');
             $table->integer('sort')->unsigned()->default(1);
             $table->timestamps();
+
+            /**
+             * Add Primary
+             */
+            $table->primary('id');
         });
 
         Schema::create('inspections', function (Blueprint $table) {
@@ -24,7 +28,7 @@ class CreateTablesRelatedToManager extends Migration
             $table->string('name');
             $table->string('en');
             $table->integer('sort')->unsigned()->default(1);
-            $table->integer('process_id')->unsigned();
+            $table->string('process_id');
             $table->timestamps();
 
             /**
@@ -232,7 +236,7 @@ class CreateTablesRelatedToManager extends Migration
 
         Schema::create('failure_process', function (Blueprint $table) {
             $table->integer('failure_id')->unsigned();
-            $table->integer('process_id')->unsigned();
+            $table->string('process_id');
             $table->tinyInteger('type')->unsigned()->default(1);
             $table->timestamps();
 

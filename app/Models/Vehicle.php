@@ -16,13 +16,15 @@ class Vehicle extends Model
      * @var array
      */
     protected $guarded = ['id'];
+    protected $primaryKey = 'number';
+    public $incrementing = false;
 
     public function partTypes()
     {
         return $this->hasMany(
             'App\Models\PartType',
-            'vehicle_id',
-            'id'
+            'vehicle_num',
+            'number'
         );
     }
 }

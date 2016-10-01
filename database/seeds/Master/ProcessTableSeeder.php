@@ -30,19 +30,19 @@ class ProcessTableSeeder extends Seeder
         $data = [
             [
                 'name'       => '成型',
-                'en'         => 'molding',
+                'id'         => 'molding',
                 'sort'       => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '穴あけ',
-                'en'         => 'holing',
+                'id'         => 'holing',
                 'sort'       => 2,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '接着',
-                'en'         => 'jointing',
+                'id'         => 'jointing',
                 'sort'       => 3,
                 'created_at' => $now,
                 'updated_at' => $now

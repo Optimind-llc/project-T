@@ -23,6 +23,7 @@ class MyCalender extends Component {
     this.setState({
       value,
     });
+    this.props.setState(value);
   }
 
   onShowTimeChange(e) {
@@ -130,7 +131,8 @@ class MyCalender extends Component {
 
 MyCalender.propTypes = {
   defaultValue: React.PropTypes.object,
-  defaultCalendarValue: React.PropTypes.object
+  defaultCalendarValue: React.PropTypes.object,
+  setState: React.PropTypes.func
 };
 
 export default MyCalender;

@@ -16,6 +16,8 @@ class InspectorGroup extends Model
      * @var array
      */
     protected $guarded = ['id'];
+    protected $primaryKey = 'code';
+    public $incrementing = false;
 
     public function inspectors()
     {
