@@ -19,7 +19,7 @@ class DummyInspectionsSeeder extends Seeder
         $createPart = function($part) use ($id) {
             return [
                 'partTypeId' => $part['id'],
-                'panelId' => 'A'.str_pad($id, 7, 0, STR_PAD_LEFT)
+                'panelId' => 'B'.str_pad($id, 7, 0, STR_PAD_LEFT)
             ];
         };
 
@@ -173,7 +173,7 @@ class DummyInspectionsSeeder extends Seeder
 
         //接着：手直し：インナASSY
         for ($id = 1; $id <= 10; $id++) {
-            $request->set('jointing', 'adjust', 'inner_assy', 'A'.str_pad($id, 7, 0, STR_PAD_LEFT));
+            $request->set('jointing', 'adjust', 'inner_assy', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
             $group = $controller->inspection($request);
 
             $data = $this->createData($group['group'], $id);
