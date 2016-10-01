@@ -168,23 +168,22 @@ class PartTypeTableSeeder extends Seeder
                 'area'         => '0/0/1740/1030'
             ],
             //穴あけ：検査：小部品
-            //高さ未定 1300のとこ
             [
                 'page_type_id' => 11,
                 'part_type_id' => 3,
-                'area'         => '0/0/350/1030'
+                'area'         => '0/0/350/820'
             ],[
                 'page_type_id' => 11,
                 'part_type_id' => 4,
-                'area'         => '350/0/720/1030'
+                'area'         => '350/0/720/820'
             ],[
                 'page_type_id' => 11,
                 'part_type_id' => 5,
-                'area'         => '720/0/1250/1030'
+                'area'         => '720/0/1250/820'
             ],[
                 'page_type_id' => 11,
                 'part_type_id' => 6,
-                'area'         => '1250/0/1740/1030'
+                'area'         => '1250/0/1740/820'
             ],[
                 'page_type_id' => 12,
                 'part_type_id' => 7,
