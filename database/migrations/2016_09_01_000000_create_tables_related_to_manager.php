@@ -129,7 +129,7 @@ class CreateTablesRelatedToManager extends Migration
 
         Schema::create('figures', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('path')->unique();
+            $table->string('path')->unique();
             $table->timestamps();
         });
 
@@ -137,7 +137,7 @@ class CreateTablesRelatedToManager extends Migration
             $table->increments('id');
             $table->integer('number')->unsigned()->defaul(1);
             $table->integer('group_id')->unsigned();
-            $table->integer('figure_id')->unsigned();
+            $table->integer('figure_id')->unsigned()->nullable();
             $table->timestamps();
 
             /**
@@ -188,6 +188,7 @@ class CreateTablesRelatedToManager extends Migration
         Schema::create('part_type_page_type', function (Blueprint $table) {
             $table->integer('part_type_id')->unsigned();
             $table->integer('page_type_id')->unsigned();
+            $table->string('area')->nullable()->default('null');
             $table->timestamps();
 
             /**

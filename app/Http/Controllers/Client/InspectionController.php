@@ -182,7 +182,7 @@ class InspectionController extends Controller
                             ];
                         }),
                         'figure' => [
-                            'path' => 'images/figures/'.$page->figure->path,
+                            'path' => 'img/figures/'.$page->figure->path,
                             'holes' => $page->figure->holes->map(function ($hole) {
                                 return [
                                     'id' => $hole->id,
@@ -254,7 +254,7 @@ class InspectionController extends Controller
                             ];
                         }),
                         'figure' => [
-                            'path' => 'images/figures/'.$page->figure->path,
+                            'path' => 'img/figures/'.$page->figure->path,
                             'holes' => $page->figure->holes->map(function ($hole) {
                                 return [
                                     'id' => $hole->id,

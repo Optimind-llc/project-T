@@ -33,7 +33,11 @@ class FigureTableSeeder extends Seeder
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'molding_small.jpg',
+                'path'         => 'molding_small_1.jpg',
+                'created_at'   => $now,
+                'updated_at'   => $now
+            ],[
+                'path'         => 'molding_small_2.jpg',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
