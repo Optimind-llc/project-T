@@ -8,8 +8,10 @@ use Carbon\Carbon;
 // Models
 use App\Models\Failure;
 use App\Models\Process;
+use App\Models\Inspection;
 use App\Models\Vehicle;
 use App\Models\InspectorGroup;
+use App\Models\InspectionGroup;
 // Exceptions
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -116,8 +118,8 @@ class ShowController extends Controller
         $validator = app('validator')->make(
             $request->all(),
             [
-                'date' => ['required', 'date'],
                 'vehicle' => ['required', 'alpha_dash'],
+                'date' => ['required', 'date'],
                 'inspectorG' => ['required', 'alpha']
             ]
         );
@@ -126,8 +128,24 @@ class ShowController extends Controller
             throw new StoreResourceFailedException('Validation error', $validator->errors());
         }
 
-        return Failure::first()->processes()->get();
-        // return Process::first()->failures()->get();
+        $vehicle = $request->vehicle;
+        $date = Carbon::createFromFormat('Y-m-d', $request->date);
+        $inspectorG = $request->inspectorG;
 
+        $inspections = Inspection::with([
+                'groups' => function ($q) use ($vehicle, $date) {
+                    $q->with([
+                        'families' => function ($q) use ($date) {
+                            $q->where('created_at', '>=', $date->addHours(1))
+                                ->where('created_at', '<', $date->copy()->addDay(1))
+                                ->select(['id', 'inspection_group_id']);
+                        }
+                    ])
+                    ->where('vehicle_num', $vehicle);
+                }
+            ])
+            ->get();
+
+        return ['data' => $inspections];
     }
 }

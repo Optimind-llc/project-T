@@ -3,12 +3,13 @@ import { routeReducer } from 'react-router-redux';
 //my reducers
 // import application from './application';
 import alert from './alert';
-import VEandITORGdata from '../modules/report/ducks/report';
-
+import VeItorGData from '../modules/report/ducks/report';
+import ItionGData from '../modules/report/ducks/inspectionGroup';
 
 const rootReducer = combineReducers(Object.assign({
   alert,
-  VEandITORGdata
+  VeItorGData,
+  ItionGData
 }));
 
 export default rootReducer;

@@ -80,7 +80,6 @@ App.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(ownProps);
   return {
     routes: ownProps.routes,
     alerts: state.alert,

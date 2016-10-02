@@ -6,6 +6,7 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 // Actions
 import { reportActions } from '../ducks/report';
+import { getItionGActions } from '../ducks/inspectionGroup';
 // Components
 import Loading from '../../../components/loading/loading';
 import MyCalendar from '../components/calender';
@@ -14,24 +15,30 @@ import './report.scss';
 class Report extends Component {
   constructor(props, context) {
     super(props, context);
-    const { getVEandITORGdata } = props.actions;
-    getVEandITORGdata();
+    const { getVeItorG, getItionG } = props.actions;
+    getVeItorG();
 
     this.state = {
-      open: true,
       vehicle: null,
+      date: moment(),
       inspectorG: null,
-      date: null,
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.VEandITORGdata.data !== null) {
-      const { vehicle, inspectorG } = nextProps.VEandITORGdata.data
+    const { VeItorGData, ItionGData, actions } = this.props;
+    const { vehicle, date, inspectorG } = this.state;
+
+    if (nextProps.VeItorGData.data !== null) {
+      const { vehicle, inspectorG } = nextProps.VeItorGData.data
       this.setState({
         vehicle: vehicle[0].c,
         inspectorG: inspectorG[0].c
       })
+
+      if (VeItorGData.data == null) {
+        actions.getItionG(vehicle[0].c, date.format("YYYY-MM-DD"), inspectorG[0].c);
+      }
     }
   }
 
@@ -41,12 +48,11 @@ class Report extends Component {
   }
 
   render() {
-    const { VEandITORGdata } = this.props;
-    const now = moment();
+    const { VeItorGData, ItionGData } = this.props;
 
     return (
       <div id="reportWrap">
-        {VEandITORGdata.data !== null &&
+        {VeItorGData.data !== null &&
           <div className="bg-white">
             <div>
               <p>車種*</p>
@@ -56,7 +62,7 @@ class Report extends Component {
                 clearable={false}
                 Searchable={true}
                 value={this.state.vehicle}
-                options={VEandITORGdata.data.vehicle.map(v => {
+                options={VeItorGData.data.vehicle.map(v => {
                   return { value: v.c, label: v.c }
                 })}
                 onChange={value => this.setState({
@@ -67,7 +73,7 @@ class Report extends Component {
             <div>
               <p>日付*</p>
               <MyCalendar
-                defaultValue={now}
+                defaultValue={this.state.date}
                 setState={(date) => this.setState({date})}
               />
             </div>
@@ -79,7 +85,7 @@ class Report extends Component {
                 clearable={false}
                 Searchable={true}
                 value={this.state.inspectorG}
-                options={VEandITORGdata.data.inspectorG.map(i => {
+                options={VeItorGData.data.inspectorG.map(i => {
                   return { value: i.c, label: i.n }
                 })}
                 onChange={value => this.setState({
@@ -107,20 +113,23 @@ class Report extends Component {
 
 Report.propTypes = {
   // id: PropTypes.string.isRequired,
-  VEandITORGdata: PropTypes.object.isRequired,
-  // conference: PropTypes.object.isRequired,
+  VeItorGData: PropTypes.object.isRequired,
+  ItionGData: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     // id: ownProps.params.id,
-    VEandITORGdata: state.VEandITORGdata,
-    // conference: state.conference,
+    VeItorGData: state.VeItorGData,
+    ItionGData: state.ItionGData,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({}, reportActions);
+  const actions = Object.assign({},
+    reportActions,
+    getItionGActions
+  );
   return {
     actions: bindActionCreators(actions, dispatch)
   };
