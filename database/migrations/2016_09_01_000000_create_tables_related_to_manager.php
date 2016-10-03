@@ -273,7 +273,11 @@ class CreateTablesRelatedToManager extends Migration
         Schema::create('holes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('point');
-            $table->integer('sort')->unsigned()->default(1);
+            $table->integer('label')->unsigned()->default(1);
+            $table->string('direction'); //ラベルの位置 top bottom left right
+            $table->string('color'); //0-0-0 RGBの-区切り
+            $table->string('border'); //dotted or solid
+            $table->string('shape'); //square or circle
             $table->integer('figure_id')->unsigned();
             $table->timestamps();
 
