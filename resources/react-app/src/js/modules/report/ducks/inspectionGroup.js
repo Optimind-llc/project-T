@@ -37,7 +37,7 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export function getItionG(vehicle, date, itorG) {
+export function getItionG(vehicle, date, itorG, proc) {
   return {
     [CALL_API]: {
       types: [
@@ -45,7 +45,7 @@ export function getItionG(vehicle, date, itorG) {
         REDUEST_ItionG_DATA_SUCCESS,
         REDUEST_ItionG_DATA_FAIL
       ],
-      endpoint: `show/inspectionGroup?vehicle=${vehicle}&date=${date}&inspectorG=${itorG}`,
+      endpoint: `show/inspectionGroup?vehicle=${vehicle}&date=${date.format("YYYY-MM-DD")}&inspectorG=${itorG}&process=${proc}`,
       method: 'GET',
       body: null
     }

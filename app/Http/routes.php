@@ -23,7 +23,7 @@ Route::get('manager/reference', 'Manager\ReferenceController@index');
 Route::get('manager/mapping', 'Manager\ReferenceController@index');
 Route::get('manager/report', 'Manager\ReferenceController@index');
 
-Route::get('manager/report/list', 'Manager\ReferenceController@getPrintList');
+Route::get('manager/pdf/report', 'Manager\PdfController@report');
 
 Route::get('show', 'ShowController@showTableData');
 Route::get('show/inspectionGroup', 'ShowController@inspectionGroup');

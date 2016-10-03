@@ -44,13 +44,38 @@ class Inspection extends Model
         );
     }
 
-    public function getByDivisionWithRelated($division_en)
+    /**
+     * lineが指定された時はlineでフィルタリング
+     * lineが指定されなかった時は人した最初のものを返す
+     */
+    public function getByDivisionWithRelated($division_en, $line)
     {
+        if ($line) {
+            return $this->groups()
+                ->where('division_en', $division_en)
+                ->where('line', $line)
+                ->with([
+                    'pageTypes',
+                    'inspectors' => function ($q) {
+                        $q->orderBy('sort');
+                    },
+                    'pageTypes.partTypes',
+                    'pageTypes.partTypes.vehicle',
+                    'pageTypes.figure',
+                    'pageTypes.figure.holes',
+                    'inspection.process.failures',
+                    'inspection.comments'
+                ])
+                ->first();
+        }
+
         return $this->groups()
             ->where('division_en', $division_en)
             ->with([
                 'pageTypes',
-                'inspectors',
+                'inspectors' => function ($q) {
+                    $q->orderBy('sort');
+                },
                 'pageTypes.partTypes',
                 'pageTypes.partTypes.vehicle',
                 'pageTypes.figure',

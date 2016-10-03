@@ -24,15 +24,20 @@ class ShowController extends Controller
     protected function processData($option) {
         switch ($option) {
             case 'all':
-                $processes = Process::select(['en as c', 'name as n'])->get();
+                $processes = Process::select(['id', 'name as n', 'sort as s'])
+                    ->orderBy('sort')
+                    ->get();
                 break;
 
-            case 'withFailure':
+            case 'withInspection':
                 $processes = Process::with([
-                    'failures' => function($q) {
-                        $q->select('id', 'name', 'sort')->get();
+                    'inspections' => function($q) {
+                        $q->select('id', 'name', 'en', 'sort', 'process_id')
+                            ->orderBy('sort')
+                            ->get();
                     }])
-                    ->select(['en as c', 'name as n'])
+                    ->select(['id', 'name as n', 'sort as s'])
+                    ->orderBy('sort')
                     ->get();
                 break;
 
@@ -120,7 +125,8 @@ class ShowController extends Controller
             [
                 'vehicle' => ['required', 'alpha_dash'],
                 'date' => ['required', 'date'],
-                'inspectorG' => ['required', 'alpha']
+                'inspectorG' => ['required', 'alpha'],
+                'process' => ['required', 'alpha']
             ]
         );
 
@@ -129,22 +135,38 @@ class ShowController extends Controller
         }
 
         $vehicle = $request->vehicle;
-        $date = Carbon::createFromFormat('Y-m-d', $request->date);
-        $inspectorG = $request->inspectorG;
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $request->date.' 00:00:00');
+        $inspectorG = InspectorGroup::find($request->inspectorG)->name;
+        $process = $request->process;
 
         $inspections = Inspection::with([
-                'groups' => function ($q) use ($vehicle, $date) {
+                'groups' => function ($q) use ($vehicle, $date, $inspectorG) {
                     $q->with([
-                        'families' => function ($q) use ($date) {
+                        'families' => function ($q) use ($date, $inspectorG) {
                             $q->where('created_at', '>=', $date->addHours(1))
                                 ->where('created_at', '<', $date->copy()->addDay(1))
-                                ->select(['id', 'inspection_group_id']);
+                                ->where('inspector_group', $inspectorG)
+                                ->select(['id', 'inspection_group_id', 'line']);
                         }
                     ])
                     ->where('vehicle_num', $vehicle);
+                },
+                'groups.division' => function ($q) {
+                    $q->select(['en', 'name']);
                 }
             ])
-            ->get();
+            ->where('process_id', $process)
+            ->orderBy('sort')
+            ->get()
+            ->map(function($i) {
+                return [
+                    'en' => $i->en,
+                    'name' => $i->name,
+                    'sort' => $i->sort,
+                    'process' => $i->process_id,
+                    'groups' => $i->groups
+                ];
+            });
 
         return ['data' => $inspections];
     }

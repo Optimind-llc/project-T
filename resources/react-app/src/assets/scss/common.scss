@@ -1,22 +1,17 @@
-[lang="ja"] input, [lang="ja"] textarea, [lang="ja"] .input-prefix, [lang="ja"] .input-suffix {
-  font-family: Hiragino Sans,"ヒラギノ角ゴ Pro","Hiragino Kaku Gothic Pro","メイリオ",Meiryo,Osaka,"ＭＳ Ｐゴシック","MS PGothic","MS Gothic","ＭＳ ゴシック","Helvetica Neue",Helvetica,Arial,sans-serif !important;
-}
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
 
 html {
   height:100%;
 }
 
 body {
+  font-family: Lato, "游ゴシック Medium", "游ゴシック体", "Yu Gothic Medium", YuGothic, "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
   height:100%;
   padding: 0
 }
 
 div#root {
   height:100%;
-
-  div#container-wrap {
-    height:100%;
-  }
 }
 
 a {

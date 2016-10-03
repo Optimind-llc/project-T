@@ -28,15 +28,26 @@ class PageTypeTableSeeder extends Seeder
         }
 
         $data = [
+            //成型：検査：ライン１ インナ
             [
                 'number'     => 1,
                 'group_id'   => 1,
                 'figure_id'  => 1,
                 'created_at' => $now,
                 'updated_at' => $now
-            ],[
+            ],
+            //成型：検査：ライン２ インナ
+            [
                 'number'     => 1,
                 'group_id'   => 2,
+                'figure_id'  => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //成型：インライン精度検査 インナ
+            [
+                'number'     => 1,
+                'group_id'   => 3,
                 'figure_id'  => null,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -44,7 +55,7 @@ class PageTypeTableSeeder extends Seeder
             //穴あけ：検査：page1 インナ
             [
                 'number'     => 1,
-                'group_id'   => 3,
+                'group_id'   => 4,
                 'figure_id'  => 4,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -52,7 +63,7 @@ class PageTypeTableSeeder extends Seeder
             //穴あけ：検査：page2 インナ
             [
                 'number'     => 2,
-                'group_id'   => 3,
+                'group_id'   => 4,
                 'figure_id'  => 5,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -60,7 +71,7 @@ class PageTypeTableSeeder extends Seeder
             //穴あけ：検査：page3 インナ
             [
                 'number'     => 3,
-                'group_id'   => 3,
+                'group_id'   => 4,
                 'figure_id'  => 6,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -68,23 +79,39 @@ class PageTypeTableSeeder extends Seeder
             //穴あけ：検査：page4 インナ
             [
                 'number'     => 4,
-                'group_id'   => 3,
+                'group_id'   => 4,
                 'figure_id'  => 7,
                 'created_at' => $now,
                 'updated_at' => $now
             ],
-            //成型：検査：page1 小部品
+            //成型：検査：ライン１：page1 小部品
             [
                 'number'     => 1,
-                'group_id'   => 4,
+                'group_id'   => 5,
                 'figure_id'  => 2,    
                 'created_at' => $now,
                 'updated_at' => $now
             ],
-            //成型：検査：page2 小部品
+            //成型：検査：ライン１：page2 小部品
             [
                 'number'     => 2,
-                'group_id'   => 4,
+                'group_id'   => 5,
+                'figure_id'  => 3,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //成型：検査：ライン２：page1 小部品
+            [
+                'number'     => 1,
+                'group_id'   => 6,
+                'figure_id'  => 2,    
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //成型：検査：ライン２：page2 小部品
+            [
+                'number'     => 2,
+                'group_id'   => 6,
                 'figure_id'  => 3,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -92,7 +119,7 @@ class PageTypeTableSeeder extends Seeder
             //成型：インライン検査：小部品
             [
                 'number'     => 1,
-                'group_id'   => 5,
+                'group_id'   => 7,
                 'figure_id'  => null,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -100,7 +127,7 @@ class PageTypeTableSeeder extends Seeder
             //穴あけ：検査：page1 小部品
             [
                 'number'     => 1,
-                'group_id'   => 6,
+                'group_id'   => 8,
                 'figure_id'  => 8,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -108,7 +135,7 @@ class PageTypeTableSeeder extends Seeder
             //穴あけ：検査：page2 小部品
             [
                 'number'     => 2,
-                'group_id'   => 6,
+                'group_id'   => 8,
                 'figure_id'  => 9,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -116,25 +143,13 @@ class PageTypeTableSeeder extends Seeder
             //接着：インライン検査：ASSY
             [
                 'number'     => 1,
-                'group_id'   => 7,
+                'group_id'   => 9,
                 'figure_id'  => null,
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             //接着：止水：ASSY
             [
-                'number'     => 1,
-                'group_id'   => 8,
-                'figure_id'  => 10,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'number'     => 1,
-                'group_id'   => 9,
-                'figure_id'  => 10,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
                 'number'     => 1,
                 'group_id'   => 10,
                 'figure_id'  => 10,
@@ -149,6 +164,18 @@ class PageTypeTableSeeder extends Seeder
             ],[
                 'number'     => 1,
                 'group_id'   => 12,
+                'figure_id'  => 10,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'number'     => 1,
+                'group_id'   => 13,
+                'figure_id'  => 10,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'number'     => 1,
+                'group_id'   => 14,
                 'figure_id'  => 11,
                 'created_at' => $now,
                 'updated_at' => $now

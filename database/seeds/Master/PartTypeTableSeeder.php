@@ -98,19 +98,26 @@ class PartTypeTableSeeder extends Seeder
         }
 
         $data = [
+            //成型：検査：ライン１：インナ
             [
                 'page_type_id' => 1,
                 'part_type_id' => 1,
                 'area'         => '0/0/1740/1030'
-            ],[
+            ],
+            //成型：検査：ライン２：インナ
+            [
                 'page_type_id' => 2,
                 'part_type_id' => 1,
                 'area'         => '0/0/1740/1030'
-            ],[
+            ],
+            //成型：インライン精度検査：インナ
+            [
                 'page_type_id' => 3,
                 'part_type_id' => 1,
                 'area'         => '0/0/1740/1030'
-            ],[
+            ],
+            //穴あけ：検査：インナ page1~4
+            [
                 'page_type_id' => 4,
                 'part_type_id' => 1,
                 'area'         => '0/0/1740/1030'
@@ -124,79 +131,89 @@ class PartTypeTableSeeder extends Seeder
                 'area'         => '0/0/1740/1030'
             ],[
                 'page_type_id' => 7,
+                'part_type_id' => 1,
+                'area'         => '0/0/1740/1030'
+            ],
+            //成型：検査：ライン１：小部品 page1
+            [
+                'page_type_id' => 8,
                 'part_type_id' => 3,
-                'area'         => '0/0/850/900'
-            ],[
-                'page_type_id' => 7,
-                'part_type_id' => 4,
-                'area'         => '0/850/1740/900'
+                'area'         => '0/0/870/900'
             ],[
                 'page_type_id' => 8,
+                'part_type_id' => 4,
+                'area'         => '870/0/1740/900'
+            ],
+            //成型：検査：ライン１：小部品 page2
+            [
+                'page_type_id' => 9,
                 'part_type_id' => 2,
                 'area'         => '0/0/1740/450'
             ],[
-                'page_type_id' => 8,
+                'page_type_id' => 9,
                 'part_type_id' => 5,
-                'area'         => '0/450/900/860'
+                'area'         => '0/450/870/860'
             ],[
-                'page_type_id' => 8,
+                'page_type_id' => 9,
                 'part_type_id' => 6,
-                'area'         => '900/450/1740/860'
-            ],[
-                'page_type_id' => 9,
-                'part_type_id' => 2,
-                'area'         => '0/0/1740/1030'
-            ],[
-                'page_type_id' => 9,
+                'area'         => '870/450/1740/860'
+            ],
+            //成型：検査：ライン２：小部品 page1
+            [
+                'page_type_id' => 10,
                 'part_type_id' => 3,
-                'area'         => '0/0/1740/1030'
-            ],[
-                'page_type_id' => 9,
-                'part_type_id' => 4,
-                'area'         => '0/0/1740/1030'
-            ],[
-                'page_type_id' => 9,
-                'part_type_id' => 5,
-                'area'         => '0/0/1740/1030'
-            ],[
-                'page_type_id' => 9,
-                'part_type_id' => 6,
-                'area'         => '0/0/1740/1030'
+                'area'         => '0/0/870/900'
             ],[
                 'page_type_id' => 10,
+                'part_type_id' => 4,
+                'area'         => '870/0/1740/900'
+            ],
+            //成型：検査：ライン２：小部品 page2
+            [
+                'page_type_id' => 11,
+                'part_type_id' => 2,
+                'area'         => '0/0/1740/450'
+            ],[
+                'page_type_id' => 11,
+                'part_type_id' => 5,
+                'area'         => '0/450/870/860'
+            ],[
+                'page_type_id' => 11,
+                'part_type_id' => 6,
+                'area'         => '870/450/1740/860'
+            ],
+            //成型：インライン精度検査：小部品
+            [
+                'page_type_id' => 12,
+                'part_type_id' => 6,
+                'area'         => ''
+            ],
+            //穴あけ：検査：小部品 page1
+            [
+                'page_type_id' => 13,
                 'part_type_id' => 2,
                 'area'         => '0/0/1740/1030'
             ],
-            //穴あけ：検査：小部品
+            //穴あけ：検査：小部品 page2
             [
-                'page_type_id' => 11,
+                'page_type_id' => 14,
                 'part_type_id' => 3,
                 'area'         => '0/0/350/820'
             ],[
-                'page_type_id' => 11,
+                'page_type_id' => 14,
                 'part_type_id' => 4,
                 'area'         => '350/0/720/820'
             ],[
-                'page_type_id' => 11,
+                'page_type_id' => 14,
                 'part_type_id' => 5,
                 'area'         => '720/0/1250/820'
             ],[
-                'page_type_id' => 11,
+                'page_type_id' => 14,
                 'part_type_id' => 6,
                 'area'         => '1250/0/1740/820'
-            ],[
-                'page_type_id' => 12,
-                'part_type_id' => 7,
-                'area'         => '0/0/1740/1030'
-            ],[
-                'page_type_id' => 13,
-                'part_type_id' => 7,
-                'area'         => '0/0/1740/1030'
-            ],[
-                'page_type_id' => 14,
-                'part_type_id' => 7,
-                'area'         => '0/0/1740/1030'
-            ],[
+            ],
+            //接着：インライン検査：インナASSY
+            [
                 'page_type_id' => 15,
                 'part_type_id' => 7,
                 'area'         => '0/0/1740/1030'
@@ -206,6 +223,18 @@ class PartTypeTableSeeder extends Seeder
                 'area'         => '0/0/1740/1030'
             ],[
                 'page_type_id' => 17,
+                'part_type_id' => 7,
+                'area'         => '0/0/1740/1030'
+            ],[
+                'page_type_id' => 18,
+                'part_type_id' => 7,
+                'area'         => '0/0/1740/1030'
+            ],[
+                'page_type_id' => 19,
+                'part_type_id' => 7,
+                'area'         => '0/0/1740/1030'
+            ],[
+                'page_type_id' => 20,
                 'part_type_id' => 7,
                 'area'         => '0/0/1740/1030'
             ],

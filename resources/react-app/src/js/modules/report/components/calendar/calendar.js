@@ -2,12 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import Calendar from 'rc-calendar';
 import moment from 'moment';
 import DatePicker from 'rc-calendar/lib/Picker';
-import jaJP from 'rc-calendar/lib/locale/ja_JP';
+import jaJP from './ja_JP';
 import 'rc-calendar/assets/index.css';
+import './calendar.css';
 import TimePickerPanel from 'rc-time-picker/lib/Panel';
 import 'rc-time-picker/assets/index.css';
 
-class MyCalender extends Component {
+class MyCalendar extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -42,11 +43,6 @@ class MyCalender extends Component {
     this.setState({
       disabled: !this.state.disabled,
     });
-  }
-
-  serch() {
-    const { actions: {getInspectionData} } = this.props;
-    getInspectionData();
   }
 
   render() {
@@ -129,10 +125,10 @@ class MyCalender extends Component {
   }
 };
 
-MyCalender.propTypes = {
-  defaultValue: React.PropTypes.object,
-  defaultCalendarValue: React.PropTypes.object,
-  setState: React.PropTypes.func
+MyCalendar.propTypes = {
+  defaultValue: PropTypes.object,
+  defaultCalendarValue: PropTypes.object,
+  setState: PropTypes.func
 };
 
-export default MyCalender;
+export default MyCalendar;

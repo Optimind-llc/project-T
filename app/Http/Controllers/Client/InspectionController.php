@@ -38,7 +38,7 @@ class InspectionController extends Controller
         return $process;
     }
 
-    protected function findInspectionGroup($inspection_en, $process_en, $division_en) {
+    protected function findInspectionGroup($inspection_en, $process_en, $division_en, $line = null) {
         $inspection = $this->findProcessByEn($process_en)
             ->inspections()
             ->where('en', $inspection_en)
@@ -48,7 +48,7 @@ class InspectionController extends Controller
             throw new NotFoundHttpException('Inspection not found');
         }
 
-        $group = $inspection->getByDivisionWithRelated($division_en);
+        $group = $inspection->getByDivisionWithRelated($division_en, $line);
 
         if (!$group instanceof InspectionGroup) {
             throw new NotFoundHttpException('Inspection group not found');
@@ -207,7 +207,8 @@ class InspectionController extends Controller
             [
                 'division' => ['required', 'alpha_dash'],
                 'process' => ['required', 'alpha_dash'],
-                'inspection' => ['required', 'alpha_dash']
+                'inspection' => ['required', 'alpha_dash'],
+                'line' => ['alpha_num']
             ]
         );
 
@@ -218,7 +219,8 @@ class InspectionController extends Controller
         $inspection_group = $this->findInspectionGroup(
             $request->inspection,
             $request->process,
-            $request->division
+            $request->division,
+            $request->line
         );
 
         if ($request->inspection == 'adjust') {
@@ -293,7 +295,6 @@ class InspectionController extends Controller
 
         $newFamily = new InspectionFamily;
         $newFamily->inspection_group_id = $family['groupId'];
-        $newFamily->line = $family['line'];
         $newFamily->inspector_group = $family['inspectorGroup'];
         $newFamily->created_by = $family['inspector'];
         $newFamily->save();

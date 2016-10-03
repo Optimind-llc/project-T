@@ -29,7 +29,7 @@ class DivisionTableSeeder extends Seeder
 
         $data = [
             [
-                'name'       => 'インナ―',
+                'name'       => 'インナ',
                 'en'         => 'inner',
                 'created_at' => $now,
                 'updated_at' => $now
@@ -39,7 +39,7 @@ class DivisionTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'ASSY',
+                'name'       => 'インナASSY',
                 'en'         => 'inner_assy',
                 'created_at' => $now,
                 'updated_at' => $now

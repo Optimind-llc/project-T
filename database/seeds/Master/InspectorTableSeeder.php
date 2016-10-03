@@ -356,7 +356,7 @@ class InspectorTableSeeder extends Seeder
         }
 
         $data = [
-            //成型_検査_インナ_白
+            //成型_検査_インナ_ライン１_白
             [
                 'inspection_g_id' => 1,
                 'inspector_id'    => 1,
@@ -386,7 +386,7 @@ class InspectorTableSeeder extends Seeder
                 'inspector_id'    => 7,
                 'sort'            => 7
             ],
-            //成型_検査_インナ_黄
+            //成型_検査_インナ_ライン１_黄
             [
                 'inspection_g_id' => 1,
                 'inspector_id'    => 8,
@@ -417,156 +417,279 @@ class InspectorTableSeeder extends Seeder
                 'sort'            => 7
             ],
 
-            //成型_検査_小部品_白
+            //成型_検査_インナ_ライン２_白
             [
-                'inspection_g_id' => 4,
-                'inspector_id'    => 2,
+                'inspection_g_id' => 2,
+                'inspector_id'    => 1,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 4,
-                'inspector_id'    => 3,
+                'inspection_g_id' => 2,
+                'inspector_id'    => 2,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 4,
-                'inspector_id'    => 1,
+                'inspection_g_id' => 2,
+                'inspector_id'    => 3,
                 'sort'            => 3
             ],[
-                'inspection_g_id' => 4,
+                'inspection_g_id' => 2,
                 'inspector_id'    => 4,
                 'sort'            => 4
             ],[
-                'inspection_g_id' => 4,
+                'inspection_g_id' => 2,
                 'inspector_id'    => 5,
                 'sort'            => 5
             ],[
-                'inspection_g_id' => 4,
+                'inspection_g_id' => 2,
                 'inspector_id'    => 6,
                 'sort'            => 6
             ],[
-                'inspection_g_id' => 4,
+                'inspection_g_id' => 2,
                 'inspector_id'    => 7,
                 'sort'            => 7
             ],
-            //成型_検査_小部品_黄
+            //成型_検査_インナ_ライン２_黄
             [
-                'inspection_g_id' => 4,
+                'inspection_g_id' => 2,
                 'inspector_id'    => 8,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 4,
+                'inspection_g_id' => 2,
                 'inspector_id'    => 9,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 4,
+                'inspection_g_id' => 2,
                 'inspector_id'    => 10,
                 'sort'            => 3
             ],[
-                'inspection_g_id' => 4,
+                'inspection_g_id' => 2,
                 'inspector_id'    => 11,
                 'sort'            => 4
             ],[
-                'inspection_g_id' => 4,
+                'inspection_g_id' => 2,
                 'inspector_id'    => 12,
                 'sort'            => 5
             ],[
-                'inspection_g_id' => 4,
+                'inspection_g_id' => 2,
                 'inspector_id'    => 13,
                 'sort'            => 6
             ],[
-                'inspection_g_id' => 4,
+                'inspection_g_id' => 2,
                 'inspector_id'    => 14,
                 'sort'            => 7
             ],
+
+            //成型_検査_小部品_ライン1_白
+            [
+                'inspection_g_id' => 5,
+                'inspector_id'    => 2,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 3,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 1,
+                'sort'            => 3
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 4,
+                'sort'            => 4
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 5,
+                'sort'            => 5
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 6,
+                'sort'            => 6
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 7,
+                'sort'            => 7
+            ],
+            //成型_検査_小部品_ライン1_黄
+            [
+                'inspection_g_id' => 5,
+                'inspector_id'    => 8,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 9,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 10,
+                'sort'            => 3
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 11,
+                'sort'            => 4
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 12,
+                'sort'            => 5
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 13,
+                'sort'            => 6
+            ],[
+                'inspection_g_id' => 5,
+                'inspector_id'    => 14,
+                'sort'            => 7
+            ],
+
+            //成型_検査_小部品_ライン2_白
+            [
+                'inspection_g_id' => 6,
+                'inspector_id'    => 2,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 3,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 1,
+                'sort'            => 3
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 4,
+                'sort'            => 4
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 5,
+                'sort'            => 5
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 6,
+                'sort'            => 6
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 7,
+                'sort'            => 7
+            ],
+            //成型_検査_小部品_ライン2_黄
+            [
+                'inspection_g_id' => 6,
+                'inspector_id'    => 8,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 9,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 10,
+                'sort'            => 3
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 11,
+                'sort'            => 4
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 12,
+                'sort'            => 5
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 13,
+                'sort'            => 6
+            ],[
+                'inspection_g_id' => 6,
+                'inspector_id'    => 14,
+                'sort'            => 7
+            ],
+
 
             //穴あけ_検査_インナ①_白
             [
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 15,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 16,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 17,
                 'sort'            => 3
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 18,
                 'sort'            => 4
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 19,
                 'sort'            => 5
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 20,
                 'sort'            => 6
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 21,
                 'sort'            => 7
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 22,
                 'sort'            => 8
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 23,
                 'sort'            => 9
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 24,
                 'sort'            => 10
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 25,
                 'sort'            => 11
             ],
             //穴あけ_検査_インナ①_黄
             [
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 26,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 27,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 28,
                 'sort'            => 3
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 29,
                 'sort'            => 4
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 30,
                 'sort'            => 5
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 31,
                 'sort'            => 6
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 32,
                 'sort'            => 7
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 33,
                 'sort'            => 8
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 34,
                 'sort'            => 9
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 35,
                 'sort'            => 10
             ],[
-                'inspection_g_id' => 3,
+                'inspection_g_id' => 4,
                 'inspector_id'    => 36,
                 'sort'            => 11
             ],
@@ -668,93 +791,93 @@ class InspectorTableSeeder extends Seeder
 
             //穴あけ_検査_小部品_白
             [
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 17,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 16,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 15,
                 'sort'            => 3
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 18,
                 'sort'            => 4
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 19,
                 'sort'            => 5
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 20,
                 'sort'            => 6
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 21,
                 'sort'            => 7
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 22,
                 'sort'            => 8
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 23,
                 'sort'            => 9
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 24,
                 'sort'            => 10
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 25,
                 'sort'            => 11
             ],
             //穴あけ_検査_小部品_黄
             [
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 28,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 29,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 30,
                 'sort'            => 3
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 31,
                 'sort'            => 4
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 26,
                 'sort'            => 5
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 27,
                 'sort'            => 6
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 32,
                 'sort'            => 7
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 33,
                 'sort'            => 8
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 34,
                 'sort'            => 9
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 35,
                 'sort'            => 10
             ],[
-                'inspection_g_id' => 6,
+                'inspection_g_id' => 8,
                 'inspector_id'    => 36,
                 'sort'            => 11
             ],
@@ -762,33 +885,33 @@ class InspectorTableSeeder extends Seeder
 
             //接着_止水_インナASSY_白
             [
-                'inspection_g_id' => 8,
+                'inspection_g_id' => 10,
                 'inspector_id'    => 37,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 8,
+                'inspection_g_id' => 10,
                 'inspector_id'    => 38,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 8,
+                'inspection_g_id' => 10,
                 'inspector_id'    => 39,
                 'sort'            => 3
             ],[
-                'inspection_g_id' => 8,
+                'inspection_g_id' => 10,
                 'inspector_id'    => 40,
                 'sort'            => 4
             ],
             //接着_止水_インナASSY_黄
             [
-                'inspection_g_id' => 8,
+                'inspection_g_id' => 10,
                 'inspector_id'    => 42,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 8,
+                'inspection_g_id' => 10,
                 'inspector_id'    => 43,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 8,
+                'inspection_g_id' => 10,
                 'inspector_id'    => 44,
                 'sort'            => 3
             ],
@@ -796,37 +919,37 @@ class InspectorTableSeeder extends Seeder
 
             //接着_仕上_インナASSY_白
             [
-                'inspection_g_id' => 9,
+                'inspection_g_id' => 11,
                 'inspector_id'    => 38,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 9,
+                'inspection_g_id' => 11,
                 'inspector_id'    => 39,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 9,
+                'inspection_g_id' => 11,
                 'inspector_id'    => 40,
                 'sort'            => 3
             ],[
-                'inspection_g_id' => 9,
+                'inspection_g_id' => 11,
                 'inspector_id'    => 41,
                 'sort'            => 4
             ],
             //接着_仕上_インナASSY_黄
             [
-                'inspection_g_id' => 9,
+                'inspection_g_id' => 11,
                 'inspector_id'    => 45,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 9,
+                'inspection_g_id' => 11,
                 'inspector_id'    => 46,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 9,
+                'inspection_g_id' => 11,
                 'inspector_id'    => 43,
                 'sort'            => 3
             ],[
-                'inspection_g_id' => 9,
+                'inspection_g_id' => 11,
                 'inspector_id'    => 44,
                 'sort'            => 3
             ],
@@ -834,29 +957,29 @@ class InspectorTableSeeder extends Seeder
 
             //接着_検査_インナASSY_白
             [
-                'inspection_g_id' => 10,
+                'inspection_g_id' => 12,
                 'inspector_id'    => 41,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 10,
+                'inspection_g_id' => 12,
                 'inspector_id'    => 39,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 10,
+                'inspection_g_id' => 12,
                 'inspector_id'    => 38,
                 'sort'            => 3
             ],[
-                'inspection_g_id' => 10,
+                'inspection_g_id' => 12,
                 'inspector_id'    => 40,
                 'sort'            => 4
             ],
             //接着_検査_インナASSY_黄
             [
-                'inspection_g_id' => 10,
+                'inspection_g_id' => 12,
                 'inspector_id'    => 47,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 10,
+                'inspection_g_id' => 12,
                 'inspector_id'    => 44,
                 'sort'            => 2
             ],
@@ -864,11 +987,11 @@ class InspectorTableSeeder extends Seeder
 
             //接着_特検_インナASSY_黄
             [
-                'inspection_g_id' => 11,
+                'inspection_g_id' => 13,
                 'inspector_id'    => 48,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 11,
+                'inspection_g_id' => 13,
                 'inspector_id'    => 49,
                 'sort'            => 2
             ],
@@ -876,33 +999,33 @@ class InspectorTableSeeder extends Seeder
 
             //接着_手直し_インナASSY_白
             [
-                'inspection_g_id' => 12,
+                'inspection_g_id' => 14,
                 'inspector_id'    => 39,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 12,
+                'inspection_g_id' => 14,
                 'inspector_id'    => 40,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 12,
+                'inspection_g_id' => 14,
                 'inspector_id'    => 38,
                 'sort'            => 3
             ],[
-                'inspection_g_id' => 12,
+                'inspection_g_id' => 14,
                 'inspector_id'    => 41,
                 'sort'            => 4
             ],
             //接着_手直し_インナASSY_黄
             [
-                'inspection_g_id' => 12,
+                'inspection_g_id' => 14,
                 'inspector_id'    => 43,
                 'sort'            => 1
             ],[
-                'inspection_g_id' => 12,
+                'inspection_g_id' => 14,
                 'inspector_id'    => 50,
                 'sort'            => 2
             ],[
-                'inspection_g_id' => 12,
+                'inspection_g_id' => 14,
                 'inspector_id'    => 44,
                 'sort'            => 3
             ],

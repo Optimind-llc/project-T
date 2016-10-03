@@ -40,8 +40,8 @@ class InspectionGroup extends Model
     {
         return $this->belongsTo(
             'App\Models\Division',
-            'division_id',
-            'id'
+            'division_en',
+            'en'
         );
     }
 

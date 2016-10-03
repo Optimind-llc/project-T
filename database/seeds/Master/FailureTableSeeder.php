@@ -53,7 +53,7 @@ class FailureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'ショート',
+                'name'       => '寸欠',
                 'sort'       => '5',
                 'created_at' => $now,
                 'updated_at' => $now
@@ -68,7 +68,7 @@ class FailureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '白斑店',
+                'name'       => '白斑点',
                 'sort'       => '8',
                 'created_at' => $now,
                 'updated_at' => $now

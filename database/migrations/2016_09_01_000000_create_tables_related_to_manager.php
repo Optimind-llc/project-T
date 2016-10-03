@@ -65,6 +65,7 @@ class CreateTablesRelatedToManager extends Migration
             $table->increments('id');
             $table->string('division_en');
             $table->string('vehicle_num');
+            $table->string('line')->nullable();
             $table->integer('inspection_id')->unsigned();
             $table->timestamps();
 

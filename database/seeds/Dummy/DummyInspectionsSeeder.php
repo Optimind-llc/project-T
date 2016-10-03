@@ -71,11 +71,13 @@ class DummyInspectionsSeeder extends Seeder
             ];
         };
 
+        $tyokus = ['黄直', '白直'];
+        $tyoku = $tyokus[array_rand($tyokus)];
+
         return [
             'groupId' => $group['id'],
-            'line' => 1,
-            'inspectorGroup' => '黄直',
-            'inspector' => '黄直,'.$group['inspectorGroups']['Y'][0]['name'].','.$group['inspectorGroups']['Y'][0]['code'],
+            'inspectorGroup' => $tyoku,
+            'inspector' => $tyoku.','.$group['inspectorGroups']['Y'][0]['name'].','.$group['inspectorGroups']['Y'][0]['code'],
             'pages' => $group['pages']->map($createPage),
             'photos' => [
                 'example1.jpg',
@@ -91,21 +93,41 @@ class DummyInspectionsSeeder extends Seeder
         $request = new DummyRequest;
         $controller = new InspectionController;
 
-        //成型：検査：インナ
-        $request->set('molding', 'check', 'inner');
+        //成型：検査：ライン１：インナ
+        $request->set('molding', 'check', 'inner', '1');
         $group = $controller->inspection($request);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 20; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        
         }
 
-        //成型：検査：小部品
-        $request->set('molding', 'check', 'small');
+        //成型：検査：ライン２：インナ
+        $request->set('molding', 'check', 'inner', '2');
         $group = $controller->inspection($request);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 21; $id <= 30; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
+
+        //成型：検査：ライン１：小部品
+        $request->set('molding', 'check', 'small', '1');
+        $group = $controller->inspection($request);
+
+        for ($id = 1; $id <= 20; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
+
+        //成型：検査：ライン２：小部品
+        $request->set('molding', 'check', 'small', '2');
+        $group = $controller->inspection($request);
+
+        for ($id = 21; $id <= 30; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -173,7 +195,7 @@ class DummyInspectionsSeeder extends Seeder
 
         //接着：手直し：インナASSY
         for ($id = 1; $id <= 10; $id++) {
-            $request->set('jointing', 'adjust', 'inner_assy', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
+            $request->set('jointing', 'adjust', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
             $group = $controller->inspection($request);
 
             $data = $this->createData($group['group'], $id);

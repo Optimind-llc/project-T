@@ -36,6 +36,12 @@ class App extends Component {
     ];
 
     const styles = {
+      container: {
+        height: '100%',
+        backgroundColor: 'rgba(231,236,245,1)',
+        paddingBottom: 40,
+        minHeight: 400
+      },
       nav: {
         zIndex: 1000,
         position: 'fixed',
@@ -47,13 +53,12 @@ class App extends Component {
       content: {
         paddingLeft: 210, 
         height: '100%',
-        backgroundColor: 'rgba(231,236,245,1)'
       }
     };
 
     return (
       <MuiThemeProvider>
-        <div id="container-wrap">
+        <div style={styles.container}>
           <Alert alerts={alerts} deleteSideAlerts={actions.deleteSideAlerts} />
           <Paper
             zDepth={2}
