@@ -260,7 +260,12 @@ class InspectionController extends Controller
                             'holes' => $page->figure->holes->map(function ($hole) {
                                 return [
                                     'id' => $hole->id,
-                                    'point' => $hole->point
+                                    'point' => $hole->point,
+                                    'label' => $hole->label,
+                                    'direction' => $hole->direction,
+                                    'color' => $hole->color,
+                                    'border' => $hole->border,
+                                    'shape' => $hole->shape
                                 ];
                             })
                         ]

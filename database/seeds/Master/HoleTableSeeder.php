@@ -28,6 +28,7 @@ class HoleTableSeeder extends Seeder
         }
 
         $data = [
+            //穴あけ：インナ：page1
             [
                 'figure_id'  => 4,
                 'point'      => '368,108',
@@ -159,31 +160,221 @@ class HoleTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],
+            //穴あけ：インナ：page2
+            // [
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],[
+            //     'figure_id'  => 5,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => '',
+            //     'color'      => '0,0,0',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],
         ];
 
-        /***** HARD CODE *****/
-        // $img = ["x" => 1280, "y" => 1024, "margin" => 100, "arrow" => 80];
-        // $hasHoles = [4, 5, 6, 7, 8, 9];
 
-        // $data = [];
-        // foreach ($hasHoles as $id) {
-        //     for ($i = 1; $i <= 100; $i++) { 
-        //         $x = rand($img["margin"], $img["x"] - $img["margin"]);
-        //         $y = rand($img["margin"], $img["y"] - $img["margin"]);
-
-        //         array_push($data, [
-        //             'point'      => $x . ',' . $y,
-        //             'label'      => $i,
-        //             'direction'  => $i,
-        //             'color'      => $i,
-        //             'border'     => $i,
-        //             'shape'      => $i,
-        //             'figure_id'  => $id,
-        //             'created_at' => $now,
-        //             'updated_at' => $now
-        //         ]);
-        //     }
-        // }
 
         DB::table($table_name)->insert($data);
 
