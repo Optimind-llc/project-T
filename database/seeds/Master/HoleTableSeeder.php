@@ -375,7 +375,7 @@ class HoleTableSeeder extends Seeder
             //穴あけ：インナ：page3
             [
                 'figure_id'  => 6,
-                'point'      => ',',
+                'point'      => '263,809',
                 'label'      => 86,
                 'direction'  => 'top',
                 'color'      => '248,231,28',
