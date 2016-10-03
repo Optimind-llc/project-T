@@ -896,7 +896,7 @@ class HoleTableSeeder extends Seeder
             ],
             //穴あけ：インナ：page4
             [
-                'figure_id'  => 6,
+                'figure_id'  => 7,
                 'point'      => '392,468',
                 'label'      => 8,
                 'direction'  => 'top',
@@ -906,7 +906,7 @@ class HoleTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'figure_id'  => 6,
+                'figure_id'  => 7,
                 'point'      => '482,468',
                 'label'      => 7,
                 'direction'  => 'top',
@@ -916,7 +916,7 @@ class HoleTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'figure_id'  => 6,
+                'figure_id'  => 7,
                 'point'      => '1246,465',
                 'label'      => 4,
                 'direction'  => 'top',
@@ -926,7 +926,7 @@ class HoleTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'figure_id'  => 6,
+                'figure_id'  => 7,
                 'point'      => '1336,466',
                 'label'      => 3,
                 'direction'  => 'top',
