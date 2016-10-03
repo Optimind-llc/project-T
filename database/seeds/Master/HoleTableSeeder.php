@@ -937,6 +937,129 @@ class HoleTableSeeder extends Seeder
                 'updated_at' => $now
             ],
             //穴あけ：小部品：page1
+            [
+                'figure_id'  => 8,
+                'point'      => '474,175',
+                'label'      => 2,
+                'direction'  => 'bottom',
+                'color'      => '255,255,255',
+                'border'     => 'dotted',
+                'shape'      => 'square',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 8,
+                'point'      => '474,175',
+                'label'      => 13,
+                'direction'  => 'bottom',
+                'color'      => '0,0,0',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 8,
+                'point'      => '299,540',
+                'label'      => 15,
+                'direction'  => 'top',
+                'color'      => '248,231,255',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 8,
+                'point'      => '639,547',
+                'label'      => 16,
+                'direction'  => 'top',
+                'color'      => '248,231,255',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 8,
+                'point'      => '908,547',
+                'label'      => 18,
+                'direction'  => 'top',
+                'color'      => '248,231,255',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 8,
+                'point'      => '1111,547',
+                'label'      => 21,
+                'direction'  => 'top',
+                'color'      => '248,231,255',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 8,
+                'point'      => '673,552',
+                'label'      => 17,
+                'direction'  => 'bottom',
+                'color'      => '255,255,255',
+                'border'     => 'solid',
+                'shape'      => 'square',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 8,
+                'point'      => '941,552',
+                'label'      => 19,
+                'direction'  => 'bottom',
+                'color'      => '255,255,255',
+                'border'     => 'solid',
+                'shape'      => 'square',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 8,
+                'point'      => '1077,552',
+                'label'      => 20,
+                'direction'  => 'bottom',
+                'color'      => '255,255,255',
+                'border'     => 'solid',
+                'shape'      => 'square',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 8,
+                'point'      => '1378,544',
+                'label'      => 22,
+                'direction'  => 'bottom',
+                'color'      => '255,255,255',
+                'border'     => 'solid',
+                'shape'      => 'square',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 8,
+                'point'      => '1452,535',
+                'label'      => 23,
+                'direction'  => 'bottom',
+                'color'      => '255,255,255',
+                'border'     => 'solid',
+                'shape'      => 'square',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //穴あけ：小部品：page2
+            // [
+            //     'figure_id'  => 9,
+            //     'point'      => ',',
+            //     'label'      => ,
+            //     'direction'  => 'bottom',
+            //     'color'      => '255,255,255',
+            //     'border'     => 'dotted',
+            //     'shape'      => 'square',
+            //     'created_at' => $now,
+            //     'updated_at' => $now
+            // ],
         ];
 
 
