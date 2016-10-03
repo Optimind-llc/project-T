@@ -885,7 +885,7 @@ class HoleTableSeeder extends Seeder
                 'updated_at' => $now
             ],[
                 'figure_id'  => 6,
-                'point'      => '1569,853',
+                'point'      => '1049,955',
                 'label'      => 117,
                 'direction'  => 'bottom',
                 'color'      => '208,2,27',
