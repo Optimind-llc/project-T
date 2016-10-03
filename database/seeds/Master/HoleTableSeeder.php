@@ -796,7 +796,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'point'      => '777,581',
-                'label'      => 66,
+                'label'      => 70,
                 'direction'  => 'bottom',
                 'color'      => '208,2,27',
                 'border'     => 'solid',
@@ -806,7 +806,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'point'      => '728,572',
-                'label'      => 67,
+                'label'      => 71,
                 'direction'  => 'bottom',
                 'color'      => '208,2,27',
                 'border'     => 'solid',
