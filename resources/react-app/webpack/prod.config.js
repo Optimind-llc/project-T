@@ -41,12 +41,7 @@ module.exports = {
         ),
       }, {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract(
-          'style',
-          'css?modules&importLoaders=2&localIdentName=[name]__[local]__[hash:base64:5]' +
-          '!postcss' +
-          '!sass'
-        ),
+        loaders: ['style', 'css', 'postcss', 'sass']
       }, {
         test: /glyphicons-halflings-regular\.woff(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url?limit=10000&mimetype=application/font-woff"

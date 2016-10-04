@@ -329,11 +329,23 @@ class InspectionController extends Controller
             }
 
             // create failure
-            DB::table('failure_positions')->insert(array_map(function($f) use ($newPage) {
+            $matuken = function($f) {
+                if (isset($f['point'])) {
+                   return $f['point'];
+                } elseif (isset($f['pointK'])) {
+                    $exploded = explode(',', $f['pointK']);
+                    $point = ($exploded[0]*2).','.($exploded[1]*2);
+                    return $point;
+                } else {
+                    return null;
+                }
+            };
+
+            DB::table('failure_positions')->insert(array_map(function($f) use ($newPage, $matuken) {
                     return [
                         'page_id' => $newPage->id,
                         'failure_id' => $f['id'],
-                        'point' => $f['point'],
+                        'point' => $matuken($f),
                         'point_sub' => $f['pointSub']
                     ];
                 },
@@ -341,6 +353,7 @@ class InspectionController extends Controller
             );
 
             // create holes
+
             if (isset($page['holes'])) {
                 DB::table('hole_page')->insert(array_map(function($h) use ($newPage) {
                         return [

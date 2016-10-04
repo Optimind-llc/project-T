@@ -282,7 +282,7 @@ class ShowController extends Controller
                     $q->select(['id', 'status', 'page_type_id']);
                 },
                 'pages.holes' => function ($q) {
-                    $q->select(['id', 'point', 'label', 'part_type_id']);
+                    $q->select(['id', 'point', 'label', 'direction', 'part_type_id']);
                 },
                 'pages.holes.partType' => function ($q) {
                     $q->select(['id', 'pn']);
@@ -293,6 +293,8 @@ class ShowController extends Controller
         if (!$page_type instanceof PageType) {
             throw new NotFoundHttpException('Page type not found');
         }
+
+        $collection = collect();
 
         $page_type = [
             'id' => $page_type->id,
@@ -311,16 +313,21 @@ class ShowController extends Controller
             }),
             'pages' => $page_type->pages->map(function($page) {
                 return [
-                    'status' => $page->status,
-                    'holes' => $page->holes->map(function($hole) {
-                        return [
-                            'label' => $hole->label,
-                            'part' => $hole->partType->pn,
-                            'status' => $hole->pivot->status
-                        ];
-                    })
+                    'status' => $page->status
                 ];
             }),
+            'holes' => $page_type->pages->reduce(function ($carry, $page) {
+                return $carry->merge($page->holes->map(function($hole) {
+                    return [
+                        'id' => $hole->id,
+                        'point' => $hole->point,
+                        'label' => $hole->label,
+                        'direction' => $hole->direction,
+                        'part' => $hole->partType->pn,
+                        'status' => $hole->pivot->status
+                    ];
+                }));
+            }, $collection)->groupBy('id')
         ];
 
         return ['data' => $page_type];

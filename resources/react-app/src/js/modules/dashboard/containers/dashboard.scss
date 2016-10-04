@@ -1,6 +1,6 @@
 #dashboardWrap {
 	margin: 30px 30px 0 30px;
-	padding: 20px;
+	padding: 10px;
     min-width: 710px;
 
     h4 {
@@ -33,22 +33,22 @@
 			}
 
 			&.col-1 {
-				flex-basis: 150px;
+				flex-basis: 144px;
 			}
 			&.col-2 {
-				flex-basis: 300px;
+				flex-basis: 288px;
 			}
 			&.col-3 {
-				flex-basis: 450px;
+				flex-basis: 432px;
 			}
 			&.col-4 {
-				flex-basis: 600px;
+				flex-basis: 576px;
 			}
 			&.col-5 {
-				flex-basis: 750px;
+				flex-basis: 720px;
 			}
 			&.col-6 {
-				flex-basis: 900px;
+				flex-basis: 864px;
 			}
 
 			> div {
@@ -97,7 +97,7 @@
 				}
 
 				div.inspection {
-					flex-basis: 150px;
+					flex-basis: 140px;
 
 					p {
 						border: none;
@@ -105,7 +105,7 @@
 					}
 
 					.group {
-						margin: 5px 5px 15px 5px;
+						margin: 2px 2px 15px 2px;
 						border-radius: 4px;
 						border: 1px solid #bfbfbf;
 						font-size: 14px;

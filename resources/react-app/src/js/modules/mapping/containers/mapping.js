@@ -17,11 +17,12 @@ class Mapping extends Component {
     super(props, context);
     const { actions: {getPageData} } = props;
 
+    props.PageData.data = null;
     getPageData(props.id);
 
     this.state = {
       intervalId: null,
-      interval: 10000,
+      interval: 100000,
       innerHeight: window.innerHeight
     };
   }
@@ -44,6 +45,37 @@ class Mapping extends Component {
     getPageTData(groupId);
   }
 
+  formatHoles(holes) {
+    const point = holes[0].point.split(',');
+    const x = point[0]/2;
+    const y = point[1]/2;
+    let ly, lx;
+
+    switch (holes[0].direction) {
+      case 'top':
+        lx =  - 10);
+        ly = point[0]/2;
+        break;
+      case 'bottom':
+        break;
+      case 'left':
+        break;
+      case 'left':
+        break;
+      default:
+        // 式の値にマッチするものが存在しない場合に実行する文
+        [break;]
+    }
+
+    swith() 
+    return {
+      x, y, ly, lx,
+      part: holes[0].part,
+      label: holes[0].label,
+      status: holes.map(h => h.status)
+    }
+  }
+
   render() {
     const { isFetching, data } = this.props.PageData;
 
@@ -52,9 +84,48 @@ class Mapping extends Component {
         {
           data !== null &&
           <div>
-            <img src={data.path}/>
-            <div className="control-panel">
+            <div className="mapping-header">
+              <h4>
+                <span>{`${data.process}工程`}</span>
+                <span>{data.inspection}</span>
+                <span>{`${data.line == '1' ? 'ライン①' : data.line == '2' ? 'ライン②' : ''}`}</span>
+                <span>{`Page${data.number}`}</span>
+              </h4>
             </div>
+            <div className="mapping-body">
+              <div className="figure-wrap">
+                <ul className="parts-info">
+                  {
+                    data.parts.map(part =>
+                      <li key={part.pn}>
+                        <span className="small">品番：</span><span>{part.pn}</span>
+                        <span className="small">品名：</span><span>{part.name}</span>
+                      </li>
+                    )
+                  }
+                </ul>
+                <div className="figure">         
+                  <img src={data.path}/>
+                  <svg>
+                    {
+                      Object.keys(data.holes).map(key => {
+                        const point = data.holes[key][0].point.split(',');
+                        return (
+                          <g>
+                            <circle cx={x} cy={y} r={4} fill="red" />
+                            <text x={} y="40" font-size="10" fill="black"/>
+                          </g>
+                        )
+                      })
+                    }
+                  </svg>
+                </div>
+              </div>
+              
+              <div className="control-panel">
+              </div>
+            </div>            
+
           </div>
         }
       </div>
