@@ -15,8 +15,8 @@ class Navigation extends Component {
         <ul>
           {
             links.map((link, i) => 
-              <li>
-                <Link activeClassName="active" key={i} to={`/manager/${link.en}`}>{link.name}</Link>
+              <li key={i}>
+                <Link activeClassName="active" to={`/manager/${link.en}`}>{link.name}</Link>
               </li>
             )
           }

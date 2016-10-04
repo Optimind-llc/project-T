@@ -42,13 +42,14 @@ class PageType extends Model
             'part_type_page_type',
             'page_type_id',
             'part_type_id'
-        );
+        )
+        ->withPivot('area');
     }
 
     public function pages()
     {
         return $this->hasMany(
-            'App\Models\Page',
+            'App\Models\Client\Page',
             'page_type_id',
             'id'
         );

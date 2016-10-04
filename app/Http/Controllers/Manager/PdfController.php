@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Client;
+namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,6 +13,7 @@ use App\Models\Process;
 use App\Models\Inspector;
 use App\Models\InspectorGroup;
 use App\Models\Inspection;
+use App\Models\InspectionGroup;
 use App\Models\Division;
 use App\Models\Client\InspectionFamily;
 use App\Models\Client\Page;
@@ -25,16 +26,34 @@ use Dingo\Api\Exception\StoreResourceFailedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * Class PrintController
+ * Class PdfController
  * @package App\Http\Controllers
  */
-class PrintController extends Controller
+class PdfController extends Controller
 {
     /**
      * Get user from JWT token
      */
-    public function report()
+    public function report($itionG_id, $date, $itorG_code)
     {
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
+        $itorG_name = InspectorGroup::find($itorG_code)->name;
+
+        $families = InspectionGroup::find($itionG_id)
+            ->families()
+            ->where('inspector_group', $itorG_name)
+            ->where('created_at', '>=', $date->addHours(1))
+            ->where('created_at', '<', $date->copy()->addDay(1))
+            ->with([
+                'pages',
+                'pages.parts',
+                'pages.parts.partType',
+                'pages.failurePositions',
+            ])
+            ->get();
+
+        return $families;
+
         $tcpdf = new TCPDF;
         $tcpdf->SetPrintHeader(false);
         $tcpdf->SetPrintFooter(false);

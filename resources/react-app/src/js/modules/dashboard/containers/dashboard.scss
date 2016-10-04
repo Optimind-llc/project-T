@@ -1,0 +1,179 @@
+#dashboardWrap {
+	margin: 30px 30px 0 30px;
+	padding: 20px;
+    min-width: 710px;
+
+    h4 {
+    	margin-bottom: 30px;
+    	font-weight: 600;
+
+    	&.molding {color: #4B94C0; }
+    	&.holing { color: #CF4635; }
+    	&.jointing { color: #00A459; }
+
+    	span.right {
+    		text-align: right;
+    	}
+    }
+
+	.main-panel {
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-between;
+
+		> div.process {
+			box-sizing: border-box;
+
+			p {
+				margin: 0;
+				line-height: 40px;
+				font-size: 14px;
+				text-align: center;
+				border-bottom: 1px solid #bfbfbf;
+			}
+
+			&.col-1 {
+				flex-basis: 150px;
+			}
+			&.col-2 {
+				flex-basis: 300px;
+			}
+			&.col-3 {
+				flex-basis: 450px;
+			}
+			&.col-4 {
+				flex-basis: 600px;
+			}
+			&.col-5 {
+				flex-basis: 750px;
+			}
+			&.col-6 {
+				flex-basis: 900px;
+			}
+
+			> div {
+				display: flex;
+				flex-flow: row wrap;
+				justify-content: space-between;
+
+				div.group:active {
+					box-shadow:none !important; 
+				}
+
+				&.molding {
+					p {
+						color: #4B94C0;
+					}
+					div.group {
+						background-color: #4B94C0;
+						&:hover {
+							box-shadow: 0 0 5px #4B94C0;
+						}
+					}
+				}
+
+				&.holing {
+					p {
+						color: #CF4635;
+					}
+					div.group {
+						background-color: #CF4635;
+						&:hover {
+							box-shadow: 0 0 5px #CF4635;
+						}
+					}
+				}
+
+				&.jointing {
+					p {
+						color: #00A459;
+					}
+					div.group {
+						background-color: #00A459;
+						&:hover {
+							box-shadow: 0 0 5px #00A459;
+						}
+					}
+				}
+
+				div.inspection {
+					flex-basis: 150px;
+
+					p {
+						border: none;
+						font-weight: 600;
+					}
+
+					.group {
+						margin: 5px 5px 15px 5px;
+						border-radius: 4px;
+						border: 1px solid #bfbfbf;
+						font-size: 14px;
+
+						p {
+							color: #FFF;
+							border: none;
+							font-size: 16px;
+							line-height: 30px;
+
+							span {
+								margin-left: 6px;
+							}
+
+							&:nth-child(2) {
+								font-size: 24px;
+								line-height: 40px;
+
+								span {
+									font-size: 14px;
+								}
+							}
+
+
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.pages {
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: center;
+
+		> div {
+			flex-basis: 250;
+			margin: 4px;
+
+			p {
+				text-align: center;
+			}
+
+			figure {
+				margin: 0;
+				padding: 20px;
+				height: 160px;
+				background: #fff;
+				overflow: hidden;
+				border: 1px solid #bfbfbf;
+				border-radius: 4px;
+
+				img {
+					display: block;
+					width: 200px;
+					transform: scale(1);
+					transition: .2s ease-in-out;
+				}
+
+				&:hover {
+					box-shadow: 0 0 5px #111;
+
+					img {
+						transform: scale(1.2);
+					}
+				}
+			}
+		}
+	}
+}

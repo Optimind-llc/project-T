@@ -278,12 +278,19 @@ class CreateTablesRelatedToManager extends Migration
             $table->string('color'); //0-0-0 RGBの-区切り
             $table->string('border'); //dotted or solid
             $table->string('shape'); //square or circle
+            $table->integer('part_type_id')->unsigned();
             $table->integer('figure_id')->unsigned();
             $table->timestamps();
 
             /**
              * Add Foreign
              */
+            $table->foreign('part_type_id')
+                ->references('id')
+                ->on('part_types')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
             $table->foreign('figure_id')
                 ->references('id')
                 ->on('figures')

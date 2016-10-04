@@ -22,11 +22,15 @@ Route::get('manager/dashboard', 'Manager\ReferenceController@index');
 Route::get('manager/reference', 'Manager\ReferenceController@index');
 Route::get('manager/mapping', 'Manager\ReferenceController@index');
 Route::get('manager/report', 'Manager\ReferenceController@index');
+Route::get('manager/mapping/{id}', 'Manager\ReferenceController@index');
 
-Route::get('manager/pdf/report', 'Manager\PdfController@report');
+Route::get('manager/pdf/report/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@report');
 
 Route::get('show', 'ShowController@showTableData');
 Route::get('show/inspectionGroup', 'ShowController@inspectionGroup');
+Route::get('show/allInspectionGroupNow', 'ShowController@allInspectionGroupNow');
+Route::get('show/pageType', 'ShowController@pageType');
+Route::get('show/page/{pageType_id}', 'ShowController@page')->where('pageType_id', '[0-9]+');;
 
 // $api = app('Dingo\Api\Routing\Router');
 

@@ -25,4 +25,13 @@ class Hole extends Model
             'id'
         );
     }
+
+    public function partType()
+    {
+        return $this->belongsTo(
+            'App\Models\partType',
+            'part_type_id',
+            'id'
+        );
+    }
 }

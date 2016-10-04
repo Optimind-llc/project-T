@@ -29,47 +29,47 @@ class FigureTableSeeder extends Seeder
 
         $data = [
             [
-                'path'         => 'molding_inner.jpg',
+                'path'         => 'molding_inner.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'molding_small_1.jpg',
+                'path'         => 'molding_small_1.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'molding_small_2.jpg',
+                'path'         => 'molding_small_2.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'holing_inner_1.jpg',
+                'path'         => 'holing_inner_1.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'holing_inner_2.jpg',
+                'path'         => 'holing_inner_2.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'holing_inner_3.jpg',
+                'path'         => 'holing_inner_3.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'holing_inner_4.jpg',
+                'path'         => 'holing_inner_4.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'holing_small_1.jpg',
+                'path'         => 'holing_small_1.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'holing_small_2.jpg',
+                'path'         => 'holing_small_2.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'jointing_assy.jpg',
+                'path'         => 'jointing_assy.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'jointing_assy_adjust.jpg',
+                'path'         => 'jointing_assy_adjust.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],

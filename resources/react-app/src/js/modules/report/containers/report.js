@@ -156,7 +156,7 @@ class Report extends Component {
                         path: "/pdf/template/molding-inner.pdf"
                       })}
                     >
-                      <p>{`${g.division.name} ライン${g.line == '1' ? '①' : '②'}`}</p>
+                      <p>{`${g.division.name} ${g.line == '1' ? 'ライン①' : g.line == '2' ? 'ライン②' : ''}`}</p>
                       <p>{g.families.length}<span>件</span></p>
                     </div>
                   )
