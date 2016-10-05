@@ -283,8 +283,6 @@ class InspectionController extends Controller
     {
         $family = $request->family;
 
-        return $request->family;
-
         //duplicate detection
         $dupIF = InspectionFamily::where('inspection_group_id', $family['groupId'])->first();
 
