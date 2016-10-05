@@ -341,15 +341,13 @@ class InspectionController extends Controller
                 })
                 ->toArray();
 
+            //Get part_id in newPage
             $newParts = $newPage
                 ->parts()
                 ->get(['id', 'part_type_id'])
                 ->groupBy('part_type_id');
 
-            // var_dump($area);
-            // var_dump($newParts);
-
-            // change point to pixel for Matuken
+            // Change point to pixel for Matuken
             $matuken = function($f) {
                 if (isset($f['point'])) {
                    return $f['point'];
@@ -362,7 +360,7 @@ class InspectionController extends Controller
                 }
             };
 
-            // Get part
+            // Get part_id from point
             $getPartIdfromArea = function($f) use ($area, $newParts, $matuken) {
                 if ($matuken($f)) {
                    $exploded = explode(',', $matuken($f));
@@ -381,22 +379,23 @@ class InspectionController extends Controller
                 }
             };
 
-            // create failure
-            DB::table('failure_positions')->insert(array_map(function($f) use ($newPage, $matuken, $getPartIdfromArea) {
-                    return [
-                        'page_id' => $newPage->id,
-                        'failure_id' => $f['id'],
-                        'part_id' => $getPartIdfromArea($f),
-                        'point' => $matuken($f),
-                        'point_sub' => $f['pointSub']
-                    ];
-                },
-                $page['failures'])
-            );
+            // Create failure
+            if (count($page['failures']) != 0) {
+                DB::table('failure_positions')->insert(array_map(function($f) use ($newPage, $matuken, $getPartIdfromArea) {
+                        return [
+                            'page_id' => $newPage->id,
+                            'failure_id' => $f['id'],
+                            'part_id' => $getPartIdfromArea($f),
+                            'point' => $matuken($f),
+                            'point_sub' => $f['pointSub']
+                        ];
+                    },
+                    $page['failures'])
+                );
+            }
 
-            // create holes
-
-            if (isset($page['holes'])) {
+            // Create holes
+            if (isset($page['holes']) && count($page['holes']) != 0) {
                 DB::table('hole_page')->insert(array_map(function($h) use ($newPage) {
                         return [
                             'page_id' => $newPage->id,
@@ -408,8 +407,8 @@ class InspectionController extends Controller
                 );
             }
 
-            // create comments
-            if (isset($page['comments'])) {
+            // Create comments
+            if (isset($page['comments']) && count($page['comments']) != 0) {
                 DB::table('comment_failure_position')->insert(array_map(function($c) use ($newPage) {
                         return [
                             'page_id' => $newPage->id,

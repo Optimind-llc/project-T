@@ -97,11 +97,11 @@ class DummyInspectionsSeeder extends Seeder
         $request->set('molding', 'check', 'inner', '1');
         $group = $controller->inspection($request);
 
-        // for ($id = 1; $id <= 20; $id++) {
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        for ($id = 1; $id <= 20; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
         // //成型：検査：ライン２：インナ
         // $request->set('molding', 'check', 'inner', '2');
@@ -117,7 +117,7 @@ class DummyInspectionsSeeder extends Seeder
         $request->set('molding', 'check', 'small', '1');
         $group = $controller->inspection($request);
 
-        for ($id = 1; $id <= 1; $id++) {
+        for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        
