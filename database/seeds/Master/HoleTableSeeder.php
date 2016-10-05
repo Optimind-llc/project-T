@@ -1307,7 +1307,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 9,
                 'part_type_id' => 6,
-                'point'      => '1398,588',
+                'point'      => '927,722',
                 'label'      => 5,
                 'direction'  => 'left',
                 'color'      => 'FFFFFF',

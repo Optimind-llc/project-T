@@ -140,6 +140,7 @@ class CreateTablesRelatedToClient extends Migration
             $table->string('point_sub');
             $table->integer('failure_id')->unsigned();
             $table->integer('page_id')->unsigned();
+            $table->integer('part_id')->unsigned();
             $table->timestamps();
 
             /**
@@ -154,6 +155,12 @@ class CreateTablesRelatedToClient extends Migration
             $table->foreign('page_id')
                 ->references('id')
                 ->on('pages')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('part_id')
+                ->references('id')
+                ->on('parts')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });

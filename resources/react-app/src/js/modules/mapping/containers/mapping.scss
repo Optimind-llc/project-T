@@ -88,9 +88,75 @@
 
 			.control-panel {
 				float: right;
-				min-height: 450px;
+				min-height: 540px;
 				width: 350px;
-				border: 1px solid #000;
+				
+				.control-tab {
+				    display: flex;
+				    justify-content: center;
+				    align-items: center;
+					height: 40px;
+
+					button {
+						flex-basis: 175px;
+						height: 40px;
+						background-color: #4A4A4A;
+						color: #FFF;
+						border: none;
+						border-radius: 4px 4px 0 0;
+						cursor: default;
+
+						&.disable {
+							height: 40px;
+							border: none;
+							border-radius: 4px 4px 0 0;
+							background-color: #EEE;
+							color: #9F9F9F;
+							cursor: pointer;
+						}
+					}
+				}
+				.control-content {
+					height: 500px;
+					background-color: #FFF;
+					border: 2px solid #BFBFBF;
+					border-radius: 0 0 4px 4px;
+
+					.switch {
+				    	display: flex;
+				    	justify-content: center;
+				    	margin: 20px;
+
+						button {
+							flex-basis: 80px;
+							margin: 0 2px;
+							border: none;
+							border-radius: 4px;
+							background-color: #EEE;
+							color: #9F9F9F;
+
+							&.active {
+								background-color: #4A4A4A;
+								color: #FFF;
+								cursor: default;
+								pointer-events : none;
+							}
+						}
+					}
+
+					.collection {
+						margin: 10px 30px;
+
+						> div {
+							margin-bottom: 20px;
+
+							li span {
+								display: inline-block;
+								width: 80px;
+							}
+						}
+					}
+				}
 			}
 		}
 	}

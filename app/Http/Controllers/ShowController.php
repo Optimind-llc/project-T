@@ -286,6 +286,12 @@ class ShowController extends Controller
                 },
                 'pages.holes.partType' => function ($q) {
                     $q->select(['id', 'pn']);
+                },
+                'pages.failurePositions' => function ($q) {
+                    $q->select(['id', 'point', 'page_id', 'failure_id']);
+                },
+                'pages.failurePositions.failure' => function ($q) {
+                    $q->select(['id', 'name', 'sort']);
                 }
             ])
             ->find($pageType_id);
@@ -295,6 +301,7 @@ class ShowController extends Controller
         }
 
         $collection = collect();
+        $collection2 = collect();
 
         $page_type = [
             'id' => $page_type->id,
@@ -327,7 +334,20 @@ class ShowController extends Controller
                         'status' => $hole->pivot->status
                     ];
                 }));
-            }, $collection)->groupBy('id')
+            }, $collection)
+            ->groupBy('part')
+            ->map(function($hole) {
+                return $hole->groupBy('id');
+            }),
+            'failures' => $page_type->pages->reduce(function ($carry, $page) {
+                return $carry->merge($page->failurePositions->map(function($failure) {
+                    return [
+                        'failure' => $failure->failure->name,
+                        'label' => $failure->failure->sort,
+                        'point' => $failure->point
+                    ];
+                }));
+            }, $collection2)
         ];
 
         return ['data' => $page_type];

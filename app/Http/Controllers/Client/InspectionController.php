@@ -12,6 +12,7 @@ use App\Models\Inspector;
 use App\Models\InspectorGroup;
 use App\Models\Inspection;
 use App\Models\InspectionGroup;
+use App\Models\PageType;
 use App\Models\Client\InspectionFamily;
 use App\Models\Client\Page;
 use App\Models\Client\Part;
@@ -328,7 +329,27 @@ class InspectionController extends Controller
                 $newPage->parts()->attach($newPart->id);
             }
 
-            // create failure
+            //Get divided area from page type
+            $area = PageType::find($page['pageId'])
+                ->partTypes()
+                ->get()
+                ->map(function($part){
+                    return [
+                        'id' => $part->id,
+                        'area' => explode('/', $part->pivot->area)
+                    ];
+                })
+                ->toArray();
+
+            $newParts = $newPage
+                ->parts()
+                ->get(['id', 'part_type_id'])
+                ->groupBy('part_type_id');
+
+            // var_dump($area);
+            // var_dump($newParts);
+
+            // change point to pixel for Matuken
             $matuken = function($f) {
                 if (isset($f['point'])) {
                    return $f['point'];
@@ -341,10 +362,31 @@ class InspectionController extends Controller
                 }
             };
 
-            DB::table('failure_positions')->insert(array_map(function($f) use ($newPage, $matuken) {
+            // Get part
+            $getPartIdfromArea = function($f) use ($area, $newParts, $matuken) {
+                if ($matuken($f)) {
+                   $exploded = explode(',', $matuken($f));
+                   $x = $exploded[0];
+                   $y = $exploded[1];
+
+                   $part_type_id = 0;
+
+                   foreach ($area as $a) {
+                        if ($a['area'][0] <= $x && $x <= $a['area'][2] && $a['area'][1] <= $y && $y <= $a['area'][3]) {
+                            $part_type_id = $a['id'];
+                        }
+                   }
+
+                   return $newParts[$part_type_id][0]->id;
+                }
+            };
+
+            // create failure
+            DB::table('failure_positions')->insert(array_map(function($f) use ($newPage, $matuken, $getPartIdfromArea) {
                     return [
                         'page_id' => $newPage->id,
                         'failure_id' => $f['id'],
+                        'part_id' => $getPartIdfromArea($f),
                         'point' => $matuken($f),
                         'point_sub' => $f['pointSub']
                     ];
