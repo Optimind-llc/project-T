@@ -345,7 +345,14 @@ class InspectionController extends Controller
             $newParts = $newPage
                 ->parts()
                 ->get(['id', 'part_type_id'])
-                ->groupBy('part_type_id');
+                ->map(function($part) {
+                    return [
+                        'id' => $part->id,
+                        'type_id' => $part->part_type_id
+                    ];
+                });
+
+// var_dump($newParts->toArray());
 
             // Change point to pixel for Matuken
             $matuken = function($f) {
@@ -361,21 +368,42 @@ class InspectionController extends Controller
             };
 
             // Get part_id from point
-            $getPartIdfromArea = function($f) use ($area, $newParts, $matuken) {
+            $getPartIdfromArea = function($f) use ($matuken, $newParts, $area) {
                 if ($matuken($f)) {
                    $exploded = explode(',', $matuken($f));
-                   $x = $exploded[0];
-                   $y = $exploded[1];
+// var_dump($exploded);
+                   $x = intval($exploded[0]);
+                   $y = intval($exploded[1]);
 
                    $part_type_id = 0;
 
                    foreach ($area as $a) {
-                        if ($a['area'][0] <= $x && $x <= $a['area'][2] && $a['area'][1] <= $y && $y <= $a['area'][3]) {
+                        $x1 = intval($a['area'][0]);
+                        $y1 = intval($a['area'][1]);
+                        $x2 = intval($a['area'][2]);
+                        $y2 = intval($a['area'][3]);
+// var_dump($a['area']);
+                        if ($x1 <= $x && $x < $x2 && $y1 <= $y && $y < $y2) {
                             $part_type_id = $a['id'];
                         }
                    }
 
-                   return $newParts[$part_type_id][0]->id;
+                   $filtered = $newParts->filter(function ($part) use ($part_type_id) {
+                        return $part['type_id'] == $part_type_id;
+                    });
+
+if (!$filtered->first()['id']) {
+    var_dump($x);
+    var_dump($y);
+    var_dump($x1);
+    var_dump($y1);
+    var_dump($x2);
+    var_dump($y2);
+    var_dump($part_type_id);
+    var_dump($newParts->toArray());
+}
+
+                   return $filtered->first()['id'];
                 }
             };
 
@@ -386,8 +414,8 @@ class InspectionController extends Controller
                             'page_id' => $newPage->id,
                             'failure_id' => $f['id'],
                             'part_id' => $getPartIdfromArea($f),
-                            'point' => $matuken($f),
-                            'point_sub' => $f['pointSub']
+                            'point' => $matuken($f)
+                            // 'point_sub' => $f['pointSub']
                         ];
                     },
                     $page['failures'])
