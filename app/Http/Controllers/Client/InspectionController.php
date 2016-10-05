@@ -282,9 +282,10 @@ class InspectionController extends Controller
     public function saveInspection(Request $request)
     {
         $family = $request->family;
+        $groupId = $family['groupId'];
 
         //duplicate detection
-        $dupIF = InspectionFamily::where('inspection_group_id', $family['groupId'])->first();
+        $dupIF = InspectionFamily::where('inspection_group_id', $groupId)->first();
 
         if ($dupIF instanceof InspectionFamily) {
             $dupP = $dupIF->pages()
@@ -300,7 +301,7 @@ class InspectionController extends Controller
         }
 
         $newFamily = new InspectionFamily;
-        $newFamily->inspection_group_id = $family['groupId'];
+        $newFamily->inspection_group_id = $groupId;
         $newFamily->inspector_group = $family['inspectorGroup'];
         $newFamily->created_by = $family['inspector'];
         $newFamily->save();
@@ -352,8 +353,6 @@ class InspectionController extends Controller
                     ];
                 });
 
-// var_dump($newParts->toArray());
-
             // Change point to pixel for Matuken
             $matuken = function($f) {
                 if (isset($f['point'])) {
@@ -371,7 +370,7 @@ class InspectionController extends Controller
             $getPartIdfromArea = function($f) use ($matuken, $newParts, $area) {
                 if ($matuken($f)) {
                    $exploded = explode(',', $matuken($f));
-// var_dump($exploded);
+
                    $x = intval($exploded[0]);
                    $y = intval($exploded[1]);
 
@@ -382,7 +381,7 @@ class InspectionController extends Controller
                         $y1 = intval($a['area'][1]);
                         $x2 = intval($a['area'][2]);
                         $y2 = intval($a['area'][3]);
-// var_dump($a['area']);
+
                         if ($x1 <= $x && $x < $x2 && $y1 <= $y && $y < $y2) {
                             $part_type_id = $a['id'];
                         }
@@ -392,30 +391,35 @@ class InspectionController extends Controller
                         return $part['type_id'] == $part_type_id;
                     });
 
-if (!$filtered->first()['id']) {
-    var_dump($x);
-    var_dump($y);
-    var_dump($x1);
-    var_dump($y1);
-    var_dump($x2);
-    var_dump($y2);
-    var_dump($part_type_id);
-    var_dump($newParts->toArray());
-}
-
                    return $filtered->first()['id'];
                 }
             };
 
             // Create failure
             if (count($page['failures']) != 0) {
-                DB::table('failure_positions')->insert(array_map(function($f) use ($newPage, $matuken, $getPartIdfromArea) {
+                DB::table('failure_positions')->insert(array_map(function($f) use ($groupId, $newPage, $matuken, $getPartIdfromArea) {
+
+                        // Find process_id type in this inspection_group
+                        $inspectionGroup = new InspectionGroup;
+                        $process_id = $inspectionGroup->find($groupId)
+                            ->inspection()
+                            ->first()
+                            ->process_id;
+
+                        // Find failure type in this process
+                        $failureType = DB::table('failure_process')
+                            ->where('failure_id', $f['id'])
+                            ->where('process_id', $process_id)
+                            ->first()
+                            ->type;
+
                         return [
                             'page_id' => $newPage->id,
                             'failure_id' => $f['id'],
                             'part_id' => $getPartIdfromArea($f),
-                            'point' => $matuken($f)
-                            // 'point_sub' => $f['pointSub']
+                            'point' => $matuken($f),
+                            'type' => $failureType,
+                            'point_sub' => $f['pointSub'] ? $f['pointSub'] : ''
                         ];
                     },
                     $page['failures'])

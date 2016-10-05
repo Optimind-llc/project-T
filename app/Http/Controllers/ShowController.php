@@ -288,10 +288,16 @@ class ShowController extends Controller
                     $q->select(['id', 'pn']);
                 },
                 'pages.failurePositions' => function ($q) {
-                    $q->select(['id', 'point', 'page_id', 'failure_id']);
+                    $q->select(['id', 'point', 'type', 'page_id', 'part_id', 'failure_id']);
                 },
                 'pages.failurePositions.failure' => function ($q) {
                     $q->select(['id', 'name', 'sort']);
+                },
+                'pages.failurePositions.part' => function ($q) {
+                    $q->select(['id', 'panel_id', 'part_type_id']);
+                },
+                'pages.failurePositions.part.partType' => function ($q) {
+                    $q->select(['id', 'name', 'pn']);
                 }
             ])
             ->find($pageType_id);
@@ -344,10 +350,13 @@ class ShowController extends Controller
                     return [
                         'failure' => $failure->failure->name,
                         'label' => $failure->failure->sort,
-                        'point' => $failure->point
+                        'point' => $failure->point,
+                        'type' => $failure->type,
+                        'part' => $failure->part->partType->pn
                     ];
                 }));
             }, $collection2)
+            ->groupBy('part')
         ];
 
         return ['data' => $page_type];

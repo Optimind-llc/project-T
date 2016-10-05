@@ -138,6 +138,7 @@ class CreateTablesRelatedToClient extends Migration
             $table->increments('id');
             $table->string('point');
             $table->string('point_sub');
+            $table->string('type');
             $table->integer('failure_id')->unsigned();
             $table->integer('page_id')->unsigned();
             $table->integer('part_id')->unsigned();

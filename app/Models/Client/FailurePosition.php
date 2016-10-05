@@ -34,4 +34,13 @@ class FailurePosition extends Model
             'id'
         );
     }
+
+    public function part()
+    {
+        return $this->belongsTo(
+            'App\Models\Client\Part',
+            'part_id',
+            'id'
+        );
+    }
 }

@@ -43,7 +43,7 @@
 				ul.parts-info {
 				    display: flex;
 				    justify-content: flex-start;
-   					margin: 0 0 0 10px;
+   					margin: 0 0 10px 10px;
 					padding: 0;
 
 					li {
@@ -142,6 +142,11 @@
 								pointer-events : none;
 							}
 						}
+					}
+
+					.failure .switch button {
+						cursor: pointer;
+						pointer-events : auto;
 					}
 
 					.collection {

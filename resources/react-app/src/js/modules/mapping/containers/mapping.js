@@ -25,9 +25,10 @@ class Mapping extends Component {
       interval: 100000,
       innerHeight: window.innerHeight,
       failure: true,
+      iFailure: true,
+      nFailure: true,
       hole: false,
-      failureType: 0,
-      holeStatus: 0,
+      holeStatus: 0
     };
   }
 
@@ -79,30 +80,75 @@ class Mapping extends Component {
 
   renderContent() {
     const { data } = this.props.PageData;
-    const { failure, hole, failureType, holeStatus} = this.state;
+    const { failure, hole, holeStatus, iFailure, nFailure } = this.state;
 
     if (failure && !hole){
-      return null;
+      return (
+        <div className="failure">
+          <div className="switch">
+            <button
+              key="iFailure"
+              className={iFailure ? 'active' : ''}
+              onClick={() => this.setState({ iFailure: !iFailure })}
+            >
+              {'重要不良'}
+            </button>
+            <button
+              key="nFailure"
+              className={nFailure ? 'active' : ''}
+              onClick={() => this.setState({ nFailure: !nFailure })}
+            >
+              {'普通不良'}
+            </button>
+          </div>
+          <div className="collection">
+            {
+              data.parts.map(part => {
+                const failures = data.failures[part.pn];
+                console.log(failures);
+                return (
+                  <div key={part.pn}>
+                    <p>{part.name}</p>
+                    <ul>
+                      <li>
+                        <span>{'重要不良'}</span>
+                        <span>{failures == undefined ? 0 : failures.filter(f => f.type == '1').length}</span>
+                      </li>
+                      <li>
+                        <span>{'普通不良'}</span>
+                        <span>{failures == undefined ? 0 :failures.filter(f => f.type == '2').length}</span>
+                      </li>
+                    </ul>
+                  </div>
+                )
+              })
+            }
+          </div>
+        </div>
+      );
     }
     else if (!failure && hole) {
       return (
-        <div>
+        <div className="hole">
           <div className="switch">
             <button
-              className={failureType == 1 ? 'active' : ''}
-              onClick={() => this.setState({ failureType: 1 })}
+              key="holeStatus1"
+              className={holeStatus == 1 ? 'active' : ''}
+              onClick={() => this.setState({ holeStatus: 1 })}
             >
               {'公差内 ○'}
             </button>
             <button
-              className={failureType == 2 ? 'active' : ''}
-              onClick={() => this.setState({ failureType: 2 })}
+              key="holeStatus2"
+              className={holeStatus == 2 ? 'active' : ''}
+              onClick={() => this.setState({ holeStatus: 2 })}
             >
               {'穴小 △'}
             </button>
             <button
-              className={failureType == 0 ? 'active' : ''}
-              onClick={() => this.setState({ failureType: 0 })}
+              key="holeStatus0"
+              className={holeStatus == 0 ? 'active' : ''}
+              onClick={() => this.setState({ holeStatus: 0 })}
             >
               {'穴大 ×'}
             </button>
@@ -173,7 +219,34 @@ class Mapping extends Component {
                 <div className="figure">         
                   <img src={data.path}/>
                   <svg>
-                    {
+                    {state.failure &&
+                      Object.keys(data.failures).map(part => {
+                        return data.failures[part].filter(f => {
+                          if (state.iFailure && state.nFailure) {
+                            return true;
+                          }
+                          else if(!state.iFailure && state.nFailure) {
+                            return f.type == "2";
+                          }
+                          else if(state.iFailure && !state.nFailure) {
+                            return f.type == "1";
+                          }
+                          else {
+                            return false;
+                          }
+                        }).map(f => {
+                          const point = f.point.split(',');
+                          const x = point[0]/2;
+                          const y = point[1]/2;
+                          return (
+                            <g>
+                              <circle cx={x} cy={y} r={3} fill="red" />
+                            </g>
+                          );
+                        })
+                      })
+                    }
+                    {state.hole &&
                       Object.keys(data.holes).map(part => {
                         return Object.keys(data.holes[part]).map(id => {
                           const holes = this.formatHoles(data.holes[part][id]);
@@ -189,7 +262,7 @@ class Mapping extends Component {
                                 textAnchor="middle"
                                 fontWeight="bold"
                                 >
-                                  {holes.status.filter(s => s == state.failureType).length}
+                                  {holes.status.filter(s => s == state.holeStatus).length}
                                 </text>
                             </g>
                           )
@@ -211,15 +284,18 @@ class Mapping extends Component {
                   >
                     不良検査
                   </button>
-                  <button
-                    className={state.hole ? '' : 'disable'}
-                    onClick={() => this.setState({
-                      failure: false,
-                      hole: true,
-                    })}
-                  >
-                    穴検査
-                  </button>
+                  {
+                    !data.hole === undefined &&
+                    <button
+                      className={state.hole ? '' : 'disable'}
+                      onClick={() => this.setState({
+                        failure: false,
+                        hole: true,
+                      })}
+                    >
+                      穴検査
+                    </button>
+                  }
                 </div>
                 <div className="control-content">
                   {this.renderContent()}
