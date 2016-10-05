@@ -418,8 +418,8 @@ class InspectionController extends Controller
                             'failure_id' => $f['id'],
                             'part_id' => $getPartIdfromArea($f),
                             'point' => $matuken($f),
-                            'type' => $failureType,
-                            'point_sub' => $f['pointSub'] ? $f['pointSub'] : ''
+                            'type' => $failureType
+                            // 'point_sub' => $f['pointSub'] ? $f['pointSub'] : ''
                         ];
                     },
                     $page['failures'])
