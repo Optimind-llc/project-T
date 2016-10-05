@@ -449,8 +449,7 @@ if (!$filtered->first()['id']) {
             }
         }
 
-        return $family;
+        return 'Excellent';
     }
-    
 }
 
