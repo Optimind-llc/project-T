@@ -7,9 +7,9 @@
     <meta name="_token" content="{!! csrf_token() !!}" />
     <meta name="domain" content="{{$domain}}" />
     <title>品質不良マッピングシステム</title>
-    @if ($env === 'local')
+    @if ($hotReload === true)
     <link rel="stylesheet" href="http://localhost:3000/static/bundle.css">
-    @elseif ($env === 'production')
+    @elseif ($hotReload === false)
     <link rel="stylesheet" href="/dist/bundle.css">
     @endif
     <!-- google Roboto font -->
@@ -18,9 +18,9 @@
   </head>
   <body>
     <div id="root"></div>
-    @if ($env === 'local')
+    @if ($hotReload === true)
         <script src="http://localhost:3000/static/bundle.js"></script>
-    @elseif ($env === 'production')
+    @elseif ($hotReload === false)
         <script src="/dist/bundle.js"></script>
     @endif
   </body>

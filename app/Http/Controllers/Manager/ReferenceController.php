@@ -34,10 +34,10 @@ class ReferenceController extends Controller
      */
     public function index()
     {
+        $hotReload = env('HOT_RELOAD');
         $domain = env('APP_URL');
-        $env = env('APP_ENV');
 
-        return view('manager.index', compact('env', 'domain'));
+        return view('manager.index', compact('hotReload', 'domain'));
     }
 
     /**
