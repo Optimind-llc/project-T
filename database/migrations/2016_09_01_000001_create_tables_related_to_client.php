@@ -118,31 +118,11 @@ class CreateTablesRelatedToClient extends Migration
                 ->onDelete('restrict');
         });
 
-        Schema::create('inlines', function (Blueprint $table) {
+        Schema::create('inline_page', function (Blueprint $table) {
             $table->increments('id');
-            $table->tinyInteger('status')->unsigned()->default(1);
-            $table->double('p1', 6, 3)->nullable()->nullable();
-            $table->double('p2', 6, 3)->nullable();
-            $table->double('p3', 6, 3)->nullable();
-            $table->double('p4', 6, 3)->nullable();
-            $table->double('p5', 6, 3)->nullable();
-            $table->double('p6', 6, 3)->nullable();
-            $table->double('p7', 6, 3)->nullable();
-            $table->double('p8', 6, 3)->nullable();
-            $table->double('p9', 6, 3)->nullable();
-            $table->double('p10', 6, 3)->nullable();
-            $table->double('p11', 6, 3)->nullable();
-            $table->double('p12', 6, 3)->nullable();
-            $table->double('p13', 6, 3)->nullable();
-            $table->double('p14', 6, 3)->nullable();
-            $table->double('p15', 6, 3)->nullable();
-            $table->double('p16', 6, 3)->nullable();
-            $table->double('p17', 6, 3)->nullable();
-            $table->double('p18', 6, 3)->nullable();
-            $table->double('p19', 6, 3)->nullable();
-            $table->double('p20', 6, 3)->nullable();
-            $table->double('p21', 6, 3)->nullable();
-            $table->double('p22', 6, 3)->nullable();
+            $table->double('status', 6, 3)->nullable();
+            $table->integer('inline_id')->unsigned();
+            $table->integer('page_id')->unsigned();
             $table->integer('part_id')->unsigned();
             $table->timestamp('inspected_at')->nullable();
             $table->timestamps();
@@ -150,6 +130,18 @@ class CreateTablesRelatedToClient extends Migration
             /**
              * Add Foreign
              */
+            $table->foreign('inline_id')
+                ->references('id')
+                ->on('inlines')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('page_id')
+                ->references('id')
+                ->on('pages')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
             $table->foreign('part_id')
                 ->references('id')
                 ->on('parts')
@@ -259,7 +251,7 @@ class CreateTablesRelatedToClient extends Migration
         Schema::drop('hole_page');
         Schema::drop('comment_failure_position');
         Schema::drop('failure_positions');
-        Schema::drop('inlines');
+        Schema::drop('inline_page');
         Schema::drop('photos');
         Schema::drop('part_page');
         Schema::drop('parts');

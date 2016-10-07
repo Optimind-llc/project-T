@@ -299,6 +299,36 @@ class CreateTablesRelatedToManager extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });
+
+        Schema::create('inlines', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('point');
+            $table->string('label_point');
+            $table->string('face')->nullable();
+            $table->string('position')->nullable();
+            $table->string('calibration')->nullable();
+            $table->string('standard_tolerance');
+            $table->string('input_tolerance')->nullable();
+            $table->integer('sort')->unsigned()->default(1);
+            $table->integer('part_type_id')->unsigned();
+            $table->integer('figure_id')->unsigned();
+            $table->timestamps();
+
+            /**
+             * Add Foreign
+             */
+            $table->foreign('part_type_id')
+                ->references('id')
+                ->on('part_types')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('figure_id')
+                ->references('id')
+                ->on('figures')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+        });
     }
 
     /**
@@ -308,6 +338,7 @@ class CreateTablesRelatedToManager extends Migration
      */
     public function down()
     {
+        Schema::drop('inlines');
         Schema::drop('holes');
         Schema::drop('failure_process');
         Schema::drop('failures');

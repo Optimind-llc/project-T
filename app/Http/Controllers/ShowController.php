@@ -259,7 +259,7 @@ class ShowController extends Controller
      */
     public function pageType($vehicle, $process, $inspection, $division, $line = null)
     {
-        $page_types = $this->findInspectionGroup( $vehicle, $process, $inspection, $division, $line)
+        $page_types = $this->findInspectionGroup($vehicle, $process, $inspection, $division, $line)
             ->pageTypes()
             ->with([
                 'figure' => function ($q) {

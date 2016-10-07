@@ -32,8 +32,8 @@ Route::get('show/pageType/{vehicle}/{process}/{inspection}/{division}/{line?}', 
 		'vehicle' => '[a-zA-Z0-9]+',
 		'process' => '[a-z]+',
 		'inspection' => '[a-z]+',
-		'division' => '[a-z]+',
-		'line' => '[0-9]+',
+		'division' => '[a-z_]+',
+		'line' => '[0-9]+'
 	]);
 
 Route::get('show/page/{pageType}/{itorG}', 'ShowController@page')

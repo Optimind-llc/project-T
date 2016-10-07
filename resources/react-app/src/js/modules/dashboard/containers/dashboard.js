@@ -355,7 +355,7 @@ class Dashboard extends Component {
             </div>
           </div>
         }{
-          PageTData.data && !page &&
+          PageTData.data && itionG && !page &&
           <div className="select-panel step4 bg-white">
             {
               PageTData.data.map(p =>
