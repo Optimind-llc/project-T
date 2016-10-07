@@ -164,7 +164,7 @@ class DummyInspectionsSeeder extends Seeder
         }
 
         //接着：仕上：インナASSY
-        $request->set('jointing', 'finish', 'inner_assy');
+        $request->set('jointing', 'finish', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
         $group = $controller->inspection($request);
 
         for ($id = 1; $id <= 10; $id++) {

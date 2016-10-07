@@ -39,9 +39,10 @@ class Process extends Model
         ->withPivot('type');
     }
 
-    public function getAllInspectionswithRelated($division_en, $panel_id)
+    public function getInspectionsHasSamePanelID($division_en, $panel_id, $enable_inspection_list)
     {
         return $this->inspections()
+            ->whereIn('en', $enable_inspection_list)
             ->with([
                 'groups' => function($query) use ($division_en) {
                     $query->where('division_en', $division_en);

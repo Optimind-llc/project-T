@@ -224,6 +224,7 @@ class CreateTablesRelatedToManager extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('message');
+            $table->string('sort');
             $table->integer('inspection_id')->unsigned();
             $table->timestamps();
 

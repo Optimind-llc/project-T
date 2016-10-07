@@ -73,7 +73,7 @@ class InspectionController extends Controller
             ->groupBy('group');
     }
 
-    protected function adjust(Request $request, $inspection_group)
+    protected function finishOrAdjust(Request $request, $inspection_group)
     {
         $validator = app('validator')->make(
             $request->all(),
@@ -82,6 +82,12 @@ class InspectionController extends Controller
 
         if ($validator->fails()) {
             throw new StoreResourceFailedException('Validation error', $validator->errors());
+        }
+
+        if ($request->inspection == 'finish') {
+            $enable_inspection_list = ['water_stop'];
+        } else {
+            $enable_inspection_list = ['check', 'special_check'];
         }
 
         // inspection内のgroups配列を取り出す、inner_assyでfilltering済み
@@ -144,7 +150,11 @@ class InspectionController extends Controller
         };
 
         $history = $this->findProcessByEn($request->process)
-            ->getAllInspectionswithRelated($request->division, $request->panelId)
+            ->getInspectionsHasSamePanelID(
+                $request->division,
+                $request->panelId,
+                $enable_inspection_list
+            )
             ->map($map1)
             ->filter($filter1)
             ->map($map2)
@@ -168,6 +178,7 @@ class InspectionController extends Controller
                 'comments' => $inspection_group->inspection->comments->map(function ($comment) {
                     return [
                         'id' => $comment->id,
+                        'label' => $comment->sort,
                         'message' => $comment->message
                     ];
                 }),
@@ -224,8 +235,8 @@ class InspectionController extends Controller
             $request->line
         );
 
-        if ($request->inspection == 'adjust') {
-            return $this->adjust($request, $inspection_group);
+        if ($request->inspection == 'finish' || $request->inspection == 'adjust') {
+            return $this->finishOrAdjust($request, $inspection_group);
         }
 
         return [

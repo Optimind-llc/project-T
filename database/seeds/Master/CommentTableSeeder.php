@@ -30,35 +30,47 @@ class CommentTableSeeder extends Seeder
         $data = [
             [
                 'message'       => '削り',
+                'sort'          => 1,
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'message'       => '除去',
+                'sort'          => 2,
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'message'       => '樹脂盛り',
+                'sort'          => 3,
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'message'       => '交換',
+                'sort'          => 4,
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'message'       => '再接着',
+                'sort'          => 5,
+                'inspection_id' => 9,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],[
+                'message'       => '水漏れ',
+                'sort'          => 6,
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
                 'message'       => 'その他',
+                'sort'          => 7,
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now
-            ],
+            ]
         ];
 
         DB::table($table_name)->insert($data);
