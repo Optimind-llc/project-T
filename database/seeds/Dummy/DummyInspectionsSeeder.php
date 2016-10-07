@@ -19,7 +19,8 @@ class DummyInspectionsSeeder extends Seeder
         $createPart = function($part) use ($id) {
             return [
                 'partTypeId' => $part['id'],
-                'panelId' => 'B'.str_pad($id, 7, 0, STR_PAD_LEFT)
+                'panelId' => 'B'.str_pad($id, 7, 0, STR_PAD_LEFT),
+                'status' => rand(0, 1)
             ];
         };
 
@@ -62,7 +63,7 @@ class DummyInspectionsSeeder extends Seeder
         $createPage = function($page) use ($img, $id, $createPart, $createFailures, $createHole, $createComments, $group) {
             return [
                 'pageId' => $page['id'],
-                'status' => 1,
+                // 'status' => 1,
                 'table' => 'A',
                 'parts' => $page['parts']->map($createPart),
                 'failures' => $group['failures']->count() ? $createFailures($group['failures']) : null,

@@ -324,7 +324,7 @@ class InspectionController extends Controller
             $newPage = new Page;
             $newPage->page_type_id = $page['pageId'];
             $newPage->table = isset($page['table']) ? $page['table'] : null;
-            $newPage->status = $page['status'];
+            // $newPage->status = $page['status'];
             $newPage->family_id = $newFamily->id;
             $newPage->save();
 
@@ -343,7 +343,7 @@ class InspectionController extends Controller
                     $newPart->save();
                 }
 
-                $newPage->parts()->attach($newPart->id);
+                $newPage->parts()->attach($newPart->id, ['status' => $part['status']]);
             }
 
             //Get divided area from page type

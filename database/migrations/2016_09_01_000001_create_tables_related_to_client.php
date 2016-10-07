@@ -78,6 +78,7 @@ class CreateTablesRelatedToClient extends Migration
         Schema::create('part_page', function (Blueprint $table) {
             $table->integer('part_id')->unsigned();
             $table->integer('page_id')->unsigned();
+            $table->integer('status')->unsigned();
             $table->timestamps();
 
             /**
