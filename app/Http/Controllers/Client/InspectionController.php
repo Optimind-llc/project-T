@@ -127,8 +127,7 @@ class InspectionController extends Controller
                 ->map(function ($fp) {
                     return [
                         'failurePositionId' => $fp->id,
-                        'name' => $fp->failure->name,                            
-                        'labal' => $fp->failure->name,                            
+                        'labal' => $fp->failure->sort,                            
                         'point' => $fp->point,
                         'point_sub' => $fp->point_sub
                     ];
