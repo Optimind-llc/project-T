@@ -50,7 +50,8 @@ class DummyInspectionsSeeder extends Seeder
         $createComments = function($comments, $history) {
             $C = [];
 
-            foreach (array_rand($history, 10) as $k) {
+            foreach (array_rand($history, 2) as $k) {
+                
                 array_push($C, [
                     'failurePositionId' => $history[$k]['failurePositionId'],
                     'commentId' => $comments->random()['id'],
@@ -165,10 +166,10 @@ class DummyInspectionsSeeder extends Seeder
         }
 
         //接着：仕上：インナASSY
-        $request->set('jointing', 'finish', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
-        $group = $controller->inspection($request);
-
         for ($id = 1; $id <= 10; $id++) {
+            $request->set('jointing', 'finish', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
+            $group = $controller->inspection($request);
+
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        

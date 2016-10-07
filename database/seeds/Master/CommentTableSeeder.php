@@ -29,6 +29,14 @@ class CommentTableSeeder extends Seeder
 
         $data = [
             [
+                'message'       => '水漏れ',
+                'sort'          => 1,
+                'inspection_id' => 6,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],
+            //手直し
+            [
                 'message'       => '削り',
                 'sort'          => 1,
                 'inspection_id' => 9,
@@ -65,8 +73,14 @@ class CommentTableSeeder extends Seeder
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[
-                'message'       => 'その他',
+                'message'       => '手直し不要',
                 'sort'          => 7,
+                'inspection_id' => 9,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],[
+                'message'       => 'その他',
+                'sort'          => 8,
                 'inspection_id' => 9,
                 'created_at'    => $now,
                 'updated_at'    => $now

@@ -375,7 +375,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 30,
                 'process_id' => 'jointing',
-                'type'       => 2
+                'type'       => 1
             ],[
                 'failure_id' => 31,
                 'process_id' => 'jointing',
