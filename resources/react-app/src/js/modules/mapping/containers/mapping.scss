@@ -70,10 +70,108 @@
 				.figure {
 					position: relative;
 
-					img {
-						width: 870px;
-						display: block;
+					.filter-wrap {
+						position: absolute;
+						top: -52px;
+						right: 0;
+						height: 60px;
+						width: 120px;
+
+						p {
+							margin: 0;
+							font-size: 12px;
+							text-align: center;
+						}
+
+				    	> div.filter {
+					    	display: flex;
+					    	justify-content: flex-start;
+					    	height: 48px;
+
+					    	button {
+					    		flex-basis: 40px;
+					    		flex-grow: 1;
+					    		border: none;
+								border-radius: 4px;
+								background-color: #EEE;
+								color: #9F9F9F;
+
+								&.active {
+									background-color: #4A4A4A;
+									color: #FFF;
+								}
+
+								&.none-event {
+									cursor: default;
+									pointer-events : none;
+								}
+
+					    		&:nth-child(1) {
+					    			margin-right: 2px;
+					    		}
+					    		&:nth-last-of-type(1) {
+					    			margin-left: 2px;
+					    		}
+					    	}
+				    	}
+
+				    	> div.filter2 {
+                            margin-top: 5px;
+                            background-color: #EEE;
+                            font-size: 11px;
+                            line-height: 20px;
+                            border: 1px solid #4A4A4A;
+                            border-radius: 4px;
+
+                            > button.dropdown-btn {
+                                background-color: #EEE;
+                                width: 100%;
+                                margin: 0px;
+                                padding: 2px;
+                                border: none;
+                                border-radius: 4px;
+
+                                span {
+                                    &:nth-child(1) {
+                                        margin-right: 5px;
+                                    }
+                                    &:nth-child(3) {
+                                        margin-left: 5px;
+                                    }
+                                }
+                            }
+
+				    		> div.dropdown-list {
+                                display: flex;
+                                flex-direction: column;
+
+					    		button {
+					    			flex-grow: 1;
+					    			text-align: left;
+                                    background-color: #EEE;
+                                    margin: 0;
+                                    padding: 0 0 0 8px;
+                                    border: none;
+
+                                    &:nth-child(1) {
+                                        border-top: 1px dotted #4A4A4A; 
+                                    }
+
+                                    &:after {
+                                        content: "✔︎";
+                                        display: block;
+                                        float: right;
+                                        margin-right: 8px;
+                                    }
+					    		}
+				    		}
+				    	}
 					}
+
+                    img {
+                        width: 870px;
+                        display: block;
+                    }
 
 					svg {
 						position: absolute;
@@ -121,33 +219,6 @@
 					background-color: #FFF;
 					border: 2px solid #BFBFBF;
 					border-radius: 0 0 4px 4px;
-
-					.switch {
-				    	display: flex;
-				    	justify-content: center;
-				    	margin: 20px;
-
-						button {
-							flex-basis: 80px;
-							margin: 0 2px;
-							border: none;
-							border-radius: 4px;
-							background-color: #EEE;
-							color: #9F9F9F;
-
-							&.active {
-								background-color: #4A4A4A;
-								color: #FFF;
-								cursor: default;
-								pointer-events : none;
-							}
-						}
-					}
-
-					.failure .switch button {
-						cursor: pointer;
-						pointer-events : auto;
-					}
 
 					.collection {
 						margin: 10px 30px;

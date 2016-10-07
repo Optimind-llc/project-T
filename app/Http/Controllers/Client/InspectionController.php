@@ -127,7 +127,8 @@ class InspectionController extends Controller
                 ->map(function ($fp) {
                     return [
                         'failurePositionId' => $fp->id,
-                        'failureName' => $fp->failure->name,                            
+                        'name' => $fp->failure->name,                            
+                        'labal' => $fp->failure->name,                            
                         'point' => $fp->point,
                         'point_sub' => $fp->point_sub
                     ];
@@ -307,15 +308,20 @@ class InspectionController extends Controller
         $newFamily->save();
 
         foreach ($family['pages'] as $key => $page) {
+            /*
+             * ここからStatusがなくなる
+             */
             $newPage = new Page;
             $newPage->page_type_id = $page['pageId'];
             $newPage->table = isset($page['table']) ? $page['table'] : null;
-            $newPage->status = $page['status'];
             $newPage->status = $page['status'];
             $newPage->family_id = $newFamily->id;
             $newPage->save();
 
             foreach ($page['parts'] as $part) {
+                /*
+                 * ここにStatusが入る
+                 */
                 $newPart = Part::where('panel_id', $part['panelId'])
                     ->where('part_type_id', $part['partTypeId'])
                     ->first();

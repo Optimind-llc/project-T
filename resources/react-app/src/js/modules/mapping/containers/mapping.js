@@ -18,26 +18,38 @@ class Mapping extends Component {
     const { actions: {getPageData} } = props;
 
     props.PageData.data = null;
-    getPageData(props.id);
+    getPageData(props.realtime, props.id, props.start, props.end);
 
     this.state = {
       intervalId: null,
-      interval: 100000,
+      interval: 10000,
       innerHeight: window.innerHeight,
       failure: true,
       iFailure: true,
       nFailure: true,
+      dropdown: false,
+      failureFilter: [],
       hole: false,
       holeStatus: 0
     };
   }
 
-  componentDidMount() {
-    const { id, actions: {getPageData} } = this.props;
-    const { interval } = this.state;
-    const intervalId = setInterval(()=> getPageData(id), interval);
+  componentWillReceiveProps(nextProps) {
+    const { data, isFetching } = nextProps.PageData;
+  }
 
-    this.setState({intervalId});
+  componentDidMount() {
+    const { realtime, id, start, end, PageData, actions: {getPageData} } = this.props;
+    const { interval } = this.state;
+
+    if (realtime == 'realtime') {
+      const intervalId = setInterval(()=> getPageData(realtime, id, start, end), interval);
+      this.setState({intervalId});
+    }
+
+    if (PageData.data) {
+
+    }
   }
 
   componentWillUnmount() {
@@ -78,6 +90,110 @@ class Mapping extends Component {
     return status = ids.reduce((arr, id) => arr.concat(holes[id].map(h => h.status)), []);
   }
 
+  renderFilter() {
+    const { data, isFetching } = this.props.PageData;
+    const { failure, hole, holeStatus, iFailure, nFailure, dropdown, failureFilter } = this.state;
+console.log(failureFilter);
+    if(failure && !hole) {
+      return (
+        <div className="filter-wrap">
+          <p>フィルタリング</p>
+          <div className="filter">
+            <button
+              key="iFailure"
+              className={iFailure ? 'active' : ''}
+              onClick={() => this.setState({ iFailure: !iFailure })}
+            >
+              {'重要'}
+            </button>
+            <button
+              key="nFailure"
+              className={nFailure ? 'active' : ''}
+              onClick={() => this.setState({ nFailure: !nFailure })}
+            >
+              {'普通'}
+            </button>
+          </div>
+          {
+            data &&
+            <div className="filter2">
+              <button
+                className="dropdown-btn"
+                onClick={() => this.setState({
+                  dropdown: !dropdown
+                })}
+              >
+                <span>5</span>
+                <span>区分表示中</span>
+                <span>{dropdown? '△隠す' : '▽詳細'}</span>
+              </button>
+              {
+                dropdown &&
+                <div className="dropdown-list">
+                  {
+                    data.failureTypes.filter(ft => {
+                      if (iFailure && nFailure) return true;
+                      else if (iFailure && !nFailure) return ft.type == 1;
+                      else if (!iFailure && nFailure) return ft.type == 2;
+                      else return false;
+                    }).map(ft => 
+                      <button key={ft.id} onClick={() => {
+                        const index = failureFilter.indexOf(ft.id);
+                        
+                        if ( index === -1) {
+                          let list = failureFilter.push(ft.id);
+                        } else {
+                          let list = failureFilter.splice(index, 1);
+                        }
+
+                        this.setState({
+                          failureFilter: list
+                        })
+                      }}>
+                        {`${ft.sort}. ${ft.name}`}
+                      </button>
+                    )
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      );
+    }
+    else if (!failure && hole) {
+      return (
+        <div className="filter-wrap">
+          <p>表示切り替え</p>
+          <div className="filter">
+            <button
+              key="holeStatus1"
+              className={holeStatus == 1 ? 'active none-event' : ''}
+              onClick={() => this.setState({ holeStatus: 1 })}
+            >
+              {'○'}
+            </button>
+            <button
+              key="holeStatus2"
+              className={holeStatus == 2 ? 'active none-event' : ''}
+              onClick={() => this.setState({ holeStatus: 2 })}
+            >
+              {'△'}
+            </button>
+            <button
+              key="holeStatus0"
+              className={holeStatus == 0 ? 'active none-event' : ''}
+              onClick={() => this.setState({ holeStatus: 0 })}
+            >
+              {'×'}
+            </button>
+          </div>
+        </div>
+      );      
+    }
+
+  }
+
   renderContent() {
     const { data } = this.props.PageData;
     const { failure, hole, holeStatus, iFailure, nFailure } = this.state;
@@ -85,27 +201,11 @@ class Mapping extends Component {
     if (failure && !hole){
       return (
         <div className="failure">
-          <div className="switch">
-            <button
-              key="iFailure"
-              className={iFailure ? 'active' : ''}
-              onClick={() => this.setState({ iFailure: !iFailure })}
-            >
-              {'重要不良'}
-            </button>
-            <button
-              key="nFailure"
-              className={nFailure ? 'active' : ''}
-              onClick={() => this.setState({ nFailure: !nFailure })}
-            >
-              {'普通不良'}
-            </button>
-          </div>
           <div className="collection">
             {
               data.parts.map(part => {
                 const failures = data.failures[part.pn];
-                console.log(failures);
+
                 return (
                   <div key={part.pn}>
                     <p>{part.name}</p>
@@ -130,29 +230,6 @@ class Mapping extends Component {
     else if (!failure && hole) {
       return (
         <div className="hole">
-          <div className="switch">
-            <button
-              key="holeStatus1"
-              className={holeStatus == 1 ? 'active' : ''}
-              onClick={() => this.setState({ holeStatus: 1 })}
-            >
-              {'公差内 ○'}
-            </button>
-            <button
-              key="holeStatus2"
-              className={holeStatus == 2 ? 'active' : ''}
-              onClick={() => this.setState({ holeStatus: 2 })}
-            >
-              {'穴小 △'}
-            </button>
-            <button
-              key="holeStatus0"
-              className={holeStatus == 0 ? 'active' : ''}
-              onClick={() => this.setState({ holeStatus: 0 })}
-            >
-              {'穴大 ×'}
-            </button>
-          </div>
           <div className="collection">
             {
               data.parts.map(part => {
@@ -210,13 +287,13 @@ class Mapping extends Component {
                   {
                     data.parts.map(part =>
                       <li key={part.pn}>
-                        <span className="small">品番：</span><span>{part.pn}</span>
-                        <span className="small">品名：</span><span>{part.name}</span>
+                        <span className="small">品番: </span><span>{part.pn}</span>
+                        <span className="small">品名: </span><span>{part.name}</span>
                       </li>
                     )
                   }
                 </ul>
-                <div className="figure">         
+                <div className="figure">       
                   <img src={data.path}/>
                   <svg>
                     {state.failure &&
@@ -270,6 +347,7 @@ class Mapping extends Component {
                       })
                     }
                   </svg>
+                  {this.renderFilter()}
                 </div>
               </div>
               
@@ -285,7 +363,7 @@ class Mapping extends Component {
                     不良検査
                   </button>
                   {
-                    !data.hole === undefined &&
+                    data.holes.length !== 0 &&
                     <button
                       className={state.hole ? '' : 'disable'}
                       onClick={() => this.setState({
@@ -311,13 +389,19 @@ class Mapping extends Component {
 }
 
 Mapping.propTypes = {
+  realtime: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  start: PropTypes.string.isRequired,
+  end: PropTypes.string.isRequired,
   PageData: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
+    realtime: ownProps.params.realtime,
     id: ownProps.params.id,
+    start: ownProps.params.start,
+    end: ownProps.params.end,
     PageData: state.PageData,
   };
 }

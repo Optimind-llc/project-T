@@ -7,9 +7,10 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 // Models
+use App\Models\Vehicle;
 use App\Models\Process;
 use App\Models\Inspection;
-use App\Models\Vehicle;
+use App\Models\InspectionGroup;
 use App\Models\InspectorGroup;
 use App\Models\PageType;
 // Exceptions
@@ -22,6 +23,29 @@ use Dingo\Api\Exception\StoreResourceFailedException;
  */
 class ShowController extends Controller
 {
+    protected function findInspection($process_id, $inspection_en) {
+        $inspection = Inspection::where('process_id', $process_id)
+            ->where('en', $inspection_en)
+            ->first();
+
+        if (!$inspection instanceof Inspection) {
+            throw new NotFoundHttpException('Inspection not found');
+        }
+
+        return $inspection;
+    }
+
+    protected function findInspectionGroup($vehicle, $process_id, $inspection_en, $division_en, $line = null) {
+        $group = $this->findInspection($process_id, $inspection_en)
+            ->getGroupByVehicleDivisionLine($vehicle, $division_en, $line);
+
+        if (!$group instanceof InspectionGroup) {
+            throw new NotFoundHttpException('Inspection group not found');
+        }
+
+        return $group;
+    }
+
     protected function processData($option) {
         switch ($option) {
             case 'all':
@@ -103,7 +127,7 @@ class ShowController extends Controller
         return $vehicles;
     }
 
-    public function showTableData(Request $request)
+    public function tableData(Request $request)
     {
         $data = [];
 
@@ -230,38 +254,72 @@ class ShowController extends Controller
         return ['data' => $processes];
     }
 
-    public function pageType(Request $request)
+    /*
+     * Get page types from vehicle_code, process_en, inspection_en, division_en, line
+     */
+    public function pageType($vehicle, $process, $inspection, $division, $line = null)
     {
-        $validator = app('validator')->make(
-            $request->all(),
-            [
-                'groupId' => ['required', 'numeric']
-            ]
-        );
-
-        if ($validator->fails()) {
-            throw new StoreResourceFailedException('Validation error', $validator->errors());
-        }
-
-        $page_types = PageType::with([
+        $page_types = $this->findInspectionGroup( $vehicle, $process, $inspection, $division, $line)
+            ->pageTypes()
+            ->with([
                 'figure' => function ($q) {
                     $q->select(['id', 'path']);
-            }])
-            ->where('group_id', $request->groupId)
+                },
+                'partTypes' => function ($q) {
+                    $q->select(['id', 'pn', 'name']);
+                }
+            ])
+            ->select(['id', 'number', 'figure_id'])
             ->get()
             ->map(function($page) {
                 return [
                     'id' => $page->id,
                     'number' => $page->number,
-                    'path' => '/img/figures/'.$page->figure->path
+                    'path' => '/img/figures/'.$page->figure->path,
+                    'parts' => $page->partTypes->map(function($part) {
+                        return [
+                            'pn' => $part->pn,
+                            'name' => $part->name
+                        ];
+                    })
                 ];
             });
 
         return ['data' => $page_types];
     }
 
-    public function page($pageType_id)
+    public function page($realtime, $pageType_id, $start = null, $end = null)
     {
+        $now = Carbon::now();
+
+        if ($realtime == 'realtime') {
+            $today = Carbon::today();
+            $t2_end_at = $today->copy()->addHours(1);
+            $t1_start_at = $today->copy()->addHours(6);
+            $t1_end_at = $today->copy()->addHours(15)->addMinutes(30);
+            $t2_start_at = $today->copy()->addHours(16)->addMinutes(30);
+
+            if ($now->lt($t2_end_at)) {
+                $start_at = $t1_start_at->copy()->subDay();
+            }
+            elseif ($now->lt($t1_end_at)) {
+                $start_at = $t2_start_at->copy()->subDay();
+            }
+            else {
+                $start_at = $t1_start_at;
+            }
+
+            $end_at = $now;
+        }
+        elseif ($realtime == 'notRealtime') {
+            $start_at = Carbon::createFromFormat('Y-m-d-H-i-s', $start);
+            $end_at = Carbon::createFromFormat('Y-m-d-H-i-s', $end);
+        }
+        else {
+            $start_at = $now;
+            $end_at = $now;
+        }
+
         $page_type = PageType::with([
                 'figure' => function ($q) {
                     $q->select(['id', 'path']);
@@ -278,8 +336,13 @@ class ShowController extends Controller
                 'group.inspection.process' => function ($q) {
                     $q->select(['id', 'name']);
                 },
-                'pages' => function ($q) {
-                    $q->select(['id', 'status', 'page_type_id']);
+                'group.inspection.process.failures' => function ($q) {
+                    $q->select(['id', 'name', 'sort']);
+                },
+                'pages' => function ($q) use($start_at, $end_at) {
+                    $q->where('created_at', '>=', $start_at)
+                        ->where('created_at', '<=', $end_at)
+                        ->select(['id', 'status', 'page_type_id']);
                 },
                 'pages.holes' => function ($q) {
                     $q->select(['id', 'point', 'label', 'direction', 'part_type_id']);
@@ -349,14 +412,22 @@ class ShowController extends Controller
                 return $carry->merge($page->failurePositions->map(function($failure) {
                     return [
                         'failure' => $failure->failure->name,
-                        'label' => $failure->failure->sort,
+                        'sort' => $failure->failure->sort,
                         'point' => $failure->point,
                         'type' => $failure->type,
                         'part' => $failure->part->partType->pn
                     ];
                 }));
             }, $collection2)
-            ->groupBy('part')
+            ->groupBy('part'),
+            'failureTypes' => $page_type->group->inspection->process->failures->map(function($f) {
+                return [
+                    'id' => $f->id,
+                    'name' => $f->name,
+                    'sort' => $f->sort,
+                    'type' => $f->pivot->type
+                ];
+            })
         ];
 
         return ['data' => $page_type];

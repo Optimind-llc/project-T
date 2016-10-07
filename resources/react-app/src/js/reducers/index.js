@@ -1,21 +1,24 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-//my reducers
-// import application from './application';
+// My reducers
 import alert from './alert';
+import VehicleData from '../modules/dashboard/ducks/vehicle';
+import ItorGData from '../modules/dashboard/ducks/itorG';
+import PageTData from '../modules/dashboard/ducks/pageT';
+
+import PageData from '../modules/mapping/ducks/page';
+
 import VeItorGProcData from '../modules/report/ducks/report';
 import ItionGData from '../modules/report/ducks/inspectionGroup';
-import AllItionGData from '../modules/dashboard/ducks/process';
-import PageTData from '../modules/dashboard/ducks/pageType';
-import PageData from '../modules/mapping/ducks/page';
 
 const rootReducer = combineReducers(Object.assign({
   alert,
-  VeItorGProcData,
-  ItionGData,
-  AllItionGData,
+  VehicleData,
+  ItorGData,
   PageTData,
   PageData,
+  VeItorGProcData,
+  ItionGData,
   routing: routerReducer
 }));
 

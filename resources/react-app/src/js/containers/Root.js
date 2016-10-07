@@ -18,8 +18,8 @@ class Root extends Component {
       <Provider store={store}>
         <Router history={history}>
           <Route name="閲覧" path="manager" component={App}>
-            <Route name="ダッシュボード" path="dashboard" component={Dashboard}/>
-            <Route name="マッピング" path="mapping/:id" component={Mapping}/>
+            <Route name="マッピング" path="dashboard" component={Dashboard}/>
+            <Route name="マッピング" path="mapping/:realtime/:id(/:start)(/:end)" component={Mapping}/>
             <Route name="検査結果照会" path="reference" component={Reference}/>
             <Route name="直レポート印刷" path="report" component={Report}/>
           </Route>

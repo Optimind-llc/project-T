@@ -93,88 +93,93 @@ class FailureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'ドライ',
+                'name'       => '加工不良',
                 'sort'       => '13',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'リブ欠け',
+                'name'       => 'ドライ',
                 'sort'       => '14',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '端末欠け',
+                'name'       => 'リブ欠け',
                 'sort'       => '15',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'バリ',
+                'name'       => '端末欠け',
                 'sort'       => '16',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '材質記号NG',
+                'name'       => 'バリ',
                 'sort'       => '17',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '仕上げ不良',
+                'name'       => '材質記号NG',
                 'sort'       => '18',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '穴糸残り',
+                'name'       => '仕上げ不良',
                 'sort'       => '19',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '接着剤はみ出',
+                'name'       => '穴糸残り',
                 'sort'       => '20',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '接着剤付着',
+                'name'       => '接着剤はみ出',
                 'sort'       => '21',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '汚れ',
+                'name'       => '接着剤付着',
                 'sort'       => '22',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '剥離',
+                'name'       => '汚れ',
                 'sort'       => '23',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'ボルト塗料剥',
+                'name'       => '剥離',
                 'sort'       => '24',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'ボルト欠',
+                'name'       => 'ボルト塗料剥',
                 'sort'       => '25',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'リテーナー欠',
+                'name'       => 'ボルト欠',
                 'sort'       => '26',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'リテーナー誤品',
+                'name'       => 'リテーナー欠',
                 'sort'       => '27',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '隙間大',
+                'name'       => 'リテーナー誤品',
                 'sort'       => '28',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '水漏れ',
+                'name'       => '隙間大',
                 'sort'       => '29',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '水漏れ',
+                'sort'       => '30',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -206,6 +211,7 @@ class FailureTableSeeder extends Seeder
         }
 
         $data = [
+            //成型
             [
                 'failure_id' => 1,
                 'process_id' => 'molding',
@@ -255,38 +261,58 @@ class FailureTableSeeder extends Seeder
                 'process_id' => 'molding',
                 'type'       => 2
             ],[
-                'failure_id' => 13,
-                'process_id' => 'molding',
-                'type'       => 2
-            ],[
                 'failure_id' => 14,
                 'process_id' => 'molding',
                 'type'       => 2
             ],[
-                'failure_id' => 30,
+                'failure_id' => 15,
                 'process_id' => 'molding',
                 'type'       => 2
             ],[
-                'failure_id' => 16,
+                'failure_id' => 31,
+                'process_id' => 'molding',
+                'type'       => 2
+            ],
+            //穴あけ
+            [
+                'failure_id' => 1,
                 'process_id' => 'holing',
                 'type'       => 2
             ],[
-                'failure_id' => 17,
+                'failure_id' => 2,
                 'process_id' => 'holing',
                 'type'       => 2
             ],[
-                'failure_id' => 18,
+                'failure_id' => 3,
                 'process_id' => 'holing',
                 'type'       => 2
             ],[
-                'failure_id' => 19,
+                'failure_id' => 4,
                 'process_id' => 'holing',
                 'type'       => 2
             ],[
-                'failure_id' => 30,
+                'failure_id' => 5,
                 'process_id' => 'holing',
                 'type'       => 2
             ],[
+                'failure_id' => 7,
+                'process_id' => 'holing',
+                'type'       => 2
+            ],[
+                'failure_id' => 13,
+                'process_id' => 'holing',
+                'type'       => 2
+            ],[
+                'failure_id' => 24,
+                'process_id' => 'holing',
+                'type'       => 2
+            ],[
+                'failure_id' => 31,
+                'process_id' => 'holing',
+                'type'       => 2
+            ],
+            //接着
+            [
                 'failure_id' => 1,
                 'process_id' => 'jointing',
                 'type'       => 1
@@ -311,25 +337,21 @@ class FailureTableSeeder extends Seeder
                 'process_id' => 'jointing',
                 'type'       => 2
             ],[
-                'failure_id' => 15,
-                'process_id' => 'jointing',
-                'type'       => 2
-            ],[
                 'failure_id' => 16,
                 'process_id' => 'jointing',
                 'type'       => 2
             ],[
-                'failure_id' => 20,
+                'failure_id' => 17,
                 'process_id' => 'jointing',
-                'type'       => 1
+                'type'       => 2
             ],[
                 'failure_id' => 21,
                 'process_id' => 'jointing',
-                'type'       => 2
+                'type'       => 1
             ],[
                 'failure_id' => 22,
                 'process_id' => 'jointing',
-                'type'       => 2
+                'type'       => 1
             ],[
                 'failure_id' => 23,
                 'process_id' => 'jointing',
@@ -337,13 +359,13 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 24,
                 'process_id' => 'jointing',
-                'type'       => 2
+                'type'       => 1
             ],[
                 'failure_id' => 25,
                 'process_id' => 'jointing',
                 'type'       => 2
             ],[
-                'failure_id' => 28,
+                'failure_id' => 26,
                 'process_id' => 'jointing',
                 'type'       => 2
             ],[
@@ -352,6 +374,10 @@ class FailureTableSeeder extends Seeder
                 'type'       => 2
             ],[
                 'failure_id' => 30,
+                'process_id' => 'jointing',
+                'type'       => 2
+            ],[
+                'failure_id' => 31,
                 'process_id' => 'jointing',
                 'type'       => 2
             ],

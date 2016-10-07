@@ -22,15 +22,24 @@ Route::get('manager/dashboard', 'Manager\ReferenceController@index');
 Route::get('manager/reference', 'Manager\ReferenceController@index');
 Route::get('manager/mapping', 'Manager\ReferenceController@index');
 Route::get('manager/report', 'Manager\ReferenceController@index');
-Route::get('manager/mapping/{id}', 'Manager\ReferenceController@index');
+Route::get('manager/mapping/{realtime}/{id}/{start?}/{end?}', 'Manager\ReferenceController@index');
 
 Route::get('manager/pdf/report/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@report');
 
-Route::get('show', 'ShowController@showTableData');
+Route::get('show', 'ShowController@tableData');
+Route::get('show/pageType/{vehicle}/{process}/{inspection}/{division}/{line?}', 'ShowController@pageType')
+	->where([
+		'vehicle' => '[a-zA-Z0-9]+',
+		'process' => '[a-z]+',
+		'inspection' => '[a-z]+',
+		'division' => '[a-z]+',
+		'line' => '[0-9]+',
+	]);
+
+Route::get('show/page/{realtime}/{pageType_id}/{start?}/{end?}', 'ShowController@page')->where('pageType_id', '[0-9]+');;
+
 Route::get('show/inspectionGroup', 'ShowController@inspectionGroup');
 Route::get('show/allInspectionGroupNow', 'ShowController@allInspectionGroupNow');
-Route::get('show/pageType', 'ShowController@pageType');
-Route::get('show/page/{pageType_id}', 'ShowController@page')->where('pageType_id', '[0-9]+');;
 
 // $api = app('Dingo\Api\Routing\Router');
 

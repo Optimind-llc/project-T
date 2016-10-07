@@ -85,4 +85,26 @@ class Inspection extends Model
             ])
             ->first();
     }
+
+    /**
+     * lineが指定された時はlineでフィルタリング
+     * lineが指定されなかった時は人した最初のものを返す
+     */
+    public function getGroupByVehicleDivisionLine($vehicle, $division_en, $line = null)
+    {
+        if ($line) {
+            return $this->groups()
+                ->where('vehicle_num', $vehicle)
+                ->where('division_en', $division_en)
+                ->where('line', $line)
+                ->select(['id', 'vehicle_num', 'inspection_id', 'division_en', 'line'])
+                ->first();
+        }
+
+        return $this->groups()
+            ->where('vehicle_num', $vehicle)
+            ->where('division_en', $division_en)
+            ->select(['id', 'vehicle_num', 'inspection_id', 'division_en', 'line'])
+            ->first();
+    }
 }

@@ -180,6 +180,7 @@ class CreateTablesRelatedToManager extends Migration
             $table->increments('id');
             $table->integer('pn')->unique()->unsigned();
             $table->string('name')->unique();
+            $table->integer('sort')->unsigned()->default(1);
             $table->string('vehicle_num');
             $table->timestamps();
 

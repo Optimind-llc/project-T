@@ -7,8 +7,7 @@ module.exports = {
   //devtool: 'source-map',
   devtool: 'cheap-module-source-map',
   entry: [
-    'bootstrap-loader/extractStyles',
-    './src/index',
+    './src/index'
   ],
   output: {
     path: path.join(__dirname, '../../../public/dist'),

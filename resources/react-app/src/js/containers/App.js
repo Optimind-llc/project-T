@@ -24,7 +24,7 @@ class App extends Component {
     const { children, routes, alerts, actions } = this.props;
 
     const links = [
-      { en: 'dashboard', name: 'ダッシュボード' },
+      { en: 'dashboard', name: 'マッピング' },
       { en: 'reference', name: '検査結果照会' },
       { en: 'report', name: '直レポート印刷' }
     ]

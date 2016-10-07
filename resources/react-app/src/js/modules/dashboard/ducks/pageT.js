@@ -1,9 +1,9 @@
 import {fromJS, Map as iMap, List as iList} from 'immutable';
 import { CALL_API } from '../../../middleware/fetchMiddleware';
 
-export const REDUEST_Page_DATA = 'REDUEST_Page_DATA';
-export const REDUEST_Page_DATA_SUCCESS = 'REDUEST_Page_DATA_SUCCESS';
-export const REDUEST_Page_DATA_FAIL = 'REDUEST_Page_DATA_FAIL';
+export const REDUEST_PageT_DATA = 'REDUEST_PageT_DATA';
+export const REDUEST_PageT_DATA_SUCCESS = 'REDUEST_PageT_DATA_SUCCESS';
+export const REDUEST_PageT_DATA_FAIL = 'REDUEST_PageT_DATA_FAIL';
 
 const initialState = {
   data: null,
@@ -13,20 +13,20 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case REDUEST_Page_DATA:
+    case REDUEST_PageT_DATA:
       return Object.assign({}, state, {
         isFetching: true,
         didInvalidate: false
       });
 
-    case REDUEST_Page_DATA_SUCCESS:
+    case REDUEST_PageT_DATA_SUCCESS:
       return Object.assign({}, state, {
         data: action.payload.data,
         isFetching: false,
         didInvalidate: false
       });
 
-    case REDUEST_Page_DATA_FAIL:
+    case REDUEST_PageT_DATA_FAIL:
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: true
@@ -37,21 +37,21 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export function getPageData(realtime, pageId, start = null, end = null) {
+export function getPageTData(v, p, i, d, l) {
   return {
     [CALL_API]: {
       types: [
-        REDUEST_Page_DATA,
-        REDUEST_Page_DATA_SUCCESS,
-        REDUEST_Page_DATA_FAIL
+        REDUEST_PageT_DATA,
+        REDUEST_PageT_DATA_SUCCESS,
+        REDUEST_PageT_DATA_FAIL
       ],
-      endpoint: `/show/page/${realtime}/${pageId}${start?'/'+start:''}${end?'/'+end:''}`,
+      endpoint: `/show/pageType/${v}/${p}/${i}/${d}${l?'/'+l:''}`,
       method: 'GET',
       body: null
     }
   };
 }
 
-export const pageActions = {
-  getPageData,
+export const pageTActions = {
+  getPageTData,
 };
