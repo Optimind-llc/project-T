@@ -21,8 +21,8 @@ Route::post('client/inspection', 'Client\InspectionController@saveInspection');
 Route::get('manager/dashboard', 'Manager\ReferenceController@index');
 Route::get('manager/reference', 'Manager\ReferenceController@index');
 Route::get('manager/mapping', 'Manager\ReferenceController@index');
+Route::get('manager/mapping/{pageType}/{itorG}', 'Manager\ReferenceController@index');
 Route::get('manager/report', 'Manager\ReferenceController@index');
-Route::get('manager/mapping/{realtime}/{id}/{start?}/{end?}', 'Manager\ReferenceController@index');
 
 Route::get('manager/pdf/report/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@report');
 
@@ -36,7 +36,11 @@ Route::get('show/pageType/{vehicle}/{process}/{inspection}/{division}/{line?}', 
 		'line' => '[0-9]+',
 	]);
 
-Route::get('show/page/{realtime}/{pageType_id}/{start?}/{end?}', 'ShowController@page')->where('pageType_id', '[0-9]+');;
+Route::get('show/page/{pageType}/{itorG}', 'ShowController@page')
+	->where([
+		'pageType' => '[0-9]+',
+		'itorG' => '[a-zA-Z]+'
+	]);
 
 Route::get('show/inspectionGroup', 'ShowController@inspectionGroup');
 Route::get('show/allInspectionGroupNow', 'ShowController@allInspectionGroupNow');

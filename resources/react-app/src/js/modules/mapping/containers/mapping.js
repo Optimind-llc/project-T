@@ -18,7 +18,7 @@ class Mapping extends Component {
     const { actions: {getPageData} } = props;
 
     props.PageData.data = null;
-    getPageData(props.realtime, props.id, props.start, props.end);
+    getPageData(props.id, props.itorG, props.start, props.end);
 
     this.state = {
       intervalId: null,
@@ -39,11 +39,11 @@ class Mapping extends Component {
   }
 
   componentDidMount() {
-    const { realtime, id, start, end, PageData, actions: {getPageData} } = this.props;
+    const { id, itorG, start, end, PageData, actions: {getPageData} } = this.props;
     const { interval } = this.state;
 
-    if (realtime == 'realtime') {
-      const intervalId = setInterval(()=> getPageData(realtime, id, start, end), interval);
+    if (!start && !end) {
+      const intervalId = setInterval(()=> getPageData(id, itorG), interval);
       this.setState({intervalId});
     }
 
@@ -93,7 +93,7 @@ class Mapping extends Component {
   renderFilter() {
     const { data, isFetching } = this.props.PageData;
     const { failure, hole, holeStatus, iFailure, nFailure, dropdown, failureFilter } = this.state;
-console.log(failureFilter);
+
     if(failure && !hole) {
       return (
         <div className="filter-wrap">
@@ -389,20 +389,20 @@ console.log(failureFilter);
 }
 
 Mapping.propTypes = {
-  realtime: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  itorG: PropTypes.string.isRequired,
   start: PropTypes.string.isRequired,
   end: PropTypes.string.isRequired,
-  PageData: PropTypes.object.isRequired,
+  PageData: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    realtime: ownProps.params.realtime,
     id: ownProps.params.id,
-    start: ownProps.params.start,
-    end: ownProps.params.end,
-    PageData: state.PageData,
+    itorG: ownProps.params.itorG,
+    start: ownProps.location.query.start,
+    end: ownProps.location.query.end,
+    PageData: state.PageData
   };
 }
 

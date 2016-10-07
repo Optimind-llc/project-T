@@ -288,11 +288,28 @@ class ShowController extends Controller
         return ['data' => $page_types];
     }
 
-    public function page($realtime, $pageType_id, $start = null, $end = null)
+    public function page($pageType, $itorG, Request $request)
     {
+        $validator = app('validator')->make(
+            $request->all(),
+            [
+                'start' => ['alpha_dash'],
+                'end' => ['alpha_dash'],
+                'panalIp' => ['alpha_dash']
+            ]
+        );
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Validation error', $validator->errors());
+        }
+
         $now = Carbon::now();
 
-        if ($realtime == 'realtime') {
+        if (isset($request->start) && isset($request->end)) {
+            $start_at = Carbon::createFromFormat('Y-m-d-H-i-s', $request->start);
+            $end_at = Carbon::createFromFormat('Y-m-d-H-i-s', $request->end);
+        }
+        else {
             $today = Carbon::today();
             $t2_end_at = $today->copy()->addHours(1);
             $t1_start_at = $today->copy()->addHours(6);
@@ -311,13 +328,11 @@ class ShowController extends Controller
 
             $end_at = $now;
         }
-        elseif ($realtime == 'notRealtime') {
-            $start_at = Carbon::createFromFormat('Y-m-d-H-i-s', $start);
-            $end_at = Carbon::createFromFormat('Y-m-d-H-i-s', $end);
-        }
-        else {
-            $start_at = $now;
-            $end_at = $now;
+
+        switch ($request->itorG) {
+            case 'W': $itorG_name = ['白直']; break;
+            case 'Y': $itorG_name = ['黄直']; break;
+            case 'both': $itorG_name = ['白直', '黄直']; break;
         }
 
         $page_type = PageType::with([
@@ -339,10 +354,13 @@ class ShowController extends Controller
                 'group.inspection.process.failures' => function ($q) {
                     $q->select(['id', 'name', 'sort']);
                 },
-                'pages' => function ($q) use($start_at, $end_at) {
-                    $q->where('created_at', '>=', $start_at)
-                        ->where('created_at', '<=', $end_at)
-                        ->select(['id', 'status', 'page_type_id']);
+                'pages' => function ($q) use ($start_at, $end_at, $itorG_name) {
+                    $q->join('inspection_families as f', function ($join) use ($itorG_name) {
+                        $join->on('pages.family_id', '=', 'f.id')
+                            ->whereIn('f.inspector_group', $itorG_name);
+                    })
+                    ->where('pages.created_at', '>=', $start_at)
+                    ->where('pages.created_at', '<=', $end_at);
                 },
                 'pages.holes' => function ($q) {
                     $q->select(['id', 'point', 'label', 'direction', 'part_type_id']);
@@ -363,7 +381,7 @@ class ShowController extends Controller
                     $q->select(['id', 'name', 'pn']);
                 }
             ])
-            ->find($pageType_id);
+            ->find($pageType);
 
         if (!$page_type instanceof PageType) {
             throw new NotFoundHttpException('Page type not found');
@@ -389,7 +407,8 @@ class ShowController extends Controller
             }),
             'pages' => $page_type->pages->map(function($page) {
                 return [
-                    'status' => $page->status
+                    'status' => $page->status,
+                    'itorG' => $page->inspector_group
                 ];
             }),
             'holes' => $page_type->pages->reduce(function ($carry, $page) {
