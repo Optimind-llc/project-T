@@ -79,7 +79,7 @@ class InsertInline extends Command
                     // Create new Family, inspection_group_id = 3
                     $newFamily = new InspectionFamily;
                     $newFamily->inspection_group_id = 3;
-                    $newFamily->inspector_group = null;
+                    $newFamily->inspector_group = '不明';
                     $newFamily->created_by = '精度検査';
                     $newFamily->save();
 

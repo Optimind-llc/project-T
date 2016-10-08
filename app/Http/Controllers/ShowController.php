@@ -330,9 +330,9 @@ class ShowController extends Controller
         }
 
         switch ($request->itorG) {
-            case 'W': $itorG_name = ['白直']; break;
-            case 'Y': $itorG_name = ['黄直']; break;
-            case 'both': $itorG_name = ['白直', '黄直']; break;
+            case 'W': $itorG_name = ['白直', '不明']; break;
+            case 'Y': $itorG_name = ['黄直', '不明']; break;
+            case 'both': $itorG_name = ['白直', '黄直', '不明']; break;
         }
 
         $page_type = PageType::with([
@@ -360,10 +360,14 @@ class ShowController extends Controller
                             ->whereIn('f.inspector_group', $itorG_name);
                     })
                     ->where('pages.created_at', '>=', $start_at)
-                    ->where('pages.created_at', '<=', $end_at);
+                    ->where('pages.created_at', '<=', $end_at)
+                    ->select(['f.id as family_id', 'pages.id', 'pages.page_type_id']);
                 },
                 'pages.holes' => function ($q) {
                     $q->select(['id', 'point', 'label', 'direction', 'part_type_id']);
+                },
+                'pages.inlines' => function ($q) {
+                    $q->select(['inlines.id', 'point', 'label_point', 'side', 'face', 'standard_tolerance', 'sort', 'part_type_id']);
                 },
                 'pages.holes.partType' => function ($q) {
                     $q->select(['id', 'pn']);
@@ -389,6 +393,7 @@ class ShowController extends Controller
 
         $collection = collect();
         $collection2 = collect();
+        $collection3 = collect();
 
         $page_type = [
             'id' => $page_type->id,
@@ -427,6 +432,21 @@ class ShowController extends Controller
             ->map(function($hole) {
                 return $hole->groupBy('id');
             }),
+            'inlines' => $page_type->pages->reduce(function ($carry, $page) {
+                return $carry->merge($page->inlines->map(function($hole) {
+                    return [
+                        'id' => $hole->id,
+                        'point' => $hole->point,
+                        'labelPoint' => $hole->label_point,
+                        'side' => $hole->side,
+                        'face' => $hole->face,
+                        'tolerance' => $hole->standard_tolerance,
+                        'sort' => $hole->sort,
+                        'status' => $hole->pivot->status
+                    ];
+                }));
+            }, $collection2)
+            ->groupBy('id'),
             'failures' => $page_type->pages->reduce(function ($carry, $page) {
                 return $carry->merge($page->failurePositions->map(function($failure) {
                     return [
@@ -437,7 +457,7 @@ class ShowController extends Controller
                         'part' => $failure->part->partType->pn
                     ];
                 }));
-            }, $collection2)
+            }, $collection3)
             ->groupBy('part'),
             'failureTypes' => $page_type->group->inspection->process->failures->map(function($f) {
                 return [
@@ -450,5 +470,21 @@ class ShowController extends Controller
         ];
 
         return ['data' => $page_type];
+    }
+
+    public function test()
+    {
+        $itorG_name = ['不明'];
+
+        return PageType::with([
+            'pages' => function ($q) use ($itorG_name) {
+                $q->join('inspection_families as f', function ($join) use ($itorG_name) {
+                    $join->on('pages.family_id', '=', 'f.id');
+                })
+                ->select(['f.id as family_id', 'pages.id', 'pages.page_type_id']);
+            },
+            'pages.inlines'
+        ])
+        ->find(3);
     }
 }

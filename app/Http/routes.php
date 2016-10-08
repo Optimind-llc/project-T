@@ -31,7 +31,7 @@ Route::get('show/pageType/{vehicle}/{process}/{inspection}/{division}/{line?}', 
 	->where([
 		'vehicle' => '[a-zA-Z0-9]+',
 		'process' => '[a-z]+',
-		'inspection' => '[a-z]+',
+		'inspection' => '[a-z_]+',
 		'division' => '[a-z_]+',
 		'line' => '[0-9]+'
 	]);
@@ -44,6 +44,12 @@ Route::get('show/page/{pageType}/{itorG}', 'ShowController@page')
 
 Route::get('show/inspectionGroup', 'ShowController@inspectionGroup');
 Route::get('show/allInspectionGroupNow', 'ShowController@allInspectionGroupNow');
+
+
+
+
+Route::get('show/test', 'ShowController@test');
+
 
 // $api = app('Dingo\Api\Routing\Router');
 

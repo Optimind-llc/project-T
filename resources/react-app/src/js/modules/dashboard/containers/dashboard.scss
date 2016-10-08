@@ -6,8 +6,13 @@
     padding: 10px 20px;
 
     h4 {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+      align-items: center;
       margin: 14px 0;
       font-weight: 600;
+      border-bottom: 1px dotted #DDD;
 
       span {
         display: inline-block;
@@ -20,6 +25,17 @@
             content: "：";
             float: right;
           }
+        }
+
+        &:nth-child(3) {
+          margin-left: 50px;
+          padding: 1px 4px;
+          background-color: #BFBFBF;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: 300;
+          color: white;
+          cursor: pointer;
         }
       }
     }
@@ -181,16 +197,14 @@
       justify-content: flex-start;
       margin-top: 20px;
 
-      .range-date-wrap {
+      > div {
         display: flex;
         flex-flow: column nowrap;
-        flex-basis: 430px;
         height: 80px;
-        border-radius: 4px;
         background-color: #EEE;
+        border-radius: 4px;
         color: #9F9F9F;
         cursor: pointer;
-        margin-right: 5px;
 
         p {
           text-align: center;
@@ -202,21 +216,11 @@
           cursor: default;
           color: #FFF;
         }
-
-        > div {
-          display: flex;
-          flex-flow: row wrap;
-          justify-content: center;
-
-          p {
-            line-height: 36px;
-            margin: 0 5px;
-          }
-        }
       }
 
       button {
         flex-basis: 280px;
+        margin-right: 5px;
         border: none;
         border-radius: 4px;
         background-color: #EEE;
@@ -231,7 +235,36 @@
         }
 
         &:nth-child(3) {
-          margin-left: 5px;
+          margin-left: 10px;
+        }
+      }
+
+      .term-wrap {
+        flex-basis: 430px;
+
+        > div {
+          display: flex;
+          flex-flow: row wrap;
+          justify-content: center;
+
+          p {
+            line-height: 36px;
+            margin: 0 5px;
+          }
+        }
+      }
+
+      .panel-id-wrap {
+        flex-basis: 280px;
+        margin-left: 10px;
+
+        input {
+          margin: 0 20px;
+          padding: 0 1px;
+          height: 34px;
+          border-radius: 4px;
+          border: 1px solid rgb(204, 204, 204);
+          font-size: 14px;
         }
       }
     }

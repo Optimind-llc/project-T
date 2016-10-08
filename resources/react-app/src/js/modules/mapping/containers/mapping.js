@@ -30,7 +30,8 @@ class Mapping extends Component {
       dropdown: false,
       failureFilter: [],
       hole: false,
-      holeStatus: 0
+      holeStatus: 0,
+      inline: true
     };
   }
 
@@ -296,7 +297,8 @@ class Mapping extends Component {
                 <div className="figure">       
                   <img src={data.path}/>
                   <svg>
-                    {state.failure &&
+                    {
+                      state.failure &&
                       Object.keys(data.failures).map(part => {
                         return data.failures[part].filter(f => {
                           if (state.iFailure && state.nFailure) {
@@ -322,8 +324,8 @@ class Mapping extends Component {
                           );
                         })
                       })
-                    }
-                    {state.hole &&
+                    }{
+                      state.hole &&
                       Object.keys(data.holes).map(part => {
                         return Object.keys(data.holes[part]).map(id => {
                           const holes = this.formatHoles(data.holes[part][id]);
@@ -343,6 +345,27 @@ class Mapping extends Component {
                                 </text>
                             </g>
                           )
+                        })
+                      })
+                    }{
+                      state.inline &&
+                      Object.keys(data.inlines).map(id => {
+                        return data.inlines[id].map(i => {
+                          const width = 80;
+                          const point = i.point.split(',');
+                          const x = point[0]/2;
+                          const y = point[1]/2;
+
+                          const labelPoint = i.labelPoint.split(',');
+                          const lx = labelPoint[0]/2;
+                          const ly = labelPoint[1]/2;
+                          return (
+                            <g>
+                              <circle cx={x} cy={y} r={3} fill="red" />
+                              <rect x={lx} y={ly} width={width} height="30" fill="red"></rect>
+                              <line x1={x} y1={y} x2={i.side == 'left' ? lx : lx + width} y2={ly+15} stroke="#e74c3c" stroke-width="10" />
+                            </g>
+                          );
                         })
                       })
                     }

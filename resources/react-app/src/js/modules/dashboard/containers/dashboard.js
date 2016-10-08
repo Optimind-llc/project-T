@@ -20,7 +20,6 @@ import RangeCalendar from '../components/rangeCalendar/rangeCalendar';
 class Dashboard extends Component {
   constructor(props, context) {
     super(props, context);
-
     const { PageTData, actions } = props;
 
     actions.getVehicleData();
@@ -30,11 +29,10 @@ class Dashboard extends Component {
       itorG: null,
       itionG: null,
       page: null,
-      narrowedBy: null,
+      narrowedBy: 'realtime',
       startDate: moment(),
       endDate: moment(),
       panelId: null
-      // pageTypeId: data ? data[0].id : 1,
     };
   }
 
@@ -61,32 +59,55 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { vehicle, itorG, showItionG, itionG, page, narrowedBy, startDate, endDate } = this.state;
+    const { vehicle, itorG, showItionG, itionG, page, narrowedBy, startDate, endDate, panelId } = this.state;
     const { VehicleData, ItorGData, AllItionGData, PageTData, actions } = this.props;
 
     const format = 'YYYY-MM-DD-HH-mm-ss';
     let url = '';
-    // if (state.realtime) url = `/manager/mapping/realtime/${state.pageTypeId}`;
-    // else url = `/manager/mapping/notRealtime/${state.pageTypeId}/${state.startDate.format(format)}/${state.endDate.format(format)}`;
+
+    if (page) {
+      if (narrowedBy == 'realtime') {
+        url = `${page.id}/${itorG}`;
+      }
+      else if (narrowedBy == 'term') {
+        url = `${page.id}/${itorG}?start=${startDate.format(format)}&end=${endDate.format(format)}`;
+      }
+      else if (narrowedBy == 'panelId') {
+        url = `${page.id}/${itorG}?panelId=${panelId}`;
+      }
+    }
 
     return (
       <div id="dashboardWrap">
         {
           vehicle &&
           <div className="header bg-white">
-            <h4><span>車種</span><span>{vehicle.c}</span></h4>
+            <h4>
+              <span>車種</span>
+              <span>{vehicle.c}</span>
+              <span onClick={() => this.setState({vehicle: null, itorG: null, itionG: null, page: null})}>変更する</span>
+            </h4>
             {
               itorG &&
-              <h4><span>直</span><span>{itorG == 'Y' ? '黄直' : itorG == 'W' ? '白直' : '両直'}</span></h4>
+              <h4>
+                <span>直</span>
+                <span>{itorG == 'Y' ? '黄直' : itorG == 'W' ? '白直' : '両直'}</span>
+                <span onClick={() => this.setState({itorG: null, itionG: null, page: null})}>変更する</span>
+              </h4>
             }{
               itionG &&
-              <h4><span>区分</span><span className={itionG.p}>{itionG.string}</span></h4>
+              <h4>
+                <span>区分</span>
+                <span className={itionG.p}>{itionG.string}</span>
+                <span onClick={() => this.setState({itionG: null, page: null})}>変更する</span>
+              </h4>
             }{
               page &&
-              <h4><span>ページ</span><span>{page}</span></h4>
-            }{
-              narrowedBy &&
-              <h4><span>条件</span><span>{narrowedBy}</span></h4>
+              <h4>
+                <span>ページ</span>
+                <span>{page.number}</span>
+                <span onClick={() => this.setState({page: null})}>変更する</span>
+              </h4>
             }
           </div>
         }{
@@ -341,8 +362,8 @@ class Dashboard extends Component {
                         className="jointing"
                         onClick={() => this.setState({itionG: {
                           p: 'jointing',
-                          i: 'check',
-                          d: 'adjust',
+                          i: 'adjust',
+                          d: 'inner_assy',
                           string: '接着工程　手直し　インナーASSY'
                         }}, () => this.serchPageT())}
                       >
@@ -355,13 +376,13 @@ class Dashboard extends Component {
             </div>
           </div>
         }{
-          PageTData.data && itionG && !page &&
+          PageTData.data && !PageTData.isFetching && itionG && !page &&
           <div className="select-panel step4 bg-white">
             {
               PageTData.data.map(p =>
                 <div
                   className="page-wrap"
-                  onClick={() => this.setState({page: p.number})}
+                  onClick={() => this.setState({page: p})}
                 >
                   <p><span>Page </span>{p.number}</p>
                   <figure><img src={p.path}/></figure>
@@ -372,9 +393,15 @@ class Dashboard extends Component {
         }{
           PageTData.data && page && 
           <div className="select-panel step5 bg-white">
+            <button
+              className={narrowedBy === 'realtime' ? "active" : ""}
+              onClick={() => this.setState({narrowedBy: 'realtime'})}
+            >
+              リアルタイム更新（現直＋前直）
+            </button>
             <div
-              className={narrowedBy === 'date' ? "range-date-wrap" : "range-date-wrap active"}
-              onClick={() => this.setState({realtime: false})}
+              className={narrowedBy === 'term' ? "term-wrap active" : "term-wrap"}
+              onClick={() => this.setState({narrowedBy: 'term'})}
             >
               <p>日時を指定</p>
               <div>
@@ -395,24 +422,19 @@ class Dashboard extends Component {
                 />
               </div>
             </div>
-            <button
-              className={narrowedBy === 'realtime' ? "active" : ""}
-              onClick={() => this.setState({realtime: true})}
+            <div
+              className={narrowedBy === 'panelId' ? "panel-id-wrap active" : "panel-id-wrap"}
+              onClick={() => this.setState({narrowedBy: 'panelId'})}
             >
-              リアルタイム更新（現直＋前直）
-            </button>
-            <button
-              className={narrowedBy === 'realtime' ? "active" : ""}
-              onClick={() => this.setState({realtime: true})}
-            >
-              パネルIDを指定
-            </button>
+              <p>パネルIDを指定</p>
+              <input></input>
+            </div>
           </div>
         }{
           page &&
           <button
             className="mapping-btn"
-            onClick={() => actions.push(url)}
+            onClick={() => actions.push(`/manager/mapping/${url}`)}
           >
             この条件でマッピング
           </button>

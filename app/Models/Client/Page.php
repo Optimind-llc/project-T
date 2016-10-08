@@ -64,6 +64,17 @@ class Page extends Model
         )
         ->withPivot('status');
     }
+
+    public function inlines()
+    {
+        return $this->belongsToMany(
+            'App\Models\Inline',
+            'inline_page',
+            'page_id',
+            'inline_id'
+        )
+        ->withPivot('status');
+    }
 }
 
 

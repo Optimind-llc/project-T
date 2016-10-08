@@ -304,6 +304,7 @@ class CreateTablesRelatedToManager extends Migration
             $table->increments('id');
             $table->string('point');
             $table->string('label_point');
+            $table->string('side');
             $table->string('face')->nullable();
             $table->string('position')->nullable();
             $table->string('calibration')->nullable();
