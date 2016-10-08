@@ -32,7 +32,7 @@ class Dashboard extends Component {
       narrowedBy: 'realtime',
       startDate: moment(),
       endDate: moment(),
-      panelId: null
+      panelId: ''
     };
   }
 
@@ -410,7 +410,6 @@ class Dashboard extends Component {
                   setState={startDate => this.setState({
                     startDate: startDate
                   })}
-                  disabled={true}
                 />
                 <p>〜</p>
                 <RangeCalendar
@@ -418,7 +417,6 @@ class Dashboard extends Component {
                   setState={endDate => this.setState({
                     endDate: endDate
                   })}
-                  disabled={true}
                 />
               </div>
             </div>
@@ -427,7 +425,11 @@ class Dashboard extends Component {
               onClick={() => this.setState({narrowedBy: 'panelId'})}
             >
               <p>パネルIDを指定</p>
-              <input type="text" value={panelId} onChange={(e) => this.setState({panelId: e})}/>
+              <input
+                type="text"
+                value={panelId}
+                onChange={(e) => this.setState({panelId: e.target.value})}
+              />
             </div>
           </div>
         }{

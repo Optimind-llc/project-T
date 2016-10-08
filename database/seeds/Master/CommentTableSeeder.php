@@ -77,7 +77,7 @@ class CommentTableSeeder extends Seeder
                 'inspection_id' => 6,
                 'created_at'    => $now,
                 'updated_at'    => $now
-            ]
+            ],
             //手直し
             [
                 'message'       => '削り',
