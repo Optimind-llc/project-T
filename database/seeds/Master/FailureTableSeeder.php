@@ -231,7 +231,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 5,
                 'process_id' => 'molding',
-                'type'       => 2
+                'type'       => 1
             ],[
                 'failure_id' => 6,
                 'process_id' => 'molding',

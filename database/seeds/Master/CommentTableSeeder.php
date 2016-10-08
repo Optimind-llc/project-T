@@ -28,13 +28,56 @@ class CommentTableSeeder extends Seeder
         }
 
         $data = [
+            //仕上げ
             [
-                'message'       => '水漏れ',
+                'message'       => '削り',
                 'sort'          => 1,
                 'inspection_id' => 6,
                 'created_at'    => $now,
                 'updated_at'    => $now
-            ],
+            ],[
+                'message'       => '除去',
+                'sort'          => 2,
+                'inspection_id' => 6,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],[
+                'message'       => '樹脂盛り',
+                'sort'          => 3,
+                'inspection_id' => 6,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],[
+                'message'       => '交換',
+                'sort'          => 4,
+                'inspection_id' => 6,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],[
+                'message'       => '再接着',
+                'sort'          => 5,
+                'inspection_id' => 6,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],[
+                'message'       => '水漏れ',
+                'sort'          => 6,
+                'inspection_id' => 6,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],[
+                'message'       => '手直し不要',
+                'sort'          => 7,
+                'inspection_id' => 6,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],[
+                'message'       => 'その他',
+                'sort'          => 8,
+                'inspection_id' => 6,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ]
             //手直し
             [
                 'message'       => '削り',

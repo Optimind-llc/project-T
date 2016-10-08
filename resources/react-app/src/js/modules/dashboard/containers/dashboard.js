@@ -427,7 +427,7 @@ class Dashboard extends Component {
               onClick={() => this.setState({narrowedBy: 'panelId'})}
             >
               <p>パネルIDを指定</p>
-              <input></input>
+              <input type="text" value={panelId} onChange={(e) => this.setState({panelId: e})}/>
             </div>
           </div>
         }{
