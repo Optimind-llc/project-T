@@ -313,6 +313,7 @@ class InspectionController extends Controller
 
         $newFamily = new InspectionFamily;
         $newFamily->inspection_group_id = $groupId;
+        $newFamily->status = $family['status'];
         $newFamily->inspector_group = $family['inspectorGroup'];
         $newFamily->created_by = $family['inspector'];
         $newFamily->save();

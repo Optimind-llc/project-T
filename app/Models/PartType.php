@@ -35,4 +35,14 @@ class PartType extends Model
             'number'
         );
     }
+
+    public function parts()
+    {
+        return $this->hasMany(
+            'App\Models\Client\Part',
+            'part_type_id',
+            'id'
+        );
+    }
+
 }

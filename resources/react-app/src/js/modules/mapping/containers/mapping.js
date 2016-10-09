@@ -18,7 +18,7 @@ class Mapping extends Component {
     const { actions: {getPageData} } = props;
 
     props.PageData.data = null;
-    getPageData(props.id, props.itorG, props.start, props.end);
+    getPageData(props.id, props.itorG, props.start, props.end, props.panelId);
 
     this.state = {
       intervalId: null,
@@ -40,11 +40,11 @@ class Mapping extends Component {
   }
 
   componentDidMount() {
-    const { id, itorG, start, end, PageData, actions: {getPageData} } = this.props;
+    const { id, itorG, start, end, panelId, PageData, actions: {getPageData} } = this.props;
     const { interval } = this.state;
 
     if (!start && !end) {
-      const intervalId = setInterval(()=> getPageData(id, itorG), interval);
+      const intervalId = setInterval(()=> getPageData(id, itorG, start, end, panelId), interval);
       this.setState({intervalId});
     }
 
@@ -192,7 +192,6 @@ class Mapping extends Component {
         </div>
       );      
     }
-
   }
 
   renderContent() {
@@ -266,7 +265,7 @@ class Mapping extends Component {
   }
 
   render() {
-    const { isFetching, data } = this.props.PageData;
+    const { start, end, PageData:{ isFetching, data }} = this.props;
     const { state } = this;
 
     return (
@@ -280,6 +279,7 @@ class Mapping extends Component {
                 <span>{data.inspection}</span>
                 <span>{`${data.line == '1' ? 'ライン①' : data.line == '2' ? 'ライン②' : ''}`}</span>
                 <span>{`Page${data.number}`}</span>
+                <span>{(start && end) ? `${start} ~ ${end}` : 'リアルタイム更新中'}</span>
               </h4>
             </div>
             <div className="mapping-body">
@@ -425,6 +425,7 @@ function mapStateToProps(state, ownProps) {
     itorG: ownProps.params.itorG,
     start: ownProps.location.query.start,
     end: ownProps.location.query.end,
+    panelId: ownProps.location.query.panelId,
     PageData: state.PageData
   };
 }

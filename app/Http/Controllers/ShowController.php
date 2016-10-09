@@ -295,7 +295,7 @@ class ShowController extends Controller
             [
                 'start' => ['alpha_dash'],
                 'end' => ['alpha_dash'],
-                'panalIp' => ['alpha_dash']
+                'panelId' => ['alpha_dash']
             ]
         );
 
@@ -335,6 +335,8 @@ class ShowController extends Controller
             case 'both': $itorG_name = ['白直', '黄直', '不明']; break;
         }
 
+        $panel_id = $request->panelId;
+
         $page_type = PageType::with([
                 'figure' => function ($q) {
                     $q->select(['id', 'path']);
@@ -354,20 +356,33 @@ class ShowController extends Controller
                 'group.inspection.process.failures' => function ($q) {
                     $q->select(['id', 'name', 'sort']);
                 },
-                'pages' => function ($q) use ($start_at, $end_at, $itorG_name) {
+                'pages' => function ($q) use ($start_at, $end_at, $itorG_name, $panel_id) {
                     $q->join('inspection_families as f', function ($join) use ($itorG_name) {
                         $join->on('pages.family_id', '=', 'f.id')
                             ->whereIn('f.inspector_group', $itorG_name);
                     })
+                    ->join('part_page as pp', function ($join) use ($itorG_name) {
+                        $join->on('pp.page_id', '=', 'pages.id');
+                    })
+                    ->join('parts', function ($join) use ($itorG_name, $panel_id) {
+                        $aaa = $join->on('pp.part_id', '=', 'parts.id');
+                        if ($panel_id) {
+                            $aaa->where('parts.panel_id', '=', $panel_id);
+                        }
+                    })
                     ->where('pages.created_at', '>=', $start_at)
                     ->where('pages.created_at', '<=', $end_at)
-                    ->select(['f.id as family_id', 'pages.id', 'pages.page_type_id']);
+                    ->groupBy('id')
+                    ->select([
+                        'f.id as family_id',
+                        'pages.id as id',
+                        'pages.page_type_id',
+                        'pp.status',
+                        'parts.panel_id'
+                    ]);
                 },
                 'pages.holes' => function ($q) {
                     $q->select(['id', 'point', 'label', 'direction', 'part_type_id']);
-                },
-                'pages.inlines' => function ($q) {
-                    $q->select(['inlines.id', 'point', 'label_point', 'side', 'face', 'standard_tolerance', 'sort', 'part_type_id']);
                 },
                 'pages.holes.partType' => function ($q) {
                     $q->select(['id', 'pn']);
@@ -383,7 +398,10 @@ class ShowController extends Controller
                 },
                 'pages.failurePositions.part.partType' => function ($q) {
                     $q->select(['id', 'name', 'pn']);
-                }
+                },
+                'pages.inlines' => function ($q) {
+                    $q->select(['inlines.id', 'point', 'label_point', 'side', 'face', 'standard_tolerance', 'sort', 'part_type_id']);
+                },
             ])
             ->find($pageType);
 
@@ -397,6 +415,7 @@ class ShowController extends Controller
 
         $page_type = [
             'id' => $page_type->id,
+            'pages' => $page_type->pages->count(),
             'number' => $page_type->number,
             'path' => '/img/figures/'.$page_type->figure->path,
             'line' => $page_type->group->line,
@@ -410,10 +429,10 @@ class ShowController extends Controller
                     'area' => $part->pivot->area
                 ];
             }),
-            'pages' => $page_type->pages->map(function($page) {
+            'partsDetail' => $page_type->pages->map(function($page) {
                 return [
                     'status' => $page->status,
-                    'itorG' => $page->inspector_group
+                    'panelId' => $page->panel_id
                 ];
             }),
             'holes' => $page_type->pages->reduce(function ($carry, $page) {
@@ -478,13 +497,24 @@ class ShowController extends Controller
 
         return PageType::with([
             'pages' => function ($q) use ($itorG_name) {
-                $q->join('inspection_families as f', function ($join) use ($itorG_name) {
-                    $join->on('pages.family_id', '=', 'f.id');
+                $q->join('part_page as pp', function ($join) use ($itorG_name) {
+                    $join->on('pp.page_id', '=', 'pages.id');
                 })
-                ->select(['f.id as family_id', 'pages.id', 'pages.page_type_id']);
-            },
-            'pages.inlines'
+                ->join('parts', function ($join) use ($itorG_name) {
+                    $join->on('pp.part_id', '=', 'parts.id')
+                        ->where('parts.panel_id', '=', 'B0000002');
+                })
+                ->select([
+                    'pages.id as id',
+                    'pages.family_id',
+                    'pages.page_type_id',
+                    'parts.panel_id',
+                    'parts.part_type_id'
+                ])
+                ->groupBy('id')
+                ->get();
+            }
         ])
-        ->find(3);
+        ->find(8);
     }
 }

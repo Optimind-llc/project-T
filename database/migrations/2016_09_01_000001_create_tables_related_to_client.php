@@ -13,7 +13,7 @@ class CreateTablesRelatedToClient extends Migration
     {
         Schema::create('inspection_families', function (Blueprint $table) {
             $table->increments('id');
-            $table->tinyInteger('line')->nullable()->unsigned();
+            $table->tinyInteger('status')->nullable()->unsigned();
             $table->string('inspector_group')->nullable();
             $table->string('created_by');
             $table->string('updated_by')->nullable();
@@ -54,10 +54,17 @@ class CreateTablesRelatedToClient extends Migration
                 ->onDelete('restrict');
         });
 
+        Schema::create('part_families', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('associated_by')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('parts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('panel_id');
             $table->integer('part_type_id')->unsigned();
+            $table->integer('family_id')->unsigned()->nullable();
             $table->timestamps();
 
             /**
@@ -71,6 +78,12 @@ class CreateTablesRelatedToClient extends Migration
             $table->foreign('part_type_id')
                 ->references('id')
                 ->on('part_types')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('family_id')
+                ->references('id')
+                ->on('part_families')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });
@@ -255,6 +268,7 @@ class CreateTablesRelatedToClient extends Migration
         Schema::drop('photos');
         Schema::drop('part_page');
         Schema::drop('parts');
+        Schema::drop('part_families');
         Schema::drop('pages');
         Schema::drop('inspection_families');
     }

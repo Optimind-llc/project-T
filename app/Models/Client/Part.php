@@ -35,4 +35,13 @@ class Part extends Model
             'page_id'
         );
     }
+
+    public function family()
+    {
+        return $this->belongsTo(
+            'App\Models\Client\PartFamily',
+            'family_id',
+            'id'
+        );
+    }
 }

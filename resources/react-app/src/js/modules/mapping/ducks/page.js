@@ -37,7 +37,7 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export function getPageData(pageId, itorG, start = null, end = null) {
+export function getPageData(pageId, itorG, start = null, end = null, panelId = null) {
   return {
     [CALL_API]: {
       types: [
@@ -45,7 +45,7 @@ export function getPageData(pageId, itorG, start = null, end = null) {
         REDUEST_Page_DATA_SUCCESS,
         REDUEST_Page_DATA_FAIL
       ],
-      endpoint: `/show/page/${pageId}/${itorG}${start?'?&start='+start:''}${end?'&end='+end:''}`,
+      endpoint: `/show/page/${pageId}/${itorG}?${start?'&start='+start:''}${end?'&end='+end:''}${panelId?'&panelId='+panelId:''}`,
       method: 'GET',
       body: null
     }

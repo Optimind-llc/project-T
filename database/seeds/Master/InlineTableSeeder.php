@@ -256,7 +256,7 @@ class InlineTableSeeder extends Seeder
             ],[
                 'sort'               => 17,
                 'point'              => '90,495',
-                'label_point'        => '130,30',
+                'label_point'        => '170,30',
                 'side'               => 'left',
                 'face'               => 'RH',
                 'position'           => 'L41',
@@ -270,7 +270,7 @@ class InlineTableSeeder extends Seeder
             ],[
                 'sort'               => 19,
                 'point'              => '90,495',
-                'label_point'        => '130,90',
+                'label_point'        => '170,90',
                 'side'               => 'left',
                 'face'               => 'LH',
                 'position'           => 'L41',
