@@ -25,39 +25,31 @@ class AssociationController extends Controller
      */
     public function saveAssociation(Request $request)
     {
-    	$association = $request->association;
-    	if (!$association) {
-    		throw new StoreResourceFailedException('JSON in Request body should contain association key');
-    	}
+        $association = $request->association;
+        if (!$association) {
+            throw new StoreResourceFailedException('JSON in Request body should contain association key');
+        }
 
-    	// $association = [
-    	// 	[
-    	// 		'pn' => '67149',
-    	// 		'panelId' => 'B0000011'
-    	// 	],[
-    	// 		'pn' => '67119',
-    	// 		'panelId' => 'B0000011'
-    	// 	]
-    	// ];
+        $association['67007'] = $association['67149'];
 
         $parts = [];
 
-    	foreach ($association as $part) {
-            $part_type = PartType::where('pn', $part['pn'])->first();
+    	foreach ($association as $pn => $panel_id) {
+            $part_type = PartType::where('pn', $pn)->first();
     		$newPart = $part_type->parts()
-    			->where('panel_id', $part['panelId'])
+    			->where('panel_id', $panel_id)
     			->first();
 
 	        if ($newPart instanceof Part) {
 	        	$family = $newPart->family;
 
 	        	if ($family instanceof PartFamily) {
-	        		throw new StoreResourceFailedException('This part already be associated others');
+	        		throw new StoreResourceFailedException('This part(pn = '.$pn.', panel_id = '.$panel_id.') already be associated others ');
 	        	}
 	        }
             else {
                 $newPart = new Part;
-                $newPart->panel_id = $part['panelId'];
+                $newPart->panel_id = $panel_id;
                 $newPart->part_type_id = $part_type->id;
                 $newPart->save();
             }
