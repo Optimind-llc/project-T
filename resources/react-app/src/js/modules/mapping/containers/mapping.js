@@ -24,20 +24,24 @@ class Mapping extends Component {
       intervalId: null,
       interval: 10000,
       innerHeight: window.innerHeight,
-      failure: true,
-      iFailure: true,
-      nFailure: true,
-      dropdown: false,
+      failure: false,
+      hole: false,
+      inline: false,
       fTypeFilter: [],
       fIdFilter: [],
-      hole: false,
-      holeStatus: 0,
-      inline: true
+      dropdown: false,
+      holeStatus: 0
     };
   }
 
   componentWillReceiveProps(nextProps) {
     const { data, isFetching } = nextProps.PageData;
+
+    // if(this.props.PageData.data == null && data != null) {
+    //   if (data.failures ) {
+        
+    //   }
+    // }
   }
 
   componentDidMount() {
@@ -94,7 +98,7 @@ class Mapping extends Component {
 
   renderFilter() {
     const { data, isFetching } = this.props.PageData;
-    const { failure, hole, holeStatus, iFailure, nFailure, dropdown, fTypeFilter, fIdFilter, inline } = this.state;
+    const { failure, hole, holeStatus, dropdown, fTypeFilter, fIdFilter, inline } = this.state;
 
     if(failure && !hole) {
       return (
@@ -208,7 +212,7 @@ class Mapping extends Component {
 
   renderContent() {
     const { data } = this.props.PageData;
-    const { failure, hole, holeStatus, iFailure, nFailure } = this.state;
+    const { failure, hole, inline } = this.state;
 
     if (failure && !hole){
       return (
@@ -281,14 +285,37 @@ class Mapping extends Component {
         </div>
       )
     }
-    else {
-      return null;
+    else if (!failure && !hole && inline) {
+      return (
+        <div className="inline">
+          <div className="collection">
+            <div>
+              <ul>
+                {
+                  Object.keys(data.inlines).map(id =>
+                    <li>{data.inlines[id][0].sort}</li>
+                  )
+                }
+              </ul>
+            </div>
+            <div>
+              <ul>
+                {
+                  Object.keys(data.inlines).map(id =>
+                    <li>{data.inlines[id][0].tolerance}</li>
+                  )
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      );
     }
   }
 
   render() {
     const { start, end, PageData:{ isFetching, data }} = this.props;
-    const { failure, hole, holeStatus, iFailure, nFailure, dropdown, fTypeFilter, fIdFilter, inline } = this.state;
+    const { failure, hole, holeStatus, dropdown, fTypeFilter, fIdFilter, inline } = this.state;
 
     return (
       <div id="mapping-wrap" className="">
@@ -362,7 +389,7 @@ class Mapping extends Component {
                       inline &&
                       Object.keys(data.inlines).map(id => {
                         return data.inlines[id].map(i => {
-                          const width = 80;
+                          const width = 120;
                           const point = i.point.split(',');
                           const x = point[0]/2;
                           const y = point[1]/2;
@@ -373,8 +400,54 @@ class Mapping extends Component {
                           return (
                             <g>
                               <circle cx={x} cy={y} r={3} fill="red" />
-                              <rect x={lx} y={ly} width={width} height="30" fill="red"></rect>
+                              <rect x={lx} y={ly} width={width} height="30" fill="white" stroke="gray"></rect>
                               <line x1={x} y1={y} x2={i.side == 'left' ? lx : lx + width} y2={ly+15} stroke="#e74c3c" stroke-width="10" />
+                              <text
+                                x={lx}
+                                y={ly}
+                                dx="4"
+                                dy="14"
+                                fontSize="12"
+                                fill="black"
+                                fontWeight="bold"
+                                text-anchor="middle"
+                              >
+                                {i.sort}
+                              </text>
+                              {
+                                i.face &&
+                                <text
+                                  x={lx}
+                                  y={ly}
+                                  dx="4"
+                                  dy="26"
+                                  fontSize="10"
+                                  fill="black"
+                                  text-anchor="middle"
+                                >
+                                  {i.face}
+                                </text>
+                              }
+                              <text
+                                x={lx}
+                                y={ly}
+                                dx="24"
+                                dy="12"
+                                fontSize="10"
+                                fill="black"
+                              >
+                                {`結果：${i.status}`}
+                              </text>
+                              <text
+                                x={lx}
+                                y={ly}
+                                dx="24"
+                                dy="24"
+                                fontSize="10"
+                                fill="black"
+                              >
+                                {`公差：${i.tolerance}`}
+                              </text>
                             </g>
                           );
                         })
@@ -387,25 +460,41 @@ class Mapping extends Component {
               
               <div className="control-panel">
                 <div className="control-tab">
-                  <button
-                    className={failure ? '' : 'disable'}
-                    onClick={() => this.setState({
-                      failure: true,
-                      hole: false,
-                    })}
-                  >
-                    不良検査
-                  </button>
                   {
+                    data.failures.length !== 0 &&
+                    <button
+                      className={failure ? '' : 'disable'}
+                      onClick={() => this.setState({
+                        failure: true,
+                        hole: false,
+                        inline: false
+                      })}
+                    >
+                      不良検査
+                    </button>
+                  }{
                     data.holes.length !== 0 &&
                     <button
                       className={hole ? '' : 'disable'}
                       onClick={() => this.setState({
                         failure: false,
                         hole: true,
+                        inline: false
                       })}
                     >
                       穴検査
+                    </button>
+                  }{
+                    data.inlines.length !== 0 &&
+                    <button
+                      className={inline ? '' : 'disable'}
+                      onClick={() => this.setState({
+                        failure: false,
+                        hole: false,
+                        inline: true
+                      })}
+                    >
+                      精度検査
                     </button>
                   }
                 </div>

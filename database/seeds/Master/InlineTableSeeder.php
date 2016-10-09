@@ -214,7 +214,7 @@ class InlineTableSeeder extends Seeder
             ],[
                 'sort'               => 6,
                 'point'              => '595,925',
-                'label_point'        => '390,950',
+                'label_point'        => '320,950',
                 'side'               => 'right',
                 'face'               => null,
                 'position'           => 'W0',
@@ -312,7 +312,7 @@ class InlineTableSeeder extends Seeder
             ],[
                 'sort'               => 21,
                 'point'              => '1530,285',
-                'label_point'        => '1320,60',
+                'label_point'        => '1260,60',
                 'side'               => 'right',
                 'face'               => 'RH',
                 'position'           => 'L44*H18+30',
@@ -326,7 +326,7 @@ class InlineTableSeeder extends Seeder
             ],[
                 'sort'               => 22,
                 'point'              => '1530,285',
-                'label_point'        => '1320,120',
+                'label_point'        => '1260,120',
                 'side'               => 'right',
                 'face'               => 'LH',
                 'position'           => 'L44*H18+30',
