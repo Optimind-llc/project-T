@@ -17,7 +17,11 @@ Route::get('/', function () {
 
 Route::get('client/inspection', 'Client\InspectionController@inspection');
 Route::post('client/inspection', 'Client\InspectionController@saveInspection');
+
+Route::post('client/print', 'Client\PrintController@printByTemplate');
 Route::post('client/associatiton', 'Client\AssociationController@saveAssociation');
+
+
 
 Route::get('manager/dashboard', 'Manager\ReferenceController@index');
 Route::get('manager/reference', 'Manager\ReferenceController@index');

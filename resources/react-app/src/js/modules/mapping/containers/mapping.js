@@ -28,7 +28,8 @@ class Mapping extends Component {
       iFailure: true,
       nFailure: true,
       dropdown: false,
-      failureFilter: [],
+      fTypeFilter: [],
+      fIdFilter: [],
       hole: false,
       holeStatus: 0,
       inline: true
@@ -93,7 +94,7 @@ class Mapping extends Component {
 
   renderFilter() {
     const { data, isFetching } = this.props.PageData;
-    const { failure, hole, holeStatus, iFailure, nFailure, dropdown, failureFilter } = this.state;
+    const { failure, hole, holeStatus, iFailure, nFailure, dropdown, fTypeFilter, fIdFilter, inline } = this.state;
 
     if(failure && !hole) {
       return (
@@ -102,15 +103,23 @@ class Mapping extends Component {
           <div className="filter">
             <button
               key="iFailure"
-              className={iFailure ? 'active' : ''}
-              onClick={() => this.setState({ iFailure: !iFailure })}
+              className={fTypeFilter.indexOf('1') === -1 ? 'active' : ''}
+              onClick={() => {
+                const index = fTypeFilter.indexOf('1');
+                index === -1 ? fTypeFilter.push('1') : fTypeFilter.splice(index, 1);
+                this.setState({ fTypeFilter });
+              }}
             >
               {'重要'}
             </button>
             <button
               key="nFailure"
-              className={nFailure ? 'active' : ''}
-              onClick={() => this.setState({ nFailure: !nFailure })}
+              className={fTypeFilter.indexOf('2') === -1 ? 'active' : ''}
+              onClick={() => {
+                const index = fTypeFilter.indexOf('2');
+                index === -1 ? fTypeFilter.push('2') : fTypeFilter.splice(index, 1);
+                this.setState({ fTypeFilter });
+              }}
             >
               {'普通'}
             </button>
@@ -124,36 +133,39 @@ class Mapping extends Component {
                   dropdown: !dropdown
                 })}
               >
-                <span>5</span>
-                <span>区分表示中</span>
+                <span>
+                  {
+                    data.failureTypes.filter(ft => 
+                      fTypeFilter.indexOf(String(ft.type)) === -1 && fIdFilter.indexOf(ft.id) === -1
+                    ).length
+                  }
+                </span>
+                <span>{`/${data.failureTypes.length}`}</span>
+                <span>表示中</span>
                 <span>{dropdown? '△隠す' : '▽詳細'}</span>
               </button>
               {
                 dropdown &&
                 <div className="dropdown-list">
                   {
-                    data.failureTypes.filter(ft => {
-                      if (iFailure && nFailure) return true;
-                      else if (iFailure && !nFailure) return ft.type == 1;
-                      else if (!iFailure && nFailure) return ft.type == 2;
-                      else return false;
-                    }).map(ft => 
-                      <button key={ft.id} onClick={() => {
-                        const index = failureFilter.indexOf(ft.id);
-                        
-                        if ( index === -1) {
-                          let list = failureFilter.push(ft.id);
-                        } else {
-                          let list = failureFilter.splice(index, 1);
-                        }
-
-                        this.setState({
-                          failureFilter: list
-                        })
-                      }}>
-                        {`${ft.sort}. ${ft.name}`}
-                      </button>
-                    )
+                    data.failureTypes.filter(ft => 
+                      fTypeFilter.indexOf(String(ft.type)) === -1
+                    ).map(ft => {
+                      const index = fIdFilter.indexOf(ft.id);
+                      return (
+                        <button
+                          key={ft.id}
+                          className={index === -1 ? 'active' : ''}
+                          onClick={() => {
+                            if ( index === -1) fIdFilter.push(ft.id);
+                            else fIdFilter.splice(index, 1);
+                            this.setState({ fIdFilter });
+                          }}
+                        >
+                            {`${ft.sort}. ${ft.name}`}
+                        </button>
+                      )
+                    })
                   }
                 </div>
               }
@@ -202,22 +214,28 @@ class Mapping extends Component {
       return (
         <div className="failure">
           <div className="collection">
+            <div>
+              <p>{'不良区分'}</p>
+              <ul>
+                {data.failureTypes.map(ft =>
+                  <li key={ft.id}>{`${ft.sort}. ${ft.name}`}</li>
+                )}
+              </ul>
+            </div>
             {
               data.parts.map(part => {
                 const failures = data.failures[part.pn];
-
                 return (
                   <div key={part.pn}>
                     <p>{part.name}</p>
                     <ul>
-                      <li>
-                        <span>{'重要不良'}</span>
-                        <span>{failures == undefined ? 0 : failures.filter(f => f.type == '1').length}</span>
-                      </li>
-                      <li>
-                        <span>{'普通不良'}</span>
-                        <span>{failures == undefined ? 0 :failures.filter(f => f.type == '2').length}</span>
-                      </li>
+                      {
+                        data.failureTypes.map(ft =>
+                          <li>
+                            {failures == undefined ? 0 : failures.filter(f => f.sort == ft.sort).length}
+                          </li>
+                        )
+                      }
                     </ul>
                   </div>
                 )
@@ -231,25 +249,29 @@ class Mapping extends Component {
       return (
         <div className="hole">
           <div className="collection">
+            <div>
+              <p>{'状態'}</p>
+              <ul>
+                  <li>{'○'}</li>
+                  <li>{'△'}</li>
+                  <li>{'×'}</li>
+              </ul>
+            </div>
             {
               data.parts.map(part => {
                 const holes = data.holes[part.pn];
+                const all = this.formatHolesByPart(holes).length;
+                const s0 = this.formatHolesByPart(holes).filter(s => s == 0).length;
+                const s2 = this.formatHolesByPart(holes).filter(s => s == 2).length;
+                const s1 = this.formatHolesByPart(holes).filter(s => s == 1).length;
+
                 return (
                   <div key={part.pn}>
                     <p>{part.name}</p>
                     <ul>
-                      <li>
-                        <span>{'公差内 ○'}</span>
-                        <span>{this.formatHolesByPart(holes).filter(s => s == 0).length}</span>
-                      </li>
-                      <li>
-                        <span>{'穴小 △'}</span>
-                        <span>{this.formatHolesByPart(holes).filter(s => s == 2).length}</span>
-                      </li>
-                      <li>
-                        <span>{'穴大 ×'}</span>
-                        <span>{this.formatHolesByPart(holes).filter(s => s == 1).length}</span>
-                      </li>
+                      <li>{s0}<span>{`${s0 == 0 ? 0 : Math.round(1000*s0/all)/10}%`}</span></li>
+                      <li>{s2}<span>{`${s2 == 0 ? 0 : Math.round(1000*s2/all)/10}%`}</span></li>
+                      <li>{s1}<span>{`${s1 == 0 ? 0 : Math.round(1000*s1/all)/10}%`}</span></li>
                     </ul>
                   </div>
                 )
@@ -266,7 +288,7 @@ class Mapping extends Component {
 
   render() {
     const { start, end, PageData:{ isFetching, data }} = this.props;
-    const { state } = this;
+    const { failure, hole, holeStatus, iFailure, nFailure, dropdown, fTypeFilter, fIdFilter, inline } = this.state;
 
     return (
       <div id="mapping-wrap" className="">
@@ -298,22 +320,11 @@ class Mapping extends Component {
                   <img src={data.path}/>
                   <svg>
                     {
-                      state.failure &&
+                      failure &&
                       Object.keys(data.failures).map(part => {
-                        return data.failures[part].filter(f => {
-                          if (state.iFailure && state.nFailure) {
-                            return true;
-                          }
-                          else if(!state.iFailure && state.nFailure) {
-                            return f.type == "2";
-                          }
-                          else if(state.iFailure && !state.nFailure) {
-                            return f.type == "1";
-                          }
-                          else {
-                            return false;
-                          }
-                        }).map(f => {
+                        return data.failures[part].filter(f => 
+                          fTypeFilter.indexOf(f.type) === -1 && fIdFilter.indexOf(f.id) === -1
+                        ).map(f => {
                           const point = f.point.split(',');
                           const x = point[0]/2;
                           const y = point[1]/2;
@@ -325,7 +336,7 @@ class Mapping extends Component {
                         })
                       })
                     }{
-                      state.hole &&
+                      hole &&
                       Object.keys(data.holes).map(part => {
                         return Object.keys(data.holes[part]).map(id => {
                           const holes = this.formatHoles(data.holes[part][id]);
@@ -341,14 +352,14 @@ class Mapping extends Component {
                                 textAnchor="middle"
                                 fontWeight="bold"
                                 >
-                                  {holes.status.filter(s => s == state.holeStatus).length}
+                                  {holes.status.filter(s => s == holeStatus).length}
                                 </text>
                             </g>
                           )
                         })
                       })
                     }{
-                      state.inline &&
+                      inline &&
                       Object.keys(data.inlines).map(id => {
                         return data.inlines[id].map(i => {
                           const width = 80;
@@ -377,7 +388,7 @@ class Mapping extends Component {
               <div className="control-panel">
                 <div className="control-tab">
                   <button
-                    className={state.failure ? '' : 'disable'}
+                    className={failure ? '' : 'disable'}
                     onClick={() => this.setState({
                       failure: true,
                       hole: false,
@@ -388,7 +399,7 @@ class Mapping extends Component {
                   {
                     data.holes.length !== 0 &&
                     <button
-                      className={state.hole ? '' : 'disable'}
+                      className={hole ? '' : 'disable'}
                       onClick={() => this.setState({
                         failure: false,
                         hole: true,

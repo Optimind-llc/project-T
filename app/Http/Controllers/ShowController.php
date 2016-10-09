@@ -469,7 +469,7 @@ class ShowController extends Controller
             'failures' => $page_type->pages->reduce(function ($carry, $page) {
                 return $carry->merge($page->failurePositions->map(function($failure) {
                     return [
-                        'failure' => $failure->failure->name,
+                        'id' => $failure->failure->id,
                         'sort' => $failure->failure->sort,
                         'point' => $failure->point,
                         'type' => $failure->type,

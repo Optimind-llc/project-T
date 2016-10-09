@@ -86,6 +86,13 @@ class PrintController extends Controller
         $receipt->useTemplate($tplIdx, null, null, null, null, true);
 
         $receipt->SetFont('kozminproregular', '', 12);
+        // 1. Arial Uni CID0 (arialunicid0)
+        // 2. 小塚ゴシックPro M (kozgopromedium)
+        // 3. 小塚明朝Pro M (kozminproregular)
+        // 4. HYSMyeongJoStd-Medium (hysmyeongjostdmedium)
+        // 5. MSungStd-Light (msungstdlight)
+        // 6. STSongStd-Light (stsongstdlight)
+
         $receipt->SetTextColor(255, 255, 255);
         $receipt->Text(70, 2, '成型工程　ライン１　インナー検査結果記録票');
 

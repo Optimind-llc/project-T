@@ -57,6 +57,7 @@
 						line-height: 24px;
 						padding: 0 8px 0 8px;
 						margin-right: 10px;
+						font-size: 14px;
 
 						span {
 							font-weight: 600;
@@ -78,7 +79,7 @@
 					.filter-wrap {
 						position: absolute;
 						top: -52px;
-						right: 0;
+						right: -20px;
 						height: 60px;
 						width: 120px;
 
@@ -91,7 +92,7 @@
 				    	> div.filter {
 					    	display: flex;
 					    	justify-content: flex-start;
-					    	height: 48px;
+					    	height: 40px;
 
 					    	button {
 					    		flex-basis: 40px;
@@ -123,7 +124,7 @@
 				    	> div.filter2 {
                             margin-top: 5px;
                             background-color: #EEE;
-                            font-size: 11px;
+                            font-size: 14px;
                             line-height: 20px;
                             border: 1px solid #4A4A4A;
                             border-radius: 4px;
@@ -138,9 +139,14 @@
 
                                 span {
                                     &:nth-child(1) {
-                                        margin-right: 5px;
+                                        font-weight: 600;
+                                        font-size: 14px;
                                     }
-                                    &:nth-child(3) {
+                                    &:nth-child(2) {
+                                        margin-right: 5px;
+                                        font-size: 10px;
+                                    }
+                                    &:nth-child(4) {
                                         margin-left: 5px;
                                     }
                                 }
@@ -155,14 +161,23 @@
 					    			text-align: left;
                                     background-color: #EEE;
                                     margin: 0;
-                                    padding: 0 0 0 8px;
+                                    padding: 2px 0 2px 8px;
                                     border: none;
+                                    border-radius: 0;
 
                                     &:nth-child(1) {
                                         border-top: 1px dotted #4A4A4A; 
                                     }
 
-                                    &:after {
+                                    &:nth-child(odd) {
+                                    	background-color: #DDD;
+                                    }
+
+                                    &:nth-child(odd) {
+                                    	border-radius: 0 0 4px 4px;
+                                    }
+
+                                    &.active:after {
                                         content: "✔︎";
                                         display: block;
                                         float: right;
@@ -226,14 +241,43 @@
 					border-radius: 0 0 4px 4px;
 
 					.collection {
-						margin: 10px 30px;
+						display: flex;
+						flex-flow: raw wrap;
+						justify-content: center;
+						margin: 20px 10px;
+						font-size: 14px;
+
+
 
 						> div {
-							margin-bottom: 20px;
+							border-right: 1px solid #BFBFBF;
 
-							li span {
-								display: inline-block;
-								width: 80px;
+							p {
+								margin: 0;
+								padding: 6px 6px 10px 6px;
+							}
+
+							ul {
+								margin: 0;
+								padding: 0;
+
+								li {
+									padding: 3px 6px;
+									border-bottom: 1px solid #BFBFBF;
+
+									&:nth-child(2n) {
+										background-color: #EEE;
+									}
+
+                                    span {
+                                        float: right;
+                                        padding-left: 8px;
+                                    }
+								}
+							}
+
+							&:nth-last-of-type(1){								
+								border-right: none;
 							}
 						}
 					}
