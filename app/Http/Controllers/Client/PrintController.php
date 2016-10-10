@@ -49,6 +49,13 @@ class PrintController extends Controller
         // $fontPathBold = $this->getLibPath() . '/tcpdf/fonts/migmix-2p-bold.ttf';
         // $boldFont = $fpdi->addTTFfont($fontPathBold, '', '', 32);
 
+        $fpdi->SetFont('kozgopromedium', '', 12);
+
+        // 小塚ゴシックPro M (kozgopromedium)
+        // 小塚明朝Pro M (kozminproregular)
+        // HYSMyeongJoStd-Medium (hysmyeongjostdmedium)
+        // MSungStd-Light (msungstdlight)
+        // STSongStd-Light (stsongstdlight)
         return $fpdi;
     }
 
@@ -70,14 +77,6 @@ class PrintController extends Controller
 
         // 読み込んだPDFの1ページ目をテンプレートとして使用
         $fpdi->useTemplate($tplIdx, null, null, null, null, true);
-
-        $fpdi->SetFont('kozminproregular', '', 12);
-        // 1. Arial Uni CID0 (arialunicid0)
-        // 2. 小塚ゴシックPro M (kozgopromedium)
-        // 3. 小塚明朝Pro M (kozminproregular)
-        // 4. HYSMyeongJoStd-Medium (hysmyeongjostdmedium)
-        // 5. MSungStd-Light (msungstdlight)
-        // 6. STSongStd-Light (stsongstdlight)
 
 
         $fpdi->SetTextColor(255, 255, 255);

@@ -564,7 +564,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '840,385',
+                'point'      => '840,285',
                 'label'      => 30,
                 'direction'  => 'top',
                 'color'      => '000000',
@@ -575,7 +575,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '854,404',
+                'point'      => '860,404',
                 'label'      => 31,
                 'direction'  => 'right',
                 'color'      => '000000',
@@ -619,7 +619,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '1388,404',
+                'point'      => '1382,404',
                 'label'      => 20,
                 'direction'  => 'left',
                 'color'      => '000000',
