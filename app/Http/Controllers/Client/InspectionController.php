@@ -295,21 +295,46 @@ class InspectionController extends Controller
         $family = $request->family;
         $groupId = $family['groupId'];
 
-        //duplicate detection
-        $dupIF = InspectionFamily::where('inspection_group_id', $groupId)->first();
+        //Duplicate detection
+        foreach ($family['pages'] as $page) {
+            $page_type_id = $page['pageId'];
+            $part_ids = [];
 
-        if ($dupIF instanceof InspectionFamily) {
-            $dupP = $dupIF->pages()
-                ->where('page_type_id', $family['pages'][0]['pageId'])
-                ->whereHas('parts', function($q) use ($family) {
-                    $q->where('panel_id', $family['pages'][0]['parts'][0]['panelId']);
+            foreach ($page['parts'] as $part) {
+                $newPart = Part::where('panel_id', $part['panelId'])
+                    ->where('part_type_id', $part['partTypeId'])
+                    ->first();
+
+                if ($newPart instanceof Part) {
+                    array_push($part_ids, $newPart->id);
+                }
+            }
+
+            $newPage = Page::where('page_type_id', $family['pages'][0]['pageId'])
+                ->whereHas('parts', function($q) use ($part_ids) {
+                    $q->whereIn('id', $part_ids);
                 })
-                ->count();
+                ->first();
 
-            if ($dupP !== 0) {
-                throw new StoreResourceFailedException('The part was already inspected in this process');
+            if ($newPage instanceof Page) {
+                throw new StoreResourceFailedException('The part already be inspected in ather page(page_id = '.$newPage->id.').');
             }
         }
+
+        // $dupIF = InspectionFamily::where('inspection_group_id', $groupId)->first();
+
+        // if ($dupIF instanceof InspectionFamily) {
+        //     $dupP = $dupIF->pages()
+        //         ->where('page_type_id', $family['pages'][0]['pageId'])
+        //         ->whereHas('parts', function($q) use ($family) {
+        //             $q->where('panel_id', $family['pages'][0]['parts'][0]['panelId']);
+        //         })
+        //         ->count();
+
+        //     if ($dupP !== 0) {
+        //         throw new StoreResourceFailedException('The part was already inspected in this process');
+        //     }
+        // }
 
         $newFamily = new InspectionFamily;
         $newFamily->inspection_group_id = $groupId;

@@ -129,6 +129,11 @@ class Dashboard extends Component {
                   </button>
                 )
               }
+              <button
+                className="gray disabled"
+              >
+                {'950A'}
+              </button>
             </div>
           </div>
         }{

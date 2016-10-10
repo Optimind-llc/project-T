@@ -90,6 +90,16 @@ button {
     &:active {
       box-shadow: none;
     }
+
+    &.disabled {
+      background-color: #EEE;
+      color: #BFBFBF;
+      cursor: default;
+
+      &:hover, :active {
+        box-shadow: none;
+      }
+    }
   }
 
   &.molding {

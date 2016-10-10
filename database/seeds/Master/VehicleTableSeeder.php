@@ -29,7 +29,7 @@ class VehicleTableSeeder extends Seeder
 
         $data = [
             [
-                'name'       => '',
+                'name'       => '680A',
                 'number'     => '680A',
                 'created_at' => $now,
                 'updated_at' => $now

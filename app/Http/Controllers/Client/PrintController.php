@@ -64,37 +64,43 @@ class PrintController extends Controller
      */
     public function printByTemplate(Request $request)
     {
+        $family = $request->family;
+        if (!$family) {
+            throw new StoreResourceFailedException('JSON in Request body should contain family key');
+        }
+
         $fpdi = $this->createFPDI();
         $fpdi->AddPage(); // ページを追加
 
-        $group_id = 1;
 
-        // テンプレートを読み込み
+        // return $family;
+
+
+        // テンプレートを1ページ目に
         $fpdi->setSourceFile('/app/web/public/pdf/template/molding-inner.pdf');
-
-        // 読み込んだPDFの1ページ目のインデックスを取得
         $tplIdx = $fpdi->importPage(1);
-
-        // 読み込んだPDFの1ページ目をテンプレートとして使用
         $fpdi->useTemplate($tplIdx, null, null, null, null, true);
 
-
         $fpdi->SetTextColor(255, 255, 255);
-        $fpdi->Text(70, 2, '成型工程　ライン１　インナー検査結果記録票');
+        $fpdi->Text(186, 2, $family['date']);
 
-        $fpdi->SetFont('kozminproregular', '', 9);
+        $page = $family['pages'][0];
+
+        $fpdi->SetFont('kozgopromedium', '', 9);
         $fpdi->SetTextColor(0, 0, 0);
 
-        $fpdi->Text(10, 13, '680A');
-        $fpdi->Text(32, 13, '67149');
-        $fpdi->Text(54, 13, 'バックドアインナ');
-        $fpdi->Text(94, 13, '16/12/12');
-        $fpdi->Text(127, 13, '161001YA001');
-        $fpdi->Text(165, 13, '黄直　佐々木');
-        $fpdi->Text(202, 13, 'A');
+        $fpdi->Text(158, 13, $family['inspectorGroup'].'　'.$family['inspector']);
+        $fpdi->Text(202, 13, $family['table']);
 
 
-
+        foreach ($page['parts'] as $part) {
+            $part_type = Part::find($part['partTypeId']);
+            $fpdi->Text(10, 13, $part_type['vehicle_num']);
+            $fpdi->Text(32, 13, $part_type['pn']);
+            $fpdi->Text(54, 13, $part_type['name']);
+            $fpdi->Text(97, 13, $part['panelId']);
+            $fpdi->Text(138, 13, $part['status']);
+        }
 
         $c_numbers = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫','⑬','⑭'];
         $i_failures = ['キズ', '凸', '凹', 'ワレ・ヒビ', 'ヒケ', 'シボかすれ', '異物混入'];

@@ -30,7 +30,7 @@ class App extends Component {
     ]
 
     const nameList = [
-      '品質不良マッピングシステム',
+      '検査工程　不良マッピングシステム',
       routes[0].name,
       routes[1].name
     ];
