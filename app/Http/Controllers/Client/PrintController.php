@@ -10,19 +10,17 @@ use TCPDF;
 use FPDI;
 // Models
 use App\Models\Process;
-use App\Models\Inspector;
+use App\Models\PartType;
 use App\Models\InspectorGroup;
-use App\Models\Inspection;
-use App\Models\Division;
-use App\Models\Client\InspectionFamily;
-use App\Models\Client\Page;
 use App\Models\Client\Part;
-use App\Models\Client\FailurePage;
 // Exceptions
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+// Others
+use App\Http\Controllers\Client\InspectionController;
+use Database\Seeding\DummyRequest;
 
 /**
  * Class PrintController
@@ -37,6 +35,9 @@ class PrintController extends Controller
         $fpdi->SetMargins(0, 0, 0);
         $fpdi->setPrintHeader(false);
         $fpdi->setPrintFooter(false);
+        $fpdi->SetMargins(0, 0, 0);
+        $fpdi->SetCellPadding(0);
+        $fpdi->SetAutoPageBreak(false);
         $fpdi->SetAuthor('Mapping system');
         // $fpdi->SetTitle('TCPDF Example 009');
         // $fpdi->SetSubject('TCPDF Tutorial');
@@ -48,8 +49,6 @@ class PrintController extends Controller
 
         // $fontPathBold = $this->getLibPath() . '/tcpdf/fonts/migmix-2p-bold.ttf';
         // $boldFont = $fpdi->addTTFfont($fontPathBold, '', '', 32);
-
-        $fpdi->SetFont('kozgopromedium', '', 12);
 
         // 小塚ゴシックPro M (kozgopromedium)
         // 小塚明朝Pro M (kozminproregular)
@@ -69,79 +68,128 @@ class PrintController extends Controller
             throw new StoreResourceFailedException('JSON in Request body should contain family key');
         }
 
+        $request = new DummyRequest;
+        $controller = new InspectionController;
+
+        // Get data from Inspection-Controller.
+        $request->set($family['process'], $family['inspection'], $family['division'], $family['line']);
+        $group = $controller->inspection($request)['group'];
+
         $fpdi = $this->createFPDI();
         $fpdi->AddPage(); // ページを追加
-
-
-        // return $family;
-
 
         // テンプレートを1ページ目に
         $fpdi->setSourceFile('/app/web/public/pdf/template/molding-inner.pdf');
         $tplIdx = $fpdi->importPage(1);
-        $fpdi->useTemplate($tplIdx, null, null, null, null, true);
-
-        $fpdi->SetTextColor(255, 255, 255);
-        $fpdi->Text(186, 2, $family['date']);
+        $fpdi->useTemplate($tplIdx, null, null, 297, 210, true);
 
         $page = $family['pages'][0];
 
-        $fpdi->SetFont('kozgopromedium', '', 9);
+        $fpdi->SetFont('kozgopromedium', '', 16);
+        $fpdi->SetTextColor(255, 255, 255);
+        $fpdi->Text(250, 3, $family['date']);
+
+        $fpdi->SetFont('kozgopromedium', '', 14);
         $fpdi->SetTextColor(0, 0, 0);
 
-        $fpdi->Text(158, 13, $family['inspectorGroup'].'　'.$family['inspector']);
-        $fpdi->Text(202, 13, $family['table']);
-
+        $fpdi->Text(223, 18, $family['inspectorGroup'].'　'.$family['inspector']);
+        $fpdi->Text(286, 18, $family['table']);
 
         foreach ($page['parts'] as $part) {
-            $part_type = Part::find($part['partTypeId']);
-            $fpdi->Text(10, 13, $part_type['vehicle_num']);
-            $fpdi->Text(32, 13, $part_type['pn']);
-            $fpdi->Text(54, 13, $part_type['name']);
-            $fpdi->Text(97, 13, $part['panelId']);
-            $fpdi->Text(138, 13, $part['status']);
+            $part_type = PartType::find($part['partTypeId']);
+            $fpdi->Text(14, 18, $part_type['vehicle_num']);
+            $fpdi->Text(44, 18, $part_type['pn']);
+            $fpdi->Text(78, 18, $part_type['name']);
+            $fpdi->Text(144, 18, $part['panelId']);
+            $fpdi->Text(196, 18, $part['status']);
         }
 
-        $c_numbers = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩','⑪','⑫','⑬','⑭'];
-        $i_failures = ['キズ', '凸', '凹', 'ワレ・ヒビ', 'ヒケ', 'シボかすれ', '異物混入'];
-        $n_failures = ['白斑店','樹脂抜け','寸欠','リブ抜け','バリ残り','素材判定NG','外周仕上げNG','穴糸残り','接着剤はみ出し','接着剤付着','リテーナー欠','ほにゃらら','あいうえおかきく','その他'];
+        // Render failures
+        $i_failures = $group['failures']->filter(function ($f) {
+            return $f['type'] == 1;
+        })->values();
 
-        foreach ($i_failures as $n => $failure) {
-            $fpdi->RoundedRect($n*30+1, 24, 28, 6, 1, '1111');
-            $fpdi->Text($n*30+2, 25, $c_numbers[$n].' '.$failure);
+        $n_failures = $group['failures']->filter(function ($f) {
+            return $f['type'] == 2;
+        })->values();
+
+        foreach ($i_failures as $i => $failure) {
+            $x0 = 12;
+            $y0 = 32;
+            $lh = 10;
+            $cw = 40;
+
+            if ($i < 7) {
+                $fpdi->RoundedRect($i*$cw+$x0-2, $y0-1, $cw-2, $lh-2, 1, '1111');
+                if (intval($failure['label']) > 9) {
+                    $fpdi->Text($i*$cw+$x0-1, $y0, $failure['label']);
+                } else {
+                    $fpdi->Text($i*$cw+$x0+0.5, $y0, $failure['label']);
+                }
+                $fpdi->Text($i*$cw+$x0+6, $y0, $failure['name']);
+                $fpdi->Circle($i*$cw+$x0+2, $y0+3, 3.2, 0, 360, "D");
+            }
         }
 
-        // $fpdi->RoundedRect(1, 24, 28, 6, 1, '1111');
-        // $fpdi->Text(2, 25, ' ');
-        // $fpdi->RoundedRect(31, 24, 28, 6, 1, '1111');
-        // $fpdi->Text(32, 25, ' ');
-        // $fpdi->RoundedRect(61, 24, 28, 6, 1, '1111');
-        // $fpdi->Text(62, 25, ' ');
-        // $fpdi->RoundedRect(91, 24, 28, 6, 1, '1111');
-        // $fpdi->Text(92, 25, ' ');
-        // $fpdi->RoundedRect(121, 24, 28, 6, 1, '1111');
-        // $fpdi->Text(122, 25, ' ');
-        // $fpdi->RoundedRect(151, 24, 28, 6, 1, '1111');
-        // $fpdi->Text(152, 25, ' ');
-        // $fpdi->RoundedRect(181, 24, 28, 6, 1, '1111');
-        // $fpdi->Text(182, 25, ' ');
+        foreach ($n_failures as $i => $failure) {
+            $x0 = 12;
+            $y0 = 186;
+            $lh = 10;
+            $cw = 40;
 
-        $fpdi->Circle(56.5, 67, 2, 0, 360, 'F', '', [255, 255, 255]);
-        $fpdi->Text(54, 65, '①');
-        $html = '<p style="font-weight: bold;">①</p>';
-        $fpdi->writeHTMLCell(0, 0, 54, 65, $html, 0, 0, 0, false, 'L', false);
+            if ($i < 7) {
+                $fpdi->RoundedRect($i*$cw+$x0-2, $y0-1, $cw-2, $lh-2, 1, '1111');
+                if (intval($failure['label']) > 9) {
+                    $fpdi->Text($i*$cw+$x0-1, $y0, $failure['label']);
+                } else {
+                    $fpdi->Text($i*$cw+$x0+0.5, $y0, $failure['label']);
+                }
+                $fpdi->Text($i*$cw+$x0+6, $y0, $failure['name']);
+                $fpdi->Circle($i*$cw+$x0+2, $y0+3, 3.2, 0, 360, "D");
+            }
+            elseif (7 <= $i && $i < 14) {
+                $fpdi->RoundedRect(($i-7)*$cw+$x0-2, $y0+$lh-1, 38, $lh-2, 1, '1111');
+                if (intval($failure['label']) > 9) {
+                    $fpdi->Text(($i-7)*$cw+$x0-1, $y0+$lh, $failure['label']);
+                } else {
+                    $fpdi->Text(($i-7)*$cw+$x0+0.5, $y0+$lh, $failure['label']);
+                }
+                $fpdi->Text(($i-7)*$cw+$x0+6, $y0+$lh, $failure['name']);
+                $fpdi->Circle(($i-7)*$cw+$x0+2, $y0+$lh+3, 3.2, 0, 360, "D");
+            }
+        }
 
+        $failures = $page['failures'];
 
-        // $style5 = array('width' => 0.25, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 64, 128));
-        // $fpdi->SetLineStyle($style5);
-        // $fpdi->SetFillColor(255, 0, 0);
-        // $fpdi->Arrow(200, 280, 85, 166, 0, 5, 15);
-        // $fpdi->Arrow(200, 280, 90, 163, 1, 5, 15);
-        // $fpdi->Arrow(200, 280, 95, 161, 2, 5, 15);
+        //(0,0)
+        $fpdi->Circle(23.9, 43.75, 1, 0, 360, "D");
 
+        //(1730,980)
+        $fpdi->Circle(273.1, 180.55, 1, 0, 360, "D");
 
-        $fpdi->output('hoge' . '.pdf', 'D');
-        return Redirect::back();
+        function coordinateTransformation($pixel) {
+            $exploded = explode(',', $pixel);
+            $px = $exploded[0];
+            $py = $exploded[1];
+
+            $x = $px*(273.1-23.9)/870+23.9;
+            $y = $py*(180.55-43.75)/490+43.75;
+
+            return [
+                'x' => $x,
+                'y' => $y
+            ];
+        }
+
+        foreach ($failures as $f) {
+            $position = coordinateTransformation($f['pointK']);
+            $fpdi->Circle($position['x'], $position['y'], 1, 0, 360, 'F', '', [255, 0, 0]);
+
+        }
+
+        $pdf_path = storage_path() . '/tcpdf-test01.pdf';
+        $fpdi->output($pdf_path, 'F');
+        return \Response::download($pdf_path);
     }   
 
     /**

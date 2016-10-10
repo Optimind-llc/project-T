@@ -246,14 +246,9 @@ class InspectionController extends Controller
                 'failures' => $inspection_group->inspection->process->failures->map(function ($failure) {
                     return [
                         'id' => $failure->id,
+                        'label' => $failure->sort,
                         'name' => $failure->name,
                         'type' => $failure->pivot->type
-                    ];
-                }),
-                'comments' => $inspection_group->inspection->comments->map(function ($comment) {
-                    return [
-                        'id' => $comment->id,
-                        'message' => $comment->message
                     ];
                 }),
                 'pages' => $inspection_group->pageTypes->map(function ($page) {
@@ -320,21 +315,6 @@ class InspectionController extends Controller
                 throw new StoreResourceFailedException('The part already be inspected in ather page(page_id = '.$newPage->id.').');
             }
         }
-
-        // $dupIF = InspectionFamily::where('inspection_group_id', $groupId)->first();
-
-        // if ($dupIF instanceof InspectionFamily) {
-        //     $dupP = $dupIF->pages()
-        //         ->where('page_type_id', $family['pages'][0]['pageId'])
-        //         ->whereHas('parts', function($q) use ($family) {
-        //             $q->where('panel_id', $family['pages'][0]['parts'][0]['panelId']);
-        //         })
-        //         ->count();
-
-        //     if ($dupP !== 0) {
-        //         throw new StoreResourceFailedException('The part was already inspected in this process');
-        //     }
-        // }
 
         $newFamily = new InspectionFamily;
         $newFamily->inspection_group_id = $groupId;
