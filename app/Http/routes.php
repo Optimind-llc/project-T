@@ -19,6 +19,7 @@ Route::get('client/inspection', 'Client\InspectionController@inspection');
 Route::post('client/inspection', 'Client\InspectionController@saveInspection');
 
 Route::post('client/print', 'Client\PrintController@printByTemplate');
+Route::post('client/association', 'Client\AssociationController@saveAssociation');
 Route::post('client/associatiton', 'Client\AssociationController@saveAssociation');
 
 
