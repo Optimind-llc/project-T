@@ -187,7 +187,7 @@ class PrintController extends Controller
 
         }
 
-        $pdf_path = storage_path() . '/tcpdf-test01.pdf';
+        $pdf_path = storage_path() . '/test';
         $fpdi->output($pdf_path, 'F');
         return \Response::download($pdf_path);
     }   
