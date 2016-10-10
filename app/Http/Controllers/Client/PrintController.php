@@ -79,7 +79,7 @@ class PrintController extends Controller
         $fpdi->AddPage(); // ページを追加
 
         // テンプレートを1ページ目に
-        $fpdi->setSourceFile('/app/web/public/pdf/template/molding-inner.pdf');
+        $fpdi->setSourceFile(public_path().'/pdf/template/molding-inner.pdf');
         $tplIdx = $fpdi->importPage(1);
         $fpdi->useTemplate($tplIdx, null, null, 297, 210, true);
 
