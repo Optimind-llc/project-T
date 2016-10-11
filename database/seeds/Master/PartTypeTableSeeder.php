@@ -48,28 +48,28 @@ class PartTypeTableSeeder extends Seeder
                 'updated_at'  => $now
             ],[
                 'pn'          => 67175,
-                'name'        => 'サイドR',
+                'name'        => 'サイドアッパーRH',
                 'vehicle_num' => '680A',
                 'sort'        => 4,
                 'created_at'  => $now,
                 'updated_at'  => $now
             ],[
                 'pn'          => 67176,
-                'name'        => 'サイドL',
+                'name'        => 'サイドアッパーLH',
                 'vehicle_num' => '680A',
                 'sort'        => 3,
                 'created_at'  => $now,
                 'updated_at'  => $now
             ],[
                 'pn'          => 67177,
-                'name'        => 'ロアR',
+                'name'        => 'サイドロアRH',
                 'vehicle_num' => '680A',
                 'sort'        => 6,
                 'created_at'  => $now,
                 'updated_at'  => $now
             ],[
                 'pn'          => 67178,
-                'name'        => 'ロアL',
+                'name'        => 'サイドロアLH',
                 'vehicle_num' => '680A',
                 'sort'        => 5,
                 'created_at'  => $now,

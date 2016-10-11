@@ -99,15 +99,17 @@ class PrintController extends Controller
         $fpdi->SetTextColor(0, 0, 0);
 
         $fpdi->Text(223, 18, $family['inspectorGroup'].'　'.$family['inspector']);
-        $fpdi->Text(286, 18, $family['table']);
+        if (isset($family['table'])) {
+            $fpdi->Text(286, 18, $family['table']);
+        }
 
-        foreach ($page['parts'] as $part) {
+        foreach ($page['parts'] as $i => $part) {
             $part_type = PartType::find($part['partTypeId']);
-            $fpdi->Text(14, 18, $part_type['vehicle_num']);
-            $fpdi->Text(44, 18, $part_type['pn']);
-            $fpdi->Text(78, 18, $part_type['name']);
-            $fpdi->Text(144, 18, $part['panelId']);
-            $fpdi->Text(196, 18, $part['status']);
+            $fpdi->Text(14, $i*10+18, $part_type['vehicle_num']);
+            $fpdi->Text(44, $i*10+18, $part_type['pn']);
+            $fpdi->Text(78, $i*10+18, $part_type['name']);
+            $fpdi->Text(144, $i*10+18, $part['panelId']);
+            $fpdi->Text(196, $i*10+18, $part['status']);
         }
 
         // Render failures
@@ -214,7 +216,7 @@ class PrintController extends Controller
 
         // Render holes
         if (isset($client_holes) && count($client_holes) !== 0 ) {
-            
+
         }
 
 
