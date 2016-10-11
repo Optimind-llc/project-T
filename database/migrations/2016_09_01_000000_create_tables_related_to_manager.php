@@ -153,12 +153,21 @@ class CreateTablesRelatedToManager extends Migration
             $table->timestamps();
         });
 
+        Schema::create('pdf_templates', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('path')->unique();
+            $table->string('area');
+            $table->string('reference');
+
+            $table->timestamps();
+        });
+
         Schema::create('page_types', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('number')->unsigned()->defaul(1);
             $table->integer('group_id')->unsigned();
             $table->integer('figure_id')->unsigned()->nullable();
-            $table->string('pdf_path')->nullable();
+            $table->integer('pdf_id')->unsigned()->nullable();
             $table->timestamps();
 
             /**
@@ -173,6 +182,12 @@ class CreateTablesRelatedToManager extends Migration
             $table->foreign('figure_id')
                 ->references('id')
                 ->on('figures')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('pdf_id')
+                ->references('id')
+                ->on('pdf_templates')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });
@@ -348,6 +363,7 @@ class CreateTablesRelatedToManager extends Migration
         Schema::drop('part_type_page_type');
         Schema::drop('part_types');
         Schema::drop('page_types');
+        Schema::drop('pdf_templates');
         Schema::drop('figures');
         Schema::drop('inspector_inspection_group');
         Schema::drop('inspectors');

@@ -22,10 +22,6 @@ Route::post('client/print', 'Client\PrintController@printByTemplate');
 Route::post('client/association', 'Client\AssociationController@saveAssociation');
 Route::post('client/associatiton', 'Client\AssociationController@saveAssociation');
 
-Route::get('client/csv', 'Client\InspectionController@exportCSV');
-
-
-
 Route::get('manager/dashboard', 'Manager\ReferenceController@index');
 Route::get('manager/reference', 'Manager\ReferenceController@index');
 Route::get('manager/mapping', 'Manager\ReferenceController@index');

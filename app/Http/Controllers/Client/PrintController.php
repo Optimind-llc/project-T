@@ -14,6 +14,7 @@ use App\Models\PartType;
 use App\Models\PageType;
 use App\Models\InspectorGroup;
 use App\Models\Client\Part;
+use App\Models\Client\FailurePosition;
 // Exceptions
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -60,6 +61,100 @@ class PrintController extends Controller
         return $fpdi;
     }
 
+    protected function renderFailureButtons($fpdi, $failures, $reference, $ws = false)
+    {
+        $ref = explode('/', $reference);
+        $xi0 = $ref[0];
+        $yi0 = $ref[1];
+        $xn0 = $ref[2];
+        $yn0 = $ref[3];
+        $h = 10;
+        $w = 40;
+        $t = [0.5, -1];
+
+        if ($ws) {
+            $failures = $failures->filter(function ($f){
+                return $f['name'] == '水漏れ';
+            });
+        }
+
+        $grouped = $failures->groupBy('type');
+
+        // Render important failures
+        if (isset($grouped[1])) {
+            foreach ($grouped[1] as $i => $failure) {
+                if ($i < 7) {
+                    $ii = $i;
+                    $yy = $yi0;
+                }
+                elseif (7 <= $i && $i < 14) {
+                    $ii = $i-7;
+                    $yy = $yi0+$h;
+                }
+                intval($failure['label']) < 10 ? $tx = $t[0] : $tx = $t[1];
+
+                $fpdi->RoundedRect($ii*$w+$xi0-2, $yy-1, $w-2, $h-2, 1, '1111');
+                $fpdi->Text($ii*$w+$xi0+$tx, $yy, $failure['label']);
+                $fpdi->Text($ii*$w+$xi0+6, $yy, $failure['name']);
+                $fpdi->Circle($ii*$w+$xi0+2, $yy+3, 3.2, 0, 360, "D");
+            }
+        }
+
+
+        // Render nomal failures
+        if (isset($grouped[2])) {
+            foreach ($grouped[2] as $i => $failure) {
+                if ($i < 7) {
+                    $ii = $i;
+                    $yy = $yn0;
+                }
+                elseif (7 <= $i && $i < 14) {
+                    $ii = $i-7;
+                    $yy = $yn0+$h;
+                }
+
+                intval($failure['label']) < 10 ? $tx = $t[0] : $tx = $t[1];
+
+                $fpdi->RoundedRect($ii*$w+$xn0-2, $yy-1, $w-2, $h-2, 1, '1111');
+                $fpdi->Text($ii*$w+$xn0+$tx, $yy, $failure['label']);
+                $fpdi->Text($ii*$w+$xn0+6, $yy, $failure['name']);
+                $fpdi->Circle($ii*$w+$xn0+2, $yy+3, 3.2, 0, 360, "D");
+            }
+        }
+    }
+
+    protected function renderCommentButtons($fpdi, $comments, $reference)
+    {
+        $fpdi->SetFont('kozgopromedium', '', 14);
+        $fpdi->SetTextColor(0, 0, 0);
+
+        $ref = explode('/', $reference);
+        $x0 = $ref[4];
+        $y0 = $ref[5];
+        $h = 10;
+        $w = 36;
+        $t = [0.5, -1];
+
+        // Render comments
+        foreach ($comments as $i => $comment) {
+            if ($i < 8) {
+                $ii = $i;
+                $yy = $y0;
+            }
+            elseif (8 <= $i && $i < 16) {
+                $ii = $i-7;
+                $yy = $y0+$h;
+            }
+
+            intval($comment['label']) < 10 ? $tx = $t[0] : $tx = $t[1];
+
+            $fpdi->RoundedRect($ii*$w+$x0-2, $yy-1, $w-2, $h-2, 1, '1111', 'D', ['color' => [0, 0, 0]]);
+            $fpdi->Text($ii*$w+$x0+$tx, $yy, $comment['sort']);
+            $fpdi->Text($ii*$w+$x0+6, $yy, $comment['message']);
+            $fpdi->RoundedRect($ii*$w+$x0-1, $yy, 6, 6, 1, '1111', 'D', ['color' => [78, 143, 12]]);
+        }
+    }
+
     /**
      * Get user from JWT token
      */
@@ -70,24 +165,20 @@ class PrintController extends Controller
             throw new StoreResourceFailedException('JSON in Request body should contain family key');
         }
 
-        $request = new DummyRequest;
-        $controller = new InspectionController;
-
-        // Get data from Inspection-Controller.
-        $request->set($family['process'], $family['inspection'], $family['division'], $family['line']);
-        $group = $controller->inspection($request)['group'];
-
         $fpdi = $this->createFPDI();
 
         /*
          * 今後は複数ページも印刷するのでループを回す
          */
         $page = $family['pages'][0];
-        $pdf_path = PageType::find($page['pageTypeId'])->pdf_path;
+
+        $pageModel = PageType::find($page['pageTypeId']);
+        $ws = $page['pageTypeId'] == 16;
+        $pdf = $pageModel->pdf;
 
         // Add new page from template to page 1.
         $fpdi->AddPage();
-        $fpdi->setSourceFile(public_path().'/pdf/template/'.$pdf_path);
+        $fpdi->setSourceFile(public_path().'/pdf/template/'.$pdf->path);
         $tplIdx = $fpdi->importPage(1);
         $fpdi->useTemplate($tplIdx, null, null, 297, 210, true);
 
@@ -98,89 +189,75 @@ class PrintController extends Controller
         $fpdi->SetFont('kozgopromedium', '', 14);
         $fpdi->SetTextColor(0, 0, 0);
 
-        $fpdi->Text(223, 18, $family['inspectorGroup'].'　'.$family['inspector']);
+        $numOfParts = count($page['parts']);
+        $fpdi->Text(223, 18+($numOfParts-1)*5, $family['inspectorGroup'].'　'.$family['inspector']);
         if (isset($family['table'])) {
-            $fpdi->Text(286, 18, $family['table']);
+            $fpdi->Text(286, 18+($numOfParts-1)*5, $family['table']);
         }
 
         foreach ($page['parts'] as $i => $part) {
             $part_type = PartType::find($part['partTypeId']);
             $fpdi->Text(14, $i*10+18, $part_type['vehicle_num']);
             $fpdi->Text(44, $i*10+18, $part_type['pn']);
-            $fpdi->Text(78, $i*10+18, $part_type['name']);
-            $fpdi->Text(144, $i*10+18, $part['panelId']);
-            $fpdi->Text(196, $i*10+18, $part['status']);
+            $fpdi->Text(77, $i*10+18, $part_type['name']);
+            $fpdi->Text(151, $i*10+18, $part['panelId']);
+            $fpdi->Text(197, $i*10+18, $part['status']);
         }
 
-        // Render failures
-        $i_failures = $group['failures']->filter(function ($f) {
-            return $f['type'] == 1;
-        })->values();
+        /*
+         * For Matuken
+         */
+        function coordinateTransformationK($pixel, $figure_area) {
+            $area = explode('/', $figure_area);
+            $x1 = floatval($area[0]);
+            $y1 = floatval($area[1]);
+            $x2 = floatval($area[2]);
+            $y2 = floatval($area[3]);
+            $w = intval($area[4]);
+            $h = intval($area[5]);
 
-        $n_failures = $group['failures']->filter(function ($f) {
-            return $f['type'] == 2;
-        })->values();
+            $x1 = 23.9;
+            $y1 = 45.2;
+            $x2 = 273.1;
+            $y2 = 170.9;
+            $w = 1740;
+            $h = 900;
 
-        foreach ($i_failures as $i => $failure) {
-            $x0 = 12;
-            $y0 = 32;
-            $lh = 10;
-            $cw = 40;
-
-            if ($i < 7) {
-                $fpdi->RoundedRect($i*$cw+$x0-2, $y0-1, $cw-2, $lh-2, 1, '1111');
-                if (intval($failure['label']) > 9) {
-                    $fpdi->Text($i*$cw+$x0-1, $y0, $failure['label']);
-                } else {
-                    $fpdi->Text($i*$cw+$x0+0.5, $y0, $failure['label']);
-                }
-                $fpdi->Text($i*$cw+$x0+6, $y0, $failure['name']);
-                $fpdi->Circle($i*$cw+$x0+2, $y0+3, 3.2, 0, 360, "D");
-            }
-        }
-
-        foreach ($n_failures as $i => $failure) {
-            $x0 = 12;
-            $y0 = 186;
-            $lh = 10;
-            $cw = 40;
-
-            if ($i < 7) {
-                $fpdi->RoundedRect($i*$cw+$x0-2, $y0-1, $cw-2, $lh-2, 1, '1111');
-                if (intval($failure['label']) > 9) {
-                    $fpdi->Text($i*$cw+$x0-1, $y0, $failure['label']);
-                } else {
-                    $fpdi->Text($i*$cw+$x0+0.5, $y0, $failure['label']);
-                }
-                $fpdi->Text($i*$cw+$x0+6, $y0, $failure['name']);
-                $fpdi->Circle($i*$cw+$x0+2, $y0+3, 3.2, 0, 360, "D");
-            }
-            elseif (7 <= $i && $i < 14) {
-                $fpdi->RoundedRect(($i-7)*$cw+$x0-2, $y0+$lh-1, 38, $lh-2, 1, '1111');
-                if (intval($failure['label']) > 9) {
-                    $fpdi->Text(($i-7)*$cw+$x0-1, $y0+$lh, $failure['label']);
-                } else {
-                    $fpdi->Text(($i-7)*$cw+$x0+0.5, $y0+$lh, $failure['label']);
-                }
-                $fpdi->Text(($i-7)*$cw+$x0+6, $y0+$lh, $failure['name']);
-                $fpdi->Circle(($i-7)*$cw+$x0+2, $y0+$lh+3, 3.2, 0, 360, "D");
-            }
-        }
-
-        function coordinateTransformation($pixel) {
             $exploded = explode(',', $pixel);
             $px = $exploded[0];
             $py = $exploded[1];
 
-            $x = $px*(273.1-23.9)/870+23.9;
-            $y = $py*(180.55-43.75)/490+43.75;
+            $x = $px*($x2-$x1)/($w/2)+$x1;
+            $y = $py*($y2-$y1)/($h/2)+$y1;
 
             return ['x' => $x, 'y' => $y];
         }
 
-        /********* Render failures *********/
+        function coordinateTransformation($pixel, $figure_area) {
+            $area = explode('/', $figure_area);
+            $x1 = floatval($area[0]);
+            $y1 = floatval($area[1]);
+            $x2 = floatval($area[2]);
+            $y2 = floatval($area[3]);
+            $w = intval($area[4]);
+            $h = intval($area[5]);
 
-        $client_failures = $page['failures'];
+            // $x1 = 23.9;
+            // $y1 = 87;
+            // $x2 = 273.1;
+            // $y2 = 201.6;
+            // $w = 1740;
+            // $h = 820;
+
+            $exploded = explode(',', $pixel);
+            $px = $exploded[0];
+            $py = $exploded[1];
+
+            $x = $px*($x2-$x1)/$w+$x1;
+            $y = $py*($y2-$y1)/$h+$y1;
+
+            return ['x' => $x, 'y' => $y];
+        }
 
         function getFailureLabel($id, $failures) {
             return array_filter($failures, function($f) use ($id) {
@@ -188,14 +265,27 @@ class PrintController extends Controller
             })['label'];
         }
 
-        // Render failures
-        if (isset($client_failures) && count($client_failures) !== 0 ) {
+        /********* Render failures *********/
+        if (array_key_exists('failures', $page) && count($page['failures']) !== 0 ) {
+            $client_failures = $page['failures'];
+            $failures = $pageModel->group->inspection->process->failures
+                ->map(function($f) {
+                    return [
+                        'id' => $f->id,
+                        'name' => $f->name,
+                        'label' => $f->sort,
+                        'type' => $f->pivot->type
+                    ];
+                });
+
+            $this->renderFailureButtons($fpdi, $failures, $pdf->reference, $ws);
+
             $fpdi->SetFont('kozgopromedium', '', 12);
             $fpdi->SetTextColor(255,0,0);
 
             foreach ($client_failures as $cf) {
-                $p = coordinateTransformation($cf['pointK']);
-                $label = $group['failures']->filter(function($f) use ($cf) {
+                $p = coordinateTransformationK($cf['pointK'], $pdf->area);
+                $label = $failures->filter(function($f) use ($cf) {
                     return $f['id'] == $cf['id'];
                 })->first()['label'];
 
@@ -211,79 +301,109 @@ class PrintController extends Controller
         }
 
         /********* Render holes *********/
+        if (array_key_exists('holes', $page) && count($page['holes']) !== 0 ) {
+            $fpdi->SetFont('kozgopromedium', '', 10);
+            $holes = $pageModel->figure->holes;
+            $client_holes = array_column($page['holes'], 'status', 'id');
 
-        $client_holes = $page['holes'];
+            foreach ($holes as $hole) {
+                $fpdi->SetTextColor(0, 0, 0);
+                $p = coordinateTransformation($hole->point, $pdf->area);
 
-        // Render holes
-        if (isset($client_holes) && count($client_holes) !== 0 ) {
+                $lx = $p['x'];
+                $ly = $p['y'];
+                $lw = 6;
+                $lh = 5;
+                $d = 6;
 
+                if (array_key_exists($hole->id, $client_holes)) {
+                    switch ($client_holes[$hole->id]) {
+                        case 0: $label = '×'; break;
+                        case 1: $label = '○'; break;
+                        case 2: $label = '△'; break;
+                    }
+                    $fpdi->Circle($p['x'], $p['y'], 2.4, 0, 360, 'F', '', [255, 255, 255]);
+                    $fpdi->Text($p['x']-1.7, $p['y']-2.2, $label);                    
+                }
+
+                switch ($hole->direction) {
+                    case 'left': $lx = $lx-$d; break;
+                    case 'right': $lx = $lx+$d; break;
+                    case 'top': $ly = $ly-$d; break;
+                    case 'bottom': $ly = $ly+$d; break;
+                }
+
+                $colorcode = $hole->color;
+                $rgb[0] = hexdec(substr($colorcode, 0, 2));
+                $rgb[1] = hexdec(substr($colorcode, 2, 2));
+                $rgb[2] = hexdec(substr($colorcode, 4, 2));
+
+                $borderStyle = ['LTRB' => [
+                    'dash' => '2',
+                    'color' => [0, 0, 0]
+                ]];
+
+                if ($hole->shape == 'square') {
+                    $fpdi->Rect($lx-($lw/2), $ly-($lh/2), $lw, $lh, 'F', $borderStyle, $rgb);
+                }
+                elseif ($hole->shape == 'circle') {
+                    $fpdi->Circle($lx, $ly, 3, 0, 360, 'F', '', [0, 0, 0]);
+                    $fpdi->Circle($lx, $ly, 2.9, 0, 360, 'F', '', $rgb);
+                }
+
+                if ($rgb[0]+$rgb[1]+$rgb[2] < 255) {
+                    $fpdi->SetTextColor(255, 255, 255);
+                }
+
+                if ($hole->label < 10) {
+                    $fpdi->Text($lx-1, $ly-2.2, $hole->label);
+                }
+                elseif (9 < $hole->label && $hole->label < 100) {
+                    $fpdi->Text($lx-2, $ly-2.2, $hole->label);
+                }
+                else {
+                    $fpdi->Text($lx-3.4, $ly-2.2, $hole->label);
+                }
+            }
         }
 
+        /********* Render comments *********/
+        if (array_key_exists('comments', $page) && count($page['comments']) !== 0 ) {
+            $client_comments = $page['comments'];
+            $comments = $pageModel->group->inspection->comments;
+            $this->renderCommentButtons($fpdi, $comments, $pdf->reference);
 
+            foreach ($client_comments as $c) {
+                $fp = FailurePosition::with(['failure'])->find($c['failurePositionId']);
+                $p = coordinateTransformation($fp->point, $pdf->area);
 
+                $lx = $p['x'];
+                $ly = $p['y'];
+                $lw = 18;
+                $lh = 5;
 
+                $fpdi->Circle($lx, $ly, 3, 0, 360, 'F', '', [78, 143, 12]);
+                $fpdi->Circle($lx, $ly, 2.8, 0, 360, 'F', '', [255, 255, 255]);
+                $fpdi->SetTextColor(78, 143, 12);
+                $fpdi->SetFont('kozgopromedium', '', 10);
 
+                $label = $fp->failure->sort;
+                if ($label < 10) {
+                    $fpdi->Text($lx-1, $ly-2.2, $label);
+                }
+                elseif (9 < $label && $label < 100) {
+                    $fpdi->Text($lx-2, $ly-2.2, $label);
+                }
 
-
-
-
-
-
-
+                $fpdi->Rect($lx-($lw/2), $ly-($lh/2)-6, $lw, $lh, 'DF', ['LTRB' => ['color' => [78, 143, 12]]], [255,255,255]);
+                $fpdi->Text($lx-6.5, $ly-8.2, '手直し'.$c['commentId']);
+            }
+        }
 
         $pdf_path = storage_path() . '/test.pdf';
         $fpdi->output($pdf_path, 'F');
 
         return 'ok';
-    }   
-
-
-
-
-    /**
-     * Get user from JWT token
-     */
-    public function printByHtml()
-    {
-        //PDF作成
-        $tcpdf = new TCPDF();
-        //フォント名,フォントスタイル（空文字でレギュラー）,フォントサイズ
-        $tcpdf->setFont('kozminproregular','',10);
-        $tcpdf->SetPrintHeader(false);
-        $tcpdf->SetPrintFooter(false);
-        //ページを追加
-        $tcpdf->addPage();
-        //viewから起こす
-        $tcpdf->writeHTML(view("pdf.test")->render());
-        //第一引数はファイル名、第二引数で挙動を指定（D=ダウンロード）
-        $tcpdf->output('hoge' . '.pdf', 'D');
-        return Redirect::back();
-    }
-
-    /**
-     * Get user from JWT token
-     */
-    public function print()
-    {
-        $tcpdf = new TCPDF;
-        $tcpdf->SetPrintHeader(false);
-        $tcpdf->SetPrintFooter(false);
-        $tcpdf->AddPage();
-        $tcpdf->SetFont('kozminproregular', '', 12);
-        $tcpdf->Text(10, 10, 'テストですよ');
-
-        $tcpdf->Text(185, 249, 'Arrows');
-        $style5 = array('width' => 0.25, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 64, 128));
-        $tcpdf->SetLineStyle($style5);
-        $tcpdf->SetFillColor(255, 0, 0);
-        $tcpdf->Arrow(200, 280, 185, 266, 0, 5, 15);
-        $tcpdf->Arrow(200, 280, 190, 263, 1, 5, 15);
-        $tcpdf->Arrow(200, 280, 195, 261, 2, 5, 15);
-        $tcpdf->Arrow(200, 280, 200, 260, 3, 5, 15);
-
-        $pdf_path = storage_path() . '/tcpdf-test01.pdf';
-        $tcpdf->output($pdf_path, 'F');
-        return \Response::download($pdf_path);
     }
 }
 

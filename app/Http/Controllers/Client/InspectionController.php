@@ -260,7 +260,10 @@ class InspectionController extends Controller
                 'pages' => $inspection_group->pageTypes->map(function ($page) {
                     return [
                         'id' => $page->id,
-                        'pdf' => $page->pdf_path,
+                        'pdf' => [
+                            'path' => $page->pdf->path,
+                            'area' => $page->pdf->area
+                        ],
                         'parts' => $page->partTypes->map(function ($part) {
                             return [
                                 'id' => $part->id,
@@ -494,11 +497,12 @@ class InspectionController extends Controller
         return 'Excellent';
     }
 
-    public function exportCSV ($gId, $pId, $itorG, $itor, $status ) {
+    public function exportCSV ($gId, $pId, $itorG, $itor, $status) {
         // XXXX_IIIII_YYYYMMDD_HHMMSS.pdf
-        // XXXX：工程　"M001"＝成形１ライン      
+        // XXXX：工程　"M001"＝成形１ライン
         // IIIII：品番　上位５桁　例えば"67149"
         // YYYYMMDD_HHMMSS：　データが登録された　年月日_時分秒
+
         $now = Carbon::now();
         $now_f = $now->format('Ymd_His');
         $now_c = $now->format('YmdHis');

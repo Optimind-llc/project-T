@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(InspectorGroupTableSeeder::class);
         $this->call(InspectorTableSeeder::class);
         $this->call(FigureTableSeeder::class);
+        $this->call(PdfTemplateTableSeeder::class);
         $this->call(PageTypeTableSeeder::class);
         $this->call(VehicleTableSeeder::class);
         $this->call(PartTypeTableSeeder::class);

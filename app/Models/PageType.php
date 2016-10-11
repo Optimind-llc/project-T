@@ -26,6 +26,15 @@ class PageType extends Model
         );
     }
 
+    public function pdf()
+    {
+        return $this->belongsTo(
+            'App\Models\Pdf',
+            'pdf_id',
+            'id'
+        );
+    }
+
     public function group()
     {
         return $this->belongsTo(

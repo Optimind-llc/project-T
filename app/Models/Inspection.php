@@ -80,6 +80,7 @@ class Inspection extends Model
                 'pageTypes.partTypes.vehicle',
                 'pageTypes.figure',
                 'pageTypes.figure.holes',
+                'pageTypes.pdf',
                 'inspection.process.failures',
                 'inspection.comments'
             ])

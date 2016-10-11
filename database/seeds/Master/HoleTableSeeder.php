@@ -566,7 +566,7 @@ class HoleTableSeeder extends Seeder
                 'part_type_id' => 1,
                 'point'      => '842,285',
                 'label'      => 30,
-                'direction'  => 'top',
+                'direction'  => 'left',
                 'color'      => '000000',
                 'border'     => 'solid',
                 'shape'      => 'square',
