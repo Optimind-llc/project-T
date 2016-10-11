@@ -482,14 +482,19 @@ class InspectionController extends Controller
             }
         }
 
-        // if () {
-        //     # code...
-        // }
+        if ($groupId == 1 || $groupId == 2) {
+            $itorG = $family['inspectorGroup'];
+            $itor = explode(',',$family['inspector'])[1];
+            $status = $family['status'];
+            $panel_id = $family['pages'][0]['parts'][0]['panelId'];
+
+            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status);
+        }
 
         return 'Excellent';
     }
 
-    public function exportCSV ($groupId = 1, $panelId = 'A0000001', $itorG = '白', $itor='山田　太郎', $status = 1 ) {
+    public function exportCSV ($gId, $pId, $itorG, $itor, $status ) {
         // XXXX_IIIII_YYYYMMDD_HHMMSS.pdf
         // XXXX：工程　"M001"＝成形１ライン      
         // IIIII：品番　上位５桁　例えば"67149"
@@ -498,15 +503,15 @@ class InspectionController extends Controller
         $now_f = $now->format('Ymd_His');
         $now_c = $now->format('YmdHis');
 
-        $XXXX = $groupId == 1 ? 'M0001' : 'M0002';
-        $line = $groupId == 1 ? '001' : '002';
+        $XXXX = $gId == 1 ? 'M0001' : 'M0002';
+        $line = $gId == 1 ? '001' : '002';
 
-        $file_name = 'M0001'.'_'.'67149'.'_'.$now;
+        $file_name = 'M0001'.'_'.'67149'.'_'.$now_f;
         $file_path = base_path('output/'.$file_name.'.csv');
      
         // CSVに出力するタイトル行
         $export_csv_title = array('品番','パネルID','工程','ライン','車種','直','検査者','出荷判定','重要不良１','重要不良２','重要不良３','重要不良４','重要不良５','重要不良６','重要不良７','不良１','不良２','不良３','不良４','不良５','不良６','不良７','不良８','不良９','不良１０','不良１１','不良１２','不良１３','不良１４','時刻');
-        $res_export = array('67149',$panelId,'成型',$line,'680A',$itorG,$itor,$status,'','','','','','','','','','','','','','','','','','','','','');
+        $res_export = array('67149',$pId,'成型',$line,'680A',$itorG,$itor,$status,'','','','','','','','','','','','','','','','','','','','','');
 
         if( touch($file_path) ){
             $file = new \SplFileObject( $file_path, 'w' ); 
@@ -521,7 +526,7 @@ class InspectionController extends Controller
      
             // エンコードしたタイトル行を配列ごとCSVデータ化
             $file->fputcsv($export_header);
-            $file->fputcsv($res_export);  
+            $file->fputcsv($export_raw);
         }
     }
 }
