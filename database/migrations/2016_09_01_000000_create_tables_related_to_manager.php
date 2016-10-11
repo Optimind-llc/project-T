@@ -158,6 +158,7 @@ class CreateTablesRelatedToManager extends Migration
             $table->integer('number')->unsigned()->defaul(1);
             $table->integer('group_id')->unsigned();
             $table->integer('figure_id')->unsigned()->nullable();
+            $table->string('pdf_path')->nullable();
             $table->timestamps();
 
             /**

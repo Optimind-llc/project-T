@@ -33,6 +33,7 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 1,
                 'group_id'   => 1,
                 'figure_id'  => 1,
+                'pdf_path'   => 'molding-inner-line1.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -41,6 +42,7 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 1,
                 'group_id'   => 2,
                 'figure_id'  => 1,
+                'pdf_path'   => 'molding-inner-line2.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -49,6 +51,7 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 1,
                 'group_id'   => 3,
                 'figure_id'  => 12,
+                'pdf_path'   => null,
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -57,6 +60,7 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 1,
                 'group_id'   => 4,
                 'figure_id'  => 4,
+                'pdf_path'   => 'holing-inner-page1.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -65,6 +69,7 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 2,
                 'group_id'   => 4,
                 'figure_id'  => 5,
+                'pdf_path'   => 'holing-inner-page2.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -73,6 +78,7 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 3,
                 'group_id'   => 4,
                 'figure_id'  => 6,
+                'pdf_path'   => 'holing-inner-page3.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -81,6 +87,7 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 4,
                 'group_id'   => 4,
                 'figure_id'  => 7,
+                'pdf_path'   => 'holing-inner-page4.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -88,7 +95,8 @@ class PageTypeTableSeeder extends Seeder
             [
                 'number'     => 1,
                 'group_id'   => 5,
-                'figure_id'  => 2,    
+                'figure_id'  => 2,
+                'pdf_path'   => 'molding-small-line1-page1.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -97,6 +105,7 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 2,
                 'group_id'   => 5,
                 'figure_id'  => 3,
+                'pdf_path'   => 'molding-small-line1-page2.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -104,7 +113,8 @@ class PageTypeTableSeeder extends Seeder
             [
                 'number'     => 1,
                 'group_id'   => 6,
-                'figure_id'  => 2,    
+                'figure_id'  => 2,
+                'pdf_path'   => 'molding-small-line2-page1.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -113,14 +123,16 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 2,
                 'group_id'   => 6,
                 'figure_id'  => 3,
+                'pdf_path'   => 'molding-small-line2-page2.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
-            //成型：インライン検査：小部品
+            // 成型：インライン検査：小部品
             [
                 'number'     => 1,
                 'group_id'   => 7,
                 'figure_id'  => null,
+                'pdf_path'   => null,
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -129,6 +141,7 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 1,
                 'group_id'   => 8,
                 'figure_id'  => 8,
+                'pdf_path'   => 'holing-small-page1.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -137,6 +150,7 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 2,
                 'group_id'   => 8,
                 'figure_id'  => 9,
+                'pdf_path'   => 'holing-small-page2.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -145,6 +159,7 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 1,
                 'group_id'   => 9,
                 'figure_id'  => 13,
+                'pdf_path'   => null,
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -153,30 +168,35 @@ class PageTypeTableSeeder extends Seeder
                 'number'     => 1,
                 'group_id'   => 10,
                 'figure_id'  => 10,
+                'pdf_path'   => 'jointing-ws-assy.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'number'     => 1,
                 'group_id'   => 11,
                 'figure_id'  => 10,
+                'pdf_path'   => 'jointing-fn-assy.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'number'     => 1,
                 'group_id'   => 12,
                 'figure_id'  => 10,
+                'pdf_path'   => 'jointing-ch-assy.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'number'     => 1,
                 'group_id'   => 13,
                 'figure_id'  => 10,
+                'pdf_path'   => 'jointing-sc-assy.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'number'     => 1,
                 'group_id'   => 14,
                 'figure_id'  => 11,
+                'pdf_path'   => 'jointing-ad-assy.pdf',
                 'created_at' => $now,
                 'updated_at' => $now
             ],

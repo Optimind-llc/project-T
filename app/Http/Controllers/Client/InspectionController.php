@@ -251,9 +251,16 @@ class InspectionController extends Controller
                         'type' => $failure->pivot->type
                     ];
                 }),
+                'comments' => $inspection_group->inspection->comments->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'message' => $comment->message
+                    ];
+                }),
                 'pages' => $inspection_group->pageTypes->map(function ($page) {
                     return [
                         'id' => $page->id,
+                        'pdf' => $page->pdf_path,
                         'parts' => $page->partTypes->map(function ($part) {
                             return [
                                 'id' => $part->id,

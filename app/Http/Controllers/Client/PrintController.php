@@ -11,6 +11,7 @@ use FPDI;
 // Models
 use App\Models\Process;
 use App\Models\PartType;
+use App\Models\PageType;
 use App\Models\InspectorGroup;
 use App\Models\Client\Part;
 // Exceptions
@@ -38,7 +39,8 @@ class PrintController extends Controller
         $fpdi->SetMargins(0, 0, 0);
         $fpdi->SetCellPadding(0);
         $fpdi->SetAutoPageBreak(false);
-        $fpdi->SetAuthor('Mapping system');
+
+        // $fpdi->SetAuthor('Mapping system');
         // $fpdi->SetTitle('TCPDF Example 009');
         // $fpdi->SetSubject('TCPDF Tutorial');
         // $fpdi->SetKeywords('TCPDF, PDF, example, test, guide');
@@ -76,14 +78,18 @@ class PrintController extends Controller
         $group = $controller->inspection($request)['group'];
 
         $fpdi = $this->createFPDI();
-        $fpdi->AddPage(); // ページを追加
 
-        // テンプレートを1ページ目に
-        $fpdi->setSourceFile(public_path().'/pdf/template/molding-inner.pdf');
+        /*
+         * 今後は複数ページも印刷するのでループを回す
+         */
+        $page = $family['pages'][0];
+        $pdf_path = PageType::find($page['pageTypeId'])->pdf_path;
+
+        // Add new page from template to page 1.
+        $fpdi->AddPage();
+        $fpdi->setSourceFile(public_path().'/pdf/template/'.$pdf_path);
         $tplIdx = $fpdi->importPage(1);
         $fpdi->useTemplate($tplIdx, null, null, 297, 210, true);
-
-        $page = $family['pages'][0];
 
         $fpdi->SetFont('kozgopromedium', '', 16);
         $fpdi->SetTextColor(255, 255, 255);
@@ -159,14 +165,6 @@ class PrintController extends Controller
             }
         }
 
-        $failures = $page['failures'];
-
-        //(0,0)
-        $fpdi->Circle(23.9, 43.75, 1, 0, 360, "D");
-
-        //(1730,980)
-        $fpdi->Circle(273.1, 180.55, 1, 0, 360, "D");
-
         function coordinateTransformation($pixel) {
             $exploded = explode(',', $pixel);
             $px = $exploded[0];
@@ -175,22 +173,70 @@ class PrintController extends Controller
             $x = $px*(273.1-23.9)/870+23.9;
             $y = $py*(180.55-43.75)/490+43.75;
 
-            return [
-                'x' => $x,
-                'y' => $y
-            ];
+            return ['x' => $x, 'y' => $y];
         }
 
-        foreach ($failures as $f) {
-            $position = coordinateTransformation($f['pointK']);
-            $fpdi->Circle($position['x'], $position['y'], 1, 0, 360, 'F', '', [255, 0, 0]);
+        /********* Render failures *********/
 
+        $client_failures = $page['failures'];
+
+        function getFailureLabel($id, $failures) {
+            return array_filter($failures, function($f) use ($id) {
+                $f['id'] === $id;
+            })['label'];
         }
 
-        $pdf_path = storage_path() . '/test';
+        // Render failures
+        if (isset($client_failures) && count($client_failures) !== 0 ) {
+            $fpdi->SetFont('kozgopromedium', '', 12);
+            $fpdi->SetTextColor(255,0,0);
+
+            foreach ($client_failures as $cf) {
+                $p = coordinateTransformation($cf['pointK']);
+                $label = $group['failures']->filter(function($f) use ($cf) {
+                    return $f['id'] == $cf['id'];
+                })->first()['label'];
+
+                $fpdi->Circle($p['x'], $p['y'], 3.1, 0, 360, 'F', '', [255, 0, 0]);
+                $fpdi->Circle($p['x'], $p['y'], 2.9, 0, 360, 'F', '', [255, 255, 255]);
+
+                if ($label > 9) {
+                    $fpdi->Text($p['x']-2.6, $p['y']-2.5, $label);
+                } else {
+                    $fpdi->Text($p['x']-1.5, $p['y']-2.5, $label);
+                }
+            }
+        }
+
+        /********* Render holes *********/
+
+        $client_holes = $page['holes'];
+
+        // Render holes
+        if (isset($client_holes) && count($client_holes) !== 0 ) {
+            
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $pdf_path = storage_path() . '/test.pdf';
         $fpdi->output($pdf_path, 'F');
-        return \Response::download($pdf_path);
+
+        return 'ok';
     }   
+
+
+
 
     /**
      * Get user from JWT token
