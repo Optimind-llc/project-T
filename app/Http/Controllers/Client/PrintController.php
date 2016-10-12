@@ -201,7 +201,14 @@ class PrintController extends Controller
             $fpdi->Text(44, $i*10+18, $part_type['pn']);
             $fpdi->Text(77, $i*10+18, $part_type['name']);
             $fpdi->Text(151, $i*10+18, $part['panelId']);
-            $fpdi->Text(197, $i*10+18, $part['status'] == 1 ? '○' : '×');
+            if ($part['status'] == 1) {
+                $s = '○';
+            } elseif ($part['status'] == 0) {
+                $s = '×';
+            } else {
+                $s = '';
+            }
+            $fpdi->Text(197, $i*10+18, $s);
         }
 
         /*
