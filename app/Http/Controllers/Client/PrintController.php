@@ -190,7 +190,7 @@ class PrintController extends Controller
         $fpdi->SetTextColor(0, 0, 0);
 
         $numOfParts = count($page['parts']);
-        $fpdi->Text(223, 18+($numOfParts-1)*5, $family['inspectorGroup'].'　'.$family['inspector']);
+        $fpdi->Text(223, 18+($numOfParts-1)*5, $family['inspectorGroup'].' '.$family['inspector']);
         if (isset($family['table'])) {
             $fpdi->Text(286, 18+($numOfParts-1)*5, $family['table']);
         }
@@ -413,11 +413,11 @@ class PrintController extends Controller
             }
         }
 
-        $pdf_path = storage_path() . '/test.pdf';
-        $fpdi->output($pdf_path, 'F');
+        $now = Carbon::now()->timestamp;
 
-        $com = 'C.\"Program Files (x86)\Adobe\Reader\AcroRd32.exe" /t /h '.$pdf_path;
-        exec($com);
+        $file_name = $now.'.pdf';
+        $pdf_path = storage_path('pdf/'.$file_name);
+        $fpdi->output($pdf_path, 'F');
 
         return 'ok';
     }

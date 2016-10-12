@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\InsertInline::class
+        'App\Console\Commands\InsertInline',
+        'App\Console\Commands\PrintPDF'
     ];
 
     /**
