@@ -68,7 +68,7 @@ class App extends Component {
             <Navigation links={links}/>
           </Paper>
           <div style={styles.content}>
-            <Breadcrumbs nameList={nameList}/>
+            {/*<Breadcrumbs nameList={nameList}/>*/}
             {children}
           </div>
         </div>

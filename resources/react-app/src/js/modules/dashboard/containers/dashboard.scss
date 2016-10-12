@@ -1,5 +1,5 @@
 #dashboardWrap {
-  margin: 10px 10px 0 10px;
+  padding: 6px 6px 0 6px;
   min-width: 800px;
 
   div.serch-wrap {
@@ -17,6 +17,11 @@
         height: 30px;
         margin-bottom: 4px;
 
+        > button {
+          margin: 0 2px;
+          padding: 0;
+        }
+
         &:nth-last-of-type(1) {
           margin-bottom: 0;
         }
@@ -31,24 +36,39 @@
       }
     }
 
-    .select-process {
+    .select-viecle-wrap {
       flex-basis: 800px;
 
       > div {
         display: flex;
         flex-flow: raw nowrap;
         justify-content: space-between;
+
+        &.select-vehicle {
+          justify-content: flex-start;
+          > button {
+            flex-basis: 120px;
+          }
+        }
+        &.select-process {
+          > button {
+            flex-basis: 80px;
+          }          
+        }
+        &.select-part {
+          > button {
+            flex-basis: 80px;
+          }          
+        }
       }
-
-
     }
 
     .select-itorg {
-      flex-basis: 140px;
+      flex-basis: 120px;
     }
 
     .select-mode {
-      flex-basis: 600px;
+      flex-basis: 420px;
     }
   }
 

@@ -80,9 +80,9 @@ class Dashboard extends Component {
     return (
       <div id="dashboardWrap">
 <div className="serch-wrap bg-white">
-  <div className="select-process">
-    <div className="">
-      {
+  <div className="select-viecle-wrap">
+    <div className="select-vehicle">
+      {VehicleData.data &&
         VehicleData.data.map(v => 
           <button
             key={v.c}
@@ -98,7 +98,7 @@ class Dashboard extends Component {
       }
       <button className="gray disabled">950A</button>
     </div>
-    <div className="">
+    <div className="select-process">
       <button
         className="molding"
         onClick={() => this.setState({itionG: {
@@ -184,7 +184,7 @@ class Dashboard extends Component {
         接着：特検
       </button>
     </div>
-    <div className="">
+    <div className="select-part">
       <button className="small">
         <span>バックドアインナ:</span><span>67149</span>
       </button>
