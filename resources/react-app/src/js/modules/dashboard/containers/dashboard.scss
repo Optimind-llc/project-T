@@ -1,12 +1,12 @@
 #dashboardWrap {
-  padding: 6px 6px 0 6px;
+  padding: 4px 4px 0 4px;
   min-width: 800px;
 
   div.serch-wrap {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    padding: 0 10px;
+    padding: 4px;
 
     > div {
       display: flex;
@@ -44,6 +44,10 @@
         flex-flow: raw nowrap;
         justify-content: space-between;
 
+        > button {
+          line-height: 30px;
+        }
+
         &.select-vehicle {
           justify-content: flex-start;
           > button {
@@ -57,7 +61,7 @@
         }
         &.select-part {
           > button {
-            flex-basis: 80px;
+            flex-basis: 200px;
           }          
         }
       }

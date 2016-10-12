@@ -80,7 +80,7 @@ class Dashboard extends Component {
     return (
       <div id="dashboardWrap">
 <div className="serch-wrap bg-white">
-  <div className="select-viecle-wrap">
+  <div className="select-viecle-wrap bg-gray">
     <div className="select-vehicle">
       {VehicleData.data &&
         VehicleData.data.map(v => 

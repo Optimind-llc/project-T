@@ -416,6 +416,9 @@ class PrintController extends Controller
         $pdf_path = storage_path() . '/test.pdf';
         $fpdi->output($pdf_path, 'F');
 
+        $com = 'C.\"Program Files (x86)\Adobe\Reader\AcroRd32.exe" /t /h '.$pdf_path;
+        exec($com);
+
         return 'ok';
     }
 }
