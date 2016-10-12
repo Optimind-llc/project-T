@@ -1,6 +1,57 @@
 #dashboardWrap {
-  margin: 30px 30px 0 30px;
+  margin: 10px 10px 0 10px;
   min-width: 800px;
+
+  div.serch-wrap {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    padding: 0 10px;
+
+    > div {
+      display: flex;
+      flex-flow: column nowrap;
+      margin: 5px;
+
+      > div, button {
+        height: 30px;
+        margin-bottom: 4px;
+
+        &:nth-last-of-type(1) {
+          margin-bottom: 0;
+        }
+      }
+
+      &:nth-child(1) {
+        margin-left: 0;
+      }
+
+      &:nth-last-of-type(1) {
+        margin-right: 0;
+      }
+    }
+
+    .select-process {
+      flex-basis: 800px;
+
+      > div {
+        display: flex;
+        flex-flow: raw nowrap;
+        justify-content: space-between;
+      }
+
+
+    }
+
+    .select-itorg {
+      flex-basis: 140px;
+    }
+
+    .select-mode {
+      flex-basis: 600px;
+    }
+  }
+
 
   .header {
     padding: 10px 20px;

@@ -79,6 +79,179 @@ class Dashboard extends Component {
 
     return (
       <div id="dashboardWrap">
+<div className="serch-wrap bg-white">
+  <div className="select-process">
+    <div className="">
+      {
+        VehicleData.data.map(v => 
+          <button
+            key={v.c}
+            className="gray"
+            onClick={() => {
+              this.setState({vehicle: v});
+              this.serchItorG();
+            }}
+          >
+            {v.c}
+          </button>
+        )
+      }
+      <button className="gray disabled">950A</button>
+    </div>
+    <div className="">
+      <button
+        className="molding"
+        onClick={() => this.setState({itionG: {
+          p: 'molding',
+          i: 'check',
+          l: 1
+        }}, () => this.serchPageT())}
+      >
+        成形ライン１
+      </button>
+      <button
+        className="molding"
+        onClick={() => this.setState({itionG: {
+          p: 'molding',
+          i: 'check',
+          l: 1
+        }}, () => this.serchPageT())}
+      >
+        成形ライン２
+      </button>
+      <button
+        className="molding"
+        onClick={() => this.setState({itionG: {
+          p: 'molding',
+          i: 'inline',
+          l: 2
+        }}, () => this.serchPageT())}
+      >
+        成形：精度検査
+      </button>
+      <button
+        className="holing"
+        onClick={() => this.setState({itionG: {
+          p: 'holing',
+          i: 'check'
+        }}, () => this.serchPageT())}
+      >
+        穴あけ
+      </button>
+      <button
+        className="jointing"
+        onClick={() => this.setState({itionG: {
+          p: 'jointing',
+          i: 'inline'
+        }}, () => this.serchPageT())}
+      >
+        接着：精度検査
+      </button>
+      <button
+        className="jointing"
+        onClick={() => this.setState({itionG: {
+          p: 'jointing',
+          i: 'water_stop'
+        }}, () => this.serchPageT())}
+      >
+        接着：止水
+      </button>
+      <button
+        className="jointing"
+        onClick={() => this.setState({itionG: {
+          p: 'jointing',
+          i: 'finish'
+        }}, () => this.serchPageT())}
+      >
+        接着：仕上
+      </button>
+      <button
+        className="jointing"
+        onClick={() => this.setState({itionG: {
+          p: 'jointing',
+          i: 'check'
+        }}, () => this.serchPageT())}
+      >
+        接着：点検
+      </button>
+      <button
+        className="jointing"
+        onClick={() => this.setState({itionG: {
+          p: 'jointing',
+          i: 'special_check'
+        }}, () => this.serchPageT())}
+      >
+        接着：特検
+      </button>
+    </div>
+    <div className="">
+      <button className="small">
+        <span>バックドアインナ:</span><span>67149</span>
+      </button>
+    </div>
+  </div>
+  <div className="select-itorg">
+    <button
+      className="yellow"
+      onClick={() => this.setState({itorG: 'Y'})}
+    >
+      黄直のみ
+    </button>
+    <button
+      className="white"
+      onClick={() => this.setState({itorG: 'W'})}
+    >
+      白直のみ
+    </button>
+    <button
+      className="yellow-white"
+      onClick={() => this.setState({itorG: 'both'})}
+    >
+      両直とも
+    </button>
+  </div>
+  <div className="select-mode">
+    <button
+      className={narrowedBy === 'realtime' ? "active" : ""}
+      onClick={() => this.setState({narrowedBy: 'realtime'})}
+    >
+      リアルタイム更新（現直＋前直）
+    </button>
+    <div
+      className={narrowedBy === 'term' ? "term-wrap active" : "term-wrap"}
+      onClick={() => this.setState({narrowedBy: 'term'})}
+    >
+      <p>日時を指定</p>
+      <div>
+        <RangeCalendar
+          defaultValue={startDate}
+          setState={startDate => this.setState({
+            startDate: startDate
+          })}
+        />
+        <p>〜</p>
+        <RangeCalendar
+          defaultValue={endDate}
+          setState={endDate => this.setState({
+            endDate: endDate
+          })}
+        />
+      </div>
+    </div>
+    <div
+      className={narrowedBy === 'panelId' ? "panel-id-wrap active" : "panel-id-wrap"}
+      onClick={() => this.setState({narrowedBy: 'panelId'})}
+    >
+      <p>パネルIDを指定</p>
+      <input
+        type="text"
+        value={panelId}
+        onChange={(e) => this.setState({panelId: e.target.value})}
+      />
+    </div>
+  </div>
+</div>
+
         {
           vehicle &&
           <div className="header bg-white">

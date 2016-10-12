@@ -69,15 +69,11 @@ class FigureTableSeeder extends Seeder
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'jointing_assy_adjust.png',
-                'created_at'   => $now,
-                'updated_at'   => $now
-            ],[
                 'path'         => 'molding_inner_inline.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'Jointing_assy_inline.png',
+                'path'         => 'jointing_assy_inline.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],

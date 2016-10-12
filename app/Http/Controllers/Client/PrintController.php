@@ -216,12 +216,12 @@ class PrintController extends Controller
             $w = intval($area[4]);
             $h = intval($area[5]);
 
-            $x1 = 23.9;
-            $y1 = 45.2;
-            $x2 = 273.1;
-            $y2 = 170.9;
-            $w = 1740;
-            $h = 900;
+            // $x1 = 23.9;
+            // $y1 = 45.2;
+            // $x2 = 273.1;
+            // $y2 = 170.9;
+            // $w = 1740;
+            // $h = 900;
 
             $exploded = explode(',', $pixel);
             $px = $exploded[0];

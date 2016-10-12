@@ -50,7 +50,7 @@ class PageTypeTableSeeder extends Seeder
             [
                 'number'     => 1,
                 'group_id'   => 3,
-                'figure_id'  => 12,
+                'figure_id'  => 11,
                 'pdf_id'     => null,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -158,7 +158,7 @@ class PageTypeTableSeeder extends Seeder
             [
                 'number'     => 1,
                 'group_id'   => 9,
-                'figure_id'  => 13,
+                'figure_id'  => 12,
                 'pdf_id'     => null,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -195,7 +195,7 @@ class PageTypeTableSeeder extends Seeder
             ],[
                 'number'     => 1,
                 'group_id'   => 14,
-                'figure_id'  => 11,
+                'figure_id'  => 10,
                 'pdf_id'     => 17,
                 'created_at' => $now,
                 'updated_at' => $now
