@@ -338,10 +338,16 @@ class PrintController extends Controller
                 $rgb[1] = hexdec(substr($colorcode, 2, 2));
                 $rgb[2] = hexdec(substr($colorcode, 4, 2));
 
-                $borderStyle = ['LTRB' => [
-                    'dash' => '2',
-                    'color' => [0, 0, 0]
-                ]];
+                if ($hole->border == 'dotted') {
+                    $borderStyle = ['LTRB' => [
+                        'dash' => '2',
+                        'color' => [0, 0, 0]
+                    ]];
+                } else {
+                    $borderStyle = ['LTRB' => [
+                        'color' => [0, 0, 0]
+                    ]];
+                }
 
                 if ($hole->shape == 'square') {
                     $fpdi->Rect($lx-($lw/2), $ly-($lh/2), $lw, $lh, 'F', $borderStyle, $rgb);
