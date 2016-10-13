@@ -413,7 +413,7 @@ class PrintController extends Controller
             }
         }
 
-        $now = Carbon::now()->timestamp;
+        $now = microtime(true)*10000;
 
         $file_name = $now.'.pdf';
         $pdf_path = storage_path('pdf/'.$file_name);
