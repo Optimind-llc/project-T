@@ -16,7 +16,7 @@ use App\Models\Inspection;
 use App\Models\InspectionGroup;
 use App\Models\Division;
 use App\Models\Failure;
-use App\Models\Inline;
+use App\Models\Comment;
 use App\Models\Client\InspectionFamily;
 use App\Models\Client\Page;
 use App\Models\Client\Part;
@@ -1261,10 +1261,1119 @@ class PdfController extends Controller
         }
     }
 
-    // protected function forJointingASSY($tcpdf, $date, $families)
-    // {
+    protected function forJointingSWASSY($tcpdf, $date, $families, $itorG_name)
+    {
+        $now = Carbon::now();
 
-    // }
+        $parts = $families[0]->pages->reduce(function ($carry, $page) {
+            $parts = $page->parts->map(function ($part){
+                return [
+                    'id' => $part->id,
+                    'status' => $part->pivot->status,
+                    'panel_id' => $part->panel_id,
+                    'pn' => $part->partType->pn,
+                    'name' => $part->partType->name,
+                    'vehicle' => $part->partType->vehicle_num
+                ];
+            });
+            return array_merge($carry, $parts->toArray());
+        }, []);
+
+        $failures = Process::where('id', 'jointing')
+            ->first()
+            ->failures()
+            ->orderBy('sort')
+            ->get(['id', 'sort', 'name'])
+            ->map(function($f) {
+                return [
+                    'id' => $f->id,
+                    'name' => $f->name,
+                    'type' => $f->pivot->type
+                ];
+            })
+            ->filter(function($f) {
+                return $f['name'] == '水漏れ';
+            })
+            ->sortBy('type')
+            ->values()
+            ->all();
+
+        $n = count($failures);
+
+        $body = [];
+        $row_sum = [5 => '合計'];
+
+        $r = 0;
+        foreach ($families as $row => $family) {
+            foreach ($parts as $i => $part) {
+                $body[$r] = [
+                    $part['vehicle'],
+                    $part['pn'],
+                    $part['name'],
+                    $part['panel_id'],
+                    explode(',', $family->created_by)[1],
+                    $part['status'] == 1 ? '○' : '×'
+                ];
+
+                foreach ($failures as $c => $f) {
+                    $fp = $family->pages[0]->failurePositions->groupBy('failure_id');
+
+                    $sum = 0;
+                    if ($fp->has($f['id'])) $sum = $fp[$f['id']]->count();
+
+                    array_push($body[$r], $sum);
+                    $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
+                }
+
+                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                $r = $r+1;
+            }
+
+            $r = $r+1;
+        }
+
+        /*
+         * Render A4 PDF
+         */
+        $x0 = 8;
+        $x1 = 102;
+        $y0 = 8;
+        $y1 = 10;
+        $y2 = 20;
+        $d = [7, 8, 24, 12, 14, 11];
+        $fd = 17;
+        $th = 5;
+
+        $ok = array_reduce($body, function($carry, $item){
+            return $carry += $item[5] == '○' ? 1 : 0;
+        });
+
+        $ng = array_reduce($body, function($carry, $item){
+            return $carry += $item[5] == '×' ? 1 : 0;
+        });
+
+        foreach (array_chunk($body, 100) as $page => $value) {
+            $tcpdf->AddPage('P', 'A4');
+
+            // Render page header
+            $tcpdf->SetFont('kozgopromedium', '', 12);
+            $tcpdf->Text($x0, $y0, '工程：接着工程');
+            $tcpdf->Text(50, $y0, '止水：インナーASSY');
+            $tcpdf->Text(100, $y0, strtr($date,'-','/'));
+            $tcpdf->Text(134, $y0, $itorG_name);
+            $tcpdf->SetFont('kozgopromedium', '', 8);
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+
+            if ($page ==0 ) {
+                $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Rect($x0+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Text($x0+2, $y0+$y1, '○');
+                $tcpdf->Text($x0+2+10, $y0+$y1, $ok);
+
+                $tcpdf->Rect($x0+2+10+16, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Rect($x0+2+10+16+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Text($x0+2+10+16+2, $y0+$y1, '×');
+                $tcpdf->Text($x0+2+10+16+2+10, $y0+$y1, $ng);
+            }
+
+            if (count($value) < 51) {
+                $tcpdf->SetFont('kozgopromedium', '', 6);
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y2, '名称');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,3)), $y0+$y2, 'パネルID');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,4)), $y0+$y2, '検査者');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,5)), $y0+$y2, '出荷判定');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,6)), $y0+$y2, '登録時間');
+
+                foreach ($value as $r => $row) {
+                    foreach ($row as $c => $val) {
+                        if ($c < 6) {
+                            $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
+                        } elseif ($c == 21) {
+                            $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
+                        }
+                    }
+                }
+            } else {
+                $tcpdf->Line(106, 28, 106, 281);
+
+                foreach (array_chunk($body, 50) as $column => $value) {
+                    $tcpdf->SetFont('kozgopromedium', '', 6);
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,2)), $y0+$y2, '名称');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,3)), $y0+$y2, 'パネルID');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,4)), $y0+$y2, '検査者');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,5)), $y0+$y2, '出荷判定');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,6)), $y0+$y2, '登録時間');
+
+                    foreach ($value as $r => $row) {
+                        foreach ($row as $c => $val) {
+                            if ($c < 6) {
+                                $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
+                            } elseif ($c == 21) {
+                                $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $tcpdf->Text(103, 287, 'page '.($page+1));
+        }
+
+        /*
+         * Render A4 PDF
+         */
+        array_push($body, $row_sum);
+
+        $x0 = 10;
+        $y0 = 10;
+        $y1 = 12;
+        $d = [12, 14, 30, 20, 22, 20];
+        $fd = 15.5;
+        $th = 6;
+
+        foreach (array_chunk($body, 40) as $page => $value) {
+            $tcpdf->AddPage('L', 'A3');
+
+            // Render page header
+            $tcpdf->SetFont('kozgopromedium', '', 12);
+            $tcpdf->Text($x0, $y0, '工程：接着工程');
+            $tcpdf->Text(80, $y0, '止水：インナーASSY');
+            $tcpdf->Text(160, $y0, strtr($date,'-','/'));
+            $tcpdf->Text(200, $y0, $itorG_name);
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+
+            // Render table header
+            $tcpdf->SetFont('kozgopromedium', '', 7);
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y1, '車種');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y1, '品番');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y1, '名称');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,3)), $y0+$y1, 'パネルID');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,4)), $y0+$y1, '検査者');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,5)), $y0+$y1, '出荷判定');
+
+            foreach ($failures as $i => $f) {
+                $tcpdf->Text($x0+array_sum($d)+$i*$fd, $x0+12, $f['name']);
+            }
+
+            $tcpdf->Text($x0+array_sum($d)+count($failures)*$fd, $y0+$y1, '登録時間');
+            // Render table body
+            foreach ($value as $r => $row) {
+                foreach ($row as $c => $val) {
+                    if ($c < 6) {
+                        $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y1+($r+1)*$th, $val);
+                    } else {
+                        $tcpdf->Text($x0+array_sum($d)+($c-6)*$fd, $y0+$y1+($r+1)*$th, $val);
+                    }
+                }
+            }
+
+            $tcpdf->Text(210, 280, 'page '.($page+1));
+        }
+    }
+
+    protected function forJointingFNASSY($tcpdf, $date, $families, $itorG_name)
+    {
+        $now = Carbon::now();
+
+        $parts = $families[0]->pages->reduce(function ($carry, $page) {
+            $parts = $page->parts->map(function ($part){
+                return [
+                    'id' => $part->id,
+                    'status' => $part->pivot->status,
+                    'panel_id' => $part->panel_id,
+                    'pn' => $part->partType->pn,
+                    'name' => $part->partType->name,
+                    'vehicle' => $part->partType->vehicle_num
+                ];
+            });
+            return array_merge($carry, $parts->toArray());
+        }, []);
+
+        $failures = Process::where('id', 'molding')
+            ->first()
+            ->failures()
+            ->orderBy('sort')
+            ->get(['id', 'sort', 'name'])
+            ->map(function($f) {
+                return [
+                    'id' => $f->id,
+                    'name' => $f->name,
+                    'type' => $f->pivot->type
+                ];
+            })
+            ->sortBy('type')
+            ->values()
+            ->all();
+        $n1 = count($failures);
+
+        $comments = Inspection::find(6)
+            ->comments()
+            ->orderBy('sort')
+            ->get(['id', 'sort', 'message']);
+        $n2 = $comments->count();
+
+        $body = [];
+        $row_sum = [5 => '合計'];
+
+        $r = 0;
+        foreach ($families as $row => $family) {
+            $c_comments = $family->pages->reduce(function ($carry, $page) {
+                $comments = $page->comments->map(function ($comment){
+                    return [
+                        'sort' => $comment->comment->sort,
+                        'message' => $comment->comment->message
+                    ];
+                });
+                return array_merge($carry, $comments->toArray());
+            }, []);
+
+            foreach ($parts as $i => $part) {
+                $body[$r] = [
+                    $part['vehicle'],
+                    $part['pn'],
+                    $part['name'],
+                    $part['panel_id'],
+                    explode(',', $family->created_by)[1],
+                    $part['status'] == 1 ? '○' : '×'
+                ];
+
+                foreach ($failures as $c1 => $f) {
+                    $fp = $family->pages[0]->failurePositions->groupBy('failure_id');
+
+                    $sum = 0;
+                    if ($fp->has($f['id'])) $sum = $fp[$f['id']]->count();
+
+                    array_push($body[$r], $sum);
+                    $row_sum[$c1+6] = array_key_exists($c1+6, $row_sum) ? $row_sum[$c1+6]+$sum : $sum;
+                }
+
+                foreach ($comments as $c2 => $c) {
+                    $sum = count(array_filter($c_comments, function($comments) use ($c){
+                        return $comments['sort'] = $c['sort'];
+                    }));
+
+                    array_push($body[$r], $sum);
+                    $row_sum[6+$c1+1+$c2] = array_key_exists(6+$c1+1+$c2, $row_sum) ? $row_sum[6+$c1+1+$c2]+$sum : $sum;
+                }
+
+                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                $r = $r+1;
+            }
+
+            $r = $r+1;
+        }
+
+        /*
+         * Render A4 PDF
+         */
+        $x0 = 8;
+        $x1 = 102;
+        $y0 = 8;
+        $y1 = 10;
+        $y2 = 20;
+        $d = [7, 8, 24, 12, 14, 11];
+        $fd = 17;
+        $th = 5;
+
+        $ok = array_reduce($body, function($carry, $item){
+            return $carry += $item[5] == '○' ? 1 : 0;
+        });
+
+        $ng = array_reduce($body, function($carry, $item){
+            return $carry += $item[5] == '×' ? 1 : 0;
+        });
+
+        foreach (array_chunk($body, 100) as $page => $value) {
+            $tcpdf->AddPage('P', 'A4');
+
+            // Render page header
+            $tcpdf->SetFont('kozgopromedium', '', 12);
+            $tcpdf->Text($x0, $y0, '工程：接着工程');
+            $tcpdf->Text(50, $y0, '仕上：インナーASSY');
+            $tcpdf->Text(100, $y0, strtr($date,'-','/'));
+            $tcpdf->Text(134, $y0, $itorG_name);
+            $tcpdf->SetFont('kozgopromedium', '', 8);
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+
+            if ($page ==0 ) {
+                $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Rect($x0+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Text($x0+2, $y0+$y1, '○');
+                $tcpdf->Text($x0+2+10, $y0+$y1, $ok);
+
+                $tcpdf->Rect($x0+2+10+16, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Rect($x0+2+10+16+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Text($x0+2+10+16+2, $y0+$y1, '×');
+                $tcpdf->Text($x0+2+10+16+2+10, $y0+$y1, $ng);
+            }
+
+            if (count($value) < 51) {
+                $tcpdf->SetFont('kozgopromedium', '', 6);
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y2, '名称');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,3)), $y0+$y2, 'パネルID');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,4)), $y0+$y2, '検査者');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,5)), $y0+$y2, '出荷判定');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,6)), $y0+$y2, '登録時間');
+
+                foreach ($value as $r => $row) {
+                    foreach ($row as $c => $val) {
+                        if ($c < 6) {
+                            $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
+                        } elseif ($c == 6+$n1+$n2) {
+                            $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
+                        }
+                    }
+                }
+            } else {
+                $tcpdf->Line(106, 28, 106, 281);
+
+                foreach (array_chunk($body, 50) as $column => $value) {
+                    $tcpdf->SetFont('kozgopromedium', '', 6);
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,2)), $y0+$y2, '名称');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,3)), $y0+$y2, 'パネルID');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,4)), $y0+$y2, '検査者');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,5)), $y0+$y2, '出荷判定');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,6)), $y0+$y2, '登録時間');
+
+                    foreach ($value as $r => $row) {
+                        foreach ($row as $c => $val) {
+                            if ($c < 6) {
+                                $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
+                            } elseif ($c == 21) {
+                                $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $tcpdf->Text(103, 287, 'page '.($page+1));
+        }
+
+        /*
+         * Render A4 PDF
+         */
+        array_push($body, $row_sum);
+
+        $x0 = 10;
+        $y0 = 10;
+        $y1 = 12;
+        $d = [8, 9, 24, 14, 16, 14];
+        $fd = 12;
+        $th = 6;
+
+        foreach (array_chunk($body, 40) as $page => $value) {
+            $tcpdf->AddPage('L', 'A3');
+
+            // Render page header
+            $tcpdf->SetFont('kozgopromedium', '', 12);
+            $tcpdf->Text($x0, $y0, '工程：接着工程');
+            $tcpdf->Text(80, $y0, '仕上：インナーASSY');
+            $tcpdf->Text(160, $y0, strtr($date,'-','/'));
+            $tcpdf->Text(200, $y0, $itorG_name);
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+
+            // Render table header
+            $tcpdf->SetFont('kozgopromedium', '', 6);
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y1, '車種');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y1, '品番');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y1, '名称');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,3)), $y0+$y1, 'パネルID');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,4)), $y0+$y1, '検査者');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,5)), $y0+$y1, '出荷判定');
+
+            foreach ($failures as $i => $f) {
+                $tcpdf->Text($x0+array_sum($d)+$i*$fd, $x0+12, $f['name']);
+            }
+
+            foreach ($comments as $i => $c) {
+                $tcpdf->Text($x0+array_sum($d)+($n1+$i)*$fd, $x0+12, $c['message']);
+            }
+
+            $tcpdf->Text($x0+array_sum($d)+($n1+$n2)*$fd, $y0+$y1, '登録時間');
+            // Render table body
+            foreach ($value as $r => $row) {
+                foreach ($row as $c => $val) {
+                    if ($c < 6) {
+                        $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y1+($r+1)*$th, $val);
+                    } else {
+                        $tcpdf->Text($x0+array_sum($d)+($c-6)*$fd, $y0+$y1+($r+1)*$th, $val);
+                    }
+                }
+            }
+
+            $tcpdf->Text(210, 280, 'page '.($page+1));
+        }
+    }
+
+    protected function forJointingCHASSY($tcpdf, $date, $families, $itorG_name)
+    {
+        $now = Carbon::now();
+
+        $parts = $families[0]->pages->reduce(function ($carry, $page) {
+            $parts = $page->parts->map(function ($part){
+                return [
+                    'id' => $part->id,
+                    'status' => $part->pivot->status,
+                    'panel_id' => $part->panel_id,
+                    'pn' => $part->partType->pn,
+                    'name' => $part->partType->name,
+                    'vehicle' => $part->partType->vehicle_num
+                ];
+            });
+            return array_merge($carry, $parts->toArray());
+        }, []);
+
+        $failures = Process::where('id', 'jointing')
+            ->first()
+            ->failures()
+            ->orderBy('sort')
+            ->get(['id', 'sort', 'name'])
+            ->map(function($f) {
+                return [
+                    'id' => $f->id,
+                    'name' => $f->name,
+                    'type' => $f->pivot->type
+                ];
+            })
+            ->sortBy('type')
+            ->values()
+            ->all();
+
+        $n = count($failures);
+
+        $body = [];
+        $row_sum = [5 => '合計'];
+
+        $r = 0;
+        foreach ($families as $row => $family) {
+            foreach ($parts as $i => $part) {
+                $body[$r] = [
+                    $part['vehicle'],
+                    $part['pn'],
+                    $part['name'],
+                    $part['panel_id'],
+                    explode(',', $family->created_by)[1],
+                    $part['status'] == 1 ? '○' : '×'
+                ];
+
+                foreach ($failures as $c => $f) {
+                    $fp = $family->pages[0]->failurePositions->groupBy('failure_id');
+
+                    $sum = 0;
+                    if ($fp->has($f['id'])) $sum = $fp[$f['id']]->count();
+
+                    array_push($body[$r], $sum);
+                    $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
+                }
+
+                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                $r = $r+1;
+            }
+
+            $r = $r+1;
+        }
+
+        /*
+         * Render A4 PDF
+         */
+        $x0 = 8;
+        $x1 = 102;
+        $y0 = 8;
+        $y1 = 10;
+        $y2 = 20;
+        $d = [7, 8, 24, 12, 14, 11];
+        $fd = 17;
+        $th = 5;
+
+        $ok = array_reduce($body, function($carry, $item){
+            return $carry += $item[5] == '○' ? 1 : 0;
+        });
+
+        $ng = array_reduce($body, function($carry, $item){
+            return $carry += $item[5] == '×' ? 1 : 0;
+        });
+
+        foreach (array_chunk($body, 100) as $page => $value) {
+            $tcpdf->AddPage('P', 'A4');
+
+            // Render page header
+            $tcpdf->SetFont('kozgopromedium', '', 12);
+            $tcpdf->Text($x0, $y0, '工程：接着工程');
+            $tcpdf->Text(50, $y0, '点検：インナーASSY');
+            $tcpdf->Text(100, $y0, strtr($date,'-','/'));
+            $tcpdf->Text(134, $y0, $itorG_name);
+            $tcpdf->SetFont('kozgopromedium', '', 8);
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+
+            if ($page ==0 ) {
+                $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Rect($x0+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Text($x0+2, $y0+$y1, '○');
+                $tcpdf->Text($x0+2+10, $y0+$y1, $ok);
+
+                $tcpdf->Rect($x0+2+10+16, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Rect($x0+2+10+16+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Text($x0+2+10+16+2, $y0+$y1, '×');
+                $tcpdf->Text($x0+2+10+16+2+10, $y0+$y1, $ng);
+            }
+
+            if (count($value) < 51) {
+                $tcpdf->SetFont('kozgopromedium', '', 6);
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y2, '名称');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,3)), $y0+$y2, 'パネルID');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,4)), $y0+$y2, '検査者');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,5)), $y0+$y2, '出荷判定');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,6)), $y0+$y2, '登録時間');
+
+                foreach ($value as $r => $row) {
+                    foreach ($row as $c => $val) {
+                        if ($c < 6) {
+                            $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
+                        } elseif ($c == 21) {
+                            $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
+                        }
+                    }
+                }
+            } else {
+                $tcpdf->Line(106, 28, 106, 281);
+
+                foreach (array_chunk($body, 50) as $column => $value) {
+                    $tcpdf->SetFont('kozgopromedium', '', 6);
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,2)), $y0+$y2, '名称');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,3)), $y0+$y2, 'パネルID');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,4)), $y0+$y2, '検査者');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,5)), $y0+$y2, '出荷判定');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,6)), $y0+$y2, '登録時間');
+
+                    foreach ($value as $r => $row) {
+                        foreach ($row as $c => $val) {
+                            if ($c < 6) {
+                                $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
+                            } elseif ($c == 21) {
+                                $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $tcpdf->Text(103, 287, 'page '.($page+1));
+        }
+
+        /*
+         * Render A4 PDF
+         */
+        array_push($body, $row_sum);
+
+        $x0 = 10;
+        $y0 = 10;
+        $y1 = 12;
+        $d = [12, 14, 30, 20, 22, 20];
+        $fd = 15.5;
+        $th = 6;
+
+        foreach (array_chunk($body, 40) as $page => $value) {
+            $tcpdf->AddPage('L', 'A3');
+
+            // Render page header
+            $tcpdf->SetFont('kozgopromedium', '', 12);
+            $tcpdf->Text($x0, $y0, '工程：接着工程');
+            $tcpdf->Text(80, $y0, '点検：インナーASSY');
+            $tcpdf->Text(160, $y0, strtr($date,'-','/'));
+            $tcpdf->Text(200, $y0, $itorG_name);
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+
+            // Render table header
+            $tcpdf->SetFont('kozgopromedium', '', 7);
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y1, '車種');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y1, '品番');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y1, '名称');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,3)), $y0+$y1, 'パネルID');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,4)), $y0+$y1, '検査者');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,5)), $y0+$y1, '出荷判定');
+
+            foreach ($failures as $i => $f) {
+                $tcpdf->Text($x0+array_sum($d)+$i*$fd, $x0+12, $f['name']);
+            }
+
+            $tcpdf->Text($x0+array_sum($d)+count($failures)*$fd, $y0+$y1, '登録時間');
+            // Render table body
+            foreach ($value as $r => $row) {
+                foreach ($row as $c => $val) {
+                    if ($c < 6) {
+                        $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y1+($r+1)*$th, $val);
+                    } else {
+                        $tcpdf->Text($x0+array_sum($d)+($c-6)*$fd, $y0+$y1+($r+1)*$th, $val);
+                    }
+                }
+            }
+
+            $tcpdf->Text(210, 280, 'page '.($page+1));
+        }
+    }
+
+    protected function forJointingSCASSY($tcpdf, $date, $families, $itorG_name)
+    {
+        $now = Carbon::now();
+
+        $parts = $families[0]->pages->reduce(function ($carry, $page) {
+            $parts = $page->parts->map(function ($part){
+                return [
+                    'id' => $part->id,
+                    'status' => $part->pivot->status,
+                    'panel_id' => $part->panel_id,
+                    'pn' => $part->partType->pn,
+                    'name' => $part->partType->name,
+                    'vehicle' => $part->partType->vehicle_num
+                ];
+            });
+            return array_merge($carry, $parts->toArray());
+        }, []);
+
+        $failures = Process::where('id', 'jointing')
+            ->first()
+            ->failures()
+            ->orderBy('sort')
+            ->get(['id', 'sort', 'name'])
+            ->map(function($f) {
+                return [
+                    'id' => $f->id,
+                    'name' => $f->name,
+                    'type' => $f->pivot->type
+                ];
+            })
+            ->sortBy('type')
+            ->values()
+            ->all();
+
+        $n = count($failures);
+
+        $body = [];
+        $row_sum = [5 => '合計'];
+
+        $r = 0;
+        foreach ($families as $row => $family) {
+            foreach ($parts as $i => $part) {
+                $body[$r] = [
+                    $part['vehicle'],
+                    $part['pn'],
+                    $part['name'],
+                    $part['panel_id'],
+                    explode(',', $family->created_by)[1],
+                    $part['status'] == 1 ? '○' : '×'
+                ];
+
+                foreach ($failures as $c => $f) {
+                    $fp = $family->pages[0]->failurePositions->groupBy('failure_id');
+
+                    $sum = 0;
+                    if ($fp->has($f['id'])) $sum = $fp[$f['id']]->count();
+
+                    array_push($body[$r], $sum);
+                    $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
+                }
+
+                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                $r = $r+1;
+            }
+
+            $r = $r+1;
+        }
+
+        /*
+         * Render A4 PDF
+         */
+        $x0 = 8;
+        $x1 = 102;
+        $y0 = 8;
+        $y1 = 10;
+        $y2 = 20;
+        $d = [7, 8, 24, 12, 14, 11];
+        $fd = 17;
+        $th = 5;
+
+        $ok = array_reduce($body, function($carry, $item){
+            return $carry += $item[5] == '○' ? 1 : 0;
+        });
+
+        $ng = array_reduce($body, function($carry, $item){
+            return $carry += $item[5] == '×' ? 1 : 0;
+        });
+
+        foreach (array_chunk($body, 100) as $page => $value) {
+            $tcpdf->AddPage('P', 'A4');
+
+            // Render page header
+            $tcpdf->SetFont('kozgopromedium', '', 12);
+            $tcpdf->Text($x0, $y0, '工程：接着工程');
+            $tcpdf->Text(50, $y0, '特検：インナーASSY');
+            $tcpdf->Text(100, $y0, strtr($date,'-','/'));
+            $tcpdf->Text(134, $y0, $itorG_name);
+            $tcpdf->SetFont('kozgopromedium', '', 8);
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+
+            if ($page ==0 ) {
+                $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Rect($x0+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Text($x0+2, $y0+$y1, '○');
+                $tcpdf->Text($x0+2+10, $y0+$y1, $ok);
+
+                $tcpdf->Rect($x0+2+10+16, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Rect($x0+2+10+16+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Text($x0+2+10+16+2, $y0+$y1, '×');
+                $tcpdf->Text($x0+2+10+16+2+10, $y0+$y1, $ng);
+            }
+
+            if (count($value) < 51) {
+                $tcpdf->SetFont('kozgopromedium', '', 6);
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y2, '名称');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,3)), $y0+$y2, 'パネルID');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,4)), $y0+$y2, '検査者');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,5)), $y0+$y2, '出荷判定');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,6)), $y0+$y2, '登録時間');
+
+                foreach ($value as $r => $row) {
+                    foreach ($row as $c => $val) {
+                        if ($c < 6) {
+                            $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
+                        } elseif ($c == 21) {
+                            $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
+                        }
+                    }
+                }
+            } else {
+                $tcpdf->Line(106, 28, 106, 281);
+
+                foreach (array_chunk($body, 50) as $column => $value) {
+                    $tcpdf->SetFont('kozgopromedium', '', 6);
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,2)), $y0+$y2, '名称');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,3)), $y0+$y2, 'パネルID');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,4)), $y0+$y2, '検査者');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,5)), $y0+$y2, '出荷判定');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,6)), $y0+$y2, '登録時間');
+
+                    foreach ($value as $r => $row) {
+                        foreach ($row as $c => $val) {
+                            if ($c < 6) {
+                                $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
+                            } elseif ($c == 21) {
+                                $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $tcpdf->Text(103, 287, 'page '.($page+1));
+        }
+
+        /*
+         * Render A4 PDF
+         */
+        array_push($body, $row_sum);
+
+        $x0 = 10;
+        $y0 = 10;
+        $y1 = 12;
+        $d = [12, 14, 30, 20, 22, 20];
+        $fd = 15.5;
+        $th = 6;
+
+        foreach (array_chunk($body, 40) as $page => $value) {
+            $tcpdf->AddPage('L', 'A3');
+
+            // Render page header
+            $tcpdf->SetFont('kozgopromedium', '', 12);
+            $tcpdf->Text($x0, $y0, '工程：接着工程');
+            $tcpdf->Text(80, $y0, '特検：インナーASSY');
+            $tcpdf->Text(160, $y0, strtr($date,'-','/'));
+            $tcpdf->Text(200, $y0, $itorG_name);
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+
+            // Render table header
+            $tcpdf->SetFont('kozgopromedium', '', 7);
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y1, '車種');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y1, '品番');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y1, '名称');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,3)), $y0+$y1, 'パネルID');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,4)), $y0+$y1, '検査者');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,5)), $y0+$y1, '出荷判定');
+
+            foreach ($failures as $i => $f) {
+                $tcpdf->Text($x0+array_sum($d)+$i*$fd, $x0+12, $f['name']);
+            }
+
+            $tcpdf->Text($x0+array_sum($d)+count($failures)*$fd, $y0+$y1, '登録時間');
+            // Render table body
+            foreach ($value as $r => $row) {
+                foreach ($row as $c => $val) {
+                    if ($c < 6) {
+                        $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y1+($r+1)*$th, $val);
+                    } else {
+                        $tcpdf->Text($x0+array_sum($d)+($c-6)*$fd, $y0+$y1+($r+1)*$th, $val);
+                    }
+                }
+            }
+
+            $tcpdf->Text(210, 280, 'page '.($page+1));
+        }
+    }
+
+    protected function forJointingADASSY($tcpdf, $date, $families, $itorG_name)
+    {
+        $now = Carbon::now();
+
+        $parts = $families[0]->pages->reduce(function ($carry, $page) {
+            $parts = $page->parts->map(function ($part){
+                return [
+                    'id' => $part->id,
+                    'status' => $part->pivot->status,
+                    'panel_id' => $part->panel_id,
+                    'pn' => $part->partType->pn,
+                    'name' => $part->partType->name,
+                    'vehicle' => $part->partType->vehicle_num
+                ];
+            });
+            return array_merge($carry, $parts->toArray());
+        }, []);
+
+        $failures = Process::where('id', 'molding')
+            ->first()
+            ->failures()
+            ->orderBy('sort')
+            ->get(['id', 'sort', 'name'])
+            ->map(function($f) {
+                return [
+                    'id' => $f->id,
+                    'name' => $f->name,
+                    'type' => $f->pivot->type
+                ];
+            })
+            ->sortBy('type')
+            ->values()
+            ->all();
+        $n1 = count($failures);
+
+        $comments = Inspection::find(6)
+            ->comments()
+            ->orderBy('sort')
+            ->get(['id', 'sort', 'message']);
+        $n2 = $comments->count();
+
+        $body = [];
+        $row_sum = [5 => '合計'];
+
+        $r = 0;
+        foreach ($families as $row => $family) {
+            $c_comments = $family->pages->reduce(function ($carry, $page) {
+                $comments = $page->comments->map(function ($comment){
+                    return [
+                        'sort' => $comment->comment->sort,
+                        'message' => $comment->comment->message
+                    ];
+                });
+                return array_merge($carry, $comments->toArray());
+            }, []);
+
+            foreach ($parts as $i => $part) {
+                $body[$r] = [
+                    $part['vehicle'],
+                    $part['pn'],
+                    $part['name'],
+                    $part['panel_id'],
+                    explode(',', $family->created_by)[1],
+                    $part['status'] == 1 ? '○' : '×'
+                ];
+
+                foreach ($failures as $c1 => $f) {
+                    $fp = $family->pages[0]->failurePositions->groupBy('failure_id');
+
+                    $sum = 0;
+                    if ($fp->has($f['id'])) $sum = $fp[$f['id']]->count();
+
+                    array_push($body[$r], $sum);
+                    $row_sum[$c1+6] = array_key_exists($c1+6, $row_sum) ? $row_sum[$c1+6]+$sum : $sum;
+                }
+
+                foreach ($comments as $c2 => $c) {
+                    $sum = count(array_filter($c_comments, function($comments) use ($c){
+                        return $comments['sort'] = $c['sort'];
+                    }));
+
+                    array_push($body[$r], $sum);
+                    $row_sum[6+$c1+1+$c2] = array_key_exists(6+$c1+1+$c2, $row_sum) ? $row_sum[6+$c1+1+$c2]+$sum : $sum;
+                }
+
+                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                $r = $r+1;
+            }
+
+            $r = $r+1;
+        }
+
+        /*
+         * Render A4 PDF
+         */
+        $x0 = 8;
+        $x1 = 102;
+        $y0 = 8;
+        $y1 = 10;
+        $y2 = 20;
+        $d = [7, 8, 24, 12, 14, 11];
+        $fd = 17;
+        $th = 5;
+
+        $ok = array_reduce($body, function($carry, $item){
+            return $carry += $item[5] == '○' ? 1 : 0;
+        });
+
+        $ng = array_reduce($body, function($carry, $item){
+            return $carry += $item[5] == '×' ? 1 : 0;
+        });
+
+        foreach (array_chunk($body, 100) as $page => $value) {
+            $tcpdf->AddPage('P', 'A4');
+
+            // Render page header
+            $tcpdf->SetFont('kozgopromedium', '', 12);
+            $tcpdf->Text($x0, $y0, '工程：接着工程');
+            $tcpdf->Text(50, $y0, '仕上げ：インナーASSY');
+            $tcpdf->Text(100, $y0, strtr($date,'-','/'));
+            $tcpdf->Text(134, $y0, $itorG_name);
+            $tcpdf->SetFont('kozgopromedium', '', 8);
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+
+            if ($page ==0 ) {
+                $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Rect($x0+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Text($x0+2, $y0+$y1, '○');
+                $tcpdf->Text($x0+2+10, $y0+$y1, $ok);
+
+                $tcpdf->Rect($x0+2+10+16, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Rect($x0+2+10+16+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
+                $tcpdf->Text($x0+2+10+16+2, $y0+$y1, '×');
+                $tcpdf->Text($x0+2+10+16+2+10, $y0+$y1, $ng);
+            }
+
+            if (count($value) < 51) {
+                $tcpdf->SetFont('kozgopromedium', '', 6);
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y2, '名称');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,3)), $y0+$y2, 'パネルID');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,4)), $y0+$y2, '検査者');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,5)), $y0+$y2, '出荷判定');
+                $tcpdf->Text($x0+array_sum(array_slice($d,0,6)), $y0+$y2, '登録時間');
+
+                foreach ($value as $r => $row) {
+                    foreach ($row as $c => $val) {
+                        if ($c < 6) {
+                            $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
+                        } elseif ($c == 6+$n1+$n2) {
+                            $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
+                        }
+                    }
+                }
+            } else {
+                $tcpdf->Line(106, 28, 106, 281);
+
+                foreach (array_chunk($body, 50) as $column => $value) {
+                    $tcpdf->SetFont('kozgopromedium', '', 6);
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,2)), $y0+$y2, '名称');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,3)), $y0+$y2, 'パネルID');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,4)), $y0+$y2, '検査者');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,5)), $y0+$y2, '出荷判定');
+                    $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,6)), $y0+$y2, '登録時間');
+
+                    foreach ($value as $r => $row) {
+                        foreach ($row as $c => $val) {
+                            if ($c < 6) {
+                                $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
+                            } elseif ($c == 21) {
+                                $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $tcpdf->Text(103, 287, 'page '.($page+1));
+        }
+
+        /*
+         * Render A4 PDF
+         */
+        array_push($body, $row_sum);
+
+        $x0 = 10;
+        $y0 = 10;
+        $y1 = 12;
+        $d = [8, 9, 24, 14, 16, 14];
+        $fd = 12;
+        $th = 6;
+
+        foreach (array_chunk($body, 40) as $page => $value) {
+            $tcpdf->AddPage('L', 'A3');
+
+            // Render page header
+            $tcpdf->SetFont('kozgopromedium', '', 12);
+            $tcpdf->Text($x0, $y0, '工程：接着工程');
+            $tcpdf->Text(80, $y0, '仕上げ：インナーASSY');
+            $tcpdf->Text(160, $y0, strtr($date,'-','/'));
+            $tcpdf->Text(200, $y0, $itorG_name);
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+
+            // Render table header
+            $tcpdf->SetFont('kozgopromedium', '', 6);
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y1, '車種');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y1, '品番');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y1, '名称');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,3)), $y0+$y1, 'パネルID');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,4)), $y0+$y1, '検査者');
+            $tcpdf->Text($x0+array_sum(array_slice($d,0,5)), $y0+$y1, '出荷判定');
+
+            foreach ($failures as $i => $f) {
+                $tcpdf->Text($x0+array_sum($d)+$i*$fd, $x0+12, $f['name']);
+            }
+
+            foreach ($comments as $i => $c) {
+                $tcpdf->Text($x0+array_sum($d)+($n1+$i)*$fd, $x0+12, $c['message']);
+            }
+
+            $tcpdf->Text($x0+array_sum($d)+($n1+$n2)*$fd, $y0+$y1, '登録時間');
+            // Render table body
+            foreach ($value as $r => $row) {
+                foreach ($row as $c => $val) {
+                    if ($c < 6) {
+                        $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y1+($r+1)*$th, $val);
+                    } else {
+                        $tcpdf->Text($x0+array_sum($d)+($c-6)*$fd, $y0+$y1+($r+1)*$th, $val);
+                    }
+                }
+            }
+
+            $tcpdf->Text(210, 280, 'page '.($page+1));
+        }
+    }
 
     /**
      * Get user from JWT token
@@ -1288,52 +2397,11 @@ class PdfController extends Controller
                 'pages.parts.partType',
                 'pages.failurePositions',
                 'pages.holes',
-                'pages.holes.partType'
+                'pages.holes.partType',
+                'pages.comments',
+                'pages.comments.comment'
             ])
             ->get();
-
-// return $families;
-
-            // $family = $families[0];
-            // $parts = $family->pages->reduce(function ($carry, $page) {
-            //     $parts = $page->parts->map(function ($part){
-            //         return [
-            //             'id' => $part->id,
-            //             'panel_id' => $part->panel_id,
-            //             'pn' => $part->partType->pn,
-            //             'name' => $part->partType->name,
-            //             'vehicle' => $part->partType->vehicle_num,
-            //             'status' => $part->pivot->status
-            //         ];
-            //     });
-            //     return array_merge($carry, $parts->toArray());
-            // }, []);
-
-            // $holes = $family->pages->reduce(function ($carry, $page) {
-            //     $holes = $page->holes->map(function ($h){
-            //         return [
-            //             'id' => $h->id,
-            //             'label' => $h->label,
-            //             'pn' => $h->partType->pn,
-            //             'status' => $h->pivot->status
-            //         ];
-            //     });
-
-            //     return array_merge($carry, $holes->toArray());
-            // }, []);
-
-// return $holes;
-
-
-
-
-
-
-
-
-
-
-
 
         $tcpdf = $this->createTCPDF();
 
@@ -1345,21 +2413,15 @@ class PdfController extends Controller
 
             case 5:  $this->forMoldingSmall($tcpdf, $date, $families, $itorG_name, '１'); break;
             case 6:  $this->forMoldingSmall($tcpdf, $date, $families, $itorG_name, '２'); break;
-
             case 8:  $this->forHolingSmall($tcpdf, $date, $families, $itorG_name); break;
 
             case 9:  $this->forJointingInlineASSY($tcpdf, $date, $families); break;
-            case 10: $this->forMoldingInner($tcpdf, 1); break;
-            case 11: $this->forMoldingInner($tcpdf, 1); break;
-            case 12: $this->forMoldingInner($tcpdf, 1); break;
-            case 13: $this->forMoldingInner($tcpdf, 1); break;
-            case 14: $this->forMoldingInner($tcpdf, 1); break;
+            case 10: $this->forJointingSWASSY($tcpdf, $date, $families, $itorG_name); break;
+            case 11: $this->forJointingFNASSY($tcpdf, $date, $families, $itorG_name); break;
+            case 12: $this->forJointingCHASSY($tcpdf, $date, $families, $itorG_name); break;
+            case 13: $this->forJointingSCASSY($tcpdf, $date, $families, $itorG_name); break;
+            case 14: $this->forJointingADASSY($tcpdf, $date, $families, $itorG_name); break;
         }
-
-        // $this->forMoldingInner($tcpdf);
-        // $this->forMoldingSmall($tcpdf);
-        // $this->forMoldingASSY($tcpdf);
-        // $this->forHolingInner($tcpdf);
 
         $pdf_path = storage_path() . '/M001C_Y_20161012.pdf';
         $tcpdf->output($pdf_path, 'I');

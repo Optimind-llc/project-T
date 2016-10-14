@@ -65,6 +65,15 @@ class Page extends Model
         ->withPivot('status');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(
+            'App\Models\Client\CommentFailurePosition',
+            'page_id',
+            'id'
+        );
+    }
+
     public function inlines()
     {
         return $this->belongsToMany(
