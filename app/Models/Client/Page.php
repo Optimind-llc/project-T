@@ -73,7 +73,7 @@ class Page extends Model
             'page_id',
             'inline_id'
         )
-        ->withPivot('status');
+        ->withPivot(['status', 'inspected_at']);
     }
 }
 
