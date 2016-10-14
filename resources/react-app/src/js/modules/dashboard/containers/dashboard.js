@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import Select from 'react-select';
 // Actions
 import { push } from 'react-router-redux';
 import { vehicleActions } from '../ducks/vehicle';
@@ -16,6 +17,7 @@ import './dashboard.scss';
 // Components
 import Loading from '../../../components/loading/loading';
 import RangeCalendar from '../components/rangeCalendar/rangeCalendar';
+import Mapping from '../../mapping/containers/mapping';
 
 class Dashboard extends Component {
   constructor(props, context) {
@@ -79,511 +81,82 @@ class Dashboard extends Component {
 
     return (
       <div id="dashboardWrap">
-<div className="serch-wrap bg-white">
-  <div className="select-viecle-wrap bg-gray">
-    <div className="select-vehicle">
-      {VehicleData.data &&
-        VehicleData.data.map(v => 
-          <button
-            key={v.c}
-            className="gray"
-            onClick={() => {
-              this.setState({vehicle: v});
-              this.serchItorG();
-            }}
-          >
-            {v.c}
-          </button>
-        )
-      }
-      <button className="gray disabled">950A</button>
-    </div>
-    <div className="select-process">
-      <button
-        className="molding"
-        onClick={() => this.setState({itionG: {
-          p: 'molding',
-          i: 'check',
-          l: 1
-        }}, () => this.serchPageT())}
-      >
-        成形ライン１
-      </button>
-      <button
-        className="molding"
-        onClick={() => this.setState({itionG: {
-          p: 'molding',
-          i: 'check',
-          l: 1
-        }}, () => this.serchPageT())}
-      >
-        成形ライン２
-      </button>
-      <button
-        className="molding"
-        onClick={() => this.setState({itionG: {
-          p: 'molding',
-          i: 'inline',
-          l: 2
-        }}, () => this.serchPageT())}
-      >
-        成形：精度検査
-      </button>
-      <button
-        className="holing"
-        onClick={() => this.setState({itionG: {
-          p: 'holing',
-          i: 'check'
-        }}, () => this.serchPageT())}
-      >
-        穴あけ
-      </button>
-      <button
-        className="jointing"
-        onClick={() => this.setState({itionG: {
-          p: 'jointing',
-          i: 'inline'
-        }}, () => this.serchPageT())}
-      >
-        接着：精度検査
-      </button>
-      <button
-        className="jointing"
-        onClick={() => this.setState({itionG: {
-          p: 'jointing',
-          i: 'water_stop'
-        }}, () => this.serchPageT())}
-      >
-        接着：止水
-      </button>
-      <button
-        className="jointing"
-        onClick={() => this.setState({itionG: {
-          p: 'jointing',
-          i: 'finish'
-        }}, () => this.serchPageT())}
-      >
-        接着：仕上
-      </button>
-      <button
-        className="jointing"
-        onClick={() => this.setState({itionG: {
-          p: 'jointing',
-          i: 'check'
-        }}, () => this.serchPageT())}
-      >
-        接着：点検
-      </button>
-      <button
-        className="jointing"
-        onClick={() => this.setState({itionG: {
-          p: 'jointing',
-          i: 'special_check'
-        }}, () => this.serchPageT())}
-      >
-        接着：特検
-      </button>
-    </div>
-    <div className="select-part">
-      <button className="small">
-        <span>バックドアインナ:</span><span>67149</span>
-      </button>
-    </div>
-  </div>
-  <div className="select-itorg">
-    <button
-      className="yellow"
-      onClick={() => this.setState({itorG: 'Y'})}
-    >
-      黄直のみ
-    </button>
-    <button
-      className="white"
-      onClick={() => this.setState({itorG: 'W'})}
-    >
-      白直のみ
-    </button>
-    <button
-      className="yellow-white"
-      onClick={() => this.setState({itorG: 'both'})}
-    >
-      両直とも
-    </button>
-  </div>
-  <div className="select-mode">
-    <button
-      className={narrowedBy === 'realtime' ? "active" : ""}
-      onClick={() => this.setState({narrowedBy: 'realtime'})}
-    >
-      リアルタイム更新（現直＋前直）
-    </button>
-    <div
-      className={narrowedBy === 'term' ? "term-wrap active" : "term-wrap"}
-      onClick={() => this.setState({narrowedBy: 'term'})}
-    >
-      <p>日時を指定</p>
-      <div>
-        <RangeCalendar
-          defaultValue={startDate}
-          setState={startDate => this.setState({
-            startDate: startDate
-          })}
-        />
-        <p>〜</p>
-        <RangeCalendar
-          defaultValue={endDate}
-          setState={endDate => this.setState({
-            endDate: endDate
-          })}
-        />
-      </div>
-    </div>
-    <div
-      className={narrowedBy === 'panelId' ? "panel-id-wrap active" : "panel-id-wrap"}
-      onClick={() => this.setState({narrowedBy: 'panelId'})}
-    >
-      <p>パネルIDを指定</p>
-      <input
-        type="text"
-        value={panelId}
-        onChange={(e) => this.setState({panelId: e.target.value})}
-      />
-    </div>
-  </div>
-</div>
-
-        {
-          vehicle &&
-          <div className="header bg-white">
-            <h4>
-              <span>車種</span>
-              <span>{vehicle.c}</span>
-              <span onClick={() => this.setState({vehicle: null, itorG: null, itionG: null, page: null})}>変更する</span>
-            </h4>
-            {
-              itorG &&
-              <h4>
-                <span>直</span>
-                <span>{itorG == 'Y' ? '黄直' : itorG == 'W' ? '白直' : '両直'}</span>
-                <span onClick={() => this.setState({itorG: null, itionG: null, page: null})}>変更する</span>
-              </h4>
-            }{
-              itionG &&
-              <h4>
-                <span>区分</span>
-                <span className={itionG.p}>{itionG.string}</span>
-                <span onClick={() => this.setState({itionG: null, page: null})}>変更する</span>
-              </h4>
-            }{
-              page &&
-              <h4>
-                <span>ページ</span>
-                <span>{page.number}</span>
-                <span onClick={() => this.setState({page: null})}>変更する</span>
-              </h4>
-            }
-          </div>
-        }{
-          VehicleData.data && !vehicle &&
-          <div className="select-panel step1 bg-white">
-            <p>車種を選択してください</p>
+        <div className="serch-wrap bg-white">
+          <div className="col-1 flex-row">
             <div>
-              {
-                VehicleData.data.map(v => 
-                  <button
-                    key={v.c}
-                    className="gray"
-                    onClick={() => {
-                      this.setState({vehicle: v});
-                      this.serchItorG();
-                    }}
-                  >
-                    {v.c}
-                  </button>
-                )
-              }
-              <button
-                className="gray disabled"
-              >
-                {'950A'}
-              </button>
+              <p>車種*</p>
+              <Select
+                name="車種"
+                placeholder="選択してください"
+                clearable={false}
+                Searchable={true}
+                value={this.state.vehicle}
+                options={VehicleData.data.map(v => {
+                  return { value: v.c, label: v.c }
+                })}
+                onChange={value => this.setState({vehicle: value.value})}
+              />
+            </div>
+            <div>
+              <p>部品*</p>
+              <Select
+                name="部品"
+                placeholder="選択してください"
+                clearable={false}
+                Searchable={true}
+                value={{label: 'バックドアインナー', value: 1}}
+                options={[
+                  {label: 'バックドアインナー', value: 1},
+                  {label: 'アッパー', value: 2},
+                  {label: 'サイドアッパーRH', value: 3},
+                  {label: 'サイドアッパーLH', value: 4},
+                  {label: 'サイドロアRH', value: 5},
+                  {label: 'サイドロアLH', value: 6},
+                  {label: 'バックドアインナASSY', value: 7}
+                ]}
+                onChange={value => this.setState({partT: value.value})}
+              />
+            </div>
+            <div>
+              <p>工程*</p>
+              <Select
+                name="工程"
+                placeholder="選択してください"
+                clearable={false}
+                Searchable={true}
+                value={{label: '成形工程ライン１', value: 1}}
+                options={[]}
+                onChange={value => this.setState({ition: value.value})}
+              />
+            </div>
+            <div>
+              <p>直*</p>
+              <Select
+                name="直"
+                placeholder="選択してください"
+                clearable={false}
+                Searchable={true}
+                value={{label: '黄直', value: 1}}
+                options={[]}
+                onChange={value => this.setState({ition: value.value})}
+              />
             </div>
           </div>
-        }{
-          ItorGData.data && vehicle && !itorG &&
-          <div className="select-panel step2 bg-white">
-            <p>直を選択してください</p>
-            <div>
-              <button
-                className="yellow"
-                onClick={() => this.setState({itorG: 'Y'})}
-              >
-                黄直のみ
-              </button>
-              <button
-                className="white"
-                onClick={() => this.setState({itorG: 'W'})}
-              >
-                白直のみ
-              </button>
-              <button
-                className="yellow-white"
-                onClick={() => this.setState({itorG: 'both'})}
-              >
-                両直とも
-              </button>
-            </div>
-          </div>
-        }{
-          vehicle && itorG && !itionG &&
-          <div className="select-panel step3 bg-white">
-            <p>区分を選択してください</p>
-            <div>
-              <div className="process molding">
-                <p className="molding">成型</p>
-                <div>
-                  <div className="inspection check">
-                    <p className="molding">検査ライン①</p>
-                    <div>
-                      <button
-                        className="molding"
-                        onClick={() => this.setState({itionG: {
-                          p: 'molding',
-                          i: 'check',
-                          d: 'inner',
-                          l: 1,
-                          string: '成型工程　ライン①　検査　インナー'
-                        }}, () => this.serchPageT())}
-                      >
-                        インナー
-                      </button>
-                      <button
-                        className="molding"
-                        onClick={() => this.setState({itionG: {
-                          p: 'molding',
-                          i: 'check',
-                          d: 'small',
-                          l: 1,
-                          string: '成型工程　ライン①　検査　アウター'
-                        }}, () => this.serchPageT())}
-                      >
-                        アウター
-                      </button>
-                    </div>
-                  </div>
-                  <div className="inspection check">
-                    <p className="molding">検査ライン②</p>
-                    <div>
-                      <button
-                        className="molding"
-                        onClick={() => this.setState({itionG: {
-                          p: 'molding',
-                          i: 'check',
-                          d: 'inner',
-                          l: 2,
-                          string: '成型工程　ライン②　検査　インナー'
-                        }}, () => this.serchPageT())}
-                      >
-                        インナー
-                      </button>
-                      <button
-                        className="molding"
-                        onClick={() => this.setState({itionG: {
-                          p: 'molding',
-                          i: 'check',
-                          d: 'small',
-                          l: 2,
-                          string: '成型工程　ライン②　検査　アウター'
-                        }}, () => this.serchPageT())}
-                      >
-                        アウター
-                      </button>
-                    </div>
-                  </div>
-                  <div className="inspection check">
-                    <p className="molding">精度検査</p>
-                    <div>
-                      <button
-                        className="molding"
-                        onClick={() => this.setState({itionG: {
-                          p: 'molding',
-                          i: 'inline',
-                          d: 'inner',
-                          string: '成型工程　精度検査　インナー'
-                        }}, () => this.serchPageT())}
-                      >
-                        インナー
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="process holing">
-                <p className="holing">穴あけ</p>
-                <div>
-                  <div className="inspection check">
-                    <p className="holing">検査</p>
-                    <div>
-                      <button
-                        className="holing"
-                        onClick={() => this.setState({itionG: {
-                          p: 'holing',
-                          i: 'check',
-                          d: 'inner',
-                          string: '穴あけ工程　検査　インナー'
-                        }}, () => this.serchPageT())}
-                      >
-                        インナー
-                      </button>
-                      <button
-                        className="holing"
-                        onClick={() => this.setState({itionG: {
-                          p: 'holing',
-                          i: 'check',
-                          d: 'small',
-                          string: '穴あけ工程　検査　アウター'
-                        }}, () => this.serchPageT())}
-                      >
-                        アウター
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="process jointing">
-                <p className="jointing">接着</p>
-                <div>
-                  <div className="inspection check">
-                    <p className="jointing">精度検査</p>
-                    <div>
-                      <button
-                        className="jointing"
-                        onClick={() => this.setState({itionG: {
-                          p: 'jointing',
-                          i: 'inline',
-                          d: 'inner_assy',
-                          string: '接着工程　精度検査　インナーASSY'
-                        }}, () => this.serchPageT())}
-                      >
-                        ASSY
-                      </button>
-                    </div>
-                  </div>
-                  <div className="inspection check">
-                    <p className="jointing">止水</p>
-                    <div>
-                      <button
-                        className="jointing"
-                        onClick={() => this.setState({itionG: {
-                          p: 'jointing',
-                          i: 'water_stop',
-                          d: 'inner_assy',
-                          string: '接着工程　止水　インナーASSY'
-                        }}, () => this.serchPageT())}
-                      >
-                        ASSY
-                      </button>
-                    </div>
-                  </div>
-                  <div className="inspection check">
-                    <p className="jointing">仕上</p>
-                    <div>
-                      <button
-                        className="jointing"
-                        onClick={() => this.setState({itionG: {
-                          p: 'jointing',
-                          i: 'finish',
-                          d: 'inner_assy',
-                          string: '接着工程　仕上　インナーASSY'
-                        }}, () => this.serchPageT())}
-                      >
-                        ASSY
-                      </button>
-                    </div>
-                  </div>
-                  <div className="inspection check">
-                    <p className="jointing">点検</p>
-                    <div>
-                      <button
-                        className="jointing"
-                        onClick={() => this.setState({itionG: {
-                          p: 'jointing',
-                          i: 'check',
-                          d: 'inner_assy',
-                          string: '接着工程　点検　インナーASSY'
-                        }}, () => this.serchPageT())}
-                      >
-                        ASSY
-                      </button>
-                    </div>
-                  </div>
-                  <div className="inspection check">
-                    <p className="jointing">特検</p>
-                    <div>
-                      <button
-                        className="jointing"
-                        onClick={() => this.setState({itionG: {
-                          p: 'jointing',
-                          i: 'special_check',
-                          d: 'inner_assy',
-                          string: '接着工程　特検　インナーASSY'
-                        }}, () => this.serchPageT())}
-                      >
-                        ASSY
-                      </button>
-                    </div>
-                  </div>
-                  <div className="inspection check">
-                    <p className="jointing">手直し</p>
-                    <div>
-                      <button
-                        className="jointing"
-                        onClick={() => this.setState({itionG: {
-                          p: 'jointing',
-                          i: 'adjust',
-                          d: 'inner_assy',
-                          string: '接着工程　手直し　インナーASSY'
-                        }}, () => this.serchPageT())}
-                      >
-                        ASSY
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        }{
-          PageTData.data && !PageTData.isFetching && itionG && !page &&
-          <div className="select-panel step4 bg-white">
-            {
-              PageTData.data.map(p =>
-                <div
-                  className="page-wrap"
-                  onClick={() => this.setState({page: p})}
-                >
-                  <p><span>Page </span>{p.number}</p>
-                  <figure><img src={p.path}/></figure>
-                </div>
-             )
-            }
-          </div>
-        }{
-          PageTData.data && page && 
-          <div className="select-panel step5 bg-white">
-            <button
-              className={narrowedBy === 'realtime' ? "active" : ""}
+          <div className="col-2 flex-row">
+            <p>表示方法*</p>
+            <div
+              className={narrowedBy === 'realtime' ? 'realtime active' : 'realtime'}
               onClick={() => this.setState({narrowedBy: 'realtime'})}
             >
-              リアルタイム更新（現直＋前直）
-            </button>
+              リアルタイム更新
+            </div>
             <div
-              className={narrowedBy === 'term' ? "term-wrap active" : "term-wrap"}
+              className={narrowedBy === 'term' ? 'term-wrap active' : 'term-wrap'}
               onClick={() => this.setState({narrowedBy: 'term'})}
             >
-              <p>日時を指定</p>
-              <div>
+              <p>期間：</p>
                 <RangeCalendar
+                  disabled={narrowedBy !== 'term'}
                   defaultValue={startDate}
                   setState={startDate => this.setState({
                     startDate: startDate
@@ -591,34 +164,33 @@ class Dashboard extends Component {
                 />
                 <p>〜</p>
                 <RangeCalendar
+                  disabled={narrowedBy !== 'term'}
                   defaultValue={endDate}
                   setState={endDate => this.setState({
                     endDate: endDate
                   })}
                 />
-              </div>
             </div>
             <div
               className={narrowedBy === 'panelId' ? "panel-id-wrap active" : "panel-id-wrap"}
               onClick={() => this.setState({narrowedBy: 'panelId'})}
             >
-              <p>パネルIDを指定</p>
+              <p>パネルID：</p>
               <input
                 type="text"
                 value={panelId}
                 onChange={(e) => this.setState({panelId: e.target.value})}
               />
             </div>
+            <div
+              className="realtime active"
+              onClick={() => this.setState({narrowedBy: 'realtime'})}
+            >
+              表示する
+            </div>
           </div>
-        }{
-          page &&
-          <button
-            className="mapping-btn"
-            onClick={() => actions.push(`/manager/mapping/${url}`)}
-          >
-            この条件でマッピング
-          </button>
-        }
+        </div>
+        <Mapping/>
       </div>
     );
   }

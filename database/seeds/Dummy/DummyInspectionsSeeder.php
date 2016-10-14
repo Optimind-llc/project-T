@@ -106,104 +106,104 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);        
         }
 
-        // //成型：検査：ライン２：インナ
-        // $request->set('molding', 'check', 'inner', '2');
-        // $group = $controller->inspection($request);
+        //成型：検査：ライン２：インナ
+        $request->set('molding', 'check', 'inner', '2');
+        $group = $controller->inspection($request);
 
-        // for ($id = 21; $id <= 30; $id++) {
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        for ($id = 21; $id <= 30; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
-        // //成型：検査：ライン１：小部品
-        // $request->set('molding', 'check', 'small', '1');
-        // $group = $controller->inspection($request);
+        //成型：検査：ライン１：小部品
+        $request->set('molding', 'check', 'small', '1');
+        $group = $controller->inspection($request);
 
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        for ($id = 1; $id <= 10; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
-        // //成型：検査：ライン２：小部品
-        // $request->set('molding', 'check', 'small', '2');
-        // $group = $controller->inspection($request);
+        //成型：検査：ライン２：小部品
+        $request->set('molding', 'check', 'small', '2');
+        $group = $controller->inspection($request);
 
-        // for ($id = 21; $id <= 30; $id++) {
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        for ($id = 21; $id <= 30; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
-        // //穴あけ：検査：インナ
-        // $request->set('holing', 'check', 'inner');
-        // $group = $controller->inspection($request);
+        //穴あけ：検査：インナ
+        $request->set('holing', 'check', 'inner');
+        $group = $controller->inspection($request);
 
-        // for ($id = 1; $id <= 30; $id++) {
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        for ($id = 1; $id <= 30; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
-        // //穴あけ：検査：小部品
-        // $request->set('holing', 'check', 'small');
-        // $group = $controller->inspection($request);
+        //穴あけ：検査：小部品
+        $request->set('holing', 'check', 'small');
+        $group = $controller->inspection($request);
 
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        for ($id = 1; $id <= 10; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
-        // //接着：止水：インナASSY
-        // $request->set('jointing', 'water_stop', 'inner_assy');
-        // $group = $controller->inspection($request);
+        //接着：止水：インナASSY
+        $request->set('jointing', 'water_stop', 'inner_assy');
+        $group = $controller->inspection($request);
 
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        for ($id = 1; $id <= 10; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
-        // //接着：仕上：インナASSY
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $request->set('jointing', 'finish', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
-        //     $group = $controller->inspection($request);
+        //接着：仕上：インナASSY
+        for ($id = 1; $id <= 10; $id++) {
+            $request->set('jointing', 'finish', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
+            $group = $controller->inspection($request);
 
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
-        // //接着：点検：インナASSY
-        // $request->set('jointing', 'check', 'inner_assy');
-        // $group = $controller->inspection($request);
+        //接着：点検：インナASSY
+        $request->set('jointing', 'check', 'inner_assy');
+        $group = $controller->inspection($request);
 
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        for ($id = 1; $id <= 10; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
-        // //接着：特検：インナASSY
-        // $request->set('jointing', 'special_check', 'inner_assy');
-        // $group = $controller->inspection($request);
+        //接着：特検：インナASSY
+        $request->set('jointing', 'special_check', 'inner_assy');
+        $group = $controller->inspection($request);
 
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        for ($id = 1; $id <= 10; $id++) {
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
-        // //接着：手直し：インナASSY
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $request->set('jointing', 'adjust', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
-        //     $group = $controller->inspection($request);
+        //接着：手直し：インナASSY
+        for ($id = 1; $id <= 10; $id++) {
+            $request->set('jointing', 'adjust', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
+            $group = $controller->inspection($request);
 
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);
-        // }
+            $data = $this->createData($group['group'], $id);
+            $request->setFamily($data);
+            $controller->saveInspection($request);
+        }
     }
 }

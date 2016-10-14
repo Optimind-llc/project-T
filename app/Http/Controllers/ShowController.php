@@ -306,8 +306,8 @@ class ShowController extends Controller
         $now = Carbon::now();
 
         if (isset($request->start) && isset($request->end)) {
-            $start_at = Carbon::createFromFormat('Y-m-d-H-i-s', $request->start);
-            $end_at = Carbon::createFromFormat('Y-m-d-H-i-s', $request->end);
+            $start_at = Carbon::createFromFormat('Y-m-d-H-i', $request->start);
+            $end_at = Carbon::createFromFormat('Y-m-d-H-i', $request->end);
         }
         else {
             $today = Carbon::today();

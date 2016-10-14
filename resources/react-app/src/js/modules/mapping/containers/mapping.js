@@ -25,7 +25,7 @@ class Mapping extends Component {
       interval: 10000,
       innerHeight: window.innerHeight,
       failure: false,
-      hole: false,
+      hole: true,
       inline: false,
       fTypeFilter: [],
       fIdFilter: [],
@@ -100,130 +100,74 @@ class Mapping extends Component {
     const { data, isFetching } = this.props.PageData;
     const { failure, hole, holeStatus, dropdown, fTypeFilter, fIdFilter, inline } = this.state;
 
-    if(failure && !hole) {
-      return (
-        <div className="filter-wrap">
-          <p>フィルタリング</p>
-          <div className="filter">
-            <button
-              key="iFailure"
-              className={fTypeFilter.indexOf('1') === -1 ? 'active' : ''}
-              onClick={() => {
-                const index = fTypeFilter.indexOf('1');
-                index === -1 ? fTypeFilter.push('1') : fTypeFilter.splice(index, 1);
-                this.setState({ fTypeFilter });
-              }}
-            >
-              {'重要'}
-            </button>
-            <button
-              key="nFailure"
-              className={fTypeFilter.indexOf('2') === -1 ? 'active' : ''}
-              onClick={() => {
-                const index = fTypeFilter.indexOf('2');
-                index === -1 ? fTypeFilter.push('2') : fTypeFilter.splice(index, 1);
-                this.setState({ fTypeFilter });
-              }}
-            >
-              {'普通'}
-            </button>
-          </div>
-          {
-            data &&
-            <div className="filter2">
-              <button
-                className="dropdown-btn"
-                onClick={() => this.setState({
-                  dropdown: !dropdown
-                })}
-              >
-                <span>
-                  {
-                    data.failureTypes.filter(ft => 
-                      fTypeFilter.indexOf(String(ft.type)) === -1 && fIdFilter.indexOf(ft.id) === -1
-                    ).length
-                  }
-                </span>
-                <span>{`/${data.failureTypes.length}`}</span>
-                <span>表示中</span>
-                <span>{dropdown? '△隠す' : '▽詳細'}</span>
-              </button>
-              {
-                dropdown &&
-                <div className="dropdown-list">
-                  {
-                    data.failureTypes.filter(ft => 
-                      fTypeFilter.indexOf(String(ft.type)) === -1
-                    ).map(ft => {
-                      const index = fIdFilter.indexOf(ft.id);
-                      return (
-                        <button
-                          key={ft.id}
-                          className={index === -1 ? 'active' : ''}
-                          onClick={() => {
-                            if ( index === -1) fIdFilter.push(ft.id);
-                            else fIdFilter.splice(index, 1);
-                            this.setState({ fIdFilter });
-                          }}
-                        >
-                            {`${ft.sort}. ${ft.name}`}
-                        </button>
-                      )
-                    })
-                  }
-                </div>
-              }
-            </div>
-          }
+    return (
+      <div className="filter-wrap">
+        <p>表示切り替え</p>
+        <div className="filter">
+          <button
+            key="holeStatus1"
+            className={holeStatus == 1 ? 'active none-event' : ''}
+            onClick={() => this.setState({ holeStatus: 1 })}
+          >
+            {'○'}
+          </button>
+          <button
+            key="holeStatus2"
+            className={holeStatus == 2 ? 'active none-event' : ''}
+            onClick={() => this.setState({ holeStatus: 2 })}
+          >
+            {'△'}
+          </button>
+          <button
+            key="holeStatus0"
+            className={holeStatus == 0 ? 'active none-event' : ''}
+            onClick={() => this.setState({ holeStatus: 0 })}
+          >
+            {'×'}
+          </button>
         </div>
-      );
-    }
-    else if (!failure && hole) {
-      return (
-        <div className="filter-wrap">
-          <p>表示切り替え</p>
-          <div className="filter">
-            <button
-              key="holeStatus1"
-              className={holeStatus == 1 ? 'active none-event' : ''}
-              onClick={() => this.setState({ holeStatus: 1 })}
-            >
-              {'○'}
-            </button>
-            <button
-              key="holeStatus2"
-              className={holeStatus == 2 ? 'active none-event' : ''}
-              onClick={() => this.setState({ holeStatus: 2 })}
-            >
-              {'△'}
-            </button>
-            <button
-              key="holeStatus0"
-              className={holeStatus == 0 ? 'active none-event' : ''}
-              onClick={() => this.setState({ holeStatus: 0 })}
-            >
-              {'×'}
-            </button>
-          </div>
-        </div>
-      );      
-    }
+      </div>
+    );
   }
 
   renderContent() {
     const { data } = this.props.PageData;
-    const { failure, hole, inline } = this.state;
+    const { failure, hole, inline, fIdFilter } = this.state;
 
     if (failure && !hole){
       return (
         <div className="failure">
+
           <div className="collection">
             <div>
-              <p>{'不良区分'}</p>
               <ul>
-                {data.failureTypes.map(ft =>
-                  <li key={ft.id}>{`${ft.sort}. ${ft.name}`}</li>
-                )}
+                <li
+                  onClick={() => {
+                    if ( index === -1) fIdFilter.push(ft.id);
+                    else fIdFilter.splice(index, 1);
+                    this.setState({ fIdFilter });
+                  }}
+                >
+                  <span><p></p></span>
+                  <span>不良区分</span>
+                </li>
+                {data.failureTypes.map(ft =>{
+                  const index = fIdFilter.indexOf(ft.id);
+                  return (
+                    <li
+                      key={ft.id}
+                      className={index === -1 ? 'active' : ''}
+                      onClick={() => {
+                        if ( index === -1) fIdFilter.push(ft.id);
+                        else fIdFilter.splice(index, 1);
+                        this.setState({ fIdFilter });
+                      }}
+                    >
+                      <span><p>{index === -1 ? '✔' :''}︎</p></span>
+                      <span>{`${ft.sort}. ${ft.name}`}</span>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             {
@@ -231,10 +175,10 @@ class Mapping extends Component {
                 const failures = data.failures[part.pn];
                 return (
                   <div key={part.pn}>
-                    <p>{part.name}</p>
-                    <ul>
+                    <ul className="parts">
+                      <li>合計</li>
                       {
-                        data.failureTypes.map(ft =>
+                        data.failureTypes.map(ft => 
                           <li>
                             {failures == undefined ? 0 : failures.filter(f => f.sort == ft.sort).length}
                           </li>
@@ -322,27 +266,8 @@ class Mapping extends Component {
         {
           data !== null &&
           <div>
-            <div className="mapping-header">
-              <h4>
-                <span>{`${data.process}工程`}</span>
-                <span>{data.inspection}</span>
-                <span>{`${data.line == '1' ? 'ライン①' : data.line == '2' ? 'ライン②' : ''}`}</span>
-                <span>{`Page${data.number}`}</span>
-                <span>{(start && end) ? `${start} ~ ${end}` : 'リアルタイム更新中'}</span>
-              </h4>
-            </div>
             <div className="mapping-body">
               <div className="figure-wrap">
-                <ul className="parts-info">
-                  {
-                    data.parts.map(part =>
-                      <li key={part.pn}>
-                        <span className="small">品番: </span><span>{part.pn}</span>
-                        <span className="small">品名: </span><span>{part.name}</span>
-                      </li>
-                    )
-                  }
-                </ul>
                 <div className="figure">       
                   <img src={data.path}/>
                   <svg>
@@ -454,7 +379,6 @@ class Mapping extends Component {
                       })
                     }
                   </svg>
-                  {this.renderFilter()}
                 </div>
               </div>
               
@@ -521,12 +445,18 @@ Mapping.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    id: ownProps.params.id,
-    itorG: ownProps.params.itorG,
-    start: ownProps.location.query.start,
-    end: ownProps.location.query.end,
-    panelId: ownProps.location.query.panelId,
-    PageData: state.PageData
+    // id: ownProps.params.id,
+    // itorG: ownProps.params.itorG,
+    // start: ownProps.location.query.start,
+    // end: ownProps.location.query.end,
+    // panelId: ownProps.location.query.panelId,
+    // PageData: state.PageData
+    id: 1,
+    itorG: 'W',
+    start: '2016-10-13-00-00',
+    end: '2016-10-15-00-00',
+    panelId: '',
+    PageData: state.PageData    
   };
 }
 

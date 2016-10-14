@@ -42,7 +42,7 @@ class Page extends Model
             'part_page',
             'page_id',
             'part_id'
-        );
+        )->withPivot('status');
     }
 
     public function failurePositions()

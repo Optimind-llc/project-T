@@ -1,6 +1,6 @@
 #navigation {
     .header {
-        padding: 10px 0 10px 30px;
+        padding: 10px 0 10px 20px;
 
         &:after {
             content: '';
@@ -20,11 +20,12 @@
 
         li a {
             display: inline-block;
-            width: 180px;
+            width: 160px;
             text-align: center;
             padding: 12px 0 12px 0;
             color: #4A4A4A;
             text-decoration: none;
+            font-size: 14px;
 
             &:hover, &.active {
                 background-color: #4A4A4A;

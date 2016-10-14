@@ -47,11 +47,11 @@ class App extends Component {
         position: 'fixed',
         top: 0,
         left: 0,
-        width: 180,
+        width: 160,
         height: '100%',
       },
       content: {
-        paddingLeft: 180, 
+        paddingLeft: 160, 
         height: '100%',
       }
     };

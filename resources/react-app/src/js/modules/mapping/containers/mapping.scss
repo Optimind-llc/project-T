@@ -1,7 +1,8 @@
 #mapping-wrap {
-	position: fixed;
-	top: 0;
-	left: 0;
+	// position: fixed;
+	// top: 0;
+	// left: 0;
+	margin-top: 10px;
 	padding: 10px;
 	width: 100%;
 	height: 100%;
@@ -44,6 +45,7 @@
 
 			.figure-wrap {
 				float: left;
+				padding-top: 40px;
 
 				ul.parts-info {
 				    display: flex;
@@ -243,7 +245,7 @@
 
 					.collection {
 						display: flex;
-						flex-flow: raw wrap;
+						flex-flow: row wrap;
 						justify-content: center;
 						margin: 20px 10px;
 						font-size: 14px;
@@ -263,17 +265,47 @@
 								padding: 0;
 
 								li {
-									padding: 3px 6px;
+									display: flex;
+									flex-flow: row nowrap;
+									padding: 3px 6px 3px 6px;
 									border-bottom: 1px solid #BFBFBF;
+									height: 21px;
+
+									&:nth-child(1) {
+										border-top: 1px solid #BFBFBF;
+									}									
 
 									&:nth-child(2n) {
 										background-color: #EEE;
 									}
 
                                     span {
-                                        float: right;
-                                        padding-left: 8px;
+                                        &:nth-child(1) {
+                                        	border: 1px solid #BBB;
+                                        	border-radius: 4px;
+                                        	margin: 3px 16px 3px 0;
+                                        	height: 12px;
+                                        	width: 12px;
+                                        	font-size: 10px;
+
+                                        	p {
+                                        		margin: -1px 0 0 2px;
+                                        		padding: 0;
+                                        	}
+                                        }
                                     }
+
+                                    // &.active:before {
+                                    // 	content: "✔︎";
+                                    // 	display: block;
+                                    // 	position: absolute;
+                                    // 	top: 5;
+                                    // 	left: 10px;
+                                    // }
+								}
+
+								&.parts li {
+									padding-right: 40px;
 								}
 							}
 

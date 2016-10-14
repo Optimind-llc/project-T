@@ -34,7 +34,7 @@ class PartTypeTableSeeder extends Seeder
         $data = [
             [
                 'pn'          => 67149,
-                'name'        => 'バックドアインナ',
+                'name'        => 'バックドアインナー',
                 'vehicle_num' => '680A',
                 'sort'        => 1,
                 'created_at'  => $now,
