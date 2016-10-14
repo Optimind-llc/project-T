@@ -53,8 +53,23 @@ class PdfController extends Controller
     protected function forMoldingInner($tcpdf, $date, $families, $itorG_name, $line)
     {
         $now = Carbon::now();
-        $failures = Process::where('id', 'molding')->first()->failures()->get(['id', 'sort', 'name']);
-        $n = $failures->count();
+        $failures = Process::where('id', 'molding')
+            ->first()
+            ->failures()
+            ->orderBy('sort')
+            ->get(['id', 'sort', 'name'])
+            ->map(function($f) {
+                return [
+                    'id' => $f->id,
+                    'name' => $f->name,
+                    'type' => $f->pivot->type
+                ];
+            })
+            ->sortBy('type')
+            ->values()
+            ->all();
+
+        $n = count($failures);
 
         $body = [];
         $row_sum = [5 => '合計'];
@@ -72,7 +87,7 @@ class PdfController extends Controller
                 $fp = $family->pages[0]->failurePositions->groupBy('failure_id');
 
                 $sum = 0;
-                if ($fp->has($f->id)) $sum = $fp[$f->id]->count();
+                if ($fp->has($f['id'])) $sum = $fp[$f['id']]->count();
 
                 array_push($body[$row], $sum);
                 $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
@@ -111,10 +126,10 @@ class PdfController extends Controller
             $tcpdf->Text($x0+array_sum(array_slice($d,0,5)), $y0+$y1, '出荷判定');
 
             foreach ($failures as $i => $f) {
-                $tcpdf->Text($x0+array_sum($d)+$i*$fd, $x0+12, $f->name);
+                $tcpdf->Text($x0+array_sum($d)+$i*$fd, $x0+12, $f['name']);
             }
 
-            $tcpdf->Text($x0+array_sum($d)+$failures->count()*$fd, $y0+$y1, '登録時間');
+            $tcpdf->Text($x0+array_sum($d)+count($failures)*$fd, $y0+$y1, '登録時間');
             // Render table body
             foreach ($value as $r => $row) {
                 foreach ($row as $c => $val) {
