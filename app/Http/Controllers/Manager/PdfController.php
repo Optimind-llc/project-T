@@ -1117,7 +1117,7 @@ class PdfController extends Controller
             ])
             ->get();
 
-// return $families;
+return $families;
 
             // $family = $families[0];
             // $parts = $family->pages->reduce(function ($carry, $page) {

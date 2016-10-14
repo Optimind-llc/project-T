@@ -140,31 +140,153 @@ class Report extends Component {
               />
             </div>
           </div>
-        }
-        <div className="bg-white process-flex">
-          {
-            !ItionGData.isFetching && ItionGData.data !== null && ItionGData.data.map(i =>
-              <div key={i.en}>
-                <p>{i.name}</p>
-                {
-                  i.groups.map(g =>
-                    <div
-                      key={g.id}
-                      className={g.families.length == 0 ? 'disable' : ''}
-                      onClick={() => this.setState({
-                        modal: true,
-                        path: "/manager/pdf/report/1/2016-10-12/w"
-                      })}
-                    >
-                      <p>{`${g.division.name} ${g.line == '1' ? 'ライン①' : g.line == '2' ? 'ライン②' : ''}`}</p>
-                    </div>
-                  )
-                }
+        }{
+            this.state.process == 'molding' &&
+            <div className="bg-white process-flex">
+              <div>
+                <p>ライン１</p>
+                <div
+                  onClick={() => this.setState({
+                    modal: true,
+                    path: `/manager/pdf/report/1/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  })}
+                >
+                  <p>インナー</p>
+                </div>
+                <div
+                  onClick={() => this.setState({
+                    modal: true,
+                    path: `/manager/pdf/report/5/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  })}
+                >
+                  <p>アウター</p>
+                </div>
               </div>
-            )
-          }
-        </div>
-        {
+              <div>
+                <p>ライン２</p>
+                <div
+                  onClick={() => this.setState({
+                    modal: true,
+                    path: `/manager/pdf/report/2/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  })}
+                >
+                  <p>インナー</p>
+                </div>
+                <div
+                  onClick={() => this.setState({
+                    modal: true,
+                    path: `/manager/pdf/report/6/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  })}
+                >
+                  <p>アウター</p>
+                </div>
+              </div>
+              <div>
+                <p>精度検査</p>
+                <div
+                  onClick={() => this.setState({
+                    modal: true,
+                    path: `/manager/pdf/report/3/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  })}
+                >
+                  <p>インナー</p>
+                </div>
+              </div>
+            </div>
+        }{
+          this.state.process == 'holing' &&
+          <div className="bg-white process-flex">
+            <div>
+              <p>検査</p>
+              <div
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/pdf/report/4/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>インナー</p>
+              </div>
+              <div
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/pdf/report/8/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>アウター</p>
+              </div>
+            </div>
+          </div>
+        }{
+          this.state.process == 'jointing' &&
+          <div className="bg-white process-flex">
+            <div>
+              <p>精度検査</p>
+              <div
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/pdf/report/9/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>インナーASSY</p>
+              </div>
+            </div>
+            <div>
+              <p>止水</p>
+              <div
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/pdf/report/10/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>インナーASSY</p>
+              </div>
+            </div>
+            <div>
+              <p>仕上</p>
+              <div
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/pdf/report/11/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>インナーASSY</p>
+              </div>
+            </div>
+            <div>
+              <p>点検</p>
+              <div
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/pdf/report/12/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>インナーASSY</p>
+              </div>
+            </div>
+            <div>
+              <p>特検</p>
+              <div
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/pdf/report/13/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>インナーASSY</p>
+              </div>
+            </div>
+            <div>
+              <p>手直し</p>
+              <div
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/pdf/report/14/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>インナーASSY</p>
+              </div>
+            </div>
+          </div>
+        }{
           this.state.modal &&
           <Modal
             path={this.state.path}
