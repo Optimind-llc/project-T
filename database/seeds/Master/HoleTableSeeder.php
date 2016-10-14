@@ -575,7 +575,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '860,404',
+                'point'      => '865,404',
                 'label'      => 31,
                 'direction'  => 'right',
                 'color'      => '000000',
@@ -586,7 +586,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '830,417',
+                'point'      => '825,417',
                 'label'      => 32,
                 'direction'  => 'left',
                 'color'      => '4A90E2',
@@ -619,7 +619,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '1382,404',
+                'point'      => '1377,404',
                 'label'      => 20,
                 'direction'  => 'left',
                 'color'      => '000000',
@@ -630,7 +630,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '1413,417',
+                'point'      => '1417,417',
                 'label'      => 21,
                 'direction'  => 'right',
                 'color'      => '4A90E2',
@@ -729,7 +729,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '1331,600',
+                'point'      => '1331,590',
                 'label'      => 56,
                 'direction'  => 'top',
                 'color'      => 'D0021B',
@@ -740,7 +740,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '1292,610',
+                'point'      => '1292,620',
                 'label'      => 57,
                 'direction'  => 'bottom',
                 'color'      => 'D0021B',
@@ -762,7 +762,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '1216,638',
+                'point'      => '1216,650',
                 'label'      => 59,
                 'direction'  => 'bottom',
                 'color'      => 'D0021B',
@@ -773,7 +773,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '1181,630',
+                'point'      => '1181,620',
                 'label'      => 60,
                 'direction'  => 'top',
                 'color'      => 'D0021B',
@@ -795,7 +795,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '1044,630',
+                'point'      => '1044,620',
                 'label'      => 63,
                 'direction'  => 'top',
                 'color'      => 'D0021B',
@@ -806,7 +806,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '1009,638',
+                'point'      => '1009,650',
                 'label'      => 64,
                 'direction'  => 'bottom',
                 'color'      => 'D0021B',
@@ -828,7 +828,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '932,612',
+                'point'      => '932,620',
                 'label'      => 66,
                 'direction'  => 'bottom',
                 'color'      => 'D0021B',
@@ -839,7 +839,7 @@ class HoleTableSeeder extends Seeder
             ],[
                 'figure_id'  => 6,
                 'part_type_id' => 1,
-                'point'      => '893,602',
+                'point'      => '893,590',
                 'label'      => 67,
                 'direction'  => 'top',
                 'color'      => 'D0021B',

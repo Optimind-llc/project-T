@@ -153,11 +153,10 @@ class Report extends Component {
                       className={g.families.length == 0 ? 'disable' : ''}
                       onClick={() => this.setState({
                         modal: true,
-                        path: "/pdf/template/molding-inner.pdf"
+                        path: "/manager/pdf/report/1/2016-10-12/w"
                       })}
                     >
                       <p>{`${g.division.name} ${g.line == '1' ? 'ライン①' : g.line == '2' ? 'ライン②' : ''}`}</p>
-                      <p>{g.families.length}<span>件</span></p>
                     </div>
                   )
                 }
