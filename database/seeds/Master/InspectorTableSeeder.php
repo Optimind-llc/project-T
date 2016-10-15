@@ -1006,15 +1006,15 @@ class InspectorTableSeeder extends Seeder
             //接着_特検_インナASSY_白
             [
                 'inspection_g_id' => 13,
-                'inspector_id'    => 48,
+                'inspector_id'    => 51,
                 'sort'            => 1
             ],[
                 'inspection_g_id' => 13,
-                'inspector_id'    => 48,
+                'inspector_id'    => 52,
                 'sort'            => 2
             ],[
                 'inspection_g_id' => 13,
-                'inspector_id'    => 48,
+                'inspector_id'    => 53,
                 'sort'            => 3
             ],
             //接着_特検_インナASSY_黄
