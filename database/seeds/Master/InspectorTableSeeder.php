@@ -33,303 +33,321 @@ class InspectorTableSeeder extends Seeder
 
         $data = [
             [
-                'name'       => '吉田　諒佑',
+                'name'       => '吉田 諒佑',
                 'code'       => '0001',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '鈴木　貴紫',
+                'name'       => '鈴木 貴紫',
                 'code'       => '0002',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '鈴木　常喜',
+                'name'       => '鈴木 常喜',
                 'code'       => '0003',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '佐藤　優輝',
+                'name'       => '佐藤 優輝',
                 'code'       => '0004',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '黒川　航平',
+                'name'       => '黒川 航平',
                 'code'       => '0005',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '一色　誠司',
+                'name'       => '一色 誠司',
                 'code'       => '0006',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '磯貝　寿樹',
+                'name'       => '磯貝 寿樹',
                 'code'       => '0007',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '加藤　瞭',
+                'name'       => '加藤 瞭',
                 'code'       => '0008',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '下釜　千春',
+                'name'       => '下釜 千春',
                 'code'       => '0009',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '黒岩　良',
+                'name'       => '黒岩 良',
                 'code'       => '00010',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '木里　祐也',
+                'name'       => '木里 祐也',
                 'code'       => '00011',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '山中　英司',
+                'name'       => '山中 英司',
                 'code'       => '00012',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '板垣　孝輔',
+                'name'       => '板垣 孝輔',
                 'code'       => '00013',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '畑中　武太蔵',
+                'name'       => '畑中 武太蔵',
                 'code'       => '00014',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '松山　亮太',
+                'name'       => '松山 亮太',
                 'code'       => '00015',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '門田　健司',
+                'name'       => '門田 健司',
                 'code'       => '00016',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '阿部　均',
+                'name'       => '阿部 均',
                 'code'       => '00017',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '早坂　孝道',
+                'name'       => '早坂 孝道',
                 'code'       => '00018',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '迫田　忠信',
+                'name'       => '迫田 忠信',
                 'code'       => '00019',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '稲本　竜士',
+                'name'       => '稲本 竜士',
                 'code'       => '00020',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '波多野　充希',
+                'name'       => '波多野 充希',
                 'code'       => '00021',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '門間　洸樹',
+                'name'       => '門間 洸樹',
                 'code'       => '00022',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '竹下　博城',
+                'name'       => '竹下 博城',
                 'code'       => '00023',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '二神　崇瑛',
+                'name'       => '二神 崇瑛',
                 'code'       => '00024',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '今野　良紀',
+                'name'       => '今野 良紀',
                 'code'       => '00025',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '石橋　卓昇',
+                'name'       => '石橋 卓昇',
                 'code'       => '00026',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '田中　翔',
+                'name'       => '田中 翔',
                 'code'       => '00027',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '岩本　大和',
+                'name'       => '岩本 大和',
                 'code'       => '00028',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '内田　敏和',
+                'name'       => '内田 敏和',
                 'code'       => '00029',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '藤原　拓海',
+                'name'       => '藤原 拓海',
                 'code'       => '00030',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '佐藤　恭一',
+                'name'       => '佐藤 恭一',
                 'code'       => '00031',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '梶川　潤一郎',
+                'name'       => '梶川 潤一郎',
                 'code'       => '00032',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '末信　高弘',
+                'name'       => '末信 高弘',
                 'code'       => '00033',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '上田　龍太',
+                'name'       => '上田 龍太',
                 'code'       => '00034',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '堀口　幸一',
+                'name'       => '堀口 幸一',
                 'code'       => '00035',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '西村　乃武',
+                'name'       => '西村 乃武',
                 'code'       => '00036',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '市川　俊之',
+                'name'       => '市川 俊之',
                 'code'       => '00037',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '浦丸　弘喜',
+                'name'       => '浦丸 弘喜',
                 'code'       => '00038',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '平野　篤史',
+                'name'       => '平野 篤史',
                 'code'       => '00039',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '盛川　賢一',
+                'name'       => '盛川 賢一',
                 'code'       => '00040',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '松田　勝三',
+                'name'       => '松田 勝三',
                 'code'       => '00041',
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '加治屋　仁',
+                'name'       => '加治屋 仁',
                 'code'       => '00042',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '真塩　隆英',
+                'name'       => '真塩 隆英',
                 'code'       => '00043',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '廣政　大輔',
+                'name'       => '廣政 大輔',
                 'code'       => '00044',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '青山　政光',
+                'name'       => '青山 政光',
                 'code'       => '00045',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '横田　和宣',
+                'name'       => '横田 和宣',
                 'code'       => '00046',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '森山　和江',
+                'name'       => '森山 和江',
                 'code'       => '00047',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '東　政義',
+                'name'       => '東 政義',
                 'code'       => '00048',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '杉山　和也',
+                'name'       => '杉山 和也',
                 'code'       => '00049',
                 'group_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '村山　貴志',
+                'name'       => '村山 貴志',
                 'code'       => '00050',
                 'group_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '岩下 聡',
+                'code'       => '00051',
+                'group_code' => 'W',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '藤原 亮一',
+                'code'       => '00052',
+                'group_code' => 'W',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '吉田 信一郎',
+                'code'       => '00053',
+                'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ]
@@ -985,6 +1003,20 @@ class InspectorTableSeeder extends Seeder
             ],
 
 
+            //接着_特検_インナASSY_白
+            [
+                'inspection_g_id' => 13,
+                'inspector_id'    => 48,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 13,
+                'inspector_id'    => 48,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 13,
+                'inspector_id'    => 48,
+                'sort'            => 3
+            ],
             //接着_特検_インナASSY_黄
             [
                 'inspection_g_id' => 13,

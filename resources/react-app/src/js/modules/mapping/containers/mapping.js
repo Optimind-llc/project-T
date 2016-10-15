@@ -25,7 +25,7 @@ class Mapping extends Component {
       interval: 10000,
       innerHeight: window.innerHeight,
       failure: false,
-      hole: true,
+      hole: false,
       inline: false,
       fTypeFilter: [],
       fIdFilter: [],
@@ -451,10 +451,10 @@ function mapStateToProps(state, ownProps) {
     // end: ownProps.location.query.end,
     // panelId: ownProps.location.query.panelId,
     // PageData: state.PageData
-    id: 1,
+    id: 4,
     itorG: 'W',
     start: '2016-10-13-00-00',
-    end: '2016-10-15-00-00',
+    end: '2016-10-16-00-00',
     panelId: '',
     PageData: state.PageData    
   };

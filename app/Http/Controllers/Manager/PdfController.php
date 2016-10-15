@@ -55,20 +55,6 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
-        $parts = $families[0]->pages->reduce(function ($carry, $page) {
-            $parts = $page->parts->map(function ($part){
-                return [
-                    'id' => $part->id,
-                    'status' => $part->pivot->status,
-                    'panel_id' => $part->panel_id,
-                    'pn' => $part->partType->pn,
-                    'name' => $part->partType->name,
-                    'vehicle' => $part->partType->vehicle_num
-                ];
-            });
-            return array_merge($carry, $parts->toArray());
-        }, []);
-
         $failures = Process::where('id', 'molding')
             ->first()
             ->failures()
@@ -92,6 +78,20 @@ class PdfController extends Controller
 
         $r = 0;
         foreach ($families as $row => $family) {
+            $parts = $family->pages->reduce(function ($carry, $page) {
+                $parts = $page->parts->map(function ($part){
+                    return [
+                        'id' => $part->id,
+                        'status' => $part->pivot->status,
+                        'panel_id' => $part->panel_id,
+                        'pn' => $part->partType->pn,
+                        'name' => $part->partType->name,
+                        'vehicle' => $part->partType->vehicle_num
+                    ];
+                });
+                return array_merge($carry, $parts->toArray());
+            }, []);
+
             foreach ($parts as $i => $part) {
                 $body[$r] = [
                     $part['vehicle'],
@@ -260,6 +260,14 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
+
+        if ($line == '１') {
+            $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_m001_inner_w.pdf';
+        } else {
+            $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_m002_inner_w.pdf';
+        }
+
+        $tcpdf->output($pdf_path, 'I');
     }
 
     protected function forMoldingInlineInner($tcpdf, $date, $families)
@@ -268,21 +276,6 @@ class PdfController extends Controller
 
         $body = [];
         $row_sum = [5 => '合計'];
-
-        $parts = $families[0]->pages->reduce(function ($carry, $page) {
-            $parts = $page->parts->map(function ($part){
-                return [
-                    'id' => $part->id,
-                    'status' => $part->pivot->status,
-                    'panel_id' => $part->panel_id,
-                    'pn' => $part->partType->pn,
-                    'name' => $part->partType->name,
-                    'sort' => $part->partType->sort,
-                    'vehicle' => $part->partType->vehicle_num
-                ];
-            });
-            return array_merge($carry, $parts->toArray());
-        }, []);
 
         $inlines = $families[0]->pages[0]->inlines->map(function($inline) {
             return [
@@ -296,6 +289,21 @@ class PdfController extends Controller
 
         $r = 0;
         foreach ($families as $row => $family) {
+            $parts = $family->pages->reduce(function ($carry, $page) {
+                $parts = $page->parts->map(function ($part){
+                    return [
+                        'id' => $part->id,
+                        'status' => $part->pivot->status,
+                        'panel_id' => $part->panel_id,
+                        'pn' => $part->partType->pn,
+                        'name' => $part->partType->name,
+                        'sort' => $part->partType->sort,
+                        'vehicle' => $part->partType->vehicle_num
+                    ];
+                });
+                return array_merge($carry, $parts->toArray());
+            }, []);
+
             foreach ($parts as $i => $part) {
                 $body[$r] = [
                     $part['vehicle'],
@@ -446,6 +454,9 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
+
+        $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_m001_inner_w.pdf';
+        $tcpdf->output($pdf_path, 'I');
     }
 
     /***** Should be refactaring *****/
@@ -639,6 +650,9 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
+
+        $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_h_inner_w.pdf';
+        $tcpdf->output($pdf_path, 'I');
     }
 
     protected function forMoldingSmall($tcpdf, $date, $families, $itorG_name)
@@ -854,26 +868,29 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
+
+        // report_680A_20161014_m001_outer_w.pdf
+        // report_680A_20161014_m001_inline_w.pdf
+        // report_680A_20161014_h_inner_w.pdf
+        
+        // report_680A_20161014_j_tome_w.pdf
+        // report_680A_20161014_j_siage_w.pdf
+        // report_680A_20161014_j_kensa_w.pdf
+        // report_680A_20161014_j_tokken_w.pdf
+        // report_680A_20161014_j_tenaosi_w.pdf
+
+        if ($line == '１') {
+            $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m001_outer_w.pdf';
+        } else {
+            $pdf_path = '/report_'.'680A'.'_'.$now->format('Ymd').'_m002_outer_w.pdf';
+        }
+
+        $tcpdf->output($pdf_path, 'I');
     }
 
     protected function forHolingSmall($tcpdf, $date, $families, $itorG_name)
     {
         $now = Carbon::now();
-
-        $parts = $families[0]->pages->reduce(function ($carry, $page) {
-            $parts = $page->parts->map(function ($part){
-                return [
-                    'id' => $part->id,
-                    'status' => $part->pivot->status,
-                    'panel_id' => $part->panel_id,
-                    'pn' => $part->partType->pn,
-                    'name' => $part->partType->name,
-                    'sort' => $part->partType->sort,
-                    'vehicle' => $part->partType->vehicle_num
-                ];
-            });
-            return array_merge($carry, $parts->toArray());
-        }, []);
 
         $holes = $families[0]->pages->reduce(function ($carry, $page) {
             $holes = $page->holes->map(function ($h){
@@ -895,6 +912,21 @@ class PdfController extends Controller
 
         $r = 0;
         foreach ($families as $row => $family) {
+            $parts = $family->pages->reduce(function ($carry, $page) {
+                $parts = $page->parts->map(function ($part){
+                    return [
+                        'id' => $part->id,
+                        'status' => $part->pivot->status,
+                        'panel_id' => $part->panel_id,
+                        'pn' => $part->partType->pn,
+                        'name' => $part->partType->name,
+                        'sort' => $part->partType->sort,
+                        'vehicle' => $part->partType->vehicle_num
+                    ];
+                });
+                return array_merge($carry, $parts->toArray());
+            }, []);
+
             foreach ($parts as $i => $part) {
                 $body[$r] = [
                     $part['vehicle'],
@@ -1074,6 +1106,9 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
+
+        $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_h_outer_w.pdf';
+        $tcpdf->output($pdf_path, 'I');
     }
 
     protected function forJointingInlineASSY($tcpdf, $date, $families)
@@ -1082,21 +1117,6 @@ class PdfController extends Controller
 
         $body = [];
         $row_sum = [5 => '合計'];
-
-        $parts = $families[0]->pages->reduce(function ($carry, $page) {
-            $parts = $page->parts->map(function ($part){
-                return [
-                    'id' => $part->id,
-                    'status' => $part->pivot->status,
-                    'panel_id' => $part->panel_id,
-                    'pn' => $part->partType->pn,
-                    'name' => $part->partType->name,
-                    'sort' => $part->partType->sort,
-                    'vehicle' => $part->partType->vehicle_num
-                ];
-            });
-            return array_merge($carry, $parts->toArray());
-        }, []);
 
         $inlines = $families[0]->pages[0]->inlines->map(function($inline) {
             return [
@@ -1110,6 +1130,21 @@ class PdfController extends Controller
 
         $r = 0;
         foreach ($families as $row => $family) {
+            $parts = $family->pages->reduce(function ($carry, $page) {
+                $parts = $page->parts->map(function ($part){
+                    return [
+                        'id' => $part->id,
+                        'status' => $part->pivot->status,
+                        'panel_id' => $part->panel_id,
+                        'pn' => $part->partType->pn,
+                        'name' => $part->partType->name,
+                        'sort' => $part->partType->sort,
+                        'vehicle' => $part->partType->vehicle_num
+                    ];
+                });
+                return array_merge($carry, $parts->toArray());
+            }, []);
+
             foreach ($parts as $i => $part) {
                 $body[$r] = [
                     $part['vehicle'],
@@ -1259,25 +1294,14 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
+
+        $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_j_inline_w.pdf';
+        $tcpdf->output($pdf_path, 'I');
     }
 
     protected function forJointingSWASSY($tcpdf, $date, $families, $itorG_name)
     {
         $now = Carbon::now();
-
-        $parts = $families[0]->pages->reduce(function ($carry, $page) {
-            $parts = $page->parts->map(function ($part){
-                return [
-                    'id' => $part->id,
-                    'status' => $part->pivot->status,
-                    'panel_id' => $part->panel_id,
-                    'pn' => $part->partType->pn,
-                    'name' => $part->partType->name,
-                    'vehicle' => $part->partType->vehicle_num
-                ];
-            });
-            return array_merge($carry, $parts->toArray());
-        }, []);
 
         $failures = Process::where('id', 'jointing')
             ->first()
@@ -1305,6 +1329,21 @@ class PdfController extends Controller
 
         $r = 0;
         foreach ($families as $row => $family) {
+            $parts = $family->pages->reduce(function ($carry, $page) {
+                $parts = $page->parts->map(function ($part){
+                    return [
+                        'id' => $part->id,
+                        'status' => $part->pivot->status,
+                        'panel_id' => $part->panel_id,
+                        'pn' => $part->partType->pn,
+                        'name' => $part->partType->name,
+                        'sort' => $part->partType->sort,
+                        'vehicle' => $part->partType->vehicle_num
+                    ];
+                });
+                return array_merge($carry, $parts->toArray());
+            }, []);
+
             foreach ($parts as $i => $part) {
                 $body[$r] = [
                     $part['vehicle'],
@@ -1473,25 +1512,14 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
+
+        $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_j_tome_w.pdf';
+        $tcpdf->output($pdf_path, 'I');
     }
 
     protected function forJointingFNASSY($tcpdf, $date, $families, $itorG_name)
     {
         $now = Carbon::now();
-
-        $parts = $families[0]->pages->reduce(function ($carry, $page) {
-            $parts = $page->parts->map(function ($part){
-                return [
-                    'id' => $part->id,
-                    'status' => $part->pivot->status,
-                    'panel_id' => $part->panel_id,
-                    'pn' => $part->partType->pn,
-                    'name' => $part->partType->name,
-                    'vehicle' => $part->partType->vehicle_num
-                ];
-            });
-            return array_merge($carry, $parts->toArray());
-        }, []);
 
         $failures = Process::where('id', 'molding')
             ->first()
@@ -1521,6 +1549,21 @@ class PdfController extends Controller
 
         $r = 0;
         foreach ($families as $row => $family) {
+            $parts = $family->pages->reduce(function ($carry, $page) {
+                $parts = $page->parts->map(function ($part){
+                    return [
+                        'id' => $part->id,
+                        'status' => $part->pivot->status,
+                        'panel_id' => $part->panel_id,
+                        'pn' => $part->partType->pn,
+                        'name' => $part->partType->name,
+                        'sort' => $part->partType->sort,
+                        'vehicle' => $part->partType->vehicle_num
+                    ];
+                });
+                return array_merge($carry, $parts->toArray());
+            }, []);
+
             $c_comments = $family->pages->reduce(function ($carry, $page) {
                 $comments = $page->comments->map(function ($comment){
                     return [
@@ -1712,25 +1755,14 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
+
+        $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_j_siage_w.pdf';
+        $tcpdf->output($pdf_path, 'I');
     }
 
     protected function forJointingCHASSY($tcpdf, $date, $families, $itorG_name)
     {
         $now = Carbon::now();
-
-        $parts = $families[0]->pages->reduce(function ($carry, $page) {
-            $parts = $page->parts->map(function ($part){
-                return [
-                    'id' => $part->id,
-                    'status' => $part->pivot->status,
-                    'panel_id' => $part->panel_id,
-                    'pn' => $part->partType->pn,
-                    'name' => $part->partType->name,
-                    'vehicle' => $part->partType->vehicle_num
-                ];
-            });
-            return array_merge($carry, $parts->toArray());
-        }, []);
 
         $failures = Process::where('id', 'jointing')
             ->first()
@@ -1755,6 +1787,21 @@ class PdfController extends Controller
 
         $r = 0;
         foreach ($families as $row => $family) {
+            $parts = $family->pages->reduce(function ($carry, $page) {
+                $parts = $page->parts->map(function ($part){
+                    return [
+                        'id' => $part->id,
+                        'status' => $part->pivot->status,
+                        'panel_id' => $part->panel_id,
+                        'pn' => $part->partType->pn,
+                        'name' => $part->partType->name,
+                        'sort' => $part->partType->sort,
+                        'vehicle' => $part->partType->vehicle_num
+                    ];
+                });
+                return array_merge($carry, $parts->toArray());
+            }, []);
+
             foreach ($parts as $i => $part) {
                 $body[$r] = [
                     $part['vehicle'],
@@ -1923,25 +1970,14 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
+
+        $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_j_kensa_w.pdf';
+        $tcpdf->output($pdf_path, 'I');
     }
 
     protected function forJointingSCASSY($tcpdf, $date, $families, $itorG_name)
     {
         $now = Carbon::now();
-
-        $parts = $families[0]->pages->reduce(function ($carry, $page) {
-            $parts = $page->parts->map(function ($part){
-                return [
-                    'id' => $part->id,
-                    'status' => $part->pivot->status,
-                    'panel_id' => $part->panel_id,
-                    'pn' => $part->partType->pn,
-                    'name' => $part->partType->name,
-                    'vehicle' => $part->partType->vehicle_num
-                ];
-            });
-            return array_merge($carry, $parts->toArray());
-        }, []);
 
         $failures = Process::where('id', 'jointing')
             ->first()
@@ -1966,6 +2002,21 @@ class PdfController extends Controller
 
         $r = 0;
         foreach ($families as $row => $family) {
+            $parts = $family->pages->reduce(function ($carry, $page) {
+                $parts = $page->parts->map(function ($part){
+                    return [
+                        'id' => $part->id,
+                        'status' => $part->pivot->status,
+                        'panel_id' => $part->panel_id,
+                        'pn' => $part->partType->pn,
+                        'name' => $part->partType->name,
+                        'sort' => $part->partType->sort,
+                        'vehicle' => $part->partType->vehicle_num
+                    ];
+                });
+                return array_merge($carry, $parts->toArray());
+            }, []);
+
             foreach ($parts as $i => $part) {
                 $body[$r] = [
                     $part['vehicle'],
@@ -2134,25 +2185,14 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
+
+        $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_j_tokken_w.pdf';
+        $tcpdf->output($pdf_path, 'I');
     }
 
     protected function forJointingADASSY($tcpdf, $date, $families, $itorG_name)
     {
         $now = Carbon::now();
-
-        $parts = $families[0]->pages->reduce(function ($carry, $page) {
-            $parts = $page->parts->map(function ($part){
-                return [
-                    'id' => $part->id,
-                    'status' => $part->pivot->status,
-                    'panel_id' => $part->panel_id,
-                    'pn' => $part->partType->pn,
-                    'name' => $part->partType->name,
-                    'vehicle' => $part->partType->vehicle_num
-                ];
-            });
-            return array_merge($carry, $parts->toArray());
-        }, []);
 
         $failures = Process::where('id', 'molding')
             ->first()
@@ -2182,6 +2222,21 @@ class PdfController extends Controller
 
         $r = 0;
         foreach ($families as $row => $family) {
+            $parts = $family->pages->reduce(function ($carry, $page) {
+                $parts = $page->parts->map(function ($part){
+                    return [
+                        'id' => $part->id,
+                        'status' => $part->pivot->status,
+                        'panel_id' => $part->panel_id,
+                        'pn' => $part->partType->pn,
+                        'name' => $part->partType->name,
+                        'sort' => $part->partType->sort,
+                        'vehicle' => $part->partType->vehicle_num
+                    ];
+                });
+                return array_merge($carry, $parts->toArray());
+            }, []);
+
             $c_comments = $family->pages->reduce(function ($carry, $page) {
                 $comments = $page->comments->map(function ($comment){
                     return [
@@ -2373,6 +2428,9 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
+
+        $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_j_tenaosi_w.pdf';
+        $tcpdf->output($pdf_path, 'I');
     }
 
     /**
@@ -2422,8 +2480,5 @@ class PdfController extends Controller
             case 13: $this->forJointingSCASSY($tcpdf, $date, $families, $itorG_name); break;
             case 14: $this->forJointingADASSY($tcpdf, $date, $families, $itorG_name); break;
         }
-
-        $pdf_path = storage_path() . '/M001C_Y_20161012.pdf';
-        $tcpdf->output($pdf_path, 'I');
     }
 }

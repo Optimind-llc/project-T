@@ -104,7 +104,7 @@ class Dashboard extends Component {
                 placeholder="選択してください"
                 clearable={false}
                 Searchable={true}
-                value={{label: 'バックドアインナー', value: 1}}
+                value={this.state.partT}
                 options={[
                   {label: 'バックドアインナー', value: 1},
                   {label: 'アッパー', value: 2},
@@ -114,7 +114,7 @@ class Dashboard extends Component {
                   {label: 'サイドロアLH', value: 6},
                   {label: 'バックドアインナASSY', value: 7}
                 ]}
-                onChange={value => this.setState({partT: value.value})}
+                onChange={value => this.setState({partT: value})}
               />
             </div>
             <div>
@@ -125,7 +125,12 @@ class Dashboard extends Component {
                 clearable={false}
                 Searchable={true}
                 value={{label: '成形工程ライン１', value: 1}}
-                options={[]}
+                options={[
+                  {label: '成形工程ライン１', value: 1},
+                  {label: '成形工程ライン２', value: 2},
+                  {label: '成形工程：精度検査', value: 3},
+                  {label: '穴あけ工程', value: 4}
+                ]}
                 onChange={value => this.setState({ition: value.value})}
               />
             </div>
