@@ -36,7 +36,7 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 }
-export function getPageData(partTId, itionGId, itorG, start = null, end = null, panelId = null) {
+export function getPageData(partT, itionG, itorG, s = null, e = null, panel = null) {
   return {
     [CALL_API]: {
       types: [
@@ -44,7 +44,7 @@ export function getPageData(partTId, itionGId, itorG, start = null, end = null, 
         REDUEST_Page_DATA_SUCCESS,
         REDUEST_Page_DATA_FAIL
       ],
-      endpoint: `/show/page2/${partTId}/${itionGId}/${itorG}?${start?'&start='+start:''}${end?'&end='+end:''}${panelId?'&panelId='+panelId:''}`,
+      endpoint: `/show/page2/${partT}/${itionG}/${itorG}${(s && e)?`?start=${s}&end=${e}`:''}${panel?`?panelId=${panel}`:''}`,
       method: 'GET',
       body: null
     }

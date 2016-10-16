@@ -1,11 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import moment from 'moment';
 // Styles
 import './mapping.scss';
-// Actions
-import { pageActions } from '../ducks/page';
 // Material-ui Components
 import { Paper, Dialog, RaisedButton, FlatButton } from 'material-ui';
 import { grey50, indigo500 } from 'material-ui/styles/colors';
@@ -15,57 +11,16 @@ import Loading from '../../../components/loading/loading';
 class Mapping extends Component {
   constructor(props, context) {
     super(props, context);
-    const { actions: {getPageData} } = props;
-
-    props.PageData.data = null;
-    getPageData(props.id, props.itorG, props.start, props.end, props.panelId);
 
     this.state = {
-      intervalId: null,
-      interval: 10000,
-      innerHeight: window.innerHeight,
-      failure: false,
+      failure: true,
       hole: false,
+      comment: false,
       inline: false,
-      fTypeFilter: [],
-      fIdFilter: [],
-      dropdown: false,
-      holeStatus: 0
+      fFilter: [],
+      holeStatus: 1,
+      cFilter: []
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { data, isFetching } = nextProps.PageData;
-
-    // if(this.props.PageData.data == null && data != null) {
-    //   if (data.failures ) {
-        
-    //   }
-    // }
-  }
-
-  componentDidMount() {
-    const { id, itorG, start, end, panelId, PageData, actions: {getPageData} } = this.props;
-    const { interval } = this.state;
-
-    if (!start && !end) {
-      const intervalId = setInterval(()=> getPageData(id, itorG, start, end, panelId), interval);
-      this.setState({intervalId});
-    }
-
-    if (PageData.data) {
-
-    }
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.state.intervalId);
-  }
-
-  serch(groupId) {
-    const { state } = this;
-    const { actions: {getPageTData} } = this.props;
-    getPageTData(groupId);
   }
 
   formatHoles(holes) {
@@ -91,76 +46,37 @@ class Mapping extends Component {
     }
   }
 
-  formatHolesByPart(holes) {
-    const ids = Object.keys(holes);
-    return status = ids.reduce((arr, id) => arr.concat(holes[id].map(h => h.status)), []);
-  }
-
-  renderFilter() {
-    const { data, isFetching } = this.props.PageData;
-    const { failure, hole, holeStatus, dropdown, fTypeFilter, fIdFilter, inline } = this.state;
-
-    return (
-      <div className="filter-wrap">
-        <p>表示切り替え</p>
-        <div className="filter">
-          <button
-            key="holeStatus1"
-            className={holeStatus == 1 ? 'active none-event' : ''}
-            onClick={() => this.setState({ holeStatus: 1 })}
-          >
-            {'○'}
-          </button>
-          <button
-            key="holeStatus2"
-            className={holeStatus == 2 ? 'active none-event' : ''}
-            onClick={() => this.setState({ holeStatus: 2 })}
-          >
-            {'△'}
-          </button>
-          <button
-            key="holeStatus0"
-            className={holeStatus == 0 ? 'active none-event' : ''}
-            onClick={() => this.setState({ holeStatus: 0 })}
-          >
-            {'×'}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   renderContent() {
     const { data } = this.props.PageData;
-    const { failure, hole, inline, fIdFilter } = this.state;
+    const { failure, hole, comment, inline, fFilter, holeStatus, cFilter } = this.state;
 
-    if (failure && !hole){
+    if (failure){
       return (
         <div className="failure">
-
           <div className="collection">
             <div>
               <ul>
                 <li
                   onClick={() => {
-                    if ( index === -1) fIdFilter.push(ft.id);
-                    else fIdFilter.splice(index, 1);
-                    this.setState({ fIdFilter });
+                    let newFilter;
+                    if ( fFilter.length !== 0) newFilter = [];
+                    else newFilter = data.failureTypes.map(ft => ft.id);
+                    this.setState({ fFilter: newFilter });
                   }}
                 >
-                  <span><p></p></span>
+                  <span><p>{fFilter.length === 0 ? '✔' :''}︎</p></span>
                   <span>不良区分</span>
                 </li>
                 {data.failureTypes.map(ft =>{
-                  const index = fIdFilter.indexOf(ft.id);
+                  const index = fFilter.indexOf(ft.id);
                   return (
                     <li
                       key={ft.id}
                       className={index === -1 ? 'active' : ''}
                       onClick={() => {
-                        if ( index === -1) fIdFilter.push(ft.id);
-                        else fIdFilter.splice(index, 1);
-                        this.setState({ fIdFilter });
+                        if ( index === -1) fFilter.push(ft.id);
+                        else fFilter.splice(index, 1);
+                        this.setState({ fFilter });
                       }}
                     >
                       <span><p>{index === -1 ? '✔' :''}︎</p></span>
@@ -171,65 +87,142 @@ class Mapping extends Component {
               </ul>
             </div>
             {
-              data.parts.map(part => {
-                const failures = data.failures[part.pn];
-                return (
-                  <div key={part.pn}>
-                    <ul className="parts">
-                      <li>合計</li>
-                      {
-                        data.failureTypes.map(ft => 
-                          <li>
-                            {failures == undefined ? 0 : failures.filter(f => f.sort == ft.sort).length}
-                          </li>
-                        )
-                      }
-                    </ul>
-                  </div>
-                )
-              })
+              <div>
+                <ul className="parts">
+                  <li>合計</li>
+                  {
+                    data.failureTypes.map(ft => 
+                      <li>
+                        {data.failures == undefined ? 0 : data.failures.filter(f => f.sort == ft.sort).length}
+                      </li>
+                    )
+                  }
+                </ul>
+              </div>
             }
           </div>
         </div>
       );
     }
-    else if (!failure && hole) {
+    else if (hole) {
       return (
         <div className="hole">
           <div className="collection">
             <div>
-              <p>{'状態'}</p>
               <ul>
-                  <li>{'○'}</li>
-                  <li>{'△'}</li>
-                  <li>{'×'}</li>
+                <li>{'穴番号'}</li>
+                {Object.keys(data.holes).map(id => <li>{id}</li>)}
               </ul>
             </div>
-            {
-              data.parts.map(part => {
-                const holes = data.holes[part.pn];
-                const all = this.formatHolesByPart(holes).length;
-                const s0 = this.formatHolesByPart(holes).filter(s => s == 0).length;
-                const s2 = this.formatHolesByPart(holes).filter(s => s == 2).length;
-                const s1 = this.formatHolesByPart(holes).filter(s => s == 1).length;
-
-                return (
-                  <div key={part.pn}>
-                    <p>{part.name}</p>
-                    <ul>
-                      <li>{s0}<span>{`${s0 == 0 ? 0 : Math.round(1000*s0/all)/10}%`}</span></li>
-                      <li>{s2}<span>{`${s2 == 0 ? 0 : Math.round(1000*s2/all)/10}%`}</span></li>
-                      <li>{s1}<span>{`${s1 == 0 ? 0 : Math.round(1000*s1/all)/10}%`}</span></li>
-                    </ul>
-                  </div>
-                )
-              })
-            }
+            <div>
+              <ul>
+                <li
+                  onClick={() => this.setState({holeStatus: 1})}
+                >
+                  <span><p>{holeStatus === 1 ? '✔' :''}︎</p></span>
+                  {'○'}
+                </li>
+                {Object.keys(data.holes).map(id => {
+                  const all = data.holes[id].length;
+                  const s1 = data.holes[id].filter(s => s.status == 1).length;
+                  return (
+                    <li>{s1}<span>{`${s1 == 0 ? 0 : Math.round(1000*s1/all)/10}%`}</span></li>
+                  )
+                })}
+              </ul>
+            </div>
+            <div>
+              <ul>
+                <li
+                  onClick={() => this.setState({holeStatus: 2})}
+                >
+                  <span><p>{holeStatus === 2 ? '✔' :''}︎</p></span>
+                  {'△'}
+                </li>
+                {Object.keys(data.holes).map(id => {
+                  const all = data.holes[id].length;
+                  const s2 = data.holes[id].filter(s => s.status == 2).length;
+                  return (
+                    <li>{s2}<span>{`${s2 == 0 ? 0 : Math.round(1000*s2/all)/10}%`}</span></li>
+                  )
+                })}
+              </ul>
+            </div>
+            <div>
+              <ul>
+                <li
+                  onClick={() => this.setState({holeStatus: 0})}
+                >
+                  <span><p>{holeStatus === 0 ? '✔' :''}︎</p></span>{'×'}
+                </li>
+                {Object.keys(data.holes).map(id => {
+                  const all = data.holes[id].length;
+                  const s0 = data.holes[id].filter(s => s.status == 0).length;
+                  return (
+                    <li>{s0}<span>{`${s0 == 0 ? 0 : Math.round(1000*s0/all)/10}%`}</span></li>
+                  )
+                })}
+              </ul>
+            </div>
           </div>
         </div>
       )
     }
-    else if (!failure && !hole && inline) {
+    else if (comment){
+      return (
+        <div className="comment">
+          <div className="collection">
+            <div>
+              <ul>
+                <li
+                  onClick={() => {
+                    let newFilter;
+                    if ( cFilter.length !== 0) newFilter = [];
+                    else newFilter = data.commentTypes.map(ft => ft.id);
+                    this.setState({ cFilter: newFilter });
+                  }}
+                >
+                  <span><p>{cFilter.length === 0 ? '✔' :''}︎</p></span>
+                  <span>手直し区分</span>
+                </li>
+                {data.commentTypes.map(ct =>{
+                  const index = cFilter.indexOf(ct.id);
+                  return (
+                    <li
+                      key={ct.id}
+                      className={index === -1 ? 'active' : ''}
+                      onClick={() => {
+                        if ( index === -1) cFilter.push(ct.id);
+                        else cFilter.splice(index, 1);
+                        this.setState({ cFilter });
+                      }}
+                    >
+                      <span><p>{index === -1 ? '✔' :''}︎</p></span>
+                      <span>{`${ct.sort}. ${ct.message}`}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+            {
+              <div>
+                <ul className="parts">
+                  <li>合計</li>
+                  {
+                    data.commentTypes.map(ct => 
+                      <li>
+                        {data.comments == undefined ? 0 : data.failures.filter(f => f.sort == ct.sort).length}
+                      </li>
+                    )
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+        </div>
+      );
+    }
+    else if (inline) {
       return (
         <div className="inline">
           <div className="collection">
@@ -258,176 +251,204 @@ class Mapping extends Component {
   }
 
   render() {
-    const { start, end, PageData:{ isFetching, data }} = this.props;
-    const { failure, hole, holeStatus, dropdown, fTypeFilter, fIdFilter, inline } = this.state;
-
+    const { isFetching, data } = this.props.PageData;
+    const { failure, hole, comment, inline, fFilter, holeStatus, cFilter } = this.state;
+console.log(data);
     return (
       <div id="mapping-wrap" className="">
+        <div className="mapping-body">
+          <div className="figure-wrap">
+            <div className="figure">
+              {
+                Array.isArray(data.path) ?
+                data.path.map(path =>
+                  <img src={path} className="quarter"/>
+                ):
+                <img src={data.path}/>
+              }
+              <svg>
+                {
+                  failure &&
+                  data.failures.filter(f => fFilter.indexOf(f.id) == -1).map(f => {
+                    const point = f.point.split(',');
+                    const x = point[0]/2;
+                    const y = point[1]/2;
+                    return (
+                      <g>
+                        <circle cx={x} cy={y} r={3} fill="red" />
+                      </g>
+                    );
+                  })
+                }{
+                  hole &&
+                  Object.keys(data.holes).map(id => {
+                    const holes = this.formatHoles(data.holes[id]);
+                    return (
+                      <g>
+                        <circle cx={holes.x} cy={holes.y} r={4} fill="red" />
+                        <text
+                          x={holes.lx}
+                          y={holes.ly}
+                          dy="6"
+                          fontSize="18"
+                          fill="black"
+                          textAnchor="middle"
+                          fontWeight="bold"
+                          >
+                            {holes.status.filter(s => s == holeStatus).length}
+                          </text>
+                      </g>
+                    )
+                  })
+                }{
+                  comment &&
+                  data.comments.filter(c => cFilter.indexOf(c.id) == -1).map(c => {
+                    const point = c.point.split(',');
+                    const x = point[0]/2;
+                    const y = point[1]/2;
+                    return (
+                      <g>
+                        <circle cx={x} cy={y} r={3} fill="blue" />
+                      </g>
+                    );
+                  })
+                }{
+                  inline &&
+                  Object.keys(data.inlines).map(id => {
+                    return data.inlines[id].map(i => {
+                      const width = 120;
+                      const point = i.point.split(',');
+                      const x = point[0]/2;
+                      const y = point[1]/2;
+
+                      const labelPoint = i.labelPoint.split(',');
+                      const lx = labelPoint[0]/2;
+                      const ly = labelPoint[1]/2;
+                      return (
+                        <g>
+                          <circle cx={x} cy={y} r={3} fill="red" />
+                          <rect x={lx} y={ly} width={width} height="30" fill="white" stroke="gray"></rect>
+                          <line x1={x} y1={y} x2={i.side == 'left' ? lx : lx + width} y2={ly+15} stroke="#e74c3c" stroke-width="10" />
+                          <text
+                            x={lx}
+                            y={ly}
+                            dx="4"
+                            dy="14"
+                            fontSize="12"
+                            fill="black"
+                            fontWeight="bold"
+                            text-anchor="middle"
+                          >
+                            {i.sort}
+                          </text>
+                          {
+                            i.face &&
+                            <text
+                              x={lx}
+                              y={ly}
+                              dx="4"
+                              dy="26"
+                              fontSize="10"
+                              fill="black"
+                              text-anchor="middle"
+                            >
+                              {i.face}
+                            </text>
+                          }
+                          <text
+                            x={lx}
+                            y={ly}
+                            dx="24"
+                            dy="12"
+                            fontSize="10"
+                            fill="black"
+                          >
+                            {`結果：${i.status}`}
+                          </text>
+                          <text
+                            x={lx}
+                            y={ly}
+                            dx="24"
+                            dy="24"
+                            fontSize="10"
+                            fill="black"
+                          >
+                            {`公差：${i.tolerance}`}
+                          </text>
+                        </g>
+                      );
+                    })
+                  })
+                }
+              </svg>
+            </div>
+          </div>
+          <div className="control-panel">
+            <div className="control-tab">
+              <button
+                className={failure ? '' : 'disable'}
+                onClick={() => this.setState({
+                  failure: true,
+                  hole: false,
+                  comment: false,
+                  inline: false
+                })}
+              >
+                不良検査
+              </button>
+              {
+                data.holes.length !== 0 &&
+                <button
+                  className={hole ? '' : 'disable'}
+                  onClick={() => this.setState({
+                    failure: false,
+                    hole: true,
+                    comment: false,
+                    inline: false
+                  })}
+                >
+                  穴検査
+                </button>
+              }{
+                data.commentTypes.length !== 0 &&
+                <button
+                  className={comment ? '' : 'disable'}
+                  onClick={() => this.setState({
+                    failure: false,
+                    hole: false,
+                    comment: true,
+                    inline: false
+                  })}
+                >
+                  手直し検査
+                </button>
+              }{
+                data.inlines.length !== 0 &&
+                <button
+                  className={inline ? '' : 'disable'}
+                  onClick={() => this.setState({
+                    failure: false,
+                    hole: false,
+                    comment: false,
+                    inline: true
+                  })}
+                >
+                  精度検査
+                </button>
+              }
+            </div>
+            <div className="control-content">
+              {this.renderContent()}
+            </div>
+          </div>
+        </div>
         {
-          data !== null &&
-          <div>
-            <div className="mapping-body">
-              <div className="figure-wrap">
-                <div className="figure">       
-                  <img src={data.path}/>
-                  <svg>
-                    {
-                      failure &&
-                      Object.keys(data.failures).map(part => {
-                        return data.failures[part].filter(f => 
-                          fTypeFilter.indexOf(f.type) === -1 && fIdFilter.indexOf(f.id) === -1
-                        ).map(f => {
-                          const point = f.point.split(',');
-                          const x = point[0]/2;
-                          const y = point[1]/2;
-                          return (
-                            <g>
-                              <circle cx={x} cy={y} r={3} fill="red" />
-                            </g>
-                          );
-                        })
-                      })
-                    }{
-                      hole &&
-                      Object.keys(data.holes).map(part => {
-                        return Object.keys(data.holes[part]).map(id => {
-                          const holes = this.formatHoles(data.holes[part][id]);
-                          return (
-                            <g>
-                              <circle cx={holes.x} cy={holes.y} r={4} fill="red" />
-                              <text
-                                x={holes.lx}
-                                y={holes.ly}
-                                dy="6"
-                                fontSize="18"
-                                fill="black"
-                                textAnchor="middle"
-                                fontWeight="bold"
-                                >
-                                  {holes.status.filter(s => s == holeStatus).length}
-                                </text>
-                            </g>
-                          )
-                        })
-                      })
-                    }{
-                      inline &&
-                      Object.keys(data.inlines).map(id => {
-                        return data.inlines[id].map(i => {
-                          const width = 120;
-                          const point = i.point.split(',');
-                          const x = point[0]/2;
-                          const y = point[1]/2;
-
-                          const labelPoint = i.labelPoint.split(',');
-                          const lx = labelPoint[0]/2;
-                          const ly = labelPoint[1]/2;
-                          return (
-                            <g>
-                              <circle cx={x} cy={y} r={3} fill="red" />
-                              <rect x={lx} y={ly} width={width} height="30" fill="white" stroke="gray"></rect>
-                              <line x1={x} y1={y} x2={i.side == 'left' ? lx : lx + width} y2={ly+15} stroke="#e74c3c" stroke-width="10" />
-                              <text
-                                x={lx}
-                                y={ly}
-                                dx="4"
-                                dy="14"
-                                fontSize="12"
-                                fill="black"
-                                fontWeight="bold"
-                                text-anchor="middle"
-                              >
-                                {i.sort}
-                              </text>
-                              {
-                                i.face &&
-                                <text
-                                  x={lx}
-                                  y={ly}
-                                  dx="4"
-                                  dy="26"
-                                  fontSize="10"
-                                  fill="black"
-                                  text-anchor="middle"
-                                >
-                                  {i.face}
-                                </text>
-                              }
-                              <text
-                                x={lx}
-                                y={ly}
-                                dx="24"
-                                dy="12"
-                                fontSize="10"
-                                fill="black"
-                              >
-                                {`結果：${i.status}`}
-                              </text>
-                              <text
-                                x={lx}
-                                y={ly}
-                                dx="24"
-                                dy="24"
-                                fontSize="10"
-                                fill="black"
-                              >
-                                {`公差：${i.tolerance}`}
-                              </text>
-                            </g>
-                          );
-                        })
-                      })
-                    }
-                  </svg>
-                </div>
-              </div>
-              
-              <div className="control-panel">
-                <div className="control-tab">
-                  {
-                    data.failures.length !== 0 &&
-                    <button
-                      className={failure ? '' : 'disable'}
-                      onClick={() => this.setState({
-                        failure: true,
-                        hole: false,
-                        inline: false
-                      })}
-                    >
-                      不良検査
-                    </button>
-                  }{
-                    data.holes.length !== 0 &&
-                    <button
-                      className={hole ? '' : 'disable'}
-                      onClick={() => this.setState({
-                        failure: false,
-                        hole: true,
-                        inline: false
-                      })}
-                    >
-                      穴検査
-                    </button>
-                  }{
-                    data.inlines.length !== 0 &&
-                    <button
-                      className={inline ? '' : 'disable'}
-                      onClick={() => this.setState({
-                        failure: false,
-                        hole: false,
-                        inline: true
-                      })}
-                    >
-                      精度検査
-                    </button>
-                  }
-                </div>
-                <div className="control-content">
-                  {this.renderContent()}
-                </div>
-              </div>
-            </div>            
-
+          isFetching && <Loading/>
+        }
+        {
+          !isFetching && data.pages == 0 &&
+          <div className="cover">
+            <p>見つかりませんでした</p>
           </div>
         }
       </div>
@@ -436,35 +457,7 @@ class Mapping extends Component {
 }
 
 Mapping.propTypes = {
-  id: PropTypes.string.isRequired,
-  itorG: PropTypes.string.isRequired,
-  start: PropTypes.string.isRequired,
-  end: PropTypes.string.isRequired,
   PageData: PropTypes.object.isRequired
 };
 
-function mapStateToProps(state, ownProps) {
-  return {
-    // id: ownProps.params.id,
-    // itorG: ownProps.params.itorG,
-    // start: ownProps.location.query.start,
-    // end: ownProps.location.query.end,
-    // panelId: ownProps.location.query.panelId,
-    // PageData: state.PageData
-    id: 4,
-    itorG: 'W',
-    start: '2016-10-13-00-00',
-    end: '2016-10-16-00-00',
-    panelId: '',
-    PageData: state.PageData    
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({}, pageActions);
-  return {
-    actions: bindActionCreators(actions, dispatch)
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Mapping);
+export default Mapping;

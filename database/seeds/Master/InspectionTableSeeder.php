@@ -71,7 +71,7 @@ class InspectionTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '点検',
+                'name'       => '検査',
                 'en'         => 'check',
                 'sort'       => 4,
                 'process_id' => 'jointing',

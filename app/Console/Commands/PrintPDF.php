@@ -60,9 +60,9 @@ class PrintPDF extends Command
         }
 
         foreach ($lists as $list) {
-            $com = 'C.\"Program Files (x86)\Adobe\Reader\AcroRd32.exe" /t /h '.$list;
+            $com = 'C:\"Program Files (x86)\Adobe\Reader 11.0\Reader\AcroRd32.exe" /t /h '.$list;
             exec($com);
-            sleep(5);
+            sleep(4);
             unlink($list);
         }
 

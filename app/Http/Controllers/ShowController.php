@@ -13,6 +13,7 @@ use App\Models\Inspection;
 use App\Models\InspectionGroup;
 use App\Models\InspectorGroup;
 use App\Models\PageType;
+use App\Models\PartType;
 // Exceptions
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Dingo\Api\Exception\StoreResourceFailedException;
@@ -288,7 +289,54 @@ class ShowController extends Controller
         return ['data' => $page_types];
     }
 
-    public function page($pageType, $itorG, Request $request)
+    protected function formatPage($pages, $itionGId, $partTypeId) {
+        return [
+            'failures' => $pages->reduce(function ($carry, $page) {
+                return $carry->merge($page->failurePositions->map(function($failure) {
+                    return [
+                        'id' => $failure->failure->id,
+                        'sort' => $failure->failure->sort,
+                        'point' => $failure->point,
+                        'type' => $failure->type,
+                        'part' => $failure->part->partType->id
+                    ];
+                }));
+            }, collect([]))
+            ->filter(function($fp) use($partTypeId) {
+                return $fp['part'] == $partTypeId;
+            })
+            ->values(),
+            'holes' => $pages->reduce(function ($carry, $page) {
+                return $carry->merge($page->holes->map(function($hole) {
+                    return [
+                        'id' => $hole->id,
+                        'point' => $hole->point,
+                        'label' => $hole->label,
+                        'direction' => $hole->direction,
+                        'status' => $hole->pivot->status,
+                        'part' => $hole->partType->id
+                    ];
+                }));
+            }, collect([]))
+            ->filter(function($h) use($partTypeId) {
+                return $h['part'] == $partTypeId;
+            })
+            ->groupBy('label'),
+            'comments' => $pages->reduce(function ($carry, $page) {
+                return $carry->merge($page->comments->map(function($hole) {
+                    return [
+                        'id' => $hole->comment_id,
+                        'message' => $hole->comment->message,
+                        'point' => $hole->failurePosition->point
+                    ];
+                }));
+            }, collect([])),
+            'inlines' => [],
+            'pages' => $pages->count()
+        ];
+    }
+
+    public function page2($partTypeId, $itionGId, $itorG, Request $request)
     {
         $validator = app('validator')->make(
             $request->all(),
@@ -304,6 +352,7 @@ class ShowController extends Controller
         }
 
         $now = Carbon::now();
+        $panel_id = $request->panelId;
 
         if (isset($request->start) && isset($request->end)) {
             $start_at = Carbon::createFromFormat('Y-m-d-H-i', $request->start);
@@ -335,161 +384,266 @@ class ShowController extends Controller
             case 'both': $itorG_name = ['白直', '黄直', '不明']; break;
         }
 
-        $panel_id = $request->panelId;
+        $page_types = PartType::find($partTypeId)
+            ->pageTypes()
+            ->with('figure')
+            ->where('group_id', $itionGId)
+            ->orderBy('number')
+            ->get();
 
-        $page_type = PageType::with([
-                'figure' => function ($q) {
-                    $q->select(['id', 'path']);
-                },
-                'partTypes' => function ($q) {
-                    $q->select(['id', 'pn', 'name']);
-                },
-                'group' => function ($q) {
-                    $q->select(['id', 'division_en', 'vehicle_num', 'line', 'inspection_id']);
-                },
-                'group.inspection' => function ($q) {
-                    $q->select(['id', 'name', 'process_id']);
-                },
-                'group.inspection.process' => function ($q) {
-                    $q->select(['id', 'name']);
-                },
-                'group.inspection.process.failures' => function ($q) {
-                    $q->select(['id', 'name', 'sort']);
-                },
-                'pages' => function ($q) use ($start_at, $end_at, $itorG_name, $panel_id) {
-                    $q->join('inspection_families as f', function ($join) use ($itorG_name) {
-                        $join->on('pages.family_id', '=', 'f.id')
-                            ->whereIn('f.inspector_group', $itorG_name);
-                    })
-                    ->join('part_page as pp', function ($join) use ($itorG_name) {
-                        $join->on('pp.page_id', '=', 'pages.id');
-                    })
-                    ->join('parts', function ($join) use ($itorG_name, $panel_id) {
-                        $aaa = $join->on('pp.part_id', '=', 'parts.id');
-                        if ($panel_id) {
-                            $aaa->where('parts.panel_id', '=', $panel_id);
-                        }
-                    })
-                    ->where('pages.created_at', '>=', $start_at)
-                    ->where('pages.created_at', '<=', $end_at)
-                    ->groupBy('id')
-                    ->select([
-                        'f.id as family_id',
-                        'pages.id as id',
-                        'pages.page_type_id',
-                        'pp.status',
-                        'parts.panel_id'
-                    ]);
-                },
-                'pages.holes' => function ($q) {
-                    $q->select(['id', 'point', 'label', 'direction', 'part_type_id']);
-                },
-                'pages.holes.partType' => function ($q) {
-                    $q->select(['id', 'pn']);
-                },
-                'pages.failurePositions' => function ($q) {
-                    $q->select(['id', 'point', 'type', 'page_id', 'part_id', 'failure_id']);
-                },
-                'pages.failurePositions.failure' => function ($q) {
-                    $q->select(['id', 'name', 'sort']);
-                },
-                'pages.failurePositions.part' => function ($q) {
-                    $q->select(['id', 'panel_id', 'part_type_id']);
-                },
-                'pages.failurePositions.part.partType' => function ($q) {
-                    $q->select(['id', 'name', 'pn']);
-                },
-                'pages.inlines' => function ($q) {
-                    $q->select(['inlines.id', 'point', 'label_point', 'side', 'face', 'standard_tolerance', 'sort', 'part_type_id']);
-                },
-            ])
-            ->find($pageType);
-
-        if (!$page_type instanceof PageType) {
-            throw new NotFoundHttpException('Page type not found');
+        if ($page_types->count() == 0) {
+           throw new NotFoundHttpException('検索条件が不正です');
         }
 
-        $collection = collect();
-        $collection2 = collect();
-        $collection3 = collect();
+        $failureTypes = InspectionGroup::find($itionGId)->inspection->process->failures;
+        $commentTypes = InspectionGroup::find($itionGId)->inspection->comments->map(function($c) {
+            return [
+                'id' => $c->id,
+                'sort' => $c->sort,
+                'message' => $c->message
+            ];
+        });
 
-        $page_type = [
-            'id' => $page_type->id,
-            'pages' => $page_type->pages->count(),
-            'number' => $page_type->number,
-            'path' => '/img/figures/'.$page_type->figure->path,
-            'line' => $page_type->group->line,
-            'vehicle' => $page_type->group->vehicle_num,
-            'inspection' => $page_type->group->inspection->name,
-            'process' => $page_type->group->inspection->process->name,
-            'parts' => $page_type->partTypes->map(function($part) {
-                return [
-                    'pn' => $part->pn,
-                    'name' => $part->name,
-                    'area' => $part->pivot->area
-                ];
-            }),
-            'partsDetail' => $page_type->pages->map(function($page) {
-                return [
-                    'status' => $page->status,
-                    'panelId' => $page->panel_id
-                ];
-            }),
-            'holes' => $page_type->pages->reduce(function ($carry, $page) {
-                return $carry->merge($page->holes->map(function($hole) {
-                    return [
-                        'id' => $hole->id,
-                        'point' => $hole->point,
-                        'label' => $hole->label,
-                        'direction' => $hole->direction,
-                        'part' => $hole->partType->pn,
-                        'status' => $hole->pivot->status
-                    ];
-                }));
-            }, $collection)
-            ->groupBy('part')
-            ->map(function($hole) {
-                return $hole->groupBy('id');
-            }),
-            'inlines' => $page_type->pages->reduce(function ($carry, $page) {
-                return $carry->merge($page->inlines->map(function($hole) {
-                    return [
-                        'id' => $hole->id,
-                        'point' => $hole->point,
-                        'labelPoint' => $hole->label_point,
-                        'side' => $hole->side,
-                        'face' => $hole->face,
-                        'tolerance' => $hole->standard_tolerance,
-                        'sort' => $hole->sort,
-                        'status' => $hole->pivot->status
-                    ];
-                }));
-            }, $collection2)
-            ->groupBy('id'),
-            'failures' => $page_type->pages->reduce(function ($carry, $page) {
-                return $carry->merge($page->failurePositions->map(function($failure) {
-                    return [
-                        'id' => $failure->failure->id,
-                        'sort' => $failure->failure->sort,
-                        'point' => $failure->point,
-                        'type' => $failure->type,
-                        'part' => $failure->part->partType->pn
-                    ];
-                }));
-            }, $collection3)
-            ->groupBy('part'),
-            'failureTypes' => $page_type->group->inspection->process->failures->map(function($f) {
-                return [
-                    'id' => $f->id,
-                    'name' => $f->name,
-                    'sort' => $f->sort,
-                    'type' => $f->pivot->type
-                ];
+        if ($page_types->count() > 1) {
+            $pageTypes = $page_types->map(function($pt) use($partTypeId, $itionGId, $itorG_name, $start_at, $end_at, $panel_id) {
+                $pages = $pt->pagesWithRelated($itorG_name, $start_at, $end_at, $panel_id);
+                $data = $this->formatPage($pages, $itionGId, $partTypeId);
+                $data['path'] = '/img/figures/'.$pt->figure->path;
+                $data['pageNum'] = $pt->number;
+                return $data;
             })
-        ];
+            ->toArray();
 
-        return ['data' => $page_type];
+            return [
+                'data' => [
+                    'pageTypes' => $pageTypes,
+                    'failureTypes' => $failureTypes,
+                    'commentTypes' => $commentTypes,
+                    'path' => []
+                ]
+            ];
+        }
+
+        $page_type = $page_types->first();
+
+        $pages = $page_type->pagesWithRelated($itorG_name, $start_at, $end_at, $panel_id);
+        $data = $this->formatPage($pages, $itionGId, $partTypeId);
+        $data['path'] = '/img/figures/'.$page_type->figure->path;
+        $data['pageNum'] = $page_type->number;
+        $data['failureTypes'] = $failureTypes;
+        $data['commentTypes'] = $commentTypes;
+
+        return [
+            'data' => $data
+        ];
     }
+
+
+
+
+
+    // public function page($pageType, $itorG, Request $request)
+    // {
+    //     $validator = app('validator')->make(
+    //         $request->all(),
+    //         [
+    //             'start' => ['alpha_dash'],
+    //             'end' => ['alpha_dash'],
+    //             'panelId' => ['alpha_dash']
+    //         ]
+    //     );
+
+    //     if ($validator->fails()) {
+    //         throw new StoreResourceFailedException('Validation error', $validator->errors());
+    //     }
+
+    //     $now = Carbon::now();
+
+    //     if (isset($request->start) && isset($request->end)) {
+    //         $start_at = Carbon::createFromFormat('Y-m-d-H-i', $request->start);
+    //         $end_at = Carbon::createFromFormat('Y-m-d-H-i', $request->end);
+    //     }
+    //     else {
+    //         $today = Carbon::today();
+    //         $t2_end_at = $today->copy()->addHours(1);
+    //         $t1_start_at = $today->copy()->addHours(6);
+    //         $t1_end_at = $today->copy()->addHours(15)->addMinutes(30);
+    //         $t2_start_at = $today->copy()->addHours(16)->addMinutes(30);
+
+    //         if ($now->lt($t2_end_at)) {
+    //             $start_at = $t1_start_at->copy()->subDay();
+    //         }
+    //         elseif ($now->lt($t1_end_at)) {
+    //             $start_at = $t2_start_at->copy()->subDay();
+    //         }
+    //         else {
+    //             $start_at = $t1_start_at;
+    //         }
+
+    //         $end_at = $now;
+    //     }
+
+    //     switch ($request->itorG) {
+    //         case 'W': $itorG_name = ['白直', '不明']; break;
+    //         case 'Y': $itorG_name = ['黄直', '不明']; break;
+    //         case 'both': $itorG_name = ['白直', '黄直', '不明']; break;
+    //     }
+
+    //     $panel_id = $request->panelId;
+
+    //     $page_type = PageType::with([
+    //             'figure' => function ($q) {
+    //                 $q->select(['id', 'path']);
+    //             },
+    //             'partTypes' => function ($q) {
+    //                 $q->select(['id', 'pn', 'name']);
+    //             },
+    //             'group' => function ($q) {
+    //                 $q->select(['id', 'division_en', 'vehicle_num', 'line', 'inspection_id']);
+    //             },
+    //             'group.inspection' => function ($q) {
+    //                 $q->select(['id', 'name', 'process_id']);
+    //             },
+    //             'group.inspection.process' => function ($q) {
+    //                 $q->select(['id', 'name']);
+    //             },
+    //             'group.inspection.process.failures' => function ($q) {
+    //                 $q->select(['id', 'name', 'sort']);
+    //             },
+    //             'pages' => function ($q) use ($start_at, $end_at, $itorG_name, $panel_id) {
+    //                 $q->join('inspection_families as f', function ($join) use ($itorG_name) {
+    //                     $join->on('pages.family_id', '=', 'f.id')
+    //                         ->whereIn('f.inspector_group', $itorG_name);
+    //                 })
+    //                 ->join('part_page as pp', function ($join) use ($itorG_name) {
+    //                     $join->on('pp.page_id', '=', 'pages.id');
+    //                 })
+    //                 ->join('parts', function ($join) use ($itorG_name, $panel_id) {
+    //                     $aaa = $join->on('pp.part_id', '=', 'parts.id');
+    //                     if ($panel_id) {
+    //                         $aaa->where('parts.panel_id', '=', $panel_id);
+    //                     }
+    //                 })
+    //                 ->where('pages.created_at', '>=', $start_at)
+    //                 ->where('pages.created_at', '<=', $end_at)
+    //                 ->groupBy('id')
+    //                 ->select([
+    //                     'f.id as family_id',
+    //                     'pages.id as id',
+    //                     'pages.page_type_id',
+    //                     'pp.status',
+    //                     'parts.panel_id'
+    //                 ]);
+    //             },
+    //             'pages.holes' => function ($q) {
+    //                 $q->select(['id', 'point', 'label', 'direction', 'part_type_id']);
+    //             },
+    //             'pages.holes.partType' => function ($q) {
+    //                 $q->select(['id', 'pn']);
+    //             },
+    //             'pages.failurePositions' => function ($q) {
+    //                 $q->select(['id', 'point', 'type', 'page_id', 'part_id', 'failure_id']);
+    //             },
+    //             'pages.failurePositions.failure' => function ($q) {
+    //                 $q->select(['id', 'name', 'sort']);
+    //             },
+    //             'pages.failurePositions.part' => function ($q) {
+    //                 $q->select(['id', 'panel_id', 'part_type_id']);
+    //             },
+    //             'pages.failurePositions.part.partType' => function ($q) {
+    //                 $q->select(['id', 'name', 'pn']);
+    //             },
+    //             'pages.inlines' => function ($q) {
+    //                 $q->select(['inlines.id', 'point', 'label_point', 'side', 'face', 'standard_tolerance', 'sort', 'part_type_id']);
+    //             },
+    //         ])
+    //         ->find($pageType);
+
+    //     if (!$page_type instanceof PageType) {
+    //         throw new NotFoundHttpException('Page type not found');
+    //     }
+
+    //     $collection = collect();
+    //     $collection2 = collect();
+    //     $collection3 = collect();
+
+    //     $page_type = [
+    //         'id' => $page_type->id,
+    //         'pages' => $page_type->pages->count(),
+    //         'number' => $page_type->number,
+    //         'path' => '/img/figures/'.$page_type->figure->path,
+    //         'line' => $page_type->group->line,
+    //         'vehicle' => $page_type->group->vehicle_num,
+    //         'inspection' => $page_type->group->inspection->name,
+    //         'process' => $page_type->group->inspection->process->name,
+    //         'parts' => $page_type->partTypes->map(function($part) {
+    //             return [
+    //                 'pn' => $part->pn,
+    //                 'name' => $part->name,
+    //                 'area' => $part->pivot->area
+    //             ];
+    //         }),
+    //         'partsDetail' => $page_type->pages->map(function($page) {
+    //             return [
+    //                 'status' => $page->status,
+    //                 'panelId' => $page->panel_id
+    //             ];
+    //         }),
+    //         'holes' => $page_type->pages->reduce(function ($carry, $page) {
+    //             return $carry->merge($page->holes->map(function($hole) {
+    //                 return [
+    //                     'id' => $hole->id,
+    //                     'point' => $hole->point,
+    //                     'label' => $hole->label,
+    //                     'direction' => $hole->direction,
+    //                     'part' => $hole->partType->pn,
+    //                     'status' => $hole->pivot->status
+    //                 ];
+    //             }));
+    //         }, $collection)
+    //         ->groupBy('part')
+    //         ->map(function($hole) {
+    //             return $hole->groupBy('id');
+    //         }),
+    //         'inlines' => $page_type->pages->reduce(function ($carry, $page) {
+    //             return $carry->merge($page->inlines->map(function($hole) {
+    //                 return [
+    //                     'id' => $hole->id,
+    //                     'point' => $hole->point,
+    //                     'labelPoint' => $hole->label_point,
+    //                     'side' => $hole->side,
+    //                     'face' => $hole->face,
+    //                     'tolerance' => $hole->standard_tolerance,
+    //                     'sort' => $hole->sort,
+    //                     'status' => $hole->pivot->status
+    //                 ];
+    //             }));
+    //         }, $collection2)
+    //         ->groupBy('id'),
+    //         'failures' => $page_type->pages->reduce(function ($carry, $page) {
+    //             return $carry->merge($page->failurePositions->map(function($failure) {
+    //                 return [
+    //                     'id' => $failure->failure->id,
+    //                     'sort' => $failure->failure->sort,
+    //                     'point' => $failure->point,
+    //                     'type' => $failure->type,
+    //                     'part' => $failure->part->partType->pn
+    //                 ];
+    //             }));
+    //         }, $collection3)
+    //         ->groupBy('part'),
+    //         'failureTypes' => $page_type->group->inspection->process->failures->map(function($f) {
+    //             return [
+    //                 'id' => $f->id,
+    //                 'name' => $f->name,
+    //                 'sort' => $f->sort,
+    //                 'type' => $f->pivot->type
+    //             ];
+    //         })
+    //     ];
+
+    //     return ['data' => $page_type];
+    // }
 
     public function test()
     {

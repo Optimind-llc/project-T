@@ -1,12 +1,23 @@
 import React, { PropTypes, Component } from 'react';
+// Styles
+import './loading.scss';
 
 class Loading extends Component {
   render() {
   	const { coverColor } = this.props;
   	const color = typeof coverColor === 'undefined' ? 'white' : coverColor ;
+  	const styles = {
+  		wrapper: {
+  			width: '100%',
+  			height: '100%',
+  			position: 'absolute',
+  			top: 0,
+  			left: 0
+  		}
+  	};
 
     return (
-	  <div style={{width: '100%', height: '100%'}}>
+	  <div style={styles.wrapper}>
 	    <div
 	    	className="sk-fading-circle"
 	    	style={{
@@ -14,7 +25,8 @@ class Loading extends Component {
 	    		left: 'calc(50% - 15px)',
 	    		top: 'calc(50% - 15px)',
 	    		zIndex: 1001
-	    	}}>
+	    	}}
+	    >
 	      <div className="sk-circle1 sk-circle"></div>
 	      <div className="sk-circle2 sk-circle"></div>
 	      <div className="sk-circle3 sk-circle"></div>
@@ -32,7 +44,7 @@ class Loading extends Component {
 	    	width: '100%',
 	    	height: '100%',
 	    	background: color,
-	    	opacity: 0.5,
+	    	opacity: 0.9,
 	    	zIndex: 1000
 	   	}}
 	    ></div>

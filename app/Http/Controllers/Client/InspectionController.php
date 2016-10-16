@@ -17,6 +17,7 @@ use App\Models\Client\InspectionFamily;
 use App\Models\Client\Page;
 use App\Models\Client\Part;
 use App\Models\Client\FailurePage;
+use App\Models\Client\FailurePosition;
 // Exceptions
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -334,20 +335,13 @@ class InspectionController extends Controller
         $newFamily->save();
 
         foreach ($family['pages'] as $key => $page) {
-            /*
-             * ここからStatusがなくなる
-             */
             $newPage = new Page;
             $newPage->page_type_id = $page['pageId'];
             $newPage->table = isset($page['table']) ? $page['table'] : null;
-            // $newPage->status = $page['status'];
             $newPage->family_id = $newFamily->id;
             $newPage->save();
 
             foreach ($page['parts'] as $part) {
-                /*
-                 * ここにStatusが入る
-                 */
                 $newPart = Part::where('panel_id', $part['panelId'])
                     ->where('part_type_id', $part['partTypeId'])
                     ->first();
@@ -429,33 +423,22 @@ class InspectionController extends Controller
 
             // Create failure
             if (count($page['failures']) != 0) {
-                DB::table('failure_positions')->insert(array_map(function($f) use ($groupId, $newPage, $matuken, $getPartIdfromArea) {
+                foreach ($page['failures'] as $key => $f) {
+                    $failure_position = new FailurePosition;
+                    $failure_position->page_id = $newPage->id;
+                    $failure_position->failure_id = $f['id'];
+                    $failure_position->part_id = $getPartIdfromArea($f);
+                    $failure_position->point = $matuken($f);
+                    $failure_position->save();
 
-                        // Find process_id type in this inspection_group
-                        $inspectionGroup = new InspectionGroup;
-                        $process_id = $inspectionGroup->find($groupId)
-                            ->inspection()
-                            ->first()
-                            ->process_id;
-
-                        // Find failure type in this process
-                        $failureType = DB::table('failure_process')
-                            ->where('failure_id', $f['id'])
-                            ->where('process_id', $process_id)
-                            ->first()
-                            ->type;
-
-                        return [
+                    if (array_key_exists('commentId', $f)) {
+                        DB::table('comment_failure_position')->insert([
                             'page_id' => $newPage->id,
-                            'failure_id' => $f['id'],
-                            'part_id' => $getPartIdfromArea($f),
-                            'point' => $matuken($f),
-                            'type' => $failureType
-                            // 'point_sub' => $f['pointSub'] ? $f['pointSub'] : ''
-                        ];
-                    },
-                    $page['failures'])
-                );
+                            'failure_position_id' => $failure_position->id,
+                            'comment_id' => $f['commentId']
+                        ]);
+                    }
+                }
             }
 
             // Create holes
@@ -490,14 +473,15 @@ class InspectionController extends Controller
             $itor = explode(',',$family['inspector'])[1];
             $status = $family['status'];
             $panel_id = $family['pages'][0]['parts'][0]['panelId'];
+            $failures = $family['pages'][0]['failures'];
 
-            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status);
+            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures);
         }
 
         return 'Excellent';
     }
 
-    public function exportCSV ($gId, $pId, $itorG, $itor, $status) {
+    public function exportCSV ($gId, $pId, $itorG, $itor, $status, $failures) {
         // XXXX_IIIII_YYYYMMDD_HHMMSS.pdf
         // XXXX：工程　"M001"＝成形１ライン
         // IIIII：品番　上位５桁　例えば"67149"
@@ -512,24 +496,41 @@ class InspectionController extends Controller
 
         $file_name = 'M0001'.'_'.'67149'.'_'.$now_f;
         $file_path = base_path('output/'.$file_name.'.csv');
-     
+
+        $fail = collect($failures)->groupBy('id')->map(function($f){
+            return $f->count();
+        })->toArray();
+
+        $all_failures = Process::find('molding')
+            ->failures()
+            ->orderBy('id')
+            ->get();
+
         // CSVに出力するタイトル行
-        $export_csv_title = array('品番','パネルID','工程','ライン','車種','直','検査者','出荷判定','重要不良１','重要不良２','重要不良３','重要不良４','重要不良５','重要不良６','重要不良７','不良１','不良２','不良３','不良４','不良５','不良６','不良７','不良８','不良９','不良１０','不良１１','不良１２','不良１３','不良１４','時刻');
-        $res_export = array('67149',$pId,'成型',$line,'680A',$itorG,$itor,$status,'','','','','','','','','','','','','','','','','','','','','');
+        // $export_csv_title = array('品番','パネルID','工程','ライン','車種','直','検査者','出荷判定','不良１','不良２','不良３','不良４','不良５','不良６','不良７','不良１','不良２','不良３','不良４','不良５','不良６','不良７','不良８','不良９','不良１０','不良１１','不良１２','不良１３','不良１４','時刻');
+        // $res_export = array('67149',$pId,'成型',$line,'680A',$itorG,$itor,$status,$fail[1],$fail[2],$fail[3],$fail[4],$fail[5],$fail[6],$fail[7],$fail[8],$fail[9],$fail[10],$fail[11],$fail[12],$fail[13],$fail[14],$fail[15],$fail[16],$fail[17],$fail[18],$fail[19],$fail[20],$fail[21]);
+
+
+        $res_export = array('67149',$pId,'成型',$line,'680A',$itorG,$itor,$status);
+
+
+        foreach ($all_failures as $key => $f) {
+            array_push($res_export, array_key_exists($f['id'], $fail) ? $fail[$f['id']] : '');
+        }
 
         if( touch($file_path) ){
             $file = new \SplFileObject( $file_path, 'w' ); 
              
-            foreach( $export_csv_title as $key => $val ){
-                $export_header[] = mb_convert_encoding($val, 'UTF-8');
-            }
+            // foreach( $export_csv_title as $key => $val ){
+            //     $export_header[] = mb_convert_encoding($val, 'UTF-8');
+            // }
 
             foreach( $res_export as $key => $val ){
                 $export_raw[] = mb_convert_encoding($val, 'UTF-8');
             }
      
             // エンコードしたタイトル行を配列ごとCSVデータ化
-            $file->fputcsv($export_header);
+            // $file->fputcsv($export_header);
             $file->fputcsv($export_raw);
         }
     }

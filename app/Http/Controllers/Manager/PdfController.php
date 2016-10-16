@@ -112,7 +112,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                array_push($body[$r], $family->created_at->format('YmdHms'));
                 $r = $r+1;
             }
 
@@ -149,7 +149,7 @@ class PdfController extends Controller
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
-            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
 
             if ($page ==0 ) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
@@ -231,7 +231,7 @@ class PdfController extends Controller
             $tcpdf->Text(80, $y0, '検査：インナー');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
-            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
             // Render table header
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -352,7 +352,7 @@ class PdfController extends Controller
             $tcpdf->Text(60, $y0, '精度検査');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->SetFont('kozgopromedium', '', 8);
-            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
 
             if ($page ==0 ) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
@@ -398,7 +398,7 @@ class PdfController extends Controller
 
                     foreach ($value as $r => $row) {
                         foreach ($row as $c => $val) {
-                            if ($c < 6) {
+                            if ($c < 5) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
                             } elseif ($c == 27) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
@@ -426,7 +426,7 @@ class PdfController extends Controller
             $tcpdf->Text($x0, $y0, '工程：成形工程');
             $tcpdf->Text(60, $y0, '精度検査');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
-            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
             // Render table header
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -497,7 +497,7 @@ class PdfController extends Controller
                 $i = $i+1;
             }
 
-            array_push($body[$row], $family->created_at->format('Ymdhms'));
+            array_push($body[$row], $family->created_at->format('YmdHms'));
         }
 
         $x0 = 8;
@@ -527,7 +527,7 @@ class PdfController extends Controller
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
-            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
 
             if ($page ==0 ) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
@@ -608,7 +608,7 @@ class PdfController extends Controller
             $tcpdf->Text(80, $y0, '検査：インナー');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
-            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
             // Render table header
             $tcpdf->SetFont('kozgopromedium', '', 5);
@@ -655,7 +655,7 @@ class PdfController extends Controller
         $tcpdf->output($pdf_path, 'I');
     }
 
-    protected function forMoldingSmall($tcpdf, $date, $families, $itorG_name)
+    protected function forMoldingSmall($tcpdf, $date, $families, $itorG_name, $line)
     {
         $now = Carbon::now();
         $failures = Process::where('id', 'molding')
@@ -726,7 +726,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                array_push($body[$r], $family->created_at->format('YmdHms'));
                 $r = $r+1;
             }
 
@@ -755,12 +755,12 @@ class PdfController extends Controller
 
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
-            $tcpdf->Text($x0, $y0, '工程：成形工程');
+            $tcpdf->Text($x0, $y0, '工程：成形工程ライン'.$line);
             $tcpdf->Text(60, $y0, '検査：アウター');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
-            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
 
             if ($page ==0 ) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
@@ -835,11 +835,11 @@ class PdfController extends Controller
 
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
-            $tcpdf->Text($x0, $y0, '工程：成形工程');
+            $tcpdf->Text($x0, $y0, '工程：成形工程'.$line);
             $tcpdf->Text(80, $y0, '検査：アウター');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
-            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
             // Render table header
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -905,6 +905,8 @@ class PdfController extends Controller
             return array_merge($carry, $holes->toArray());
         }, []);
 
+        $n = count($holes);
+
         $body = [];
         $row_sum1 = [4 => '合計', 5 => '○'];
         $row_sum2 = [5 => '△'];
@@ -954,7 +956,7 @@ class PdfController extends Controller
                     array_push($body[$r], $sign);
                 }
 
-                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                array_push($body[$r], $family->created_at->format('YmdHms'));
                 $r = $r+1;
             }
             $r = $r+1;
@@ -987,7 +989,7 @@ class PdfController extends Controller
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
-            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
 
             if ($page ==0 ) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
@@ -1015,7 +1017,7 @@ class PdfController extends Controller
                     foreach ($row as $c => $val) {
                         if ($c < 6) {
                             $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                        } elseif ($c == 96) {
+                        } elseif ($c == 6+$n) {
                             $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                         }
                     }
@@ -1068,7 +1070,7 @@ class PdfController extends Controller
             $tcpdf->Text(80, $y0, '検査：アウター');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
-            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
             // Render table header
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -1192,9 +1194,9 @@ class PdfController extends Controller
             $tcpdf->Text(60, $y0, '精度検査');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->SetFont('kozgopromedium', '', 8);
-            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
 
-            if ($page ==0 ) {
+            if ($page == 0 ) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
                 $tcpdf->Rect($x0+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
                 $tcpdf->Text($x0+2, $y0+$y1, 'OK');
@@ -1238,7 +1240,7 @@ class PdfController extends Controller
 
                     foreach ($value as $r => $row) {
                         foreach ($row as $c => $val) {
-                            if ($c < 6) {
+                            if ($c < 5) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
                             } elseif ($c == 27) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
@@ -1266,7 +1268,7 @@ class PdfController extends Controller
             $tcpdf->Text($x0, $y0, '工程：接着工程');
             $tcpdf->Text(60, $y0, '精度検査');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
-            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
             // Render table header
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -1364,7 +1366,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                array_push($body[$r], $family->created_at->format('YmdHms'));
                 $r = $r+1;
             }
 
@@ -1401,7 +1403,7 @@ class PdfController extends Controller
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
-            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
 
             if ($page ==0 ) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
@@ -1429,7 +1431,7 @@ class PdfController extends Controller
                     foreach ($row as $c => $val) {
                         if ($c < 6) {
                             $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                        } elseif ($c == 21) {
+                        } elseif ($c == 6+$n) {
                             $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                         }
                     }
@@ -1451,7 +1453,7 @@ class PdfController extends Controller
                         foreach ($row as $c => $val) {
                             if ($c < 6) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                            } elseif ($c == 21) {
+                            } elseif ($c == 6+$n) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                             }
                         }
@@ -1483,7 +1485,7 @@ class PdfController extends Controller
             $tcpdf->Text(80, $y0, '止水：インナーASSY');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
-            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
             // Render table header
             $tcpdf->SetFont('kozgopromedium', '', 7);
@@ -1521,7 +1523,7 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
-        $failures = Process::where('id', 'molding')
+        $failures = Process::where('id', 'jointing')
             ->first()
             ->failures()
             ->orderBy('sort')
@@ -1529,6 +1531,7 @@ class PdfController extends Controller
             ->map(function($f) {
                 return [
                     'id' => $f->id,
+                    'sort' => $f->sort,
                     'name' => $f->name,
                     'type' => $f->pivot->type
                 ];
@@ -1536,6 +1539,14 @@ class PdfController extends Controller
             ->sortBy('type')
             ->values()
             ->all();
+
+            foreach( $failures as $key => $row ) {
+                $tmp_type_array[$key] = $row["type"];
+                $tmp_sort_array[$key] = $row["sort"];
+            }
+
+            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
+
         $n1 = count($failures);
 
         $comments = Inspection::find(6)
@@ -1603,7 +1614,7 @@ class PdfController extends Controller
                     $row_sum[6+$c1+1+$c2] = array_key_exists(6+$c1+1+$c2, $row_sum) ? $row_sum[6+$c1+1+$c2]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                array_push($body[$r], $family->created_at->format('YmdHms'));
                 $r = $r+1;
             }
 
@@ -1640,7 +1651,7 @@ class PdfController extends Controller
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
-            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
 
             if ($page ==0 ) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
@@ -1722,10 +1733,10 @@ class PdfController extends Controller
             $tcpdf->Text(80, $y0, '仕上：インナーASSY');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
-            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
             // Render table header
-            $tcpdf->SetFont('kozgopromedium', '', 6);
+            $tcpdf->SetFont('kozgopromedium', '', 5);
             $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y1, '車種');
             $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y1, '品番');
             $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y1, '名称');
@@ -1769,16 +1780,25 @@ class PdfController extends Controller
             ->failures()
             ->orderBy('sort')
             ->get(['id', 'sort', 'name'])
+            ->filter(function($f) {
+                return $f['name'] !== '水漏れ';
+            })
             ->map(function($f) {
                 return [
                     'id' => $f->id,
+                    'sort' => $f->sort,
                     'name' => $f->name,
                     'type' => $f->pivot->type
                 ];
             })
-            ->sortBy('type')
-            ->values()
-            ->all();
+            ->toArray();
+
+            foreach( $failures as $key => $row ) {
+                $tmp_type_array[$key] = $row["type"];
+                $tmp_sort_array[$key] = $row["sort"];
+            }
+
+            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
 
         $n = count($failures);
 
@@ -1822,7 +1842,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                array_push($body[$r], $family->created_at->format('YmdHms'));
                 $r = $r+1;
             }
 
@@ -1855,11 +1875,11 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(50, $y0, '点検：インナーASSY');
+            $tcpdf->Text(50, $y0, '検査：インナーASSY');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
-            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
 
             if ($page ==0 ) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
@@ -1887,7 +1907,7 @@ class PdfController extends Controller
                     foreach ($row as $c => $val) {
                         if ($c < 6) {
                             $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                        } elseif ($c == 21) {
+                        } elseif ($c == 6+$n) {
                             $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                         }
                     }
@@ -1909,7 +1929,7 @@ class PdfController extends Controller
                         foreach ($row as $c => $val) {
                             if ($c < 6) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                            } elseif ($c == 21) {
+                            } elseif ($c == 6+$n) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                             }
                         }
@@ -1929,7 +1949,7 @@ class PdfController extends Controller
         $y0 = 10;
         $y1 = 12;
         $d = [12, 14, 30, 20, 22, 20];
-        $fd = 15.5;
+        $fd = 16;
         $th = 6;
 
         foreach (array_chunk($body, 40) as $page => $value) {
@@ -1938,10 +1958,10 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(80, $y0, '点検：インナーASSY');
+            $tcpdf->Text(80, $y0, '検査：インナーASSY');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
-            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
             // Render table header
             $tcpdf->SetFont('kozgopromedium', '', 7);
@@ -1979,21 +1999,31 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
+
         $failures = Process::where('id', 'jointing')
             ->first()
             ->failures()
             ->orderBy('sort')
             ->get(['id', 'sort', 'name'])
+            ->filter(function($f) {
+                return $f['name'] !== '水漏れ';
+            })
             ->map(function($f) {
                 return [
                     'id' => $f->id,
+                    'sort' => $f->sort,
                     'name' => $f->name,
                     'type' => $f->pivot->type
                 ];
             })
-            ->sortBy('type')
-            ->values()
-            ->all();
+            ->toArray();
+
+            foreach( $failures as $key => $row ) {
+                $tmp_type_array[$key] = $row["type"];
+                $tmp_sort_array[$key] = $row["sort"];
+            }
+
+            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
 
         $n = count($failures);
 
@@ -2037,7 +2067,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                array_push($body[$r], $family->created_at->format('YmdHms'));
                 $r = $r+1;
             }
 
@@ -2074,7 +2104,7 @@ class PdfController extends Controller
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
-            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
 
             if ($page ==0 ) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
@@ -2102,7 +2132,7 @@ class PdfController extends Controller
                     foreach ($row as $c => $val) {
                         if ($c < 6) {
                             $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                        } elseif ($c == 21) {
+                        } elseif ($c == 6+$n) {
                             $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                         }
                     }
@@ -2124,7 +2154,7 @@ class PdfController extends Controller
                         foreach ($row as $c => $val) {
                             if ($c < 6) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                            } elseif ($c == 21) {
+                            } elseif ($c == 6+$n) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                             }
                         }
@@ -2144,7 +2174,7 @@ class PdfController extends Controller
         $y0 = 10;
         $y1 = 12;
         $d = [12, 14, 30, 20, 22, 20];
-        $fd = 15.5;
+        $fd = 16;
         $th = 6;
 
         foreach (array_chunk($body, 40) as $page => $value) {
@@ -2156,7 +2186,7 @@ class PdfController extends Controller
             $tcpdf->Text(80, $y0, '特検：インナーASSY');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
-            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
             // Render table header
             $tcpdf->SetFont('kozgopromedium', '', 7);
@@ -2194,7 +2224,7 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
-        $failures = Process::where('id', 'molding')
+        $failures = Process::where('id', 'jointing')
             ->first()
             ->failures()
             ->orderBy('sort')
@@ -2202,6 +2232,7 @@ class PdfController extends Controller
             ->map(function($f) {
                 return [
                     'id' => $f->id,
+                    'sort' => $f->sort,
                     'name' => $f->name,
                     'type' => $f->pivot->type
                 ];
@@ -2209,6 +2240,14 @@ class PdfController extends Controller
             ->sortBy('type')
             ->values()
             ->all();
+
+            foreach( $failures as $key => $row ) {
+                $tmp_type_array[$key] = $row["type"];
+                $tmp_sort_array[$key] = $row["sort"];
+            }
+
+            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
+
         $n1 = count($failures);
 
         $comments = Inspection::find(6)
@@ -2276,7 +2315,7 @@ class PdfController extends Controller
                     $row_sum[6+$c1+1+$c2] = array_key_exists(6+$c1+1+$c2, $row_sum) ? $row_sum[6+$c1+1+$c2]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('Ymdhms'));
+                array_push($body[$r], $family->created_at->format('YmdHms'));
                 $r = $r+1;
             }
 
@@ -2309,11 +2348,11 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(50, $y0, '仕上げ：インナーASSY');
+            $tcpdf->Text(50, $y0, '手直し：インナーASSY');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
-            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d h :m :s'));
+            $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
 
             if ($page ==0 ) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
@@ -2392,13 +2431,13 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(80, $y0, '仕上げ：インナーASSY');
+            $tcpdf->Text(80, $y0, '手直し：インナーASSY');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
-            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d h :m :s'));  
+            $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
             // Render table header
-            $tcpdf->SetFont('kozgopromedium', '', 6);
+            $tcpdf->SetFont('kozgopromedium', '', 5);
             $tcpdf->Text($x0+array_sum(array_slice($d,0,0)), $y0+$y1, '車種');
             $tcpdf->Text($x0+array_sum(array_slice($d,0,1)), $y0+$y1, '品番');
             $tcpdf->Text($x0+array_sum(array_slice($d,0,2)), $y0+$y1, '名称');

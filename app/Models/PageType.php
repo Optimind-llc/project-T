@@ -63,4 +63,51 @@ class PageType extends Model
             'id'
         );
     }
+
+    public function pagesWithRelated($itorG_name, $start_at, $end_at, $panel_id)
+    {
+        return $this->pages()
+            ->join('inspection_families as f', function ($join) use ($itorG_name) {
+                $join->on('pages.family_id', '=', 'f.id')
+                    ->whereIn('f.inspector_group', $itorG_name);
+            })
+            ->select('pages.*', 'f.inspector_group')
+            ->join('part_page as pp', function ($join) use ($itorG_name) {
+                $join->on('pp.page_id', '=', 'pages.id');
+            })
+            ->join('parts', function ($join) use ($itorG_name, $panel_id) {
+                $aaa = $join->on('pp.part_id', '=', 'parts.id');
+                if ($panel_id) {
+                    $aaa->where('parts.panel_id', '=', $panel_id);
+                }
+            })
+            ->groupBy('pages.id')
+            ->with([
+                'failurePositions' => function ($q) {
+                    $q->select(['id', 'point', 'type', 'page_id', 'part_id', 'failure_id']);
+                },
+                'failurePositions.failure' => function ($q) {
+                    $q->select(['id', 'name', 'sort']);
+                },
+                'failurePositions.part' => function ($q) {
+                    $q->select(['id', 'panel_id', 'part_type_id']);
+                },
+                'failurePositions.part.partType' => function ($q) {
+                    $q->select(['id', 'name', 'pn']);
+                },
+                'holes' => function ($q) {
+                    $q->select(['id', 'point', 'label', 'direction', 'part_type_id']);
+                },
+                'holes.partType' => function ($q) {
+                    $q->select(['id', 'pn']);
+                },
+                'comments',
+                'comments.comment',
+                'comments.failurePosition'
+            ])
+            ->where('pages.created_at', '>=', $start_at)
+            ->where('pages.created_at', '<=', $end_at)
+            ->get();
+
+    }
 }

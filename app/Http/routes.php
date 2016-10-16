@@ -46,6 +46,12 @@ Route::get('show/page/{pageType}/{itorG}', 'ShowController@page')
 		'itorG' => '[a-zA-Z]+'
 	]);
 
+Route::get('show/page2/{partTypeId}/{itionGId}/{itorG}', 'ShowController@page2')
+	->where([
+		'partTypeId' => '[0-9]+',
+		'itorG' => '[a-zA-Z]+'
+	]);
+
 Route::get('show/inspectionGroup', 'ShowController@inspectionGroup');
 Route::get('show/allInspectionGroupNow', 'ShowController@allInspectionGroupNow');
 

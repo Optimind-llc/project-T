@@ -6,7 +6,7 @@ import VehicleData from '../modules/dashboard/ducks/vehicle';
 import ItorGData from '../modules/dashboard/ducks/itorG';
 import PageTData from '../modules/dashboard/ducks/pageT';
 
-import PageData from '../modules/mapping/ducks/page';
+import PageData from '../modules/dashboard/ducks/page';
 
 import VeItorGProcData from '../modules/report/ducks/report';
 import ItionGData from '../modules/report/ducks/inspectionGroup';

@@ -14,7 +14,7 @@ class DummyInspectionsSeeder extends Seeder
     protected function createData($group, $id)
     {
         /***** HARD CODE *****/
-        $img = ['x' => 1280, 'y' => 800, 'margin' => 100, 'arrow' => 80];
+        $img = ['x' => 1740, 'y' => 800, 'margin' => 100, 'arrow' => 80];
 
         $createPart = function($part) use ($id) {
             return [
@@ -150,7 +150,7 @@ class DummyInspectionsSeeder extends Seeder
         $request->set('holing', 'check', 'small');
         $group = $controller->inspection($request);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 50; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -176,7 +176,7 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);        
         }
 
-        //接着：点検：インナASSY
+        //接着：検査：インナASSY
         $request->set('jointing', 'check', 'inner_assy');
         $group = $controller->inspection($request);
 

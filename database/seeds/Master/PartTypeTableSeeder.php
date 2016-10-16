@@ -144,11 +144,11 @@ class PartTypeTableSeeder extends Seeder
             //成型：検査：ライン１：小部品 page1
             [
                 'page_type_id' => 8,
-                'part_type_id' => 3,
+                'part_type_id' => 4,
                 'area'         => '0/0/870/900'
             ],[
                 'page_type_id' => 8,
-                'part_type_id' => 4,
+                'part_type_id' => 3,
                 'area'         => '870/0/1740/900'
             ],
             //成型：検査：ライン１：小部品 page2
@@ -158,21 +158,21 @@ class PartTypeTableSeeder extends Seeder
                 'area'         => '0/0/1740/450'
             ],[
                 'page_type_id' => 9,
-                'part_type_id' => 5,
+                'part_type_id' => 6,
                 'area'         => '0/450/870/860'
             ],[
                 'page_type_id' => 9,
-                'part_type_id' => 6,
+                'part_type_id' => 5,
                 'area'         => '870/450/1740/860'
             ],
             //成型：検査：ライン２：小部品 page1
             [
                 'page_type_id' => 10,
-                'part_type_id' => 3,
+                'part_type_id' => 4,
                 'area'         => '0/0/870/900'
             ],[
                 'page_type_id' => 10,
-                'part_type_id' => 4,
+                'part_type_id' => 3,
                 'area'         => '870/0/1740/900'
             ],
             //成型：検査：ライン２：小部品 page2
@@ -182,11 +182,11 @@ class PartTypeTableSeeder extends Seeder
                 'area'         => '0/0/1740/450'
             ],[
                 'page_type_id' => 11,
-                'part_type_id' => 5,
+                'part_type_id' => 6,
                 'area'         => '0/450/870/860'
             ],[
                 'page_type_id' => 11,
-                'part_type_id' => 6,
+                'part_type_id' => 5,
                 'area'         => '870/450/1740/860'
             ],
             //成型：インライン精度検査：小部品
@@ -204,19 +204,19 @@ class PartTypeTableSeeder extends Seeder
             //穴あけ：検査：小部品 page2
             [
                 'page_type_id' => 14,
-                'part_type_id' => 3,
+                'part_type_id' => 4,
                 'area'         => '0/0/350/820'
             ],[
                 'page_type_id' => 14,
-                'part_type_id' => 4,
+                'part_type_id' => 3,
                 'area'         => '350/0/720/820'
             ],[
                 'page_type_id' => 14,
-                'part_type_id' => 5,
+                'part_type_id' => 6,
                 'area'         => '720/0/1250/820'
             ],[
                 'page_type_id' => 14,
-                'part_type_id' => 6,
+                'part_type_id' => 5,
                 'area'         => '1250/0/1740/820'
             ],
             //接着：インライン検査：インナASSY

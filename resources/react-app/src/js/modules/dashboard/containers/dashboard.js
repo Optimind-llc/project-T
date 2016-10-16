@@ -8,6 +8,7 @@ import { push } from 'react-router-redux';
 import { vehicleActions } from '../ducks/vehicle';
 import { itorGActions } from '../ducks/itorG';
 import { pageTActions } from '../ducks/pageT';
+import { pageActions } from '../ducks/page';
 
 // Material-ui Components
 import { Paper, Dialog, RaisedButton, FlatButton } from 'material-ui';
@@ -24,28 +25,34 @@ class Dashboard extends Component {
     super(props, context);
     const { PageTData, actions } = props;
 
-    actions.getVehicleData();
-
     this.state = {
-      vehicle: null,
+      vehicle: {value: '680A', label: '680A'},
+      partTId: null,
+      itionGId: null,
       itorG: null,
-      itionG: null,
-      page: null,
       narrowedBy: 'realtime',
       startDate: moment(),
       endDate: moment(),
-      panelId: ''
+      panelId: '',
+      intervalId: null,
+      interval: 100000,
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { data, isFetching } = nextProps.PageTData;
+  startInterval() {
+    const { getPageData } = this.props.actions;
+    const { partTId, itionGId, itorG, narrowedBy, interval, intervalId } = this.state;
 
-    if (data) {
-      this.setState({
-        pageTypeId: data[0].id
-      });
+    clearInterval(this.state.intervalId);
+
+    if (narrowedBy == 'realtime') {
+      const intervalId = setInterval(()=> getPageData(partTId.value, itionGId.value, itorG.value), interval);
+      this.setState({intervalId});
     }
+  }
+
+  endInterval() {
+    clearInterval(this.state.intervalId);
   }
 
   serchItorG() {
@@ -53,149 +60,211 @@ class Dashboard extends Component {
     getItorGData();
   }
 
-  serchPageT() {
-    const { getPageTData } = this.props.actions;
-    const { vehicle, itionG } = this.state;
+  showMapping() {
+    const { getPageData } = this.props.actions;
+    const { state } = this;
+    const format = 'YYYY-MM-DD-HH-mm';
+    let start, end, panelId;
 
-    getPageTData(vehicle.c, itionG.p, itionG.i, itionG.d, itionG.l);
+    switch (state.narrowedBy) {
+      case 'realtime':
+        start = end = panelId = null;
+        break;
+      case 'term':
+        start = state.startDate.format(format);
+        end = state.endDate.format(format);
+        panelId = null;
+        break;
+      case 'panelId': start = end = null;
+        start = end = null;
+        panelId = state.panelId;
+        break;
+    }
+
+    getPageData(state.partTId.value, state.itionGId.value, state.itorG.value, start, end, panelId);
   }
 
   render() {
-    const { vehicle, itorG, showItionG, itionG, page, narrowedBy, startDate, endDate, panelId } = this.state;
-    const { VehicleData, ItorGData, AllItionGData, PageTData, actions } = this.props;
-
-    const format = 'YYYY-MM-DD-HH-mm-ss';
-    let url = '';
-
-    if (page) {
-      if (narrowedBy == 'realtime') {
-        url = `${page.id}/${itorG}`;
-      }
-      else if (narrowedBy == 'term') {
-        url = `${page.id}/${itorG}?start=${startDate.format(format)}&end=${endDate.format(format)}`;
-      }
-      else if (narrowedBy == 'panelId') {
-        url = `${page.id}/${itorG}?panelId=${panelId}`;
-      }
-    }
+    const { vehicle, partTId, itionGId, itorG, narrowedBy, startDate, endDate, panelId, mapping } = this.state;
+    const { VehicleData, ItorGData, PageData, actions } = this.props;
+    const format = 'YYYY-MM-DD-HH-mm';
+    const processes = {
+      1: [
+        {label: '成形工程ライン１', value: 1},
+        {label: '成形工程ライン２', value: 2},
+        {label: '成形工程：精度検査', value: 3},
+        {label: '穴あけ工程', value: 4}
+      ],
+      2: [
+        {label: '成形工程ライン１', value: 5},
+        {label: '成形工程ライン２', value: 6},
+        {label: '穴あけ工程', value: 8}
+      ],
+      3: [
+        {label: '成形工程ライン１', value: 5},
+        {label: '成形工程ライン２', value: 6},
+        {label: '穴あけ工程', value: 8}
+      ],
+      4: [
+        {label: '成形工程ライン１', value: 5},
+        {label: '成形工程ライン２', value: 6},
+        {label: '穴あけ工程', value: 8}
+      ],
+      5: [
+        {label: '成形工程ライン１', value: 5},
+        {label: '成形工程ライン２', value: 6},
+        {label: '穴あけ工程', value: 8}
+      ],
+      6: [
+        {label: '成形工程ライン１', value: 5},
+        {label: '成形工程ライン２', value: 6},
+        {label: '穴あけ工程', value: 8}
+      ],
+      7: [
+        {label: '接着工程：精度検査', value: 9},
+        {label: '接着工程：止水', value: 10},
+        {label: '接着工程：仕上', value: 11},
+        {label: '接着工程：検査', value: 12},
+        {label: '接着工程：特検', value: 13},
+        {label: '接着工程：手直し', value: 14},
+      ],
+    };
 
     return (
       <div id="dashboardWrap">
-        <div className="serch-wrap bg-white">
-          <div className="col-1 flex-row">
-            <div>
-              <p>車種*</p>
-              <Select
-                name="車種"
-                placeholder="選択してください"
-                clearable={false}
-                Searchable={true}
-                value={this.state.vehicle}
-                options={VehicleData.data.map(v => {
-                  return { value: v.c, label: v.c }
-                })}
-                onChange={value => this.setState({vehicle: value.value})}
-              />
+        <div className="header bg-white">
+          <div className="serch-wrap">
+            <div className="col-1 flex-row">
+              <div>
+                <p>車種*</p>
+                <Select
+                  name="車種"
+                  placeholder="車種を選択"
+                  styles={{height: 36}}
+                  clearable={false}
+                  Searchable={true}
+                  value={this.state.vehicle}
+                  options={[
+                    {label: '680A', value: '680A'},
+                    {label: '950A', value: '950A', disabled:true}
+                  ]}
+                  onChange={value => this.setState({vehicle: value})}
+                />
+              </div>
+              <div>
+                <p>部品*</p>
+                <Select
+                  name="部品"
+                  styles={{height: 36}}
+                  placeholder={vehicle == null ? '先に車種を選択' :'部品を選択'}
+                  disabled={vehicle == null}
+                  clearable={false}
+                  Searchable={true}
+                  scrollMenuIntoView={false}
+                  value={this.state.partTId}
+                  options={[
+                    {label: 'バックドアインナー', value: 1},
+                    {label: 'アッパー', value: 2},
+                    {label: 'サイドアッパーRH', value: 3},
+                    {label: 'サイドアッパーLH', value: 4},
+                    {label: 'サイドロアRH', value: 5},
+                    {label: 'サイドロアLH', value: 6},
+                    {label: 'バックドアインナASSY', value: 7}
+                  ]}
+                  onChange={value => this.setState({
+                    partTId: value,
+                    itionGId: null
+                  })}
+                />
+              </div>
+              <div>
+                <p>工程*</p>
+                <Select
+                  name="工程"
+                  styles={{height: 36}}
+                  placeholder={partTId == null ? '先に部品を選択' :'工程を選択'}
+                  disabled={partTId == null}
+                  clearable={false}
+                  Searchable={true}
+                  value={itionGId}
+                  options={partTId ? processes[partTId.value] : null}
+                  onChange={value => this.setState({itionGId: value})}
+                />
+              </div>
+              <div>
+                <p>直*</p>
+                <Select
+                  name="直"
+                  styles={{height: 36}}
+                  placeholder="選択してください"
+                  clearable={false}
+                  Searchable={true}
+                  value={itorG}
+                  options={[
+                    {label: '黄直', value: 'Y'},
+                    {label: '白直', value: 'W'},
+                    {label: '両直', value: 'both'}
+                  ]}
+                  onChange={value => this.setState({itorG: value})}
+                />
+              </div>
             </div>
-            <div>
-              <p>部品*</p>
-              <Select
-                name="部品"
-                placeholder="選択してください"
-                clearable={false}
-                Searchable={true}
-                value={this.state.partT}
-                options={[
-                  {label: 'バックドアインナー', value: 1},
-                  {label: 'アッパー', value: 2},
-                  {label: 'サイドアッパーRH', value: 3},
-                  {label: 'サイドアッパーLH', value: 4},
-                  {label: 'サイドロアRH', value: 5},
-                  {label: 'サイドロアLH', value: 6},
-                  {label: 'バックドアインナASSY', value: 7}
-                ]}
-                onChange={value => this.setState({partT: value})}
-              />
-            </div>
-            <div>
-              <p>工程*</p>
-              <Select
-                name="工程"
-                placeholder="選択してください"
-                clearable={false}
-                Searchable={true}
-                value={{label: '成形工程ライン１', value: 1}}
-                options={[
-                  {label: '成形工程ライン１', value: 1},
-                  {label: '成形工程ライン２', value: 2},
-                  {label: '成形工程：精度検査', value: 3},
-                  {label: '穴あけ工程', value: 4}
-                ]}
-                onChange={value => this.setState({ition: value.value})}
-              />
-            </div>
-            <div>
-              <p>直*</p>
-              <Select
-                name="直"
-                placeholder="選択してください"
-                clearable={false}
-                Searchable={true}
-                value={{label: '黄直', value: 1}}
-                options={[]}
-                onChange={value => this.setState({ition: value.value})}
-              />
+            <div className="col-2 flex-row">
+              <p>表示方法*</p>
+              <div
+                className={narrowedBy === 'realtime' ? 'realtime active' : 'realtime'}
+                onClick={() => this.setState({narrowedBy: 'realtime'})}
+              >
+                リアルタイム更新
+              </div>
+              <div
+                className={narrowedBy === 'term' ? 'term-wrap active' : 'term-wrap'}
+                onClick={() => this.setState({narrowedBy: 'term'})}
+              >
+                <p>期間：</p>
+                  <RangeCalendar
+                    disabled={narrowedBy !== 'term'}
+                    defaultValue={startDate}
+                    setState={startDate => this.setState({
+                      startDate: startDate
+                    })}
+                  />
+                  <p>〜</p>
+                  <RangeCalendar
+                    disabled={narrowedBy !== 'term'}
+                    defaultValue={endDate}
+                    setState={endDate => this.setState({
+                      endDate: endDate
+                    })}
+                  />
+              </div>
+              <div
+                className={narrowedBy === 'panelId' ? "panel-id-wrap active" : "panel-id-wrap"}
+                onClick={() => this.setState({narrowedBy: 'panelId'})}
+              >
+                <p>パネルID：</p>
+                <input
+                  type="text"
+                  value={panelId}
+                  onChange={(e) => this.setState({panelId: e.target.value})}
+                />
+              </div>
             </div>
           </div>
-          <div className="col-2 flex-row">
-            <p>表示方法*</p>
-            <div
-              className={narrowedBy === 'realtime' ? 'realtime active' : 'realtime'}
-              onClick={() => this.setState({narrowedBy: 'realtime'})}
-            >
-              リアルタイム更新
-            </div>
-            <div
-              className={narrowedBy === 'term' ? 'term-wrap active' : 'term-wrap'}
-              onClick={() => this.setState({narrowedBy: 'term'})}
-            >
-              <p>期間：</p>
-                <RangeCalendar
-                  disabled={narrowedBy !== 'term'}
-                  defaultValue={startDate}
-                  setState={startDate => this.setState({
-                    startDate: startDate
-                  })}
-                />
-                <p>〜</p>
-                <RangeCalendar
-                  disabled={narrowedBy !== 'term'}
-                  defaultValue={endDate}
-                  setState={endDate => this.setState({
-                    endDate: endDate
-                  })}
-                />
-            </div>
-            <div
-              className={narrowedBy === 'panelId' ? "panel-id-wrap active" : "panel-id-wrap"}
-              onClick={() => this.setState({narrowedBy: 'panelId'})}
-            >
-              <p>パネルID：</p>
-              <input
-                type="text"
-                value={panelId}
-                onChange={(e) => this.setState({panelId: e.target.value})}
-              />
-            </div>
-            <div
-              className="realtime active"
-              onClick={() => this.setState({narrowedBy: 'realtime'})}
-            >
-              表示する
-            </div>
+          <div
+            className={`mapping-btn ${partTId && itionGId && itorG && 'active'}`}
+            onClick={() => {
+              this.startInterval();
+              this.showMapping();
+            }}
+          >
+            <p>表示</p>
           </div>
         </div>
-        <Mapping/>
+        {
+          PageData.data &&
+          <Mapping PageData={PageData}/>
+        }
       </div>
     );
   }
@@ -205,13 +274,84 @@ Dashboard.propTypes = {
   VehicleData: PropTypes.object.isRequired,
   ItorGData: PropTypes.object.isRequired,
   PageTData: PropTypes.object.isRequired,
+  PageData: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
+  let data;
+  if (state.PageData.data && typeof(state.PageData.data.pageTypes) !== 'undefined') {
+    let aaa = state.PageData.data.pageTypes.reduce((pre, pt) =>{
+      const f = pt.failures.map(f => {
+        const point = f.point.split(',');
+        let x = point[0]/2;
+        let y = point[1]/2;
+
+        switch (pt.pageNum) {
+          case 2: x = x + 1740/2; break;
+          case 3: y = y + 1030/2; break;
+          case 4: x = x + 1740/2; y = y + 1030/2; break;
+        }
+
+        return {
+          id: f.id,
+          point: `${x},${y}`,
+          sort: f.sort,
+          type: f.type
+        }
+      });
+
+      const h = Object.keys(pt.holes).map(id => {
+        pt.holes[id] = pt.holes[id].map(h =>{
+          const point = h.point.split(',');
+          let x = point[0]/2;
+          let y = point[1]/2;
+
+          switch (pt.pageNum) {
+            case 2: x = x + 1740/2; break;
+            case 3: y = y + 1030/2; break;
+            case 4: x = x + 1740/2; y = y + 1030/2; break;
+          }
+
+          return {
+            id: h.id,
+            point: `${x},${y}`,
+            status: h.status,
+            direction: h.direction,
+            label: h.label
+          };
+        })
+      });
+
+      return {
+        failures: pre.failures.concat(f),
+        holes: Object.assign(pre.holes, pt.holes),
+        pages: pre.pages+pt.pages,
+        path: pre.path.concat([pt.path])
+      }
+    }, {
+      failures: [],
+      holes: {},
+      pages: 0,
+      path: []
+    })
+
+    state.PageData.data.commentTypes = [];
+    state.PageData.data.comments = [];
+    state.PageData.data.failures = aaa.failures;
+    state.PageData.data.holes = aaa.holes;
+    state.PageData.data.pages = aaa.pages;
+    state.PageData.data.path = aaa.path;
+    state.PageData.data.inlines = [];
+  }
+
+
+
+
   return {
     VehicleData: state.VehicleData,
     ItorGData: state.ItorGData,
     PageTData: state.PageTData,
+    PageData: state.PageData
   };
 }
 
@@ -219,7 +359,8 @@ function mapDispatchToProps(dispatch) {
   const actions = Object.assign({push},
     vehicleActions,
     itorGActions,
-    pageTActions
+    pageTActions,
+    pageActions
   );
 
   return {

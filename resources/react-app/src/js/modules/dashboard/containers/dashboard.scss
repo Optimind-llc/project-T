@@ -1,125 +1,164 @@
 #dashboardWrap {
   padding: 4px 4px 0 4px;
-  min-width: 1050px;
+  min-width: 1100px;
 
-  > div.serch-wrap {
-    padding: 10px;
+  > div.header {
+    display: flex;
+    flex-flow: row nowrap;
 
-    .flex-row {
-      display: flex;
-      flex-flow: row nowrap;
-      margin-right: 10px;
+    .serch-wrap {
+      flex-basis: 1030px;
+      flex-grow: 1;
+      padding: 10px;
 
-      > div {
-        margin: 0 4px;
-
-        &:nth-child(1) {
-          margin-left: 0;
-        }
-
-        &:nth-last-of-type(1) {
-          margin-right: 0;
-        }
-      }
-    }
-
-    .col-1 {
-      justify-content: space-between;
-
-      > div {
-        flex-basis: 260px;
+      .flex-row {
         display: flex;
         flex-flow: row nowrap;
-
-        > p {
-          margin: 0 8px 0 0;
-          padding: 0;
-          line-height: 36px;
-        }
-        > div {
-          width: 200px;
-        }
-      }
-    }
-
-    .col-2 {
-      margin-top: 12px;
-
-      > p {
-        line-height: 50px;
-        margin: 0 8px 0 0;
-      }
-
-      > div {
-        height: 50px;
-        border: 1px solid #BBB;
-        border-radius: 4px;
-        color: #BBB;
-
-        &.active {
-          background-color: #4A4A4A;
-          cursor: default;
-          color: #FFF;
-          p {
-            color: #FFF;
-          }
-        }
-
-        > p {
-          margin: 0;
-          padding: 0;
-          line-height: 36px;
-          color: #BBB;
-        }
+        margin-right: 10px;
 
         > div {
-          width: 200px;
-        }
+          margin: 0 4px;
 
-        &.realtime {
-          flex-basis: 160px;
-          line-height: 50px;
-          text-align: center;
-        }
-
-        &.term-wrap {
-          flex-basis: 520px;
-          display: flex;
-          flex-flow: row nowrap;
-          padding: 6px 4px 6px 10px;
-          p {
-            margin: 0 8px 0 0;
-            &:nth-child(3) {
-              margin: 0 4px;
-            }
+          &:nth-child(1) {
+            margin-left: 0;
           }
 
-          div {
-            flex-basis: 60px;
-          }
-
-          input {
-            color: #BBB;
+          &:nth-last-of-type(1) {
+            margin-right: 0;
           }
         }
+      }
 
-        &.panel-id-wrap {
+      .col-1 {
+        justify-content: space-between;
+
+        > div {
           flex-basis: 260px;
           display: flex;
           flex-flow: row nowrap;
-          padding: 6px 4px 6px 10px;
 
-          p {
+          > p {
             margin: 0 8px 0 0;
+            padding: 0;
+            line-height: 36px;
           }
-
-          input {
-            flex-basis: 140px;
+          > div {
+            flex-basis: 180px;
+            flex-grow: 1;
           }
+        }
+      }
 
+      .col-2 {
+        margin-top: 12px;
+
+
+        > p {
+          line-height: 50px;
+          margin: 0 8px 0 0;
         }
 
+        > div {
+          height: 50px;
+          border: 1px solid #BBB;
+          border-radius: 4px;
+          color: #BBB;
 
+          &.active {
+            background-color: #4A4A4A;
+            cursor: default;
+            color: #FFF;
+            p {
+              color: #FFF;
+            }
+          }
+
+          > p {
+            margin: 0;
+            padding: 0;
+            line-height: 36px;
+            color: #BBB;
+          }
+
+          > div {
+            width: 200px;
+          }
+
+          &.realtime {
+            flex-basis: 150px;
+            flex-grow: 1;
+            line-height: 50px;
+            text-align: center;
+          }
+
+          &.term-wrap {
+            flex-basis: 490px;
+            flex-grow: 1;
+            display: flex;
+            flex-flow: row nowrap;
+            padding: 6px 4px 6px 10px;
+            p {
+              margin: 0 8px 0 0;
+              &:nth-child(3) {
+                margin: 0 4px;
+              }
+            }
+
+            div {
+              flex-basis: 60px;
+            }
+
+            input {
+              color: #BBB;
+            }
+          }
+
+          &.panel-id-wrap {
+            flex-basis: 260px;
+            flex-grow: 1;
+            display: flex;
+            flex-flow: row nowrap;
+            padding: 6px 4px 6px 10px;
+
+            p {
+              margin: 0 8px 0 0;
+            }
+
+            input {
+              flex-basis: 140px;
+            }
+
+          }
+
+
+        }
+      }
+    }
+
+    .mapping-btn {
+      flex-basis: 50px;
+      flex-grow: 0;
+      height: 98px;
+      margin: 10px 10px 10px 0 ;
+      border: 1px solid #BBB;
+      border-radius: 4px;
+      color: #BBB;
+
+      p {
+        margin: 0;
+        padding: 0;
+        line-height: 96px;
+        text-align: center;
+      }
+
+      &.active {
+        background-color: #4A4A4A;
+        cursor: default;
+        color: #FFF;
+
+        p {
+          color: #FFF;
+        }
       }
     }
   }
