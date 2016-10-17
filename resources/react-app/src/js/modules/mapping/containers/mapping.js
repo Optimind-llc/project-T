@@ -89,7 +89,7 @@ class Mapping extends Component {
             {
               <div>
                 <ul className="parts">
-                  <li>合計</li>
+                  <li>計</li>
                   {
                     data.failureTypes.map(ft => 
                       <li>
@@ -110,7 +110,7 @@ class Mapping extends Component {
           <div className="collection">
             <div>
               <ul>
-                <li>{'穴番号'}</li>
+                <li>{'穴'}</li>
                 {Object.keys(data.holes).map(id => <li>{id}</li>)}
               </ul>
             </div>
@@ -207,7 +207,7 @@ class Mapping extends Component {
             {
               <div>
                 <ul className="parts">
-                  <li>合計</li>
+                  <li>計</li>
                   {
                     data.commentTypes.map(ct => 
                       <li>
@@ -276,7 +276,7 @@ class Mapping extends Component {
                   const y = point[1]/2;
                   return (
                     <g>
-                      <circle cx={x} cy={y} r={3} fill="red" />
+                      <circle cx={x} cy={y} r={6} fill="red" />
                     </g>
                   );
                 })
@@ -309,7 +309,7 @@ class Mapping extends Component {
                   const y = point[1]/2;
                   return (
                     <g>
-                      <circle cx={x} cy={y} r={3} fill="blue" />
+                      <circle cx={x} cy={y} r={6} fill="blue" />
                     </g>
                   );
                 })
@@ -327,7 +327,7 @@ class Mapping extends Component {
                     const ly = labelPoint[1]/2;
                     return (
                       <g>
-                        <circle cx={x} cy={y} r={3} fill="red" />
+                        <circle cx={x} cy={y} r={6} fill="red" />
                         <rect x={lx} y={ly} width={width} height="30" fill="white" stroke="gray"></rect>
                         <line x1={x} y1={y} x2={i.side == 'left' ? lx : lx + width} y2={ly+15} stroke="#e74c3c" stroke-width="10" />
                         <text

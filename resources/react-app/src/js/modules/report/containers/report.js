@@ -253,7 +253,7 @@ class Report extends Component {
               </div>
             </div>
             <div>
-              <p>点検</p>
+              <p>検査</p>
               <div
                 onClick={() => this.setState({
                   modal: true,

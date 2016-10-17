@@ -275,6 +275,7 @@ class PrintController extends Controller
         /********* Render failures *********/
         if (array_key_exists('failures', $page) && count($page['failures']) !== 0 ) {
             $client_failures = $page['failures'];
+            $comments = $pageModel->group->inspection->comments;
             $failures = $pageModel->group->inspection->process->failures
                 ->map(function($f) {
                     return [
@@ -303,6 +304,15 @@ class PrintController extends Controller
                     $fpdi->Text($p['x']-2.6, $p['y']-2.5, $label);
                 } else {
                     $fpdi->Text($p['x']-1.5, $p['y']-2.5, $label);
+                }
+
+                $lw = 18;
+                $lh = 5;
+
+                if (array_key_exists('commentId', $cf)) {
+                    $fpdi->SetFont('kozgopromedium', '', 10);
+                    $fpdi->Rect($p['x']-($lw/2), $p['y']-($lh/2)-6, $lw, $lh, 'DF', ['LTRB' => ['color' => [78, 143, 12]]], [255,255,255]);
+                    $fpdi->Text($p['x']-6.5, $p['y']-8.2, '手直し'.$cf['commentId']);
                 }
             }
         }
