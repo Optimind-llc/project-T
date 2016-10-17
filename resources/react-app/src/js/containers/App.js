@@ -25,7 +25,6 @@ class App extends Component {
 
     const links = [
       { en: 'dashboard', name: 'マッピング' },
-      { en: 'reference', name: '検査結果照会' },
       { en: 'report', name: '直レポート印刷' }
     ]
 

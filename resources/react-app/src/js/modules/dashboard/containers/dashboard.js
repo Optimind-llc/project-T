@@ -223,7 +223,6 @@ class Dashboard extends Component {
               >
                 <p>期間：</p>
                   <RangeCalendar
-                    disabled={narrowedBy !== 'term'}
                     defaultValue={startDate}
                     setState={startDate => this.setState({
                       startDate: startDate
@@ -231,7 +230,6 @@ class Dashboard extends Component {
                   />
                   <p>〜</p>
                   <RangeCalendar
-                    disabled={narrowedBy !== 'term'}
                     defaultValue={endDate}
                     setState={endDate => this.setState({
                       endDate: endDate

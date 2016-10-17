@@ -145,7 +145,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：成形工程ライン'.$line);
-            $tcpdf->Text(60, $y0, '検査：インナー');
+            $tcpdf->Text(60, $y0, 'インナー検査結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -228,7 +228,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：成形工程ライン'.$line);
-            $tcpdf->Text(80, $y0, '検査：インナー');
+            $tcpdf->Text(80, $y0, 'インナー検査結果');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
             $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
@@ -349,7 +349,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：成形工程');
-            $tcpdf->Text(60, $y0, '精度検査');
+            $tcpdf->Text(60, $y0, '精度結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->SetFont('kozgopromedium', '', 8);
             $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
@@ -424,7 +424,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：成形工程');
-            $tcpdf->Text(60, $y0, '精度検査');
+            $tcpdf->Text(60, $y0, '精度結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
@@ -523,7 +523,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：穴あけ工程');
-            $tcpdf->Text(60, $y0, '検査：インナー');
+            $tcpdf->Text(60, $y0, 'インナー検査結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -605,7 +605,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：穴あけ工程');
-            $tcpdf->Text(80, $y0, '検査：インナー');
+            $tcpdf->Text(80, $y0, 'インナー検査結果');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
             $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
@@ -756,7 +756,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：成形工程ライン'.$line);
-            $tcpdf->Text(60, $y0, '検査：アウター');
+            $tcpdf->Text(60, $y0, 'アウター検査結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -836,7 +836,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：成形工程'.$line);
-            $tcpdf->Text(80, $y0, '検査：アウター');
+            $tcpdf->Text(80, $y0, 'アウター検査結果');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
             $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
@@ -985,7 +985,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：穴あけ工程');
-            $tcpdf->Text(60, $y0, '検査：インナー');
+            $tcpdf->Text(60, $y0, 'アウター検査結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -1067,7 +1067,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：穴あけ工程');
-            $tcpdf->Text(80, $y0, '検査：アウター');
+            $tcpdf->Text(80, $y0, 'アウター検査結果');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
             $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
@@ -1191,7 +1191,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(60, $y0, '精度検査');
+            $tcpdf->Text(60, $y0, '精度結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->SetFont('kozgopromedium', '', 8);
             $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H :m :s'));
@@ -1266,7 +1266,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(60, $y0, '精度検査');
+            $tcpdf->Text(60, $y0, '精度結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
 
@@ -1399,7 +1399,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(50, $y0, '止水：インナーASSY');
+            $tcpdf->Text(50, $y0, '止水検査結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -1482,7 +1482,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(80, $y0, '止水：インナーASSY');
+            $tcpdf->Text(80, $y0, '止水検査結果');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
             $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
@@ -1647,7 +1647,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(50, $y0, '仕上：インナーASSY');
+            $tcpdf->Text(50, $y0, '仕上結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -1730,7 +1730,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(80, $y0, '仕上：インナーASSY');
+            $tcpdf->Text(80, $y0, '仕上結果');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
             $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
@@ -1875,7 +1875,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(50, $y0, '検査：インナーASSY');
+            $tcpdf->Text(50, $y0, '検査結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -1958,7 +1958,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(80, $y0, '検査：インナーASSY');
+            $tcpdf->Text(80, $y0, '検査結果');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
             $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
@@ -2100,7 +2100,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(50, $y0, '特検：インナーASSY');
+            $tcpdf->Text(50, $y0, '特検結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -2183,7 +2183,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(80, $y0, '特検：インナーASSY');
+            $tcpdf->Text(80, $y0, '特検結果');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
             $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  
@@ -2348,7 +2348,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(50, $y0, '手直し：インナーASSY');
+            $tcpdf->Text(50, $y0, '手直結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -2431,7 +2431,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：接着工程');
-            $tcpdf->Text(80, $y0, '手直し：インナーASSY');
+            $tcpdf->Text(80, $y0, '手直結果');
             $tcpdf->Text(160, $y0, strtr($date,'-','/'));
             $tcpdf->Text(200, $y0, $itorG_name);
             $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H :m :s'));  

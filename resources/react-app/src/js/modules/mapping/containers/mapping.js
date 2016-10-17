@@ -64,7 +64,7 @@ class Mapping extends Component {
                     this.setState({ fFilter: newFilter });
                   }}
                 >
-                  <span><p>{fFilter.length === 0 ? '✔' :''}︎</p></span>
+                  <span>{fFilter.length === 0 && <p>{'✔'}︎</p>}</span>
                   <span>不良区分</span>
                 </li>
                 {data.failureTypes.map(ft =>{
@@ -79,7 +79,7 @@ class Mapping extends Component {
                         this.setState({ fFilter });
                       }}
                     >
-                      <span><p>{index === -1 ? '✔' :''}︎</p></span>
+                      <span>{index === -1 && <p>{'✔'}︎</p>}</span>
                       <span>{`${ft.sort}. ${ft.name}`}</span>
                     </li>
                   );
@@ -119,7 +119,7 @@ class Mapping extends Component {
                 <li
                   onClick={() => this.setState({holeStatus: 1})}
                 >
-                  <span><p>{holeStatus === 1 ? '✔' :''}︎</p></span>
+                  <span>{holeStatus === 1 && <p>{'✔'}︎</p>}</span>
                   {'○'}
                 </li>
                 {Object.keys(data.holes).map(id => {
@@ -136,7 +136,7 @@ class Mapping extends Component {
                 <li
                   onClick={() => this.setState({holeStatus: 2})}
                 >
-                  <span><p>{holeStatus === 2 ? '✔' :''}︎</p></span>
+                  <span>{holeStatus === 2 && <p>{'✔'}︎</p>}</span>
                   {'△'}
                 </li>
                 {Object.keys(data.holes).map(id => {
@@ -153,7 +153,7 @@ class Mapping extends Component {
                 <li
                   onClick={() => this.setState({holeStatus: 0})}
                 >
-                  <span><p>{holeStatus === 0 ? '✔' :''}︎</p></span>{'×'}
+                  <span>{holeStatus === 0 && <p>{'✔'}︎</p>}</span>{'×'}
                 </li>
                 {Object.keys(data.holes).map(id => {
                   const all = data.holes[id].length;
@@ -253,7 +253,7 @@ class Mapping extends Component {
   render() {
     const { isFetching, data } = this.props.PageData;
     const { failure, hole, comment, inline, fFilter, holeStatus, cFilter } = this.state;
-console.log(data);
+
     return (
       <div id="mapping-wrap" className="">
         <div className="mapping-body">
@@ -266,122 +266,122 @@ console.log(data);
                 ):
                 <img src={data.path}/>
               }
-              <svg>
-                {
-                  failure &&
-                  data.failures.filter(f => fFilter.indexOf(f.id) == -1).map(f => {
-                    const point = f.point.split(',');
+            </div>
+            <svg>
+              {
+                failure &&
+                data.failures.filter(f => fFilter.indexOf(f.id) == -1).map(f => {
+                  const point = f.point.split(',');
+                  const x = point[0]/2;
+                  const y = point[1]/2;
+                  return (
+                    <g>
+                      <circle cx={x} cy={y} r={3} fill="red" />
+                    </g>
+                  );
+                })
+              }{
+                hole &&
+                Object.keys(data.holes).map(id => {
+                  const holes = this.formatHoles(data.holes[id]);
+                  return (
+                    <g>
+                      <circle cx={holes.x} cy={holes.y} r={4} fill="red" />
+                      <text
+                        x={holes.lx}
+                        y={holes.ly}
+                        dy="6"
+                        fontSize="18"
+                        fill="black"
+                        textAnchor="middle"
+                        fontWeight="bold"
+                        >
+                          {holes.status.filter(s => s == holeStatus).length}
+                        </text>
+                    </g>
+                  )
+                })
+              }{
+                comment &&
+                data.comments.filter(c => cFilter.indexOf(c.id) == -1).map(c => {
+                  const point = c.point.split(',');
+                  const x = point[0]/2;
+                  const y = point[1]/2;
+                  return (
+                    <g>
+                      <circle cx={x} cy={y} r={3} fill="blue" />
+                    </g>
+                  );
+                })
+              }{
+                inline &&
+                Object.keys(data.inlines).map(id => {
+                  return data.inlines[id].map(i => {
+                    const width = 120;
+                    const point = i.point.split(',');
                     const x = point[0]/2;
                     const y = point[1]/2;
+
+                    const labelPoint = i.labelPoint.split(',');
+                    const lx = labelPoint[0]/2;
+                    const ly = labelPoint[1]/2;
                     return (
                       <g>
                         <circle cx={x} cy={y} r={3} fill="red" />
-                      </g>
-                    );
-                  })
-                }{
-                  hole &&
-                  Object.keys(data.holes).map(id => {
-                    const holes = this.formatHoles(data.holes[id]);
-                    return (
-                      <g>
-                        <circle cx={holes.x} cy={holes.y} r={4} fill="red" />
+                        <rect x={lx} y={ly} width={width} height="30" fill="white" stroke="gray"></rect>
+                        <line x1={x} y1={y} x2={i.side == 'left' ? lx : lx + width} y2={ly+15} stroke="#e74c3c" stroke-width="10" />
                         <text
-                          x={holes.lx}
-                          y={holes.ly}
-                          dy="6"
-                          fontSize="18"
+                          x={lx}
+                          y={ly}
+                          dx="4"
+                          dy="14"
+                          fontSize="12"
                           fill="black"
-                          textAnchor="middle"
                           fontWeight="bold"
-                          >
-                            {holes.status.filter(s => s == holeStatus).length}
-                          </text>
-                      </g>
-                    )
-                  })
-                }{
-                  comment &&
-                  data.comments.filter(c => cFilter.indexOf(c.id) == -1).map(c => {
-                    const point = c.point.split(',');
-                    const x = point[0]/2;
-                    const y = point[1]/2;
-                    return (
-                      <g>
-                        <circle cx={x} cy={y} r={3} fill="blue" />
-                      </g>
-                    );
-                  })
-                }{
-                  inline &&
-                  Object.keys(data.inlines).map(id => {
-                    return data.inlines[id].map(i => {
-                      const width = 120;
-                      const point = i.point.split(',');
-                      const x = point[0]/2;
-                      const y = point[1]/2;
-
-                      const labelPoint = i.labelPoint.split(',');
-                      const lx = labelPoint[0]/2;
-                      const ly = labelPoint[1]/2;
-                      return (
-                        <g>
-                          <circle cx={x} cy={y} r={3} fill="red" />
-                          <rect x={lx} y={ly} width={width} height="30" fill="white" stroke="gray"></rect>
-                          <line x1={x} y1={y} x2={i.side == 'left' ? lx : lx + width} y2={ly+15} stroke="#e74c3c" stroke-width="10" />
+                          text-anchor="middle"
+                        >
+                          {i.sort}
+                        </text>
+                        {
+                          i.face &&
                           <text
                             x={lx}
                             y={ly}
                             dx="4"
-                            dy="14"
-                            fontSize="12"
+                            dy="26"
+                            fontSize="10"
                             fill="black"
-                            fontWeight="bold"
                             text-anchor="middle"
                           >
-                            {i.sort}
+                            {i.face}
                           </text>
-                          {
-                            i.face &&
-                            <text
-                              x={lx}
-                              y={ly}
-                              dx="4"
-                              dy="26"
-                              fontSize="10"
-                              fill="black"
-                              text-anchor="middle"
-                            >
-                              {i.face}
-                            </text>
-                          }
-                          <text
-                            x={lx}
-                            y={ly}
-                            dx="24"
-                            dy="12"
-                            fontSize="10"
-                            fill="black"
-                          >
-                            {`結果：${i.status}`}
-                          </text>
-                          <text
-                            x={lx}
-                            y={ly}
-                            dx="24"
-                            dy="24"
-                            fontSize="10"
-                            fill="black"
-                          >
-                            {`公差：${i.tolerance}`}
-                          </text>
-                        </g>
-                      );
-                    })
+                        }
+                        <text
+                          x={lx}
+                          y={ly}
+                          dx="24"
+                          dy="12"
+                          fontSize="10"
+                          fill="black"
+                        >
+                          {`結果：${i.status}`}
+                        </text>
+                        <text
+                          x={lx}
+                          y={ly}
+                          dx="24"
+                          dy="24"
+                          fontSize="10"
+                          fill="black"
+                        >
+                          {`公差：${i.tolerance}`}
+                        </text>
+                      </g>
+                    );
                   })
-                }
-              </svg>
-            </div>
+                })
+              }
+            </svg>
           </div>
           <div className="control-panel">
             <div className="control-tab">
