@@ -513,7 +513,11 @@ class InsertInline extends Command
      */
     public function handle()
     {
-        $dirPath = base_path('input');
+        // $value = config('path.inline');
+        // $this->info($value);
+
+        // $dirPath = base_path('input');
+        $dirPath = config('path.inline');
 
         $files = scandir($dirPath);
 

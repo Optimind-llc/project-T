@@ -67,7 +67,7 @@ class Dashboard extends Component {
   showMapping() {
     const { getPageData } = this.props.actions;
     const { state } = this;
-    const format = 'YYYY-MM-DD-HH-mm';
+    const format = 'YYYY-MM-DD';
     let start, end, panelId;
 
     switch (state.narrowedBy) {
@@ -91,7 +91,7 @@ class Dashboard extends Component {
   render() {
     const { vehicle, partTId, itionGId, itorG, narrowedBy, startDate, endDate, panelId, mapping } = this.state;
     const { VehicleData, ItorGData, PageData, actions } = this.props;
-    const format = 'YYYY-MM-DD-HH-mm';
+    const format = 'YYYY-MM-DD';
     const processes = {
       1: [
         {label: '成形工程ライン１', value: 1},

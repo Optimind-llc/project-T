@@ -355,8 +355,8 @@ class ShowController extends Controller
         $panel_id = $request->panelId;
 
         if (isset($request->start) && isset($request->end)) {
-            $start_at = Carbon::createFromFormat('Y-m-d-H-i', $request->start);
-            $end_at = Carbon::createFromFormat('Y-m-d-H-i', $request->end);
+            $start_at = Carbon::createFromFormat('Y-m-d', $request->start)->today()->addHours(2);
+            $end_at = Carbon::createFromFormat('Y-m-d', $request->end)->today()->addHours(26);
         }
         elseif (!isset($request->panelId))
         {

@@ -495,7 +495,9 @@ class InspectionController extends Controller
         $line = $gId == 1 ? '001' : '002';
 
         $file_name = 'M0001'.'_'.'67149'.'_'.$now_f;
-        $file_path = base_path('output/'.$file_name.'.csv');
+
+        // $file_path = base_path('output/'.$file_name.'.csv');
+        $file_path = config('path.output').$file_name.'.csv';
 
         $fail = collect($failures)->groupBy('id')->map(function($f){
             return $f->count();
