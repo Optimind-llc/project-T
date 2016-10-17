@@ -358,7 +358,8 @@ class ShowController extends Controller
             $start_at = Carbon::createFromFormat('Y-m-d-H-i', $request->start);
             $end_at = Carbon::createFromFormat('Y-m-d-H-i', $request->end);
         }
-        else {
+        elseif (!isset($request->panelId))
+        {
             $today = Carbon::today();
             $t2_end_at = $today->copy()->addHours(1);
             $t1_start_at = $today->copy()->addHours(6);
@@ -376,6 +377,10 @@ class ShowController extends Controller
             }
 
             $end_at = $now;
+        } elseif (isset($request->panelId))
+        {
+            $start_at = false;
+            $end_at = false;
         }
 
         switch ($request->itorG) {

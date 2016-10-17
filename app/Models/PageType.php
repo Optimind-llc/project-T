@@ -66,7 +66,7 @@ class PageType extends Model
 
     public function pagesWithRelated($itorG_name, $start_at, $end_at, $panel_id)
     {
-        return $this->pages()
+        $pages = $this->pages()
             ->join('inspection_families as f', function ($join) use ($itorG_name) {
                 $join->on('pages.family_id', '=', 'f.id')
                     ->whereIn('f.inspector_group', $itorG_name);
@@ -104,10 +104,12 @@ class PageType extends Model
                 'comments',
                 'comments.comment',
                 'comments.failurePosition'
-            ])
-            ->where('pages.created_at', '>=', $start_at)
-            ->where('pages.created_at', '<=', $end_at)
-            ->get();
+            ]);
 
+        if ($start_at) {
+            $pages->where('pages.created_at', '>=', $start_at)
+                ->where('pages.created_at', '<=', $end_at);
+        }
+            return $pages->get();
     }
 }

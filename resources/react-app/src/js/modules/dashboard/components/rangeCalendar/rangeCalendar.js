@@ -78,50 +78,42 @@ class RangeCalendar extends Component {
     />);
 
     return (
-      <div>
-        <div style={{
-          boxSizing: 'border-box',
-          display: 'block',
-          lineHeight: 1.5,
-        }}
+        <DatePicker
+          animation="slide-up"
+          disabled={state.disabled}
+          calendar={calendar}
+          value={state.value}
+          onChange={(value) => this.onChange(value)}
+          disabled={this.props.disabled}
         >
-          <DatePicker
-            animation="slide-up"
-            disabled={state.disabled}
-            calendar={calendar}
-            value={state.value}
-            onChange={(value) => this.onChange(value)}
-            disabled={this.props.disabled}
-          >
-            {
-              ({ value }) => {
-                return (
-                  <span tabIndex="0">
-                  <input
-                    placeholder="選択してください"
-                    style={{
-                      boxSizing: 'border-box',
-                      border: '1px solid #ccc',
-                      padding: '0 10px',
-                      margin: 0,
-                      width: 196,
-                      borderRadius: 4,
-                      color: state.disabled ? '#BBB' : '#000',
-                      lineHeight: '34px',
-                    }}
-                    disabled={state.disabled}
-                    readOnly
-                    tabIndex="-1"
-                    className="ant-calendar-picker-input ant-input"
-                    value={value && value.format(state.format) || ''}
-                  />
-                  </span>
-                );
-              }
+          {
+            ({ value }) => {
+              return (
+                <span tabIndex="0">
+                <input
+                  placeholder="選択してください"
+                  style={{
+                    boxSizing: 'border-box',
+                    border: '1px solid #ccc',
+                    padding: '0 10px',
+                    margin: 0,
+                    width: 196,
+                    height: 36,
+                    borderRadius: 4,
+                    color: state.disabled ? '#BBB' : '#000',
+                    lineHeight: '34px',
+                  }}
+                  disabled={state.disabled}
+                  readOnly
+                  tabIndex="-1"
+                  className="ant-calendar-picker-input ant-input"
+                  value={value && value.format(state.format) || ''}
+                />
+                </span>
+              );
             }
-          </DatePicker>
-        </div>
-      </div>
+          }
+        </DatePicker>
     );
   }
 };
