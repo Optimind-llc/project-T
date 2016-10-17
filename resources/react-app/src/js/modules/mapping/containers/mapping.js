@@ -182,7 +182,7 @@ class Mapping extends Component {
                     this.setState({ cFilter: newFilter });
                   }}
                 >
-                  <span><p>{cFilter.length === 0 ? '✔' :''}︎</p></span>
+                  <span>{cFilter.length === 0 &&<p>{'✔'}︎</p>}</span>
                   <span>手直し区分</span>
                 </li>
                 {data.commentTypes.map(ct =>{
@@ -197,7 +197,7 @@ class Mapping extends Component {
                         this.setState({ cFilter });
                       }}
                     >
-                      <span><p>{index === -1 ? '✔' :''}︎</p></span>
+                      <span>{index === -1 &&<p>{'✔'}︎</p>}</span>
                       <span>{`${ct.sort}. ${ct.message}`}</span>
                     </li>
                   );
@@ -211,7 +211,7 @@ class Mapping extends Component {
                   {
                     data.commentTypes.map(ct => 
                       <li>
-                        {data.comments == undefined ? 0 : data.failures.filter(f => f.sort == ct.sort).length}
+                        {data.comments == undefined ? 0 : data.comments.filter(c => c.id == ct.id).length}
                       </li>
                     )
                   }

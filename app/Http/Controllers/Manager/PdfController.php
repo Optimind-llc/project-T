@@ -1578,6 +1578,7 @@ class PdfController extends Controller
             $c_comments = $family->pages->reduce(function ($carry, $page) {
                 $comments = $page->comments->map(function ($comment){
                     return [
+                        'id' => $comment->comment->id,
                         'sort' => $comment->comment->sort,
                         'message' => $comment->comment->message
                     ];
@@ -1606,8 +1607,8 @@ class PdfController extends Controller
                 }
 
                 foreach ($comments as $c2 => $c) {
-                    $sum = count(array_filter($c_comments, function($comments) use ($c){
-                        return $comments['sort'] = $c['sort'];
+                    $sum = count(array_filter($c_comments, function($comment) use ($c){
+                        return $comment['id'] == $c['id'];
                     }));
 
                     array_push($body[$r], $sum);

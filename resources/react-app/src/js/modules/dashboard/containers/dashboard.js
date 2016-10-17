@@ -35,7 +35,7 @@ class Dashboard extends Component {
       endDate: moment(),
       panelId: '',
       intervalId: null,
-      interval: 100000,
+      interval: 20000,
     };
   }
 
@@ -49,6 +49,10 @@ class Dashboard extends Component {
       const intervalId = setInterval(()=> getPageData(partTId.value, itionGId.value, itorG.value), interval);
       this.setState({intervalId});
     }
+  }
+
+  componentWillUnmount() {
+   clearInterval(this.state.intervalId); 
   }
 
   endInterval() {

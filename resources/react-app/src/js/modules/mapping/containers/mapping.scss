@@ -151,7 +151,7 @@
 				.failure .collection {
 					> div {
 						&:nth-child(1) {
-							flex-basis: 151px;
+							flex-basis: 150px;
 							border-right: 1px solid #BFBFBF;
 
 							ul li span {
@@ -167,6 +167,9 @@
                                 		margin: -1px 0 0 2px;
                                 		padding: 0;
                                 	}
+                                }
+                                &:nth-child(2) {
+                                    min-width: 108px;
                                 }
                             }
 						}
