@@ -13,6 +13,7 @@ use App\Models\Process;
 use App\Models\PartType;
 use App\Models\PageType;
 use App\Models\InspectorGroup;
+use App\Models\Comment;
 use App\Models\Client\Part;
 use App\Models\Client\FailurePosition;
 // Exceptions
@@ -312,7 +313,8 @@ class PrintController extends Controller
                 if (array_key_exists('commentId', $cf)) {
                     $fpdi->SetFont('kozgopromedium', '', 10);
                     $fpdi->Rect($p['x']-($lw/2), $p['y']-($lh/2)-6, $lw, $lh, 'DF', ['LTRB' => ['color' => [78, 143, 12]]], [255,255,255]);
-                    $fpdi->Text($p['x']-6.5, $p['y']-8.2, '手直し'.$cf['commentId']);
+                    $label = Comment::find($cf['commentId'])->sort;
+                    $fpdi->Text($p['x']-6.5, $p['y']-8.2, '手直し'.$label);
                 }
             }
         }

@@ -163,8 +163,8 @@ class Dashboard extends Component {
                   placeholder={vehicle == null ? '先に車種を選択' :'部品を選択'}
                   disabled={vehicle == null}
                   clearable={false}
-                  Searchable={true}
-                  scrollMenuIntoView={false}
+                  Searchable={false}
+                  scrollMenuIntoView={true}
                   value={this.state.partTId}
                   options={[
                     {label: 'バックドアインナー', value: 1},
@@ -265,7 +265,7 @@ class Dashboard extends Component {
         </div>
         {
           PageData.data &&
-          <Mapping PageData={PageData}/>
+          <Mapping PageData={PageData} realtime={narrowedBy == 'realtime'}/>
         }
       </div>
     );

@@ -5,11 +5,10 @@ import alert from './alert';
 import VehicleData from '../modules/dashboard/ducks/vehicle';
 import ItorGData from '../modules/dashboard/ducks/itorG';
 import PageTData from '../modules/dashboard/ducks/pageT';
-
 import PageData from '../modules/dashboard/ducks/page';
-
 import VeItorGProcData from '../modules/report/ducks/report';
 import ItionGData from '../modules/report/ducks/inspectionGroup';
+import PartFData from '../modules/association/ducks/partF';
 
 const rootReducer = combineReducers(Object.assign({
   alert,
@@ -19,6 +18,7 @@ const rootReducer = combineReducers(Object.assign({
   PageData,
   VeItorGProcData,
   ItionGData,
+  PartFData,
   routing: routerReducer
 }));
 

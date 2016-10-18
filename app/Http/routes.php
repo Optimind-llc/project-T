@@ -15,20 +15,36 @@ Route::get('/', function () {
     return 'Hello World';
 });
 
+// Get infomations for inspection 
 Route::get('client/inspection', 'Client\InspectionController@inspection');
+Route::get('client/history/{inspectionGroupId}/{partTypeId}/{panelId}', 'Client\InspectionController@history')
+	->where([
+		'inspectionGroupId' => '[0-9]+',
+		'partTypeId' => '[0-9]+',
+		'panelId' => '[a-zA-Z0-9]+'
+	]);
+
+// Save inspection data
 Route::post('client/inspection', 'Client\InspectionController@saveInspection');
 
+// Print iPad display clone
 Route::post('client/print', 'Client\PrintController@printByTemplate');
+
+// Associate Parts
 Route::post('client/association', 'Client\AssociationController@saveAssociation');
-Route::post('client/associatiton', 'Client\AssociationController@saveAssociation');
+
+
+
 
 Route::get('manager/dashboard', 'Manager\ReferenceController@index');
 Route::get('manager/reference', 'Manager\ReferenceController@index');
 Route::get('manager/mapping', 'Manager\ReferenceController@index');
 Route::get('manager/mapping/{pageType}/{itorG}', 'Manager\ReferenceController@index');
 Route::get('manager/report', 'Manager\ReferenceController@index');
+Route::get('manager/association', 'Manager\ReferenceController@index');
 
 Route::get('manager/pdf/report/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@report');
+Route::get('manager/pdf/checkReport/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@checkReport');
 
 Route::get('show', 'ShowController@tableData');
 Route::get('show/pageType/{vehicle}/{process}/{inspection}/{division}/{line?}', 'ShowController@pageType')
@@ -55,6 +71,7 @@ Route::get('show/page2/{partTypeId}/{itionGId}/{itorG}', 'ShowController@page2')
 Route::get('show/inspectionGroup', 'ShowController@inspectionGroup');
 Route::get('show/allInspectionGroupNow', 'ShowController@allInspectionGroupNow');
 
+Route::get('show/partFamily/{date}/{tyoku}', 'ShowController@partFamily');
 
 
 

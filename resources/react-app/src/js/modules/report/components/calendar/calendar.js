@@ -58,10 +58,8 @@ class MyCalendar extends Component {
         return false;
       }
       const date = moment();
-      date.hour(0);
-      date.minute(0);
-      date.second(0);
-      return current.date() + 10 < date.date();  // can not select days before today
+      // return current.date() + 10 < date.date();  // can not select days before today
+      return !date.isAfter(current);
     }
 
 

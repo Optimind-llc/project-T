@@ -446,7 +446,7 @@ class Mapping extends Component {
           isFetching && <Loading/>
         }
         {
-          !isFetching && data.pages == 0 &&
+          !isFetching && data.pages == 0 && !this.props.realtime &&
           <div className="cover">
             <p>見つかりませんでした</p>
           </div>
@@ -457,7 +457,8 @@ class Mapping extends Component {
 }
 
 Mapping.propTypes = {
-  PageData: PropTypes.object.isRequired
+  PageData: PropTypes.object.isRequired,
+  realtime: PropTypes.bool.isRequired
 };
 
 export default Mapping;

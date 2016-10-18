@@ -60,7 +60,6 @@ class InspectionController extends Controller
     }
 
     protected function formatInspectors($inspectors) {
-
         return $inspectors->map(function ($i) {
                 return [
                     'id' => $i->id,
@@ -74,145 +73,6 @@ class InspectionController extends Controller
             ->groupBy('group');
     }
 
-    protected function finishOrAdjust(Request $request, $inspection_group)
-    {
-        $validator = app('validator')->make(
-            $request->all(),
-            ['panelId' => ['required', 'alpha_dash']]
-        );
-
-        if ($validator->fails()) {
-            throw new StoreResourceFailedException('Validation error', $validator->errors());
-        }
-
-        if ($request->inspection == 'finish') {
-            $enable_inspection_list = ['water_stop'];
-        } else {
-            $enable_inspection_list = ['check', 'special_check'];
-        }
-
-        // inspection内のgroups配列を取り出す、inner_assyでfilltering済み
-        $map1 = function ($i) {
-            return $i->groups->filter(function ($g) {
-                return $g->division_en == 'inner_assy';
-            });
-        };
-
-        // inner_assyでないgroupsを削除
-        $filter1 = function ($g) {
-            return $g->count() > 0;
-        };
-
-        // groups[0] が inner_assyなので、そのfamilyを取り出す
-        $map2 = function ($g) {
-            return $g[0]->families;
-        };
-
-        // familyのないgroupsを削除
-        $filter2 = function ($f) {
-            return $f->count() > 0;
-        };
-
-        // pagesが0以上のもののみにする
-        $map3 = function ($f) {
-            return $f->filter(function ($f) {
-                return $f->pages->count() > 0;
-            });
-        };
-
-        // pageのないfamilyを削除
-        $filter3 = function ($f) {
-            return $f->count() > 0;
-        };
-
-        // pagesが0以上のもののみにする
-        $map4 = function ($f) {
-            return $f->first()
-                ->pages
-                ->first()
-                ->failurePositions
-                ->map(function ($fp) {
-                    return [
-                        'failurePositionId' => $fp->id,
-                        'label' => $fp->failure->sort,                            
-                        'point' => $fp->point,
-                        'point_sub' => $fp->point_sub
-                    ];
-                })
-                ->toArray();
-        };
-
-        $filterInspection = function($i) {
-            return $i->en != 'adjust' && $i->groups[0]->families->count() > 0;
-        };
-
-        $mergeToOne = function ($a, $b) {
-            return array_merge($a, $b);
-        };
-
-        $history = $this->findProcessByEn($request->process)
-            ->getInspectionsHasSamePanelID(
-                $request->division,
-                $request->panelId,
-                $enable_inspection_list
-            )
-            ->map($map1)
-            ->filter($filter1)
-            ->map($map2)
-            ->filter($filter2)
-            ->map($map3)
-            ->filter($filter3)
-            ->map($map4)
-            ->reduce($mergeToOne, []);
-
-        return [
-            'group' => [
-                'id' => $inspection_group->id,
-                'inspectorGroups' => $this->formatInspectors($inspection_group->inspectors),
-                'failures' => $inspection_group->inspection->process->failures->map(function ($failure) {
-                    return [
-                        'id' => $failure->id,
-                        'name' => $failure->name,
-                        'type' => $failure->pivot->type
-                    ];
-                }),
-                'comments' => $inspection_group->inspection->comments->map(function ($comment) {
-                    return [
-                        'id' => $comment->id,
-                        'label' => $comment->sort,
-                        'message' => $comment->message
-                    ];
-                }),
-                'pages' => $inspection_group->pageTypes->map(function ($page) use ($history) {
-                    return [
-                        'id' => $page->id,
-                        'parts' => $page->partTypes->map(function ($part) use ($history) {
-                            return [
-                                'id' => $part->id,
-                                'name' => $part->name,
-                                'pn' => $part->pn,
-                                'vehicle' => $part->vehicle->number
-                            ];
-                        }),
-                        'figure' => [
-                            'path' => 'img/figures/'.$page->figure->path,
-                            'holes' => $page->figure->holes->map(function ($hole) {
-                                return [
-                                    'id' => $hole->id,
-                                    'point' => $hole->point
-                                ];
-                            })
-                        ],
-                        'history' => $history
-                    ];
-                })
-            ]
-        ];
-    }
-
-    /**
-     * Get user from JWT token
-     */
     public function inspection(Request $request)
     {
         $validator = app('validator')->make(
@@ -235,10 +95,6 @@ class InspectionController extends Controller
             $request->division,
             $request->line
         );
-
-        if ($request->inspection == 'finish' || $request->inspection == 'adjust') {
-            return $this->finishOrAdjust($request, $inspection_group);
-        }
 
         return [
             'group' => [
@@ -293,9 +149,74 @@ class InspectionController extends Controller
         ];
     }
 
-    /**
-     * Get user from JWT token
-     */
+    public function history($inspectionGroupId, $partTypeId, $panelId)
+    {
+        switch ($inspectionGroupId) {
+            case 11: $expect = ['waterStop' => 10]; break;
+            case 14: $expect = ['check' => 12, 'specialCheck' => 13]; break;
+            default: $expect = []; break;                
+        }
+
+        $heritage = [];
+
+        $part = Part::where('panel_id', $panelId)
+            ->where('part_type_id', $partTypeId)
+            ->first();
+
+        if (!$part instanceof Part) {
+            $inspected_array = [];
+            $history = [];
+        }
+        else {
+            if ($part->pages->count() == 0) {
+                $inspected_array = [];
+                $history = [];
+            }
+            else {
+                $inspected = $part->pages()
+                    ->join('inspection_families as if', 'pages.family_id', '=', 'if.id')
+                    ->select('pages.*', 'if.inspection_group_id')
+                    ->whereIn('if.inspection_group_id', array_values($expect))
+                    ->with([
+                        'failurePositions' => function($q) {
+                            $q->select(['id', 'point', 'page_id', 'failure_id']);
+                        },
+                        'failurePositions.failure' => function($q) {
+                            $q->select(['id', 'sort']);
+                        }
+                    ])
+                    ->get();
+
+                $inspected_array = $inspected->map(function($ig) {
+                        return $ig->inspection_group_id;
+                    })
+                    ->toArray();
+
+                $history = $inspected->map(function($page) {
+                    return $page->failurePositions->map(function($f) {
+                        return [
+                            'failurePositionId' => $f->id,
+                            'label' => $f->failure->sort,
+                            'point' => $f->point
+                        ];
+                    });
+                })
+                ->reduce(function ($carry, $failures) {
+                    return array_merge($carry, $failures->toArray());
+                }, []);
+            }
+        }
+
+        foreach ($expect as $name => $id) {
+            $heritage[$name] = in_array($id, $inspected_array) ? 1 : 0;
+        }
+
+        return [
+            'heritage' => $heritage,
+            'history' => $history
+        ];
+    }
+
     public function saveInspection(Request $request)
     {
         $family = $request->family;
@@ -304,7 +225,6 @@ class InspectionController extends Controller
         //Duplicate detection
         foreach ($family['pages'] as $page) {
             $page_type_id = $page['pageId'];
-            $part_ids = [];
 
             foreach ($page['parts'] as $part) {
                 $newPart = Part::where('panel_id', $part['panelId'])
@@ -312,18 +232,16 @@ class InspectionController extends Controller
                     ->first();
 
                 if ($newPart instanceof Part) {
-                    array_push($part_ids, $newPart->id);
+                    $newPage = Page::where('page_type_id', $page['pageId'])
+                        ->whereHas('parts', function($q) use ($newPart) {
+                            $q->where('id', $newPart->id);
+                        })
+                        ->first();
+
+                    if ($newPage instanceof Page) {
+                        throw new StoreResourceFailedException($part['panelId'].' already be inspected in ather page(page_id = '.$newPage->id.').');
+                    }
                 }
-            }
-
-            $newPage = Page::where('page_type_id', $family['pages'][0]['pageId'])
-                ->whereHas('parts', function($q) use ($part_ids) {
-                    $q->whereIn('id', $part_ids);
-                })
-                ->first();
-
-            if ($newPage instanceof Page) {
-                throw new StoreResourceFailedException('The part already be inspected in ather page(page_id = '.$newPage->id.').');
             }
         }
 
@@ -481,7 +399,8 @@ class InspectionController extends Controller
         return 'Excellent';
     }
 
-    public function exportCSV ($gId, $pId, $itorG, $itor, $status, $failures) {
+    public function exportCSV ($gId, $pId, $itorG, $itor, $status, $failures)
+    {
         // XXXX_IIIII_YYYYMMDD_HHMMSS.pdf
         // XXXX：工程　"M001"＝成形１ライン
         // IIIII：品番　上位５桁　例えば"67149"

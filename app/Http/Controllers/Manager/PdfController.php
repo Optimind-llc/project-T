@@ -112,7 +112,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('YmdHms'));
+                array_push($body[$r], $family->created_at->format('YmdHis'));
                 $r = $r+1;
             }
 
@@ -497,7 +497,7 @@ class PdfController extends Controller
                 $i = $i+1;
             }
 
-            array_push($body[$row], $family->created_at->format('YmdHms'));
+            array_push($body[$row], $family->created_at->format('YmdHis'));
         }
 
         $x0 = 8;
@@ -726,7 +726,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('YmdHms'));
+                array_push($body[$r], $family->created_at->format('YmdHis'));
                 $r = $r+1;
             }
 
@@ -956,7 +956,7 @@ class PdfController extends Controller
                     array_push($body[$r], $sign);
                 }
 
-                array_push($body[$r], $family->created_at->format('YmdHms'));
+                array_push($body[$r], $family->created_at->format('YmdHis'));
                 $r = $r+1;
             }
             $r = $r+1;
@@ -1366,7 +1366,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('YmdHms'));
+                array_push($body[$r], $family->created_at->format('YmdHis'));
                 $r = $r+1;
             }
 
@@ -1615,7 +1615,7 @@ class PdfController extends Controller
                     $row_sum[6+$c1+1+$c2] = array_key_exists(6+$c1+1+$c2, $row_sum) ? $row_sum[6+$c1+1+$c2]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('YmdHms'));
+                array_push($body[$r], $family->created_at->format('YmdHis'));
                 $r = $r+1;
             }
 
@@ -1843,7 +1843,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('YmdHms'));
+                array_push($body[$r], $family->created_at->format('YmdHis'));
                 $r = $r+1;
             }
 
@@ -2068,7 +2068,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('YmdHms'));
+                array_push($body[$r], $family->created_at->format('YmdHis'));
                 $r = $r+1;
             }
 
@@ -2321,7 +2321,7 @@ class PdfController extends Controller
                     $row_sum[6+$c1+1+$c2] = array_key_exists(6+$c1+1+$c2, $row_sum) ? $row_sum[6+$c1+1+$c2]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('YmdHms'));
+                array_push($body[$r], $family->created_at->format('YmdHis'));
                 $r = $r+1;
             }
 
@@ -2478,6 +2478,22 @@ class PdfController extends Controller
         $tcpdf->output($pdf_path, 'I');
     }
 
+    public function checkReport($itionG_id, $date, $itorG_code)
+    {
+        $date_obj = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
+        $itorG_name = InspectorGroup::find($itorG_code)->name;
+
+        $families = InspectionGroup::find($itionG_id)
+            ->families()
+            ->whereIn('inspector_group', [$itorG_name, '不明'])
+            ->where('created_at', '>=', $date_obj->addHours(2))
+            ->where('created_at', '<', $date_obj->copy()->addDay(2))
+            ->get()
+            ->count();
+
+        return $families;
+    }
+
     /**
      * Get user from JWT token
      */
@@ -2489,7 +2505,7 @@ class PdfController extends Controller
         $families = InspectionGroup::find($itionG_id)
             ->families()
             ->whereIn('inspector_group', [$itorG_name, '不明'])
-            ->where('created_at', '>=', $date_obj->addHours(1))
+            ->where('created_at', '>=', $date_obj->addHours(2))
             ->where('created_at', '<', $date_obj->copy()->addDay(1))
             ->with([
                 'pages',
@@ -2507,6 +2523,14 @@ class PdfController extends Controller
             ->get();
 
         $tcpdf = $this->createTCPDF();
+
+        if ($families->count() == 0) {
+            $tcpdf->AddPage('L', 'A4');
+            $tcpdf->SetFont('kozgopromedium', '', 16);
+            $tcpdf->Text(130, 80, '検索結果なし');
+            $pdf_path = 'nothing.pdf';
+            $tcpdf->output($pdf_path, 'I');
+        }
 
         switch (intval($itionG_id)) {
             case 1:  $this->forMoldingInner($tcpdf, $date, $families, $itorG_name, '１'); break;

@@ -1,0 +1,44 @@
+#association {
+	p {
+		text-align: right;
+		margin: 0 0 0 18px;
+		padding: 0;
+	}
+	.serch {
+		display: flex;
+		flex-flow: row nowrap;
+
+		div {
+			flex-basis: 200px;
+		}
+	}
+	.result {
+		display: flex;
+		flex-flow: column nowrap;
+		margin: 6px;
+
+		div {
+			display: flex;
+			flex-flow: row nowrap;
+			height: 20px;
+
+			div {
+				flex-basis: 160px;
+				font-size: 12px;
+
+			}
+		}
+
+		.aline-right{
+			flex-basis: 30px;
+		}
+	}
+
+	.border {
+		border-bottom: 1px solid #4A4A4A;
+	}
+
+	p.no-data {
+		text-align: left;
+	}
+}

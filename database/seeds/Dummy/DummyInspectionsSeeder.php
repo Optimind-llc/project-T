@@ -166,15 +166,15 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);        
         }
 
-        //接着：仕上：インナASSY
-        for ($id = 1; $id <= 10; $id++) {
-            $request->set('jointing', 'finish', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
-            $group = $controller->inspection($request);
+        // //接着：仕上：インナASSY
+        // for ($id = 1; $id <= 10; $id++) {
+        //     $request->set('jointing', 'finish', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
+        //     $group = $controller->inspection($request);
 
-            $data = $this->createData($group['group'], $id);
-            $request->setFamily($data);
-            $controller->saveInspection($request);        
-        }
+        //     $data = $this->createData($group['group'], $id);
+        //     $request->setFamily($data);
+        //     $controller->saveInspection($request);        
+        // }
 
         //接着：検査：インナASSY
         $request->set('jointing', 'check', 'inner_assy');
@@ -196,14 +196,14 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);        
         }
 
-        //接着：手直し：インナASSY
-        for ($id = 1; $id <= 10; $id++) {
-            $request->set('jointing', 'adjust', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
-            $group = $controller->inspection($request);
+        // //接着：手直し：インナASSY
+        // for ($id = 1; $id <= 10; $id++) {
+        //     $request->set('jointing', 'adjust', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
+        //     $group = $controller->inspection($request);
 
-            $data = $this->createData($group['group'], $id);
-            $request->setFamily($data);
-            $controller->saveInspection($request);
-        }
+        //     $data = $this->createData($group['group'], $id);
+        //     $request->setFamily($data);
+        //     $controller->saveInspection($request);
+        // }
     }
 }

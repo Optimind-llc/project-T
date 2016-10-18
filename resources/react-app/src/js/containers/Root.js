@@ -10,6 +10,7 @@ import Dashboard from '../modules/dashboard/containers/dashboard';
 import Mapping from '../modules/mapping/containers/mapping';
 import Reference from '../modules/reference/containers/reference';
 import Report from '../modules/report/containers/report';
+import Association from '../modules/association/containers/association';
 
 class Root extends Component {
   render() {
@@ -22,6 +23,7 @@ class Root extends Component {
             <Route name="マッピング" path="mapping/:id/:itorG" component={Mapping}/>
             <Route name="検査結果照会" path="reference" component={Reference}/>
             <Route name="直レポート印刷" path="report" component={Report}/>
+            <Route name="小部品ID紐付" path="association" component={Association}/>
           </Route>
         </Router>
         {/*<DevTools/>*/}
