@@ -220,7 +220,6 @@ class InspectionController extends Controller
                     ]
                 ]
             ]
-            
         ];
     }
 
