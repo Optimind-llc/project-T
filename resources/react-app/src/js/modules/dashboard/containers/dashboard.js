@@ -164,7 +164,7 @@ class Dashboard extends Component {
                   disabled={vehicle == null}
                   clearable={false}
                   Searchable={false}
-                  scrollMenuIntoView={true}
+                  scrollMenuIntoView={false}
                   value={this.state.partTId}
                   options={[
                     {label: 'バックドアインナー', value: 1},

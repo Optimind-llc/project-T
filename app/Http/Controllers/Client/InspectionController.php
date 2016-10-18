@@ -213,7 +213,14 @@ class InspectionController extends Controller
 
         return [
             'heritage' => $heritage,
-            'history' => $history
+            'group' => [
+                'pages' => [
+                    [
+                        'history' => $history
+                    ]
+                ]
+            ]
+            
         ];
     }
 
