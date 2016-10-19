@@ -291,7 +291,7 @@ class ShowController extends Controller
         return ['data' => $page_types];
     }
 
-    protected function formatPage($pages, $itionGId, $partTypeId) {
+    protected function formatPage($pages, $partTypeId) {
         return [
             'failures' => $pages->reduce(function ($carry, $page) {
                 return $carry->merge($page->failurePositions->map(function($failure) {
@@ -308,22 +308,6 @@ class ShowController extends Controller
                 return $fp['part'] == $partTypeId;
             })
             ->values(),
-            'holes' => $pages->reduce(function ($carry, $page) {
-                return $carry->merge($page->holes->map(function($hole) {
-                    return [
-                        'id' => $hole->id,
-                        'point' => $hole->point,
-                        'label' => $hole->label,
-                        'direction' => $hole->direction,
-                        'status' => $hole->pivot->status,
-                        'part' => $hole->partType->id
-                    ];
-                }));
-            }, collect([]))
-            ->filter(function($h) use($partTypeId) {
-                return $h['part'] == $partTypeId;
-            })
-            ->groupBy('label'),
             'comments' => $pages->reduce(function ($carry, $page) {
                 return $carry->merge($page->comments->map(function($hole) {
                     return [
@@ -410,11 +394,45 @@ class ShowController extends Controller
                 'message' => $c->message
             ];
         });
+        $holePoints = InspectionGroup::find($itionGId)
+            ->pageTypes()
+            ->select(['figure_id', 'number'])
+            ->with([
+                'figure' => function($q) {
+                    $q->select(['id']);
+                },
+                'figure.holes' => function($q) use ($partTypeId) {
+                    $q->where('part_type_id', $partTypeId)
+                        ->leftJoin('hole_page as hp', 'holes.id', '=', 'hp.hole_id')
+                        // ->select(['holes.id', 'holes.point', 'holes.label', 'figure_id', 'hp.status']);
+                        ->select(DB::raw(
+                            'holes.id, holes.point, holes.label, holes.direction, figure_id, COUNT(hp.status) as sum, SUM(hp.status = 0) as s0, SUM(hp.status = 1) as s1, SUM(hp.status = 2) as s2'
+                        ))
+                        ->groupBy('holes.id');
+                }
+            ])
+            ->get()
+            ->reduce(function($array, $pt) {
+                $holes = $pt->figure->holes->map(function($h) use($pt) {
+                    return [
+                        'id' => $h->id,
+                        'point' => $h->point,
+                        'direction' => $h->direction,
+                        's1' => $h->s1,
+                        's2' => $h->s2,
+                        's0' => $h->s0,
+                        'sum' => $h->sum,
+                        'pageNum' => $pt->number
+                    ];
+                })
+                ->toArray();
+                return array_merge($array, $holes);
+            }, []);
 
         if ($page_types->count() > 1) {
             $pageTypes = $page_types->map(function($pt) use($partTypeId, $itionGId, $itorG_name, $start_at, $end_at, $panel_id) {
                 $pages = $pt->pagesWithRelated($itorG_name, $start_at, $end_at, $panel_id);
-                $data = $this->formatPage($pages, $itionGId, $partTypeId);
+                $data = $this->formatPage($pages, $partTypeId);
                 $data['path'] = '/img/figures/'.$pt->figure->path;
                 $data['pageNum'] = $pt->number;
                 return $data;
@@ -426,6 +444,7 @@ class ShowController extends Controller
                     'pageTypes' => $pageTypes,
                     'failureTypes' => $failureTypes,
                     'commentTypes' => $commentTypes,
+                    'holePoints' => $holePoints,
                     'path' => []
                 ]
             ];
@@ -439,6 +458,7 @@ class ShowController extends Controller
         $data['pageNum'] = $page_type->number;
         $data['failureTypes'] = $failureTypes;
         $data['commentTypes'] = $commentTypes;
+        $data['holePoints'] = $holePoints;
 
         return [
             'data' => $data

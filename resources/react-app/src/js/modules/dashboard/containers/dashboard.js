@@ -36,19 +36,8 @@ class Dashboard extends Component {
       panelId: '',
       intervalId: null,
       interval: 20000,
+      defaultActive: Symbol('failure')
     };
-  }
-
-  startInterval() {
-    const { getPageData } = this.props.actions;
-    const { partTId, itionGId, itorG, narrowedBy, interval, intervalId } = this.state;
-
-    clearInterval(this.state.intervalId);
-
-    if (narrowedBy == 'realtime') {
-      const intervalId = setInterval(()=> getPageData(partTId.value, itionGId.value, itorG.value), interval);
-      this.setState({intervalId});
-    }
   }
 
   componentWillUnmount() {
@@ -70,14 +59,22 @@ class Dashboard extends Component {
     const format = 'YYYY-MM-DD';
     let start, end, panelId;
 
+    clearInterval(state.intervalId);
+
     switch (state.narrowedBy) {
       case 'realtime':
         start = end = panelId = null;
+        const intervalId = setInterval(
+          () => getPageData(state.partTId.value, state.itionGId.value, state.itorG.value, null, null, null),
+          state.interval
+        );
+        this.setState({intervalId});
         break;
       case 'term':
         start = state.startDate.format(format);
         end = state.endDate.format(format);
         panelId = null;
+
         break;
       case 'panelId': start = end = null;
         start = end = null;
@@ -85,11 +82,19 @@ class Dashboard extends Component {
         break;
     }
 
+    let defaultActive = '';
+    if (state.itionGId.value == 4 || state.itionGId.value == 8) defaultActive = Symbol('hole');
+    else if (state.itionGId.value == 3 || state.itionGId.value == 7) defaultActive = Symbol('inline');
+    else defaultActive = Symbol('failure');
+
+// console.log(state.itionGId.value, defaultActive, defaultActive.toString());
+    this.setState({defaultActive});
+
     getPageData(state.partTId.value, state.itionGId.value, state.itorG.value, start, end, panelId);
   }
 
   render() {
-    const { vehicle, partTId, itionGId, itorG, narrowedBy, startDate, endDate, panelId, mapping } = this.state;
+    const { vehicle, partTId, itionGId, itorG, narrowedBy, startDate, endDate, panelId, mapping, defaultActive } = this.state;
     const { VehicleData, ItorGData, PageData, actions } = this.props;
     const format = 'YYYY-MM-DD';
     const processes = {
@@ -255,17 +260,18 @@ class Dashboard extends Component {
           </div>
           <div
             className={`mapping-btn ${partTId && itionGId && itorG && 'active'}`}
-            onClick={() => {
-              this.startInterval();
-              this.showMapping();
-            }}
+            onClick={() => this.showMapping()}
           >
             <p>表示</p>
           </div>
         </div>
         {
           PageData.data &&
-          <Mapping PageData={PageData} realtime={narrowedBy == 'realtime'}/>
+          <Mapping
+            PageData={PageData}
+            realtime={narrowedBy == 'realtime'}
+            active={defaultActive}
+          />
         }
       </div>
     );
@@ -302,52 +308,25 @@ function mapStateToProps(state, ownProps) {
         }
       });
 
-      const h = Object.keys(pt.holes).map(id => {
-        pt.holes[id] = pt.holes[id].map(h =>{
-          const point = h.point.split(',');
-          let x = point[0]/2;
-          let y = point[1]/2;
-
-          switch (pt.pageNum) {
-            case 2: x = x + 1740/2; break;
-            case 3: y = y + 1030/2; break;
-            case 4: x = x + 1740/2; y = y + 1030/2; break;
-          }
-
-          return {
-            id: h.id,
-            point: `${x},${y}`,
-            status: h.status,
-            direction: h.direction,
-            label: h.label
-          };
-        })
-      });
-
       return {
         failures: pre.failures.concat(f),
-        holes: Object.assign(pre.holes, pt.holes),
         pages: pre.pages+pt.pages,
         path: pre.path.concat([pt.path])
       }
     }, {
       failures: [],
-      holes: {},
       pages: 0,
       path: []
     })
 
     state.PageData.data.commentTypes = [];
     state.PageData.data.comments = [];
+    state.PageData.data.holePoints = state.PageData.data.holePoints;
     state.PageData.data.failures = aaa.failures;
-    state.PageData.data.holes = aaa.holes;
     state.PageData.data.pages = aaa.pages;
     state.PageData.data.path = aaa.path;
     state.PageData.data.inlines = [];
   }
-
-
-
 
   return {
     VehicleData: state.VehicleData,

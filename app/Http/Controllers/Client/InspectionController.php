@@ -20,6 +20,7 @@ use App\Models\Client\FailurePage;
 use App\Models\Client\FailurePosition;
 // Exceptions
 use JWTAuth;
+use App\Exceptions\JsonException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -245,7 +246,13 @@ class InspectionController extends Controller
                         ->first();
 
                     if ($newPage instanceof Page) {
-                        throw new StoreResourceFailedException($part['panelId'].' already be inspected in ather page(page_id = '.$newPage->id.').');
+                        return \Response::json([
+                            'message' => $part['panelId'].' already be inspected in ather page(page_id = '.$newPage->id.').',
+                            'pageId' => $newPage->id,
+                            'panelId' => $part['panelId'],
+                            'pn' => $newPart->partType->pn
+                        ], 200);
+                        throw new JsonException($part['panelId'].' already be inspected in ather page(page_id = '.$newPage->id.').');
                     }
                 }
             }
@@ -414,12 +421,19 @@ class InspectionController extends Controller
 
         $now = Carbon::now();
         $now_f = $now->format('Ymd_His');
-        $now_c = $now->format('YmdHis');
+        $now_c = $now->format('Ymd H:i:s');
+        $now_t = $now->format('Hi');
+
+        if ($now_t > 200 && $now_t <= 1800) {
+            $tyoku = 1;
+        } else {
+            $tyoku = 2;
+        }
 
         $XXXX = $gId == 1 ? 'M0001' : 'M0002';
         $line = $gId == 1 ? '001' : '002';
 
-        $file_name = 'M0001'.'_'.'67149'.'_'.$now_f;
+        $file_name = $XXXX.'_'.'67149'.'_'.$now_f;
 
         // $file_path = base_path('output/'.$file_name.'.csv');
         $file_path = config('path.output').$file_name.'.csv';
@@ -437,13 +451,14 @@ class InspectionController extends Controller
         // $export_csv_title = array('品番','パネルID','工程','ライン','車種','直','検査者','出荷判定','不良１','不良２','不良３','不良４','不良５','不良６','不良７','不良１','不良２','不良３','不良４','不良５','不良６','不良７','不良８','不良９','不良１０','不良１１','不良１２','不良１３','不良１４','時刻');
         // $res_export = array('67149',$pId,'成型',$line,'680A',$itorG,$itor,$status,$fail[1],$fail[2],$fail[3],$fail[4],$fail[5],$fail[6],$fail[7],$fail[8],$fail[9],$fail[10],$fail[11],$fail[12],$fail[13],$fail[14],$fail[15],$fail[16],$fail[17],$fail[18],$fail[19],$fail[20],$fail[21]);
 
-
-        $res_export = array('67149',$pId,'成型',$line,'680A',$itorG,$itor,$status);
-
+        $res_export = array('67149','47060','A',substr($pId, 1,7),'成型',$line,'680A',$itorG,$tyoku,$itor,$status);
 
         foreach ($all_failures as $key => $f) {
             array_push($res_export, array_key_exists($f['id'], $fail) ? $fail[$f['id']] : '');
         }
+
+        array_push($res_export, $now_c);
+        
 
         if( touch($file_path) ){
             $file = new \SplFileObject( $file_path, 'w' ); 

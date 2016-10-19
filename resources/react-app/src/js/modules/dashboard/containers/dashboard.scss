@@ -2,6 +2,18 @@
   padding: 4px 4px 0 4px;
   min-width: 1100px;
 
+  .Select-menu-outer {
+    // Unfortunately, having both border-radius and allows scrolling using overflow defined on the same
+    // element forces the browser to repaint on scroll.  However, if these definitions are split into an
+    // outer and an inner element, the browser is able to optimize the scrolling behavior and does not
+    // have to repaint on scroll.
+    max-height: 600px !important;
+  }
+  .Select-menu {
+    max-height: (600px - 2px);
+    overflow-y: auto;
+  }
+
   > div.header {
     display: flex;
     flex-flow: row nowrap;

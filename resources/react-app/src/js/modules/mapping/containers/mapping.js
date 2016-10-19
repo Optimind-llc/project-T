@@ -13,24 +13,27 @@ class Mapping extends Component {
     super(props, context);
 
     this.state = {
-      failure: true,
-      hole: false,
-      comment: false,
-      inline: false,
+      active: props.active.toString(),
       fFilter: [],
-      holeStatus: 1,
+      holeStatus: 's1',
       cFilter: []
     };
   }
 
-  formatHoles(holes) {
-    const point = holes[0].point.split(',');
+  componentWillReceiveProps(nextProps) {
+    if (this.props.active !== nextProps.active) {
+      this.setState({active: nextProps.active.toString()});
+    }
+  }
+
+  formatHole(hole) {
+    const point = hole.point.split(',');
     const x = point[0]/2;
     const y = point[1]/2;
     let lx = x;
     let ly = y;
 
-    switch (holes[0].direction) {
+    switch (hole.direction) {
       case 'left':   lx = lx-14; break;
       case 'right':  lx = lx+14; break;
       case 'top':    ly = ly-14; break;
@@ -38,221 +41,214 @@ class Mapping extends Component {
       default: break;
     }
 
-    return {
-      x, y, ly, lx,
-      part: holes[0].part,
-      label: holes[0].label,
-      status: holes.map(h => h.status)
-    }
+    return { x, y, ly, lx, ...hole}
   }
 
   renderContent() {
     const { data } = this.props.PageData;
-    const { failure, hole, comment, inline, fFilter, holeStatus, cFilter } = this.state;
+    const { active, fFilter, holeStatus, cFilter } = this.state;
 
-    if (failure){
-      return (
-        <div className="failure">
-          <div className="collection">
-            <div>
-              <ul>
-                <li
-                  onClick={() => {
-                    let newFilter;
-                    if ( fFilter.length !== 0) newFilter = [];
-                    else newFilter = data.failureTypes.map(ft => ft.id);
-                    this.setState({ fFilter: newFilter });
-                  }}
-                >
-                  <span>{fFilter.length === 0 && <p>{'✔'}︎</p>}</span>
-                  <span>不良区分</span>
-                </li>
-                {data.failureTypes.map(ft =>{
-                  const index = fFilter.indexOf(ft.id);
-                  return (
-                    <li
-                      key={ft.id}
-                      className={index === -1 ? 'active' : ''}
-                      onClick={() => {
-                        if ( index === -1) fFilter.push(ft.id);
-                        else fFilter.splice(index, 1);
-                        this.setState({ fFilter });
-                      }}
-                    >
-                      <span>{index === -1 && <p>{'✔'}︎</p>}</span>
-                      <span>{`${ft.sort}. ${ft.name}`}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-            {
+    switch (active) {
+      case 'Symbol(failure)':
+        return (
+          <div className="failure">
+            <div className="collection">
               <div>
-                <ul className="parts">
-                  <li>計</li>
-                  {
-                    data.failureTypes.map(ft => 
-                      <li>
-                        {data.failures == undefined ? 0 : data.failures.filter(f => f.sort == ft.sort).length}
+                <ul>
+                  <li
+                    onClick={() => {
+                      let newFilter;
+                      if ( fFilter.length !== 0) newFilter = [];
+                      else newFilter = data.failureTypes.map(ft => ft.id);
+                      this.setState({ fFilter: newFilter });
+                    }}
+                  >
+                    <span>{fFilter.length === 0 && <p>{'✔'}︎</p>}</span>
+                    <span>不良区分</span>
+                  </li>
+                  {data.failureTypes.map(ft =>{
+                    const index = fFilter.indexOf(ft.id);
+                    return (
+                      <li
+                        key={ft.id}
+                        className={index === -1 ? 'active' : ''}
+                        onClick={() => {
+                          if ( index === -1) fFilter.push(ft.id);
+                          else fFilter.splice(index, 1);
+                          this.setState({ fFilter });
+                        }}
+                      >
+                        <span>{index === -1 && <p>{'✔'}︎</p>}</span>
+                        <span>{`${ft.sort}. ${ft.name}`}</span>
                       </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              {
+                <div>
+                  <ul className="parts">
+                    <li>計</li>
+                    {
+                      data.failureTypes.map(ft => 
+                        <li>
+                          {data.failures == undefined ? 0 : data.failures.filter(f => f.sort == ft.sort).length}
+                        </li>
+                      )
+                    }
+                  </ul>
+                </div>
+              }
+            </div>
+          </div>
+        );
+      case 'Symbol(hole)':
+        return (
+          <div className="hole">
+            <div className="collection">
+              <div>
+                <ul>
+                  <li>{'穴'}</li>
+                  {data.holePoints.map(h => <li>{h.id}</li>)}
+                </ul>
+              </div>
+              <div>
+                <ul>
+                  <li
+                    onClick={() => this.setState({holeStatus: 's1'})}
+                  >
+                    <span>{holeStatus == 's1' && <p>{'✔'}︎</p>}</span>
+                    {'○'}
+                  </li>
+                  {data.holePoints.map(h => {
+                    let percentage = 0;
+                    if (h.sum !== 0 && h.s1 != 0) percentage = Math.round(1000*h.s1/h.sum)/10;
+                    return (
+                      <li>{h.s1 ? h.s1 : '-'}<span>{`${percentage}%`}</span></li>
+                    )
+                  })}
+                </ul>
+              </div>
+              <div>
+                <ul>
+                  <li
+                    onClick={() => this.setState({holeStatus: 's2'})}
+                  >
+                    <span>{holeStatus == 's2' && <p>{'✔'}︎</p>}</span>
+                    {'△'}
+                  </li>
+                  {data.holePoints.map(h => {
+                    let percentage = 0;
+                    if (h.sum !== 0 && h.s2 != 0) percentage = Math.round(1000*h.s2/h.sum)/10;
+                    return (
+                      <li>{h.s2 ? h.s2 : '-'}<span>{`${percentage}%`}</span></li>
+                    )
+                  })}
+                </ul>
+              </div>
+              <div>
+                <ul>
+                  <li
+                    onClick={() => this.setState({holeStatus: 's0'})}
+                  >
+                    <span>{holeStatus == 's0' && <p>{'✔'}︎</p>}</span>{'×'}
+                  </li>
+                  {data.holePoints.map(h => {
+                    let percentage = 0;
+                    if (h.sum !== 0 && h.s0 != 0) percentage = Math.round(1000*h.s0/h.sum)/10;
+                    return (
+                      <li>{h.s0 ? h.s0 : '-'}<span>{`${percentage}%`}</span></li>
+                    )
+                  })}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )
+      case 'Symbol(comment)':
+        return (
+          <div className="comment">
+            <div className="collection">
+              <div>
+                <ul>
+                  <li
+                    onClick={() => {
+                      let newFilter;
+                      if ( cFilter.length !== 0) newFilter = [];
+                      else newFilter = data.commentTypes.map(ft => ft.id);
+                      this.setState({ cFilter: newFilter });
+                    }}
+                  >
+                    <span>{cFilter.length === 0 &&<p>{'✔'}︎</p>}</span>
+                    <span>手直し区分</span>
+                  </li>
+                  {data.commentTypes.map(ct =>{
+                    const index = cFilter.indexOf(ct.id);
+                    return (
+                      <li
+                        key={ct.id}
+                        className={index === -1 ? 'active' : ''}
+                        onClick={() => {
+                          if ( index === -1) cFilter.push(ct.id);
+                          else cFilter.splice(index, 1);
+                          this.setState({ cFilter });
+                        }}
+                      >
+                        <span>{index === -1 &&<p>{'✔'}︎</p>}</span>
+                        <span>{`${ct.sort}. ${ct.message}`}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              {
+                <div>
+                  <ul className="parts">
+                    <li>計</li>
+                    {
+                      data.commentTypes.map(ct => 
+                        <li>
+                          {data.comments == undefined ? 0 : data.comments.filter(c => c.id == ct.id).length}
+                        </li>
+                      )
+                    }
+                  </ul>
+                </div>
+              }
+            </div>
+          </div>
+        );
+      case 'Symbol(inline)':
+        return (
+          <div className="inline">
+            <div className="collection">
+              <div>
+                <ul>
+                  {
+                    Object.keys(data.inlines).map(id =>
+                      <li>{data.inlines[id][0].sort}</li>
                     )
                   }
                 </ul>
               </div>
-            }
-          </div>
-        </div>
-      );
-    }
-    else if (hole) {
-      return (
-        <div className="hole">
-          <div className="collection">
-            <div>
-              <ul>
-                <li>{'穴'}</li>
-                {Object.keys(data.holes).map(id => <li>{id}</li>)}
-              </ul>
-            </div>
-            <div>
-              <ul>
-                <li
-                  onClick={() => this.setState({holeStatus: 1})}
-                >
-                  <span>{holeStatus === 1 && <p>{'✔'}︎</p>}</span>
-                  {'○'}
-                </li>
-                {Object.keys(data.holes).map(id => {
-                  const all = data.holes[id].length;
-                  const s1 = data.holes[id].filter(s => s.status == 1).length;
-                  return (
-                    <li>{s1}<span>{`${s1 == 0 ? 0 : Math.round(1000*s1/all)/10}%`}</span></li>
-                  )
-                })}
-              </ul>
-            </div>
-            <div>
-              <ul>
-                <li
-                  onClick={() => this.setState({holeStatus: 2})}
-                >
-                  <span>{holeStatus === 2 && <p>{'✔'}︎</p>}</span>
-                  {'△'}
-                </li>
-                {Object.keys(data.holes).map(id => {
-                  const all = data.holes[id].length;
-                  const s2 = data.holes[id].filter(s => s.status == 2).length;
-                  return (
-                    <li>{s2}<span>{`${s2 == 0 ? 0 : Math.round(1000*s2/all)/10}%`}</span></li>
-                  )
-                })}
-              </ul>
-            </div>
-            <div>
-              <ul>
-                <li
-                  onClick={() => this.setState({holeStatus: 0})}
-                >
-                  <span>{holeStatus === 0 && <p>{'✔'}︎</p>}</span>{'×'}
-                </li>
-                {Object.keys(data.holes).map(id => {
-                  const all = data.holes[id].length;
-                  const s0 = data.holes[id].filter(s => s.status == 0).length;
-                  return (
-                    <li>{s0}<span>{`${s0 == 0 ? 0 : Math.round(1000*s0/all)/10}%`}</span></li>
-                  )
-                })}
-              </ul>
-            </div>
-          </div>
-        </div>
-      )
-    }
-    else if (comment){
-      return (
-        <div className="comment">
-          <div className="collection">
-            <div>
-              <ul>
-                <li
-                  onClick={() => {
-                    let newFilter;
-                    if ( cFilter.length !== 0) newFilter = [];
-                    else newFilter = data.commentTypes.map(ft => ft.id);
-                    this.setState({ cFilter: newFilter });
-                  }}
-                >
-                  <span>{cFilter.length === 0 &&<p>{'✔'}︎</p>}</span>
-                  <span>手直し区分</span>
-                </li>
-                {data.commentTypes.map(ct =>{
-                  const index = cFilter.indexOf(ct.id);
-                  return (
-                    <li
-                      key={ct.id}
-                      className={index === -1 ? 'active' : ''}
-                      onClick={() => {
-                        if ( index === -1) cFilter.push(ct.id);
-                        else cFilter.splice(index, 1);
-                        this.setState({ cFilter });
-                      }}
-                    >
-                      <span>{index === -1 &&<p>{'✔'}︎</p>}</span>
-                      <span>{`${ct.sort}. ${ct.message}`}</span>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-            {
               <div>
-                <ul className="parts">
-                  <li>計</li>
+                <ul>
                   {
-                    data.commentTypes.map(ct => 
-                      <li>
-                        {data.comments == undefined ? 0 : data.comments.filter(c => c.id == ct.id).length}
-                      </li>
+                    Object.keys(data.inlines).map(id =>
+                      <li>{data.inlines[id][0].tolerance}</li>
                     )
                   }
                 </ul>
               </div>
-            }
-          </div>
-        </div>
-      );
-    }
-    else if (inline) {
-      return (
-        <div className="inline">
-          <div className="collection">
-            <div>
-              <ul>
-                {
-                  Object.keys(data.inlines).map(id =>
-                    <li>{data.inlines[id][0].sort}</li>
-                  )
-                }
-              </ul>
-            </div>
-            <div>
-              <ul>
-                {
-                  Object.keys(data.inlines).map(id =>
-                    <li>{data.inlines[id][0].tolerance}</li>
-                  )
-                }
-              </ul>
             </div>
           </div>
-        </div>
-      );
+        );
     }
   }
 
   render() {
     const { isFetching, data } = this.props.PageData;
-    const { failure, hole, comment, inline, fFilter, holeStatus, cFilter } = this.state;
+    const { active, fFilter, holeStatus, cFilter } = this.state;
 
     return (
       <div id="mapping-wrap" className="">
@@ -269,7 +265,7 @@ class Mapping extends Component {
             </div>
             <svg>
               {
-                failure &&
+                active == 'Symbol(failure)' &&
                 data.failures.filter(f => fFilter.indexOf(f.id) == -1).map(f => {
                   const point = f.point.split(',');
                   const x = point[0]/2;
@@ -281,28 +277,28 @@ class Mapping extends Component {
                   );
                 })
               }{
-                hole &&
-                Object.keys(data.holes).map(id => {
-                  const holes = this.formatHoles(data.holes[id]);
+                active == 'Symbol(hole)' &&
+                data.holePoints.map(hole => {
+                  const h = this.formatHole(hole);
                   return (
                     <g>
-                      <circle cx={holes.x} cy={holes.y} r={4} fill="red" />
+                      <circle cx={h.x} cy={h.y} r={4} fill="red" />
                       <text
-                        x={holes.lx}
-                        y={holes.ly}
+                        x={h.lx}
+                        y={h.ly}
                         dy="6"
                         fontSize="18"
                         fill="black"
                         textAnchor="middle"
                         fontWeight="bold"
                         >
-                          {holes.status.filter(s => s == holeStatus).length}
+                          {h[holeStatus]}
                         </text>
                     </g>
                   )
                 })
               }{
-                comment &&
+                active == 'Symbol(comment)' &&
                 data.comments.filter(c => cFilter.indexOf(c.id) == -1).map(c => {
                   const point = c.point.split(',');
                   const x = point[0]/2;
@@ -314,7 +310,7 @@ class Mapping extends Component {
                   );
                 })
               }{
-                inline &&
+                active == 'Symbol(inline)' &&
                 Object.keys(data.inlines).map(id => {
                   return data.inlines[id].map(i => {
                     const width = 120;
@@ -385,53 +381,34 @@ class Mapping extends Component {
           </div>
           <div className="control-panel">
             <div className="control-tab">
+              {
+                data.holePoints.length !== 0 &&
+                <button
+                  className={active == 'Symbol(hole)' ? '' : 'disable'}
+                  onClick={() => this.setState({ active: 'Symbol(hole)'})}
+                >
+                  穴検査
+                </button>
+              }
               <button
-                className={failure ? '' : 'disable'}
-                onClick={() => this.setState({
-                  failure: true,
-                  hole: false,
-                  comment: false,
-                  inline: false
-                })}
+                className={active == 'Symbol(failure)' ? '' : 'disable'}
+                onClick={() => this.setState({ active: 'Symbol(failure)'})}
               >
                 不良検査
               </button>
               {
-                data.holes.length !== 0 &&
-                <button
-                  className={hole ? '' : 'disable'}
-                  onClick={() => this.setState({
-                    failure: false,
-                    hole: true,
-                    comment: false,
-                    inline: false
-                  })}
-                >
-                  穴検査
-                </button>
-              }{
                 data.commentTypes.length !== 0 &&
                 <button
-                  className={comment ? '' : 'disable'}
-                  onClick={() => this.setState({
-                    failure: false,
-                    hole: false,
-                    comment: true,
-                    inline: false
-                  })}
+                  className={active == 'Symbol(comment)' ? '' : 'disable'}
+                  onClick={() => this.setState({ active: 'Symbol(comment)'})}
                 >
                   手直し検査
                 </button>
               }{
                 data.inlines.length !== 0 &&
                 <button
-                  className={inline ? '' : 'disable'}
-                  onClick={() => this.setState({
-                    failure: false,
-                    hole: false,
-                    comment: false,
-                    inline: true
-                  })}
+                  className={active == 'Symbol(inline)' ? '' : 'disable'}
+                  onClick={() => this.setState({ active: 'Symbol(inline)'})}
                 >
                   精度検査
                 </button>
@@ -458,7 +435,8 @@ class Mapping extends Component {
 
 Mapping.propTypes = {
   PageData: PropTypes.object.isRequired,
-  realtime: PropTypes.bool.isRequired
+  realtime: PropTypes.bool.isRequired,
+  active: PropTypes.symbol.isRequired
 };
 
 export default Mapping;

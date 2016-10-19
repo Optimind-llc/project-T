@@ -100,7 +100,7 @@ class DummyInspectionsSeeder extends Seeder
         $request->set('molding', 'check', 'inner', '1');
         $group = $controller->inspection($request);
 
-        for ($id = 1; $id <= 250; $id++) {
+        for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -110,7 +110,7 @@ class DummyInspectionsSeeder extends Seeder
         $request->set('molding', 'check', 'inner', '2');
         $group = $controller->inspection($request);
 
-        for ($id = 21; $id <= 30; $id++) {
+        for ($id = 21; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -130,7 +130,7 @@ class DummyInspectionsSeeder extends Seeder
         $request->set('molding', 'check', 'small', '2');
         $group = $controller->inspection($request);
 
-        for ($id = 21; $id <= 30; $id++) {
+        for ($id = 21; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -140,7 +140,7 @@ class DummyInspectionsSeeder extends Seeder
         $request->set('holing', 'check', 'inner');
         $group = $controller->inspection($request);
 
-        for ($id = 1; $id <= 30; $id++) {
+        for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -150,7 +150,7 @@ class DummyInspectionsSeeder extends Seeder
         $request->set('holing', 'check', 'small');
         $group = $controller->inspection($request);
 
-        for ($id = 1; $id <= 50; $id++) {
+        for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        

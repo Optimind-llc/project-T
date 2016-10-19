@@ -51,8 +51,13 @@ class Handler extends ExceptionHandler
             return response()->json(['token_invalid'], $e->getStatusCode());
         } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistedException) {
             return response()->json(['token_blacklisted'], $e->getStatusCode());
+        } else if ($e instanceof JsonException) {
+            return \Response::json([
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'pn' => 'aaa'
+            ], 400);
         }
-
         return parent::render($request, $e);
     }
 }

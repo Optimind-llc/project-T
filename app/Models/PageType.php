@@ -95,12 +95,6 @@ class PageType extends Model
                 'failurePositions.part.partType' => function ($q) {
                     $q->select(['id', 'name', 'pn']);
                 },
-                'holes' => function ($q) {
-                    $q->select(['id', 'point', 'label', 'direction', 'part_type_id']);
-                },
-                'holes.partType' => function ($q) {
-                    $q->select(['id', 'pn']);
-                },
                 'comments',
                 'comments.comment',
                 'comments.failurePosition'
@@ -110,6 +104,7 @@ class PageType extends Model
             $pages->where('pages.created_at', '>=', $start_at)
                 ->where('pages.created_at', '<=', $end_at);
         }
-            return $pages->get();
+        
+        return $pages->get();
     }
 }
