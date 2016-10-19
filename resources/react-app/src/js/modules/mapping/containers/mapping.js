@@ -280,6 +280,14 @@ class Mapping extends Component {
                 active == 'Symbol(hole)' &&
                 data.holePoints.map(hole => {
                   const h = this.formatHole(hole);
+                  if(Array.isArray(data.path)) {
+                    switch (h.pageNum) {
+                      case 1: h.x = (h.x)/2; h.lx = (h.lx)/2; h.y = (h.y)/2; h.ly = (h.ly)/2; break;
+                      case 2: h.x = (h.x + 1740/2)/2; h.y = (h.y)/2; h.lx = (h.lx + 1740/2)/2; h.ly = (h.ly)/2; break;
+                      case 3: h.x = (h.x)/2; h.y = (h.y + 1030/2)/2; h.lx = (h.lx)/2; h.ly = (h.ly + 1030/2)/2; break;
+                      case 4: h.x = (h.x + 1740/2)/2; h.y = (h.y + 1030/2)/2; h.lx = (h.lx + 1740/2)/2; h.ly = (h.ly + 1030/2)/2; break;
+                    }
+                  }
                   return (
                     <g>
                       <circle cx={h.x} cy={h.y} r={4} fill="red" />
