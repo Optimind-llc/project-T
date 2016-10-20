@@ -6,5 +6,5 @@ Homestead.json
 .env
 xdebug.log
 .DS_Store
-input/
+/input/
 /output/
