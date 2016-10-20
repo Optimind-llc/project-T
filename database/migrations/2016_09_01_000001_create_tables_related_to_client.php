@@ -17,6 +17,7 @@ class CreateTablesRelatedToClient extends Migration
             $table->string('inspector_group')->nullable();
             $table->string('created_by');
             $table->string('updated_by')->nullable();
+            $table->timestamp('inspected_at')->nullable();
             $table->integer('inspection_group_id')->unsigned();
             $table->timestamps();
 

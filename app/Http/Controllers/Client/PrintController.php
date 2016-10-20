@@ -428,7 +428,7 @@ class PrintController extends Controller
         $now = microtime(true)*10000;
 
         $file_name = $now.'.pdf';
-        $pdf_path = storage_path('pdf/'.$file_name);
+        $pdf_path = storage_path('app/ipadScreen'.$file_name);
         $fpdi->output($pdf_path, 'F');
 
         return 'ok';

@@ -321,7 +321,7 @@ class PdfController extends Controller
                     $part['status'] == 1 ? 'OK' : 'NG'
                 ];
 
-                foreach ($inlines as $c => $i) {
+                foreach ($family->pages as $c => $i) {
                     array_push($body[$r], $i['status']);
                 }
 
@@ -2518,6 +2518,17 @@ class PdfController extends Controller
         $date_obj = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
         $itorG_name = InspectorGroup::find($itorG_code)->name;
 
+        function array_every($arr) {
+          foreach ($arr as $element) {
+            if ($element->pages->count() !== 0) {
+              return true;
+            }
+          }
+          return false;
+        }
+
+        $tcpdf = $this->createTCPDF();
+
         if (intval($itionG_id) == 3 || intval($itionG_id) == 9) {
             $families = InspectionGroup::find($itionG_id)
                 ->families()
@@ -2537,7 +2548,17 @@ class PdfController extends Controller
                 ])
                 ->get();
 
-                // return $families;
+            $has_report = array_every($families);
+
+            if (!$has_report) {
+                $tcpdf->AddPage('L', 'A4');
+                $tcpdf->SetFont('kozgopromedium', '', 16);
+                $tcpdf->Text(130, 80, '検索結果なし');
+                $pdf_path = 'nothing.pdf';
+                $tcpdf->output($pdf_path, 'I');
+            }
+
+            return $families;
         }
         else {
             $families = InspectionGroup::find($itionG_id)
@@ -2560,9 +2581,6 @@ class PdfController extends Controller
                 ])
                 ->get();            
         }
-
-
-        $tcpdf = $this->createTCPDF();
 
         if ($families->count() == 0) {
             $tcpdf->AddPage('L', 'A4');

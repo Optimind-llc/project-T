@@ -35,7 +35,7 @@ class Dashboard extends Component {
       endDate: moment(),
       panelId: '',
       intervalId: null,
-      interval: 20000,
+      interval: 30000,
       // defaultActive: Symbol('failure')
       defaultActive: {
         name: 'failure',

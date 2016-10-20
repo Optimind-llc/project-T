@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Storage;
 // Models
 use App\Models\PartType;
 use App\Models\Client\Part;
@@ -44,28 +45,23 @@ class PrintPDF extends Command
      */
     public function handle()
     {
-        $dirPath = storage_path('pdf');
-        $files = scandir($dirPath);
-     
-        $lists = array();
-        foreach ($files as $file) {
-            $filePath = $dirPath.DIRECTORY_SEPARATOR.$file;
-            if (is_file($filePath)) {
-                $lists[] = $filePath;
-            }
-        }
+        $files = Storage::disk('inline')->files();
 
-        if (count($lists) == 0) {
-            $this->info('no files');
-        }
+        $this->info(Storage::disk('inline')->root());
 
-        foreach ($lists as $list) {
-            $com = 'C:\"Program Files (x86)\Adobe\Reader 11.0\Reader\AcroRd32.exe" /t /h '.$list;
-            exec($com);
-            sleep(4);
-            unlink($list);
-        }
+        // foreach ($files as $key => $value) {
+        //     $this->info($value);
+        //     $value->setFlags(SplFileObject::READ_CSV);
+        // }
 
-        $this->info('Inline data was inserted to database.');
+        // foreach ($lists as $list) {
+        //     $com = 'C:\"Program Files (x86)\Adobe\Reader 11.0\Reader\AcroRd32.exe" /t /h '.$list;
+        //     exec($com, $output);
+        //     $this->info($output);
+        //     sleep(5);
+        //     unlink($list);
+        // }
+
+        $this->info('');
     }
 }

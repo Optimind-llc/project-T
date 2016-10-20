@@ -82,6 +82,7 @@ class InsertInline extends Command
                     $newFamily->inspection_group_id = 3;
                     $newFamily->inspector_group = '不明';
                     $newFamily->created_by = '精度検査';
+                    $newFamily->inspected_at = $inspected_at;
                     $newFamily->save();
 
                     // Create new page, page_type_id = 3
@@ -501,7 +502,8 @@ class InsertInline extends Command
 
                     DB::table('inline_page')->insert($data);
                 }
-                // unlink($filepath);
+
+                // unlink($filepath['path']);
             }
         }
     }
@@ -513,14 +515,13 @@ class InsertInline extends Command
      */
     public function handle()
     {
-        // $value = config('path.inline');
-        // $this->info($value);
-
-        $dirPath = base_path('input');
         // $dirPath = config('path.inline');
+
+        $dirPath = base_path('input/Inline');
         // $dirPath = 'D:'.DIRECTORY_SEPARATOR.'FailureMapping'.DIRECTORY_SEPARATOR.'InLine';
 
         $files = scandir($dirPath);
+        $this->info(count($files).' CSV file is found in '.$dirPath);
 
         $lists = array();
         foreach ($files as $file) {
@@ -542,6 +543,6 @@ class InsertInline extends Command
             $this->insertFile($list);
         }
 
-        $this->info('Inline data was inserted to database.');
+        $this->info('All data was inserted to database.');
     }
 }
