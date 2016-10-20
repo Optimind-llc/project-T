@@ -304,9 +304,9 @@ class ShowController extends Controller
                     ];
                 }));
             }, collect([]))
-            ->filter(function($fp) use($partTypeId) {
-                return $fp['part'] == $partTypeId;
-            })
+            // ->filter(function($fp) use($partTypeId) {
+            //     return $fp['part'] == $partTypeId;
+            // })
             ->values(),
             'comments' => $pages->reduce(function ($carry, $page) {
                 return $carry->merge($page->comments->map(function($hole) {
@@ -387,6 +387,12 @@ class ShowController extends Controller
         }
 
         $failureTypes = InspectionGroup::find($itionGId)->inspection->process->failures;
+        if ($itionGId == 10) {
+            $failureTypes = $failureTypes->filter(function($f) {
+                return $f->id == 30;
+            })
+            ->values();
+        }
         $commentTypes = InspectionGroup::find($itionGId)->inspection->comments->map(function($c) {
             return [
                 'id' => $c->id,
@@ -404,7 +410,6 @@ class ShowController extends Controller
                 'figure.holes' => function($q) use ($partTypeId) {
                     $q->where('part_type_id', $partTypeId)
                         ->leftJoin('hole_page as hp', 'holes.id', '=', 'hp.hole_id')
-                        // ->select(['holes.id', 'holes.point', 'holes.label', 'figure_id', 'hp.status']);
                         ->select(DB::raw(
                             'holes.id, holes.point, holes.label, holes.direction, figure_id, COUNT(hp.status) as sum, SUM(hp.status = 0) as s0, SUM(hp.status = 1) as s1, SUM(hp.status = 2) as s2'
                         ))

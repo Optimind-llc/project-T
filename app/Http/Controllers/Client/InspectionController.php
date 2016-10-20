@@ -251,7 +251,7 @@ class InspectionController extends Controller
                             'pageId' => $newPage->id,
                             'panelId' => $part['panelId'],
                             'pn' => $newPart->partType->pn
-                        ], 200);
+                        ], 400);
                         throw new JsonException($part['panelId'].' already be inspected in ather page(page_id = '.$newPage->id.').');
                     }
                 }
@@ -412,44 +412,54 @@ class InspectionController extends Controller
         return 'Excellent';
     }
 
-    public function exportCSV ($gId, $pId, $itorG, $itor, $status, $failures)
+    public function exportCSV($gId, $pId, $itorG, $itor, $status, $failures)
     {
-        // XXXX_IIIII_YYYYMMDD_HHMMSS.pdf
-        // XXXX：工程　"M001"＝成形１ライン
-        // IIIII：品番　上位５桁　例えば"67149"
-        // YYYYMMDD_HHMMSS：　データが登録された　年月日_時分秒
+      $now = Carbon::now();
+      $now_f = $now->format('Ymd_His');
+      $now_c = $now->format('Ymd H:i:s');
+      $now_t = $now->format('Hi');
 
-        $now = Carbon::now();
-        $now_f = $now->format('Ymd_His');
-        $now_c = $now->format('Ymd H:i:s');
-        $now_t = $now->format('Hi');
+      if ($now_t > 200 && $now_t <= 1615) {
+        $tyoku = 1;
+      } else {
+        $tyoku = 2;
+      }
 
-        if ($now_t > 200 && $now_t <= 1800) {
-            $tyoku = 1;
-        } else {
-            $tyoku = 2;
+      $XXXX = $gId == 1 ? 'M0001' : 'M0002';
+      $line = $gId == 1 ? '001' : '002';
+
+      $file_name = $XXXX.'_'.'67149'.'_'.$now_f;
+
+      // $file_path = base_path('output/'.$file_name.'.csv');
+      $file_path = 'D:'.DIRECTORY_SEPARATOR.'FailureMapping'.DIRECTORY_SEPARATOR.'Output'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+
+      $fail = collect($failures)->groupBy('id')->map(function($f){
+        return $f->count();
+      })->toArray();
+
+      $all_failures = Process::where('id', 'molding')
+        ->first()
+        ->failures()
+        ->orderBy('sort')
+        ->get(['id', 'sort', 'name'])
+        ->map(function($f) {
+          return [
+            'id' => $f->id,
+            'sort' => $f->sort,
+            'name' => $f->name,
+            'type' => $f->pivot->type
+          ];
+        })
+        ->sortBy('type')
+        ->values()
+        ->all();
+
+        foreach( $all_failures as $key => $row ) {
+          $tmp_type_array[$key] = $row["type"];
+          $tmp_sort_array[$key] = $row["sort"];
         }
 
-        $XXXX = $gId == 1 ? 'M0001' : 'M0002';
-        $line = $gId == 1 ? '001' : '002';
-
-        $file_name = $XXXX.'_'.'67149'.'_'.$now_f;
-
-        // $file_path = base_path('output/'.$file_name.'.csv');
-        $file_path = config('path.output').$file_name.'.csv';
-
-        $fail = collect($failures)->groupBy('id')->map(function($f){
-            return $f->count();
-        })->toArray();
-
-        $all_failures = Process::find('molding')
-            ->failures()
-            ->orderBy('id')
-            ->get();
-
-        // CSVに出力するタイトル行
-        // $export_csv_title = array('品番','パネルID','工程','ライン','車種','直','検査者','出荷判定','不良１','不良２','不良３','不良４','不良５','不良６','不良７','不良１','不良２','不良３','不良４','不良５','不良６','不良７','不良８','不良９','不良１０','不良１１','不良１２','不良１３','不良１４','時刻');
-        // $res_export = array('67149',$pId,'成型',$line,'680A',$itorG,$itor,$status,$fail[1],$fail[2],$fail[3],$fail[4],$fail[5],$fail[6],$fail[7],$fail[8],$fail[9],$fail[10],$fail[11],$fail[12],$fail[13],$fail[14],$fail[15],$fail[16],$fail[17],$fail[18],$fail[19],$fail[20],$fail[21]);
+        array_multisort($tmp_type_array, $tmp_sort_array, $all_failures);
 
         $res_export = array('67149','47060','A',substr($pId, 1,7),'成型',$line,'680A',$itorG,$tyoku,$itor,$status);
 
@@ -458,23 +468,81 @@ class InspectionController extends Controller
         }
 
         array_push($res_export, $now_c);
-        
+
 
         if( touch($file_path) ){
             $file = new \SplFileObject( $file_path, 'w' ); 
-             
-            // foreach( $export_csv_title as $key => $val ){
-            //     $export_header[] = mb_convert_encoding($val, 'UTF-8');
-            // }
 
             foreach( $res_export as $key => $val ){
                 $export_raw[] = mb_convert_encoding($val, 'UTF-8');
             }
-     
-            // エンコードしたタイトル行を配列ごとCSVデータ化
-            // $file->fputcsv($export_header);
             $file->fputcsv($export_raw);
         }
     }
-}
 
+
+    // public function exportCSV ($gId, $pId, $itorG, $itor, $status, $failures)
+    // {
+    //     // XXXX_IIIII_YYYYMMDD_HHMMSS.pdf
+    //     // XXXX：工程　"M001"＝成形１ライン
+    //     // IIIII：品番　上位５桁　例えば"67149"
+    //     // YYYYMMDD_HHMMSS：　データが登録された　年月日_時分秒
+
+    //     $now = Carbon::now();
+    //     $now_f = $now->format('Ymd_His');
+    //     $now_c = $now->format('Ymd H:i:s');
+    //     $now_t = $now->format('Hi');
+
+    //     if ($now_t > 200 && $now_t <= 1800) {
+    //         $tyoku = 1;
+    //     } else {
+    //         $tyoku = 2;
+    //     }
+
+    //     $XXXX = $gId == 1 ? 'M0001' : 'M0002';
+    //     $line = $gId == 1 ? '001' : '002';
+
+    //     $file_name = $XXXX.'_'.'67149'.'_'.$now_f;
+
+    //     // $file_path = base_path('output/'.$file_name.'.csv');
+    //     $file_path = config('path.output').$file_name.'.csv';
+
+    //     $fail = collect($failures)->groupBy('id')->map(function($f){
+    //         return $f->count();
+    //     })->toArray();
+
+    //     $all_failures = Process::find('molding')
+    //         ->failures()
+    //         ->orderBy('id')
+    //         ->get();
+
+    //     // CSVに出力するタイトル行
+    //     // $export_csv_title = array('品番','パネルID','工程','ライン','車種','直','検査者','出荷判定','不良１','不良２','不良３','不良４','不良５','不良６','不良７','不良１','不良２','不良３','不良４','不良５','不良６','不良７','不良８','不良９','不良１０','不良１１','不良１２','不良１３','不良１４','時刻');
+    //     // $res_export = array('67149',$pId,'成型',$line,'680A',$itorG,$itor,$status,$fail[1],$fail[2],$fail[3],$fail[4],$fail[5],$fail[6],$fail[7],$fail[8],$fail[9],$fail[10],$fail[11],$fail[12],$fail[13],$fail[14],$fail[15],$fail[16],$fail[17],$fail[18],$fail[19],$fail[20],$fail[21]);
+
+    //     $res_export = array('67149','47060','A',substr($pId, 1,7),'成型',$line,'680A',$itorG,$tyoku,$itor,$status);
+
+    //     foreach ($all_failures as $key => $f) {
+    //         array_push($res_export, array_key_exists($f['id'], $fail) ? $fail[$f['id']] : '');
+    //     }
+
+    //     array_push($res_export, $now_c);
+        
+
+    //     if( touch($file_path) ){
+    //         $file = new \SplFileObject( $file_path, 'w' ); 
+             
+    //         // foreach( $export_csv_title as $key => $val ){
+    //         //     $export_header[] = mb_convert_encoding($val, 'UTF-8');
+    //         // }
+
+    //         foreach( $res_export as $key => $val ){
+    //             $export_raw[] = mb_convert_encoding($val, 'UTF-8');
+    //         }
+     
+    //         // エンコードしたタイトル行を配列ごとCSVデータ化
+    //         // $file->fputcsv($export_header);
+    //         $file->fputcsv($export_raw);
+    //     }
+    // }
+}

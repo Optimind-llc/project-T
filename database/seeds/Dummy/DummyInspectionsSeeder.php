@@ -110,7 +110,7 @@ class DummyInspectionsSeeder extends Seeder
         $request->set('molding', 'check', 'inner', '2');
         $group = $controller->inspection($request);
 
-        for ($id = 21; $id <= 10; $id++) {
+        for ($id = 11; $id <= 20; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -130,7 +130,7 @@ class DummyInspectionsSeeder extends Seeder
         $request->set('molding', 'check', 'small', '2');
         $group = $controller->inspection($request);
 
-        for ($id = 21; $id <= 10; $id++) {
+        for ($id = 11; $id <= 20; $id++) {
             $data = $this->createData($group['group'], $id);
             $request->setFamily($data);
             $controller->saveInspection($request);        

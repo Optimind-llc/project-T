@@ -13,7 +13,7 @@ class Mapping extends Component {
     super(props, context);
 
     this.state = {
-      active: props.active.toString(),
+      active: props.active.name,
       fFilter: [],
       holeStatus: 's1',
       cFilter: []
@@ -21,8 +21,8 @@ class Mapping extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.active !== nextProps.active) {
-      this.setState({active: nextProps.active.toString()});
+    if (this.props.active.time !== nextProps.active.time) {
+      this.setState({active: nextProps.active.name});
     }
   }
 
@@ -49,7 +49,7 @@ class Mapping extends Component {
     const { active, fFilter, holeStatus, cFilter } = this.state;
 
     switch (active) {
-      case 'Symbol(failure)':
+      case 'failure':
         return (
           <div className="failure">
             <div className="collection">
@@ -102,7 +102,7 @@ class Mapping extends Component {
             </div>
           </div>
         );
-      case 'Symbol(hole)':
+      case 'hole':
         return (
           <div className="hole">
             <div className="collection">
@@ -165,7 +165,7 @@ class Mapping extends Component {
             </div>
           </div>
         )
-      case 'Symbol(comment)':
+      case 'comment':
         return (
           <div className="comment">
             <div className="collection">
@@ -218,7 +218,7 @@ class Mapping extends Component {
             </div>
           </div>
         );
-      case 'Symbol(inline)':
+      case 'inline':
         return (
           <div className="inline">
             <div className="collection">
@@ -265,19 +265,30 @@ class Mapping extends Component {
             </div>
             <svg>
               {
-                active == 'Symbol(failure)' &&
+                active == 'failure' &&
                 data.failures.filter(f => fFilter.indexOf(f.id) == -1).map(f => {
                   const point = f.point.split(',');
                   const x = point[0]/2;
                   const y = point[1]/2;
-                  return (
-                    <g>
-                      <circle cx={x} cy={y} r={6} fill="red" />
-                    </g>
-                  );
+                  if (Array.isArray(data.path)) {
+                    return (
+                      <g>
+                        <circle cx={x} cy={y} r={6} fill="red" />
+                      </g>
+                    );                    
+                  }
+                  else {
+                    if (f.part == this.props.partTId.value) {
+                      return (
+                        <g>
+                          <circle cx={x} cy={y} r={6} fill="red" />
+                        </g>
+                      );
+                    }
+                  }
                 })
               }{
-                active == 'Symbol(hole)' &&
+                active == 'hole' &&
                 data.holePoints.map(hole => {
                   const h = this.formatHole(hole);
                   if(Array.isArray(data.path)) {
@@ -306,7 +317,7 @@ class Mapping extends Component {
                   )
                 })
               }{
-                active == 'Symbol(comment)' &&
+                active == 'comment' &&
                 data.comments.filter(c => cFilter.indexOf(c.id) == -1).map(c => {
                   const point = c.point.split(',');
                   const x = point[0]/2;
@@ -318,7 +329,7 @@ class Mapping extends Component {
                   );
                 })
               }{
-                active == 'Symbol(inline)' &&
+                active == 'inline' &&
                 Object.keys(data.inlines).map(id => {
                   return data.inlines[id].map(i => {
                     const width = 120;
@@ -392,31 +403,31 @@ class Mapping extends Component {
               {
                 data.holePoints.length !== 0 &&
                 <button
-                  className={active == 'Symbol(hole)' ? '' : 'disable'}
-                  onClick={() => this.setState({ active: 'Symbol(hole)'})}
+                  className={active == 'hole' ? '' : 'disable'}
+                  onClick={() => this.setState({ active: 'hole'})}
                 >
                   穴検査
                 </button>
               }
               <button
-                className={active == 'Symbol(failure)' ? '' : 'disable'}
-                onClick={() => this.setState({ active: 'Symbol(failure)'})}
+                className={active == 'failure' ? '' : 'disable'}
+                onClick={() => this.setState({ active: 'failure'})}
               >
                 不良検査
               </button>
               {
                 data.commentTypes.length !== 0 &&
                 <button
-                  className={active == 'Symbol(comment)' ? '' : 'disable'}
-                  onClick={() => this.setState({ active: 'Symbol(comment)'})}
+                  className={active == 'comment' ? '' : 'disable'}
+                  onClick={() => this.setState({ active: 'comment'})}
                 >
                   手直し検査
                 </button>
               }{
                 data.inlines.length !== 0 &&
                 <button
-                  className={active == 'Symbol(inline)' ? '' : 'disable'}
-                  onClick={() => this.setState({ active: 'Symbol(inline)'})}
+                  className={active == 'inline' ? '' : 'disable'}
+                  onClick={() => this.setState({ active: 'inline'})}
                 >
                   精度検査
                 </button>
@@ -444,7 +455,8 @@ class Mapping extends Component {
 Mapping.propTypes = {
   PageData: PropTypes.object.isRequired,
   realtime: PropTypes.bool.isRequired,
-  active: PropTypes.symbol.isRequired
+  active: PropTypes.object.isRequired,
+  partTId: PropTypes.object.isRequired
 };
 
 export default Mapping;

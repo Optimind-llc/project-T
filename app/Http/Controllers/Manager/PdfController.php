@@ -63,6 +63,7 @@ class PdfController extends Controller
             ->map(function($f) {
                 return [
                     'id' => $f->id,
+                    'sort' => $f->sort,
                     'name' => $f->name,
                     'type' => $f->pivot->type
                 ];
@@ -70,6 +71,13 @@ class PdfController extends Controller
             ->sortBy('type')
             ->values()
             ->all();
+
+            foreach( $failures as $key => $row ) {
+                $tmp_type_array[$key] = $row["type"];
+                $tmp_sort_array[$key] = $row["sort"];
+            }
+
+            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
 
         $n = count($failures);
 
@@ -277,11 +285,11 @@ class PdfController extends Controller
         $body = [];
         $row_sum = [5 => '合計'];
 
-        $inlines = $families[0]->pages[0]->inlines->map(function($inline) {
+        $inlines = $families[0]->pages->map(function($inline) {
             return [
                 'sort' => $inline->sort,
-                'status' => $inline->pivot->status,
-                'inspected_at' => $inline->pivot->inspected_at
+                'status' => $inline->status,
+                'inspected_at' => $inline->inspected_at
             ];
         });
 
@@ -455,7 +463,7 @@ class PdfController extends Controller
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
 
-        $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_m001_inner_w.pdf';
+        $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m001_inner_w.pdf';
         $tcpdf->output($pdf_path, 'I');
     }
 
@@ -666,6 +674,7 @@ class PdfController extends Controller
             ->map(function($f) {
                 return [
                     'id' => $f->id,
+                    'sort' => $f->sort,
                     'name' => $f->name,
                     'type' => $f->pivot->type
                 ];
@@ -673,6 +682,13 @@ class PdfController extends Controller
             ->sortBy('type')
             ->values()
             ->all();
+
+            foreach( $failures as $key => $row ) {
+                $tmp_type_array[$key] = $row["type"];
+                $tmp_sort_array[$key] = $row["sort"];
+            }
+
+            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
 
         $n = count($failures);
 
@@ -1297,7 +1313,7 @@ class PdfController extends Controller
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
 
-        $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_j_inline_w.pdf';
+        $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_j_inline_w.pdf';
         $tcpdf->output($pdf_path, 'I');
     }
 
@@ -2502,25 +2518,49 @@ class PdfController extends Controller
         $date_obj = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
         $itorG_name = InspectorGroup::find($itorG_code)->name;
 
-        $families = InspectionGroup::find($itionG_id)
-            ->families()
-            ->whereIn('inspector_group', [$itorG_name, '不明'])
-            ->where('created_at', '>=', $date_obj->addHours(2))
-            ->where('created_at', '<', $date_obj->copy()->addDay(1))
-            ->with([
-                'pages',
-                'pages.inlines' => function ($q) {
-                    $q->orderBy('sort');
-                },
-                'pages.parts',
-                'pages.parts.partType',
-                'pages.failurePositions',
-                'pages.holes',
-                'pages.holes.partType',
-                'pages.comments',
-                'pages.comments.comment'
-            ])
-            ->get();
+        if (intval($itionG_id) == 3 || intval($itionG_id) == 9) {
+            $families = InspectionGroup::find($itionG_id)
+                ->families()
+                ->whereIn('inspector_group', [$itorG_name, '不明'])
+                ->with([
+                    'pages' => function($q) use($date_obj) {
+                        $q->join('inline_page as ip', 'pages.id', '=', 'ip.page_id')
+                        ->where('inspected_at', '>=', $date_obj->addHours(2))
+                        ->where('inspected_at', '<', $date_obj->copy()->addDay(1))
+                        ->select('pages.*', 'ip.status', 'ip.id', 'ip.inspected_at')
+                        ->join('inlines as i', 'ip.inline_id', '=', 'i.id')
+                        ->select('pages.*', 'ip.status', 'ip.id as ip_id', 'ip.inspected_at', 'i.sort')
+                        ->orderBy('i.sort');
+                    },
+                    'pages.parts',
+                    'pages.parts.partType'
+                ])
+                ->get();
+
+                // return $families;
+        }
+        else {
+            $families = InspectionGroup::find($itionG_id)
+                ->families()
+                ->whereIn('inspector_group', [$itorG_name, '不明'])
+                ->where('created_at', '>=', $date_obj->addHours(2))
+                ->where('created_at', '<', $date_obj->copy()->addDay(1))
+                ->with([
+                    'pages',
+                    'pages.inlines' => function ($q) {
+                        $q->orderBy('sort');
+                    },
+                    'pages.parts',
+                    'pages.parts.partType',
+                    'pages.failurePositions',
+                    'pages.holes',
+                    'pages.holes.partType',
+                    'pages.comments',
+                    'pages.comments.comment'
+                ])
+                ->get();            
+        }
+
 
         $tcpdf = $this->createTCPDF();
 

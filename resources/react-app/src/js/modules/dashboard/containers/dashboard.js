@@ -36,7 +36,11 @@ class Dashboard extends Component {
       panelId: '',
       intervalId: null,
       interval: 20000,
-      defaultActive: Symbol('failure')
+      // defaultActive: Symbol('failure')
+      defaultActive: {
+        name: 'failure',
+        time: new Date().getTime()
+      }
     };
   }
 
@@ -82,13 +86,22 @@ class Dashboard extends Component {
         break;
     }
 
-    let defaultActive = '';
-    if (state.itionGId.value == 4 || state.itionGId.value == 8) defaultActive = Symbol('hole');
-    else if (state.itionGId.value == 3 || state.itionGId.value == 7) defaultActive = Symbol('inline');
-    else defaultActive = Symbol('failure');
+    // let defaultActive = '';
+    // if (state.itionGId.value == 4 || state.itionGId.value == 8) defaultActive = Symbol('hole');
+    // else if (state.itionGId.value == 3 || state.itionGId.value == 7) defaultActive = Symbol('inline');
+    // else defaultActive = Symbol('failure');
+    // this.setState({defaultActive});
 
-// console.log(state.itionGId.value, defaultActive, defaultActive.toString());
-    this.setState({defaultActive});
+    let time = new Date().getTime();
+    let defaultActive = {
+      name: 'failure',
+      time
+    };
+
+    if (state.itionGId.value == 4 || state.itionGId.value == 8) name = 'hole';
+    else if (state.itionGId.value == 3 || state.itionGId.value == 7) name = 'inline';
+    else name = 'failure';
+    this.setState({ defaultActive: { name, time }});
 
     getPageData(state.partTId.value, state.itionGId.value, state.itorG.value, start, end, panelId);
   }
@@ -271,6 +284,7 @@ class Dashboard extends Component {
             PageData={PageData}
             realtime={narrowedBy == 'realtime'}
             active={defaultActive}
+            partTId={partTId}
           />
         }
       </div>

@@ -516,8 +516,9 @@ class InsertInline extends Command
         // $value = config('path.inline');
         // $this->info($value);
 
-        // $dirPath = base_path('input');
-        $dirPath = config('path.inline');
+        $dirPath = base_path('input');
+        // $dirPath = config('path.inline');
+        // $dirPath = 'D:'.DIRECTORY_SEPARATOR.'FailureMapping'.DIRECTORY_SEPARATOR.'InLine';
 
         $files = scandir($dirPath);
 
