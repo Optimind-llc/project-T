@@ -55,6 +55,7 @@ class DummyInspectionsSeeder extends Seeder
                 array_push($C, [
                     'failurePositionId' => $history[$k]['failurePositionId'],
                     'commentId' => $comments[array_rand($comments)]['id'],
+                    'comment' => 'その他で追加できるコメント'
                 ]);
             }
 

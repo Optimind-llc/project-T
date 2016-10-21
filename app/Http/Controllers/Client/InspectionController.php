@@ -285,7 +285,8 @@ class InspectionController extends Controller
                         DB::table('modification_failure_position')->insert([
                             'page_id' => $newPage->id,
                             'fp_id' => $new_fp->id,
-                            'm_id' => $f['commentId']
+                            'm_id' => $f['commentId'],
+                            'comment' => array_key_exists('comment', $f) ? $f['comment'] : ''
                         ]);
                     }
                 }
@@ -310,7 +311,8 @@ class InspectionController extends Controller
                         return [
                             'page_id' => $newPage->id,
                             'fp_id' => $c['failurePositionId'],
-                            'm_id' => $c['commentId']
+                            'm_id' => $c['commentId'],
+                            'comment' => array_key_exists('comment', $f) ? $c['comment'] : ''
                         ];
                     },
                     $page['comments'])
