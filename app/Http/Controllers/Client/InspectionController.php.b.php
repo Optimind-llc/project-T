@@ -60,12 +60,93 @@ class InspectionController extends Controller
         return $group;
     }
 
-    public function inspection($itionG_id)
+    protected function formatInspectors($inspectors) {
+        return $inspectors->map(function ($i) {
+                return [
+                    'id' => $i->id,
+                    'name' => $i->name,
+                    'code' => $i->code,
+                    'group' => $i->group_code,
+                    'sort' => $i->pivot->sort
+                ];
+            })
+            ->sortBy('sort')
+            ->groupBy('group');
+    }
+
+    public function inspection(Request $request)
     {
-        $inspection_group = new InspectionGroup;
+        $validator = app('validator')->make(
+            $request->all(),
+            [
+                'division' => ['required', 'alpha_dash'],
+                'process' => ['required', 'alpha_dash'],
+                'inspection' => ['required', 'alpha_dash'],
+                'line' => ['alpha_num']
+            ]
+        );
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Validation error', $validator->errors());
+        }
+
+        $inspection_group = $this->findInspectionGroup(
+            $request->inspection,
+            $request->process,
+            $request->division,
+            $request->line
+        );
 
         return [
-            'group' => $inspection_group->findWithRelated($itionG_id)
+            'group' => [
+                'id' => $inspection_group->id,
+                'inspectorGroups' => $this->formatInspectors($inspection_group->inspectors),
+                'failures' => $inspection_group->inspection->process->failures->map(function ($failure) {
+                    return [
+                        'id' => $failure->id,
+                        'label' => $failure->sort,
+                        'name' => $failure->name,
+                        'type' => $failure->pivot->type
+                    ];
+                }),
+                'comments' => $inspection_group->inspection->comments->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'message' => $comment->message
+                    ];
+                }),
+                'pages' => $inspection_group->pageTypes->map(function ($page) {
+                    return [
+                        'id' => $page->id,
+                        'pdf' => [
+                            'path' => $page->pdf->path,
+                            'area' => $page->pdf->area
+                        ],
+                        'parts' => $page->partTypes->map(function ($part) {
+                            return [
+                                'id' => $part->id,
+                                'name' => $part->name,
+                                'pn' => $part->pn,
+                                'vehicle' => $part->vehicle->number
+                            ];
+                        }),
+                        'figure' => [
+                            'path' => 'img/figures/'.$page->figure->path,
+                            'holes' => $page->figure->holes->map(function ($hole) {
+                                return [
+                                    'id' => $hole->id,
+                                    'point' => $hole->point,
+                                    'label' => $hole->label,
+                                    'direction' => $hole->direction,
+                                    'color' => $hole->color,
+                                    'border' => $hole->border,
+                                    'shape' => $hole->shape
+                                ];
+                            })
+                        ]
+                    ];
+                })
+            ]
         ];
     }
 
@@ -272,27 +353,27 @@ class InspectionController extends Controller
             };
 
             // Create failure
-            if (array_key_exists('failures', $page) && count($page['failures']) !== 0) {
-                foreach ($page['failures'] as $f) {
-                    $new_fp = new FailurePosition;
-                    $new_fp->page_id = $newPage->id;
-                    $new_fp->failure_id = $f['id'];
-                    $new_fp->part_id = $getPartIdfromArea($f);
-                    $new_fp->point = $matuken($f);
-                    $new_fp->save();
+            if (count($page['failures']) != 0) {
+                foreach ($page['failures'] as $key => $f) {
+                    $failure_position = new FailurePosition;
+                    $failure_position->page_id = $newPage->id;
+                    $failure_position->failure_id = $f['id'];
+                    $failure_position->part_id = $getPartIdfromArea($f);
+                    $failure_position->point = $matuken($f);
+                    $failure_position->save();
 
                     if (array_key_exists('commentId', $f)) {
-                        DB::table('modification_failure_position')->insert([
+                        DB::table('comment_failure_position')->insert([
                             'page_id' => $newPage->id,
-                            'fp_id' => $new_fp->id,
-                            'm_id' => $f['commentId']
+                            'failure_position_id' => $failure_position->id,
+                            'comment_id' => $f['commentId']
                         ]);
                     }
                 }
             }
 
             // Create holes
-            if (array_key_exists('holes', $page) && count($page['holes']) !== 0) {
+            if (isset($page['holes']) && count($page['holes']) != 0) {
                 DB::table('hole_page')->insert(array_map(function($h) use ($newPage) {
                         return [
                             'page_id' => $newPage->id,
@@ -305,12 +386,12 @@ class InspectionController extends Controller
             }
 
             // Create comments
-            if (array_key_exists('comments', $page) && count($page['comments']) !== 0) {
-                DB::table('modification_failure_position')->insert(array_map(function($c) use ($newPage) {
+            if (isset($page['comments']) && count($page['comments']) != 0) {
+                DB::table('comment_failure_position')->insert(array_map(function($c) use ($newPage) {
                         return [
                             'page_id' => $newPage->id,
-                            'fp_id' => $c['failurePositionId'],
-                            'm_id' => $c['commentId']
+                            'failure_position_id' => $c['failurePositionId'],
+                            'comment_id' => $c['commentId']
                         ];
                     },
                     $page['comments'])
@@ -325,7 +406,7 @@ class InspectionController extends Controller
             $panel_id = $family['pages'][0]['parts'][0]['panelId'];
             $failures = $family['pages'][0]['failures'];
 
-            // $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures);
+            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures);
         }
 
         return 'Excellent';

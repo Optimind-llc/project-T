@@ -26,12 +26,12 @@ class DummyInspectionsSeeder extends Seeder
 
         $createFailures = function($failures) use ($img) {
             $F = [];
-            for ($i=0; $i<5; $i++) {
+            for ($i=0; $i<10; $i++) {
                 $x = rand($img['margin'], $img['x'] - $img['margin']);
                 $y = rand($img['margin'], $img['y'] - $img['margin']);
 
                 array_push($F, [
-                    'id' => $failures->random()['id'],
+                    'id' => $failures[array_rand($failures)]['id'],
                     'point' => $x . ',' . $y,
                     'pointSub' => $x+$img['arrow'] . ',' . $y+$img['arrow']
                 ]);
@@ -54,7 +54,7 @@ class DummyInspectionsSeeder extends Seeder
                 
                 array_push($C, [
                     'failurePositionId' => $history[$k]['failurePositionId'],
-                    'commentId' => $comments->random()['id'],
+                    'commentId' => $comments[array_rand($comments)]['id'],
                 ]);
             }
 
@@ -64,12 +64,11 @@ class DummyInspectionsSeeder extends Seeder
         $createPage = function($page) use ($img, $id, $createPart, $createFailures, $createHole, $createComments, $group) {
             return [
                 'pageId' => $page['id'],
-                // 'status' => 1,
                 'table' => 'A',
                 'parts' => $page['parts']->map($createPart),
-                'failures' => $group['failures']->count() ? $createFailures($group['failures']) : null,
-                'holes' => $page['figure']['holes']->count() ? array_map($createHole, $page['figure']['holes']->toArray()) : null,
-                'comments' => $group['comments']->count() ? $createComments($group['comments'], $page['history']) : null
+                'failures' => count($group['failures']) ? $createFailures($group['failures']) : null,
+                'holes' => count($page['figure']['holes']) ? array_map($createHole, $page['figure']['holes']->toArray()) : null,
+                'comments' => count($group['comments']) ? $createComments($group['comments'], $page['history']) : null
             ];
         };
 
@@ -80,7 +79,7 @@ class DummyInspectionsSeeder extends Seeder
             'groupId' => $group['id'],
             'inspectorGroup' => $tyoku,
             'status' => 1,
-            'inspector' => $tyoku.','.$group['inspectorGroups']['Y'][0]['name'].','.$group['inspectorGroups']['Y'][0]['code'],
+            'inspector' => $tyoku.','.$group['inspectorGroups']['Y'][0]['name'],
             'pages' => $group['pages']->map($createPage)->toArray(),
             'photos' => [
                 'example1.jpg',
@@ -96,19 +95,17 @@ class DummyInspectionsSeeder extends Seeder
         $request = new DummyRequest;
         $controller = new InspectionController;
 
-        //成型：検査：ライン１：インナ
-        $request->set('molding', 'check', 'inner', '1');
-        $group = $controller->inspection($request);
-
+        //成型：検査：ライン１：インナー
+        $group = $controller->inspection(1);
         for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
+            // var_dump(json_encode($data));
             $request->setFamily($data);
             $controller->saveInspection($request);        
         }
 
-        //成型：検査：ライン２：インナ
-        $request->set('molding', 'check', 'inner', '2');
-        $group = $controller->inspection($request);
+        //成型：検査：ライン２：インナー
+        $group = $controller->inspection(2);
 
         for ($id = 11; $id <= 20; $id++) {
             $data = $this->createData($group['group'], $id);
@@ -116,9 +113,8 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);        
         }
 
-        //成型：検査：ライン１：小部品
-        $request->set('molding', 'check', 'small', '1');
-        $group = $controller->inspection($request);
+        //成型：検査：ライン１：アウター
+        $group = $controller->inspection(5);
 
         for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
@@ -126,9 +122,8 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);        
         }
 
-        //成型：検査：ライン２：小部品
-        $request->set('molding', 'check', 'small', '2');
-        $group = $controller->inspection($request);
+        //成型：検査：ライン２：アウター
+        $group = $controller->inspection(6);
 
         for ($id = 11; $id <= 20; $id++) {
             $data = $this->createData($group['group'], $id);
@@ -136,9 +131,8 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);        
         }
 
-        //穴あけ：検査：インナ
-        $request->set('holing', 'check', 'inner');
-        $group = $controller->inspection($request);
+        //穴あけ：検査：インナー
+        $group = $controller->inspection(4);
 
         for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
@@ -146,9 +140,8 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);        
         }
 
-        //穴あけ：検査：小部品
-        $request->set('holing', 'check', 'small');
-        $group = $controller->inspection($request);
+        //穴あけ：検査：アウター
+        $group = $controller->inspection(8);
 
         for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
@@ -157,8 +150,7 @@ class DummyInspectionsSeeder extends Seeder
         }
 
         //接着：止水：インナASSY
-        $request->set('jointing', 'water_stop', 'inner_assy');
-        $group = $controller->inspection($request);
+        $group = $controller->inspection(10);
 
         for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
@@ -177,8 +169,7 @@ class DummyInspectionsSeeder extends Seeder
         // }
 
         //接着：検査：インナASSY
-        $request->set('jointing', 'check', 'inner_assy');
-        $group = $controller->inspection($request);
+        $group = $controller->inspection(12);
 
         for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);
@@ -187,8 +178,7 @@ class DummyInspectionsSeeder extends Seeder
         }
 
         //接着：特検：インナASSY
-        $request->set('jointing', 'special_check', 'inner_assy');
-        $group = $controller->inspection($request);
+        $group = $controller->inspection(13);
 
         for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id);

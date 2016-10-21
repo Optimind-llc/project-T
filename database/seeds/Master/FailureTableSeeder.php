@@ -34,157 +34,157 @@ class FailureTableSeeder extends Seeder
         $data = [
             [
                 'name'       => 'キズ',
-                'sort'       => '1',
+                'label'      => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '凸',
-                'sort'       => '2',
+                'label'      => 2,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '凹',
-                'sort'       => '3',
+                'label'      => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'ワレ・ヒビ',
-                'sort'       => '4',
+                'label'      => 4,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'ショート',
-                'sort'       => '5',
+                'label'      => 5,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'シボかすれ',
-                'sort'       => '6',
+                'label'      => 6,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '異物混入',
-                'sort'       => '7',
+                'label'      => 7,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '白斑点',
-                'sort'       => '8',
+                'label'      => 8,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '樹脂抜け',
-                'sort'       => '9',
+                'label'      => 9,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'ヒケ',
-                'sort'       => '10',
+                'label'      => 10,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '上型残り',
-                'sort'       => '11',
+                'label'      => 11,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '下型残り',
-                'sort'       => '12',
+                'label'      => 12,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '加工不良',
-                'sort'       => '13',
+                'label'      => 13,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'ドライ',
-                'sort'       => '14',
+                'label'      => 14,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'リブ欠け',
-                'sort'       => '15',
+                'label'      => 15,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '端末欠け',
-                'sort'       => '16',
+                'label'      => 16,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'バリ',
-                'sort'       => '17',
+                'label'      => 17,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '材質記号NG',
-                'sort'       => '18',
+                'label'      => 18,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '仕上げ不良',
-                'sort'       => '19',
+                'label'      => 19,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '穴糸残り',
-                'sort'       => '20',
+                'label'      => 20,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '接着剤はみ出',
-                'sort'       => '21',
+                'label'      => 21,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '接着剤付着',
-                'sort'       => '22',
+                'label'      => 22,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '汚れ',
-                'sort'       => '23',
+                'label'      => 23,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '剥離',
-                'sort'       => '24',
+                'label'      => 24,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'ボルト塗料剥',
-                'sort'       => '25',
+                'label'      => 25,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'ボルト欠',
-                'sort'       => '26',
+                'label'      => 26,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'リテーナー欠',
-                'sort'       => '27',
+                'label'      => 27,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'リテーナー誤品',
-                'sort'       => '28',
+                'label'      => 28,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '隙間大',
-                'sort'       => '29',
+                'label'      => 29,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '水漏れ',
-                'sort'       => '30',
+                'label'      => 30,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'その他',
-                'sort'       => '99',
+                'label'      => 99,
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -195,7 +195,7 @@ class FailureTableSeeder extends Seeder
         /**
          * create failure related table seeder
          */
-        $table_name = 'failure_process';
+        $table_name = 'failure_inspection';
 
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -214,173 +214,570 @@ class FailureTableSeeder extends Seeder
             //成型
             [
                 'failure_id' => 1,
-                'process_id' => 'molding',
-                'type'       => 1
+                'inspection_id' => 1,
+                'type'       => 1,
+                'sort'       => 1
             ],[
                 'failure_id' => 2,
-                'process_id' => 'molding',
-                'type'       => 1
+                'inspection_id' => 1,
+                'type'       => 1,
+                'sort'       => 1
             ],[
                 'failure_id' => 3,
-                'process_id' => 'molding',
-                'type'       => 1
+                'inspection_id' => 1,
+                'type'       => 1,
+                'sort'       => 1
             ],[
                 'failure_id' => 4,
-                'process_id' => 'molding',
-                'type'       => 1
+                'inspection_id' => 1,
+                'type'       => 1,
+                'sort'       => 1
             ],[
                 'failure_id' => 5,
-                'process_id' => 'molding',
-                'type'       => 1
+                'inspection_id' => 1,
+                'type'       => 1,
+                'sort'       => 1
             ],[
                 'failure_id' => 6,
-                'process_id' => 'molding',
-                'type'       => 2
+                'inspection_id' => 1,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 7,
-                'process_id' => 'molding',
-                'type'       => 2
+                'inspection_id' => 1,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 8,
-                'process_id' => 'molding',
-                'type'       => 2
+                'inspection_id' => 1,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 9,
-                'process_id' => 'molding',
-                'type'       => 2
+                'inspection_id' => 1,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 10,
-                'process_id' => 'molding',
-                'type'       => 1
+                'inspection_id' => 1,
+                'type'       => 1,
+                'sort'       => 1
             ],[
                 'failure_id' => 11,
-                'process_id' => 'molding',
-                'type'       => 2
+                'inspection_id' => 1,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 12,
-                'process_id' => 'molding',
-                'type'       => 2
+                'inspection_id' => 1,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 14,
-                'process_id' => 'molding',
-                'type'       => 2
+                'inspection_id' => 1,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 15,
-                'process_id' => 'molding',
-                'type'       => 2
+                'inspection_id' => 1,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 31,
-                'process_id' => 'molding',
-                'type'       => 2
+                'inspection_id' => 1,
+                'type'       => 2,
+                'sort'       => 1
             ],
             //穴あけ
             [
                 'failure_id' => 1,
-                'process_id' => 'holing',
-                'type'       => 2
+                'inspection_id' => 3,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 2,
-                'process_id' => 'holing',
-                'type'       => 2
+                'inspection_id' => 3,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 3,
-                'process_id' => 'holing',
-                'type'       => 2
+                'inspection_id' => 3,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 4,
-                'process_id' => 'holing',
-                'type'       => 2
+                'inspection_id' => 3,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 5,
-                'process_id' => 'holing',
-                'type'       => 2
+                'inspection_id' => 3,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 7,
-                'process_id' => 'holing',
-                'type'       => 2
+                'inspection_id' => 3,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 13,
-                'process_id' => 'holing',
-                'type'       => 2
+                'inspection_id' => 3,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 24,
-                'process_id' => 'holing',
-                'type'       => 2
+                'inspection_id' => 3,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 31,
-                'process_id' => 'holing',
-                'type'       => 2
+                'inspection_id' => 3,
+                'type'       => 2,
+                'sort'       => 1
             ],
-            //接着
+
+            //接着 止水　
             [
                 'failure_id' => 1,
-                'process_id' => 'jointing',
-                'type'       => 1
+                'inspection_id' => 5,
+                'type'       => 1,
+                'sort'       => 1
             ],[
                 'failure_id' => 2,
-                'process_id' => 'jointing',
-                'type'       => 2
+                'inspection_id' => 5,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 3,
-                'process_id' => 'jointing',
-                'type'       => 2
+                'inspection_id' => 5,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 4,
-                'process_id' => 'jointing',
-                'type'       => 1
+                'inspection_id' => 5,
+                'type'       => 1,
+                'sort'       => 1
             ],[
                 'failure_id' => 6,
-                'process_id' => 'jointing',
-                'type'       => 2
+                'inspection_id' => 5,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 9,
-                'process_id' => 'jointing',
-                'type'       => 2
+                'inspection_id' => 5,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 16,
-                'process_id' => 'jointing',
-                'type'       => 2
+                'inspection_id' => 5,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 17,
-                'process_id' => 'jointing',
-                'type'       => 2
+                'inspection_id' => 5,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 21,
-                'process_id' => 'jointing',
-                'type'       => 1
+                'inspection_id' => 5,
+                'type'       => 1,
+                'sort'       => 1
             ],[
                 'failure_id' => 22,
-                'process_id' => 'jointing',
-                'type'       => 1
+                'inspection_id' => 5,
+                'type'       => 1,
+                'sort'       => 1
             ],[
                 'failure_id' => 23,
-                'process_id' => 'jointing',
-                'type'       => 2
+                'inspection_id' => 5,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 24,
-                'process_id' => 'jointing',
-                'type'       => 1
+                'inspection_id' => 5,
+                'type'       => 1,
+                'sort'       => 1
             ],[
                 'failure_id' => 25,
-                'process_id' => 'jointing',
-                'type'       => 2
+                'inspection_id' => 5,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 26,
-                'process_id' => 'jointing',
-                'type'       => 2
+                'inspection_id' => 5,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 29,
-                'process_id' => 'jointing',
-                'type'       => 2
+                'inspection_id' => 5,
+                'type'       => 2,
+                'sort'       => 1
             ],[
                 'failure_id' => 30,
-                'process_id' => 'jointing',
-                'type'       => 1
+                'inspection_id' => 5,
+                'type'       => 1,
+                'sort'       => 0
             ],[
                 'failure_id' => 31,
-                'process_id' => 'jointing',
-                'type'       => 2
+                'inspection_id' => 5,
+                'type'       => 2,
+                'sort'       => 1
             ],
+
+            //接着 仕上
+            [
+                'failure_id' => 1,
+                'inspection_id' => 6,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 2,
+                'inspection_id' => 6,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 3,
+                'inspection_id' => 6,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 4,
+                'inspection_id' => 6,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 6,
+                'inspection_id' => 6,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 9,
+                'inspection_id' => 6,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 16,
+                'inspection_id' => 6,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 17,
+                'inspection_id' => 6,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 21,
+                'inspection_id' => 6,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 22,
+                'inspection_id' => 6,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 23,
+                'inspection_id' => 6,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 24,
+                'inspection_id' => 6,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 25,
+                'inspection_id' => 6,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 26,
+                'inspection_id' => 6,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 29,
+                'inspection_id' => 6,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 30,
+                'inspection_id' => 6,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 31,
+                'inspection_id' => 6,
+                'type'       => 2,
+                'sort'       => 1
+            ],
+
+
+            //接着 検査
+            [
+                'failure_id' => 1,
+                'inspection_id' => 7,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 2,
+                'inspection_id' => 7,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 3,
+                'inspection_id' => 7,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 4,
+                'inspection_id' => 7,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 6,
+                'inspection_id' => 7,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 9,
+                'inspection_id' => 7,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 16,
+                'inspection_id' => 7,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 17,
+                'inspection_id' => 7,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 21,
+                'inspection_id' => 7,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 22,
+                'inspection_id' => 7,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 23,
+                'inspection_id' => 7,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 24,
+                'inspection_id' => 7,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 25,
+                'inspection_id' => 7,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 26,
+                'inspection_id' => 7,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 29,
+                'inspection_id' => 7,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 30,
+                'inspection_id' => 7,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 31,
+                'inspection_id' => 7,
+                'type'       => 2,
+                'sort'       => 1
+            ],
+
+
+            //接着 特検
+            [
+                'failure_id' => 1,
+                'inspection_id' => 8,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 2,
+                'inspection_id' => 8,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 3,
+                'inspection_id' => 8,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 4,
+                'inspection_id' => 8,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 6,
+                'inspection_id' => 8,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 9,
+                'inspection_id' => 8,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 16,
+                'inspection_id' => 8,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 17,
+                'inspection_id' => 8,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 21,
+                'inspection_id' => 8,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 22,
+                'inspection_id' => 8,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 23,
+                'inspection_id' => 8,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 24,
+                'inspection_id' => 8,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 25,
+                'inspection_id' => 8,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 26,
+                'inspection_id' => 8,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 29,
+                'inspection_id' => 8,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 30,
+                'inspection_id' => 8,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 31,
+                'inspection_id' => 8,
+                'type'       => 2,
+                'sort'       => 1
+            ],
+
+
+            //接着 手直し
+            [
+                'failure_id' => 1,
+                'inspection_id' => 9,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 2,
+                'inspection_id' => 9,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 3,
+                'inspection_id' => 9,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 4,
+                'inspection_id' => 9,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 6,
+                'inspection_id' => 9,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 9,
+                'inspection_id' => 9,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 16,
+                'inspection_id' => 9,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 17,
+                'inspection_id' => 9,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 21,
+                'inspection_id' => 9,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 22,
+                'inspection_id' => 9,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 23,
+                'inspection_id' => 9,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 24,
+                'inspection_id' => 9,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 25,
+                'inspection_id' => 9,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 26,
+                'inspection_id' => 9,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 29,
+                'inspection_id' => 9,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 30,
+                'inspection_id' => 9,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 31,
+                'inspection_id' => 9,
+                'type'       => 2,
+                'sort'       => 1
+            ]
         ];
 
         DB::table($table_name)->insert($data);

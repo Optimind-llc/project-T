@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Comment
+ * Class Modification
  * @package App\Models
  */
-class Comment extends Model
+class Modification extends Model
 {
     /**
      * The attributes that are not mass assignable.
@@ -16,15 +16,6 @@ class Comment extends Model
      * @var array
      */
     protected $guarded = ['id'];
-
-    public function inspections()
-    {
-        return $this->belongsTo(
-            'App\Models\Inspection',
-            'figure_id',
-            'id'
-        );
-    }
 
     public function pages()
     {

@@ -16,7 +16,10 @@ Route::get('/', function () {
 });
 
 // Get infomations for inspection 
-Route::get('client/inspection', 'Client\InspectionController@inspection');
+Route::get('client/inspection/{itionG_id}', 'Client\InspectionController@inspection')
+	->where([
+		'itionG_id' => '[0-9]+'
+	]);
 Route::get('client/history/{inspectionGroupId}/{partTypeId}/{panelId}', 'Client\InspectionController@history')
 	->where([
 		'inspectionGroupId' => '[0-9]+',

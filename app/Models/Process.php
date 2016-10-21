@@ -28,17 +28,6 @@ class Process extends Model
         );
     }
 
-    public function failures()
-    {
-        return $this->belongsToMany(
-            'App\Models\Failure',
-            'failure_process',
-            'process_id',
-            'failure_id'
-        )
-        ->withPivot('type');
-    }
-
     public function getInspectionsHasSamePanelID($division_en, $panel_id, $enable_inspection_list)
     {
         return $this->inspections()

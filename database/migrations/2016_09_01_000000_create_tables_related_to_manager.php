@@ -12,8 +12,8 @@ class CreateTablesRelatedToManager extends Migration
     public function up()
     {
         Schema::create('processes', function (Blueprint $table) {
-            $table->string('name')->unique();
-            $table->string('id');
+            $table->string('name', 16)->unique();
+            $table->string('id', 16);
             $table->integer('sort')->unsigned()->default(1);
             $table->timestamps();
 
@@ -25,8 +25,8 @@ class CreateTablesRelatedToManager extends Migration
 
         Schema::create('inspections', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('en');
+            $table->string('name', 16);
+            $table->string('en', 16);
             $table->integer('sort')->unsigned()->default(1);
             $table->string('process_id');
             $table->timestamps();
@@ -42,16 +42,16 @@ class CreateTablesRelatedToManager extends Migration
         });
 
         Schema::create('divisions', function (Blueprint $table) {
-            $table->string('name')->unique();
-            $table->string('en');
+            $table->string('name', 16)->unique();
+            $table->string('en', 16);
             $table->timestamps();
 
             $table->primary('en');
         });
 
         Schema::create('vehicles', function (Blueprint $table) {
-            $table->string('number');
-            $table->string('name')->unique()->nullable();
+            $table->string('number', 16);
+            $table->string('name', 16)->unique()->nullable();
             $table->integer('sort')->unsigned()->defaul(1);
             $table->timestamps();
 
@@ -63,9 +63,9 @@ class CreateTablesRelatedToManager extends Migration
 
         Schema::create('inspection_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('division_en');
-            $table->string('vehicle_num');
-            $table->string('line')->nullable();
+            $table->string('division_en', 16);
+            $table->string('vehicle_num', 16);
+            $table->string('line', 16)->nullable();
             $table->integer('inspection_id')->unsigned();
             $table->timestamps();
 
@@ -92,8 +92,8 @@ class CreateTablesRelatedToManager extends Migration
         });
 
         Schema::create('inspector_groups', function (Blueprint $table) {
-            $table->string('code');
-            $table->string('name')->unique();
+            $table->string('code', 16);
+            $table->string('name', 16)->unique();
             $table->tinyInteger('status')->unsigned()->default(1);
             $table->timestamps();
 
@@ -105,8 +105,8 @@ class CreateTablesRelatedToManager extends Migration
 
         Schema::create('inspectors', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('code')->unique();
+            $table->string('name', 16)->unique();
+            $table->string('code', 16)->unique();
             $table->string('group_code');
             $table->timestamps();
 
@@ -149,14 +149,16 @@ class CreateTablesRelatedToManager extends Migration
 
         Schema::create('figures', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('path')->unique();
+            $table->string('path', 16)->unique();
+            $table->integer('part_type_id')->unsigned()->nullable();
+            $table->integer('inspection_id')->unsigned()->nullable();
             $table->timestamps();
         });
 
         Schema::create('pdf_templates', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('path')->unique();
-            $table->string('area');
+            $table->string('path', 64)->unique();
+            $table->string('area', 64);
             $table->string('reference');
 
             $table->timestamps();
@@ -195,7 +197,7 @@ class CreateTablesRelatedToManager extends Migration
         Schema::create('part_types', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('pn')->unique()->unsigned();
-            $table->string('name')->unique();
+            $table->string('name', 16)->unique();
             $table->integer('sort')->unsigned()->default(1);
             $table->string('vehicle_num');
             $table->timestamps();
@@ -210,10 +212,27 @@ class CreateTablesRelatedToManager extends Migration
                 ->onDelete('restrict');
         });
 
+        Schema::table('figures', function ($table) {
+            /**
+             * Add Foreign
+             */
+            $table->foreign('part_type_id')
+                ->references('id')
+                ->on('part_types')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('inspection_id')
+                ->references('id')
+                ->on('inspections')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+        });
+
         Schema::create('part_type_page_type', function (Blueprint $table) {
             $table->integer('part_type_id')->unsigned();
             $table->integer('page_type_id')->unsigned();
-            $table->string('area')->nullable()->default('null');
+            $table->string('area', 64)->nullable()->default('null');
             $table->timestamps();
 
             /**
@@ -237,34 +256,18 @@ class CreateTablesRelatedToManager extends Migration
             $table->primary(['part_type_id', 'page_type_id']);
         });
 
-        Schema::create('comments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('message');
-            $table->string('sort');
-            $table->integer('inspection_id')->unsigned();
-            $table->timestamps();
-
-            /**
-             * Add Foreign
-             */
-            $table->foreign('inspection_id')
-                ->references('id')
-                ->on('inspections')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-        });
-
         Schema::create('failures', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->integer('sort')->unsigned()->default(1);
+            $table->string('name', 16)->unique();
+            $table->integer('label')->unsigned()->default(1);
             $table->timestamps();
         });
 
-        Schema::create('failure_process', function (Blueprint $table) {
+        Schema::create('failure_inspection', function (Blueprint $table) {
             $table->integer('failure_id')->unsigned();
-            $table->string('process_id');
+            $table->integer('inspection_id')->unsigned();
             $table->tinyInteger('type')->unsigned()->default(1);
+            $table->tinyInteger('sort')->unsigned()->default(1);
             $table->timestamps();
 
             /**
@@ -276,26 +279,26 @@ class CreateTablesRelatedToManager extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
 
-            $table->foreign('process_id')
+            $table->foreign('inspection_id')
                 ->references('id')
-                ->on('processes')
+                ->on('inspections')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
 
             /**
              * Add Primary
              */
-            $table->primary(['failure_id', 'process_id']);
+            $table->primary(['failure_id', 'inspection_id']);
         });
 
         Schema::create('holes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('point');
+            $table->string('point', 16);
             $table->integer('label')->unsigned()->default(1);
-            $table->string('direction'); //ラベルの位置 top bottom left right
-            $table->string('color'); //0-0-0 RGBの-区切り
-            $table->string('border'); //dotted or solid
-            $table->string('shape'); //square or circle
+            $table->string('direction', 16); //ラベルの位置 top bottom left right
+            $table->string('color', 16); //0-0-0 RGBの-区切り
+            $table->string('border', 16); //dotted or solid
+            $table->string('shape', 16); //square or circle
             $table->integer('part_type_id')->unsigned();
             $table->integer('figure_id')->unsigned();
             $table->timestamps();
@@ -316,16 +319,51 @@ class CreateTablesRelatedToManager extends Migration
                 ->onDelete('restrict');
         });
 
+        Schema::create('modifications', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 16);
+            $table->string('label', 16);
+            $table->timestamps();
+        });
+
+        Schema::create('modification_inspection', function (Blueprint $table) {
+            $table->integer('modification_id')->unsigned();
+            $table->integer('inspection_id')->unsigned();
+            $table->tinyInteger('type')->unsigned()->default(1);
+            $table->tinyInteger('sort')->unsigned()->default(1);
+            $table->timestamps();
+
+            /**
+             * Add Foreign
+             */
+            $table->foreign('modification_id')
+                ->references('id')
+                ->on('modifications')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('inspection_id')
+                ->references('id')
+                ->on('inspections')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            /**
+             * Add Primary
+             */
+            $table->primary(['modification_id', 'inspection_id']);
+        });
+
         Schema::create('inlines', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('point');
-            $table->string('label_point');
-            $table->string('side');
-            $table->string('face')->nullable();
-            $table->string('position')->nullable();
-            $table->string('calibration')->nullable();
-            $table->string('standard_tolerance');
-            $table->string('input_tolerance')->nullable();
+            $table->string('point', 16);
+            $table->string('label_point', 16);
+            $table->string('side', 16);
+            $table->string('face', 16)->nullable();
+            $table->string('position', 16)->nullable();
+            $table->string('calibration', 16)->nullable();
+            $table->string('standard_tolerance', 16);
+            $table->string('input_tolerance', 16)->nullable();
             $table->integer('sort')->unsigned()->default(1);
             $table->integer('part_type_id')->unsigned();
             $table->integer('figure_id')->unsigned();
@@ -356,11 +394,16 @@ class CreateTablesRelatedToManager extends Migration
     public function down()
     {
         Schema::drop('inlines');
+        Schema::drop('modification_inspection');
+        Schema::drop('modifications');
         Schema::drop('holes');
-        Schema::drop('failure_process');
+        Schema::drop('failure_inspection');
         Schema::drop('failures');
-        Schema::drop('comments');
         Schema::drop('part_type_page_type');
+        Schema::table('figures', function ($table) {
+            $table->dropForeign('figures_part_type_id_foreign');
+            $table->dropForeign('figures_inspection_id_foreign');
+        });
         Schema::drop('part_types');
         Schema::drop('page_types');
         Schema::drop('pdf_templates');

@@ -40,7 +40,13 @@ class InspectorGroupTableSeeder extends Seeder
                 'status'     => 1,
                 'created_at' => $now,
                 'updated_at' => $now
-            ],
+            ],[
+                'name'       => '黒直',
+                'code'       => 'B',
+                'status'     => 0,
+                'created_at' => $now,
+                'updated_at' => $now
+            ]
         ];
 
         DB::table($table_name)->insert($data);

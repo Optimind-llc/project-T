@@ -195,11 +195,18 @@ class CreateTablesRelatedToClient extends Migration
                 ->onDelete('restrict');
         });
 
-        Schema::create('comment_failure_position', function (Blueprint $table) {
+        Schema::create('modification_failure_position', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('page_id')->unsigned();
-            $table->integer('failure_position_id')->unsigned();
-            $table->integer('comment_id')->unsigned();
+            $table->integer('fp_id')->unsigned();
+            $table->integer('m_id')->unsigned();
+            $table->string('comment', 100);
             $table->timestamps();
+
+            /**
+             * Add Index
+             */
+            $table->unique(['page_id','fp_id','m_id']);
 
             /**
              * Add Foreign
@@ -210,21 +217,17 @@ class CreateTablesRelatedToClient extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
 
-            $table->foreign('failure_position_id')
+            $table->foreign('fp_id')
                 ->references('id')
                 ->on('failure_positions')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
 
-            $table->foreign('comment_id')
+            $table->foreign('m_id')
                 ->references('id')
-                ->on('comments')
+                ->on('modifications')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
-            /**
-             * Add Primary
-             */
-            $table->primary(['page_id', 'failure_position_id']);
         });
 
         Schema::create('hole_page', function (Blueprint $table) {
@@ -263,7 +266,7 @@ class CreateTablesRelatedToClient extends Migration
     public function down()
     {
         Schema::drop('hole_page');
-        Schema::drop('comment_failure_position');
+        Schema::drop('modification_failure_position');
         Schema::drop('failure_positions');
         Schema::drop('inline_page');
         Schema::drop('photos');

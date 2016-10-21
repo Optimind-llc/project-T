@@ -17,13 +17,13 @@ class Failure extends Model
      */
     protected $guarded = ['id'];
 
-    public function processes()
+    public function inspections()
     {
         return $this->belongsToMany(
-            'App\Models\Process',
-            'failure_process',
+            'App\Models\Inspection',
+            'failure_inspection',
             'failure_id',
-            'process_id'
+            'inspection_id'
         );
     }
 }

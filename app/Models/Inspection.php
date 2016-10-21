@@ -35,13 +35,26 @@ class Inspection extends Model
         );
     }
 
-    public function comments()
+    public function failures()
     {
-        return $this->hasMany(
-            'App\Models\Comment',
+        return $this->belongsToMany(
+            'App\Models\Failure',
+            'failure_inspection',
             'inspection_id',
-            'id'
-        );
+            'failure_id'
+        )
+        ->withPivot(['type', 'sort']);
+    }
+
+    public function modifications()
+    {
+        return $this->belongsToMany(
+            'App\Models\Modification',
+            'modification_inspection',
+            'inspection_id',
+            'modification_id'
+        )
+        ->withPivot(['type', 'sort']);
     }
 
     /**
@@ -54,36 +67,11 @@ class Inspection extends Model
             return $this->groups()
                 ->where('division_en', $division_en)
                 ->where('line', $line)
-                ->with([
-                    'pageTypes',
-                    'inspectors' => function ($q) {
-                        $q->orderBy('sort');
-                    },
-                    'pageTypes.partTypes',
-                    'pageTypes.partTypes.vehicle',
-                    'pageTypes.figure',
-                    'pageTypes.figure.holes',
-                    'inspection.process.failures',
-                    'inspection.comments'
-                ])
                 ->first();
         }
 
         return $this->groups()
             ->where('division_en', $division_en)
-            ->with([
-                'pageTypes',
-                'inspectors' => function ($q) {
-                    $q->orderBy('sort');
-                },
-                'pageTypes.partTypes',
-                'pageTypes.partTypes.vehicle',
-                'pageTypes.figure',
-                'pageTypes.figure.holes',
-                'pageTypes.pdf',
-                'inspection.process.failures',
-                'inspection.comments'
-            ])
             ->first();
     }
 

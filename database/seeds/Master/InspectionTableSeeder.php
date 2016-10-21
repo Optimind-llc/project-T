@@ -30,7 +30,7 @@ class InspectionTableSeeder extends Seeder
         $data = [
             [
                 'name'       => '検査',
-                'en'         => 'check',
+                'en'         => 'kensa',
                 'sort'       => 1,
                 'process_id' => 'molding',
                 'created_at' => $now,
@@ -44,7 +44,7 @@ class InspectionTableSeeder extends Seeder
                 'updated_at' => $now
             ],[
                 'name'       => '検査',
-                'en'         => 'check',
+                'en'         => 'kensa',
                 'sort'       => 1,
                 'process_id' => 'holing',
                 'created_at' => $now,
@@ -58,40 +58,40 @@ class InspectionTableSeeder extends Seeder
                 'updated_at' => $now
             ],[
                 'name'       => '止水',
-                'en'         => 'water_stop',
+                'en'         => 'sisui',
                 'sort'       => 2,
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '仕上',
-                'en'         => 'finish',
+                'en'         => 'siage',
                 'sort'       => 3,
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '検査',
-                'en'         => 'check',
+                'en'         => 'kensa',
                 'sort'       => 4,
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '特検',
-                'en'         => 'special_check',
+                'en'         => 'tokken',
                 'sort'       => 5,
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '手直し',
-                'en'         => 'adjust',
+                'en'         => 'tenaosi',
                 'sort'       => 6,
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now
-            ],
+            ]
         ];
 
         DB::table($table_name)->insert($data);
