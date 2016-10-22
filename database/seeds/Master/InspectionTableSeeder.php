@@ -58,14 +58,14 @@ class InspectionTableSeeder extends Seeder
                 'updated_at' => $now
             ],[
                 'name'       => '止水',
-                'en'         => 'sisui',
+                'en'         => 'shisui',
                 'sort'       => 2,
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '仕上',
-                'en'         => 'siage',
+                'en'         => 'shiage',
                 'sort'       => 3,
                 'process_id' => 'jointing',
                 'created_at' => $now,
@@ -86,7 +86,7 @@ class InspectionTableSeeder extends Seeder
                 'updated_at' => $now
             ],[
                 'name'       => '手直し',
-                'en'         => 'tenaosi',
+                'en'         => 'tenaoshi',
                 'sort'       => 6,
                 'process_id' => 'jointing',
                 'created_at' => $now,

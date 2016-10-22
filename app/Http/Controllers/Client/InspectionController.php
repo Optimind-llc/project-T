@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Choku;
 // Models
 use App\Models\Process;
 use App\Models\Inspector;
@@ -72,9 +73,9 @@ class InspectionController extends Controller
     public function history($inspectionGroupId, $partTypeId, $panelId)
     {
         switch ($inspectionGroupId) {
-            case 11: $expect = ['waterStop' => 10]; break;
-            case 14: $expect = ['check' => 12, 'specialCheck' => 13]; break;
-            default: $expect = []; break;                
+            case 11: $expect = ['shisui' => 10]; break;
+            case 14: $expect = ['shisui' => 10, 'shiage' => 11, 'kensa' => 12, 'tokken' => 13]; break;
+            default: $expect = []; break;
         }
 
         $heritage = [];
@@ -102,7 +103,7 @@ class InspectionController extends Controller
                             $q->select(['id', 'point', 'page_id', 'failure_id']);
                         },
                         'failurePositions.failure' => function($q) {
-                            $q->select(['id', 'sort']);
+                            $q->select(['id', 'label']);
                         }
                     ])
                     ->get();
@@ -116,7 +117,7 @@ class InspectionController extends Controller
                     return $page->failurePositions->map(function($f) {
                         return [
                             'failurePositionId' => $f->id,
-                            'label' => $f->failure->sort,
+                            'label' => $f->failure->label,
                             'point' => $f->point
                         ];
                     });
@@ -335,69 +336,71 @@ class InspectionController extends Controller
 
     public function exportCSV($gId, $pId, $itorG, $itor, $status, $failures)
     {
-      $now = Carbon::now();
-      $now_f = $now->format('Ymd_His');
-      $now_c = $now->format('Ymd H:i:s');
-      $now_t = $now->format('Hi');
+        $now = Carbon::now();
+        $choku = new Choku($now);
+        $choku_num = $choku->getChoku();
 
-      if ($now_t > 200 && $now_t <= 1615) {
-        $tyoku = 1;
-      } else {
-        $tyoku = 2;
-      }
+        $dir_path = config('path.'.env('SERVER'));
 
-      $XXXX = $gId == 1 ? 'M0001' : 'M0002';
-      $line = $gId == 1 ? '001' : '002';
 
-      $file_name = $XXXX.'_'.'67149'.'_'.$now_f;
+        $XXXX = $gId == 1 ? 'M0001' : 'M0002';
+        $line = $gId == 1 ? '001' : '002';
 
-      $file_path = base_path('output/'.$file_name.'.csv');
-      // $file_path = 'D:'.DIRECTORY_SEPARATOR.'FailureMapping'.DIRECTORY_SEPARATOR.'Output'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+        $file_name = $XXXX.'_'.'67149'.'_'.$now->format('Ymd_His');
+        $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
 
-      $fail = collect($failures)->groupBy('id')->map(function($f){
-        return $f->count();
-      })->toArray();
+        $failures = Process::find('molding')
+            ->failures()
+            ->get(['id', 'sort', 'name'])
+            ->map(function($f) {
+                return [
+                    'id' => $f->id,
+                    'label' => $f->label,
+                    'name' => $f->name,
+                    'type' => $f->pivot->type,
+                    'sort' => $f->pivot->sort
+                ];
+            })
+            ->toArray();
 
-      $all_failures = Process::where('id', 'molding')
-        ->first()
-        ->failures()
-        ->orderBy('sort')
-        ->get(['id', 'sort', 'name'])
-        ->map(function($f) {
-          return [
-            'id' => $f->id,
-            'sort' => $f->sort,
-            'name' => $f->name,
-            'type' => $f->pivot->type
-          ];
-        })
-        ->sortBy('type')
-        ->values()
-        ->all();
-
-        foreach( $all_failures as $key => $row ) {
-          $tmp_type_array[$key] = $row["type"];
-          $tmp_sort_array[$key] = $row["sort"];
+        foreach( $failures as $key => $row ) {
+            $f_type_array[$key] = $row['type'];
+            $f_label_array[$key] = $row['label'];
+            $f_sort_array[$key] = $row['sort'];
         }
 
-        array_multisort($tmp_type_array, $tmp_sort_array, $all_failures);
+        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failures);
 
-        $res_export = array('67149','47060','A',substr($pId, 1,7),'成型',$line,'680A',$itorG,$tyoku,$itor,$status);
+        $c_failures = collect($failures)->groupBy('id')->map(function($f){
+            return $f->count();
+        })->toArray();
 
-        foreach ($all_failures as $key => $f) {
-            array_push($res_export, array_key_exists($f['id'], $fail) ? $fail[$f['id']] : '');
+        $export = [
+            '67149',
+            '47060',
+            'A',
+            substr($pId, 1,7),
+            '成型',
+            $line,
+            '680A',
+            $itorG,
+            $choku,
+            $itor,
+            $status
+        ];
+
+        foreach ($failures as $f) {
+            array_push($export, array_key_exists($f['id'], $c_failures) ? $c_failures[$f['id']] : '');
         }
-
-        array_push($res_export, $now_c);
-
+        array_push($export, $now->format('Ymd H:i:s'));
 
         if( touch($file_path) ){
-            $file = new \SplFileObject( $file_path, 'w' ); 
+            $file = new \SplFileObject($file_path, 'w');
 
-            foreach( $res_export as $key => $val ){
-                // $export_raw[] = mb_convert_encoding($val, 'UTF-8');
-                mb_convert_encoding($hensu, 'SJIS-win');
+            foreach( $export as $key => $val ){
+                $export_raw[] = mb_convert_encoding($val, 'SJIS-win');
             }
+
             $file->fputcsv($export_raw);
         }
     }

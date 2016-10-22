@@ -44,13 +44,13 @@ return [
     'disks' => [
         'inline' => [
             'driver' => 'local',
-            'root' => '/app/web/input/Inline',
+            'root' => '/app/web/FailureMapping/Inline',
             // 'root' => 'D:'.DIRECTORY_SEPARATOR.'FailureMapping'.DIRECTORY_SEPARATOR.'InLine',
         ],
 
         'output' => [
             'driver' => 'local',
-            'root' => '/app/web/input/Output',
+            'root' => '/app/web/FailureMapping/Output',
             // 'root' => 'D:'.DIRECTORY_SEPARATOR.'FailureMapping'.DIRECTORY_SEPARATOR.'Output',
         ],
 
