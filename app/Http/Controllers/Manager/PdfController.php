@@ -55,29 +55,28 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
-        $failures = Process::where('id', 'molding')
+        $failures = Inspection::where('en', 'kensa')
+            ->where('process_id', 'molding')
             ->first()
-            ->failures()
-            ->orderBy('sort')
-            ->get(['id', 'sort', 'name'])
+            ->failures
             ->map(function($f) {
                 return [
                     'id' => $f->id,
-                    'sort' => $f->sort,
+                    'label' => $f->label,
                     'name' => $f->name,
-                    'type' => $f->pivot->type
+                    'type' => $f->pivot->type,
+                    'sort' => $f->pivot->sort
                 ];
             })
-            ->sortBy('type')
-            ->values()
-            ->all();
+            ->toArray();
 
-            foreach( $failures as $key => $row ) {
-                $tmp_type_array[$key] = $row["type"];
-                $tmp_sort_array[$key] = $row["sort"];
-            }
+        foreach( $failures as $key => $row ) {
+            $f_type_array[$key] = $row['type'];
+            $f_label_array[$key] = $row['label'];
+            $f_sort_array[$key] = $row['sort'];
+        }
 
-            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
+        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failures);
 
         $n = count($failures);
 
@@ -666,29 +665,29 @@ class PdfController extends Controller
     protected function forMoldingSmall($tcpdf, $date, $families, $itorG_name, $line)
     {
         $now = Carbon::now();
-        $failures = Process::where('id', 'molding')
+
+        $failures = Inspection::where('en', 'kensa')
+            ->where('process_id', 'molding')
             ->first()
-            ->failures()
-            ->orderBy('sort')
-            ->get(['id', 'sort', 'name'])
+            ->failures
             ->map(function($f) {
                 return [
                     'id' => $f->id,
-                    'sort' => $f->sort,
+                    'label' => $f->label,
                     'name' => $f->name,
-                    'type' => $f->pivot->type
+                    'type' => $f->pivot->type,
+                    'sort' => $f->pivot->sort
                 ];
             })
-            ->sortBy('type')
-            ->values()
-            ->all();
+            ->toArray();
 
-            foreach( $failures as $key => $row ) {
-                $tmp_type_array[$key] = $row["type"];
-                $tmp_sort_array[$key] = $row["sort"];
-            }
+        foreach( $failures as $key => $row ) {
+            $f_type_array[$key] = $row['type'];
+            $f_label_array[$key] = $row['label'];
+            $f_sort_array[$key] = $row['sort'];
+        }
 
-            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
+        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failures);
 
         $n = count($failures);
 
@@ -1321,24 +1320,28 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
-        $failures = Process::where('id', 'jointing')
+        $failures = Inspection::where('en', 'shisui')
+            ->where('process_id', 'jointing')
             ->first()
-            ->failures()
-            ->orderBy('sort')
-            ->get(['id', 'sort', 'name'])
+            ->failures
             ->map(function($f) {
                 return [
                     'id' => $f->id,
+                    'label' => $f->label,
                     'name' => $f->name,
-                    'type' => $f->pivot->type
+                    'type' => $f->pivot->type,
+                    'sort' => $f->pivot->sort
                 ];
             })
-            ->filter(function($f) {
-                return $f['name'] == '水漏れ';
-            })
-            ->sortBy('type')
-            ->values()
-            ->all();
+            ->toArray();
+
+        foreach( $failures as $key => $row ) {
+            $f_type_array[$key] = $row['type'];
+            $f_label_array[$key] = $row['label'];
+            $f_sort_array[$key] = $row['sort'];
+        }
+
+        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failures);
 
         $n = count($failures);
 
@@ -1539,37 +1542,54 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
-        $failures = Process::where('id', 'jointing')
+        $failures = Inspection::where('en', 'shiage')
+            ->where('process_id', 'jointing')
             ->first()
-            ->failures()
-            ->orderBy('sort')
-            ->get(['id', 'sort', 'name'])
+            ->failures
             ->map(function($f) {
                 return [
                     'id' => $f->id,
-                    'sort' => $f->sort,
+                    'label' => $f->label,
                     'name' => $f->name,
-                    'type' => $f->pivot->type
+                    'type' => $f->pivot->type,
+                    'sort' => $f->pivot->sort
                 ];
             })
-            ->sortBy('type')
-            ->values()
-            ->all();
+            ->toArray();
 
-            foreach( $failures as $key => $row ) {
-                $tmp_type_array[$key] = $row["type"];
-                $tmp_sort_array[$key] = $row["sort"];
-            }
+        foreach( $failures as $key => $row ) {
+            $f_type_array[$key] = $row['type'];
+            $f_label_array[$key] = $row['label'];
+            $f_sort_array[$key] = $row['sort'];
+        }
 
-            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
+        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failures);
+
+        $modifications = Inspection::where('en', 'shiage')
+            ->where('process_id', 'jointing')
+            ->first()
+            ->modifications
+            ->map(function ($m) {
+                return [
+                    'id' => $m->id,
+                    'label' => $m->label,
+                    'message' => $m->name,
+                    'type' => $m->pivot->type,
+                    'sort' => $m->pivot->sort
+                ];
+            })
+            ->toArray();
+
+        foreach( $modifications as $key => $row ) {
+            $m_type_array[$key] = $row['type'];
+            $m_label_array[$key] = $row['label'];
+            $m_sort_array[$key] = $row['sort'];
+        }
+
+        array_multisort($m_type_array, $m_sort_array, $m_label_array, $modifications);
 
         $n1 = count($failures);
-
-        $comments = Inspection::find(6)
-            ->comments()
-            ->orderBy('sort')
-            ->get(['id', 'sort', 'message']);
-        $n2 = $comments->count();
+        $n2 = count($modifications);
 
         $body = [];
         $row_sum = [5 => '合計'];
@@ -1792,30 +1812,28 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
-        $failures = Process::where('id', 'jointing')
+        $failures = Inspection::where('en', 'kensa')
+            ->where('process_id', 'jointing')
             ->first()
-            ->failures()
-            ->orderBy('sort')
-            ->get(['id', 'sort', 'name'])
-            ->filter(function($f) {
-                return $f['name'] !== '水漏れ';
-            })
+            ->failures
             ->map(function($f) {
                 return [
                     'id' => $f->id,
-                    'sort' => $f->sort,
+                    'label' => $f->label,
                     'name' => $f->name,
-                    'type' => $f->pivot->type
+                    'type' => $f->pivot->type,
+                    'sort' => $f->pivot->sort
                 ];
             })
             ->toArray();
 
-            foreach( $failures as $key => $row ) {
-                $tmp_type_array[$key] = $row["type"];
-                $tmp_sort_array[$key] = $row["sort"];
-            }
+        foreach( $failures as $key => $row ) {
+            $f_type_array[$key] = $row['type'];
+            $f_label_array[$key] = $row['label'];
+            $f_sort_array[$key] = $row['sort'];
+        }
 
-            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
+        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failures);
 
         $n = count($failures);
 
@@ -2016,31 +2034,28 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
-
-        $failures = Process::where('id', 'jointing')
+        $failures = Inspection::where('en', 'tokken')
+            ->where('process_id', 'jointing')
             ->first()
-            ->failures()
-            ->orderBy('sort')
-            ->get(['id', 'sort', 'name'])
-            ->filter(function($f) {
-                return $f['name'] !== '水漏れ';
-            })
+            ->failures
             ->map(function($f) {
                 return [
                     'id' => $f->id,
-                    'sort' => $f->sort,
+                    'label' => $f->label,
                     'name' => $f->name,
-                    'type' => $f->pivot->type
+                    'type' => $f->pivot->type,
+                    'sort' => $f->pivot->sort
                 ];
             })
             ->toArray();
 
-            foreach( $failures as $key => $row ) {
-                $tmp_type_array[$key] = $row["type"];
-                $tmp_sort_array[$key] = $row["sort"];
-            }
+        foreach( $failures as $key => $row ) {
+            $f_type_array[$key] = $row['type'];
+            $f_label_array[$key] = $row['label'];
+            $f_sort_array[$key] = $row['sort'];
+        }
 
-            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
+        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failures);
 
         $n = count($failures);
 
@@ -2241,37 +2256,54 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
-        $failures = Process::where('id', 'jointing')
+        $failures = Inspection::where('en', 'tenaoshi')
+            ->where('process_id', 'jointing')
             ->first()
-            ->failures()
-            ->orderBy('sort')
-            ->get(['id', 'sort', 'name'])
+            ->failures
             ->map(function($f) {
                 return [
                     'id' => $f->id,
-                    'sort' => $f->sort,
+                    'label' => $f->label,
                     'name' => $f->name,
-                    'type' => $f->pivot->type
+                    'type' => $f->pivot->type,
+                    'sort' => $f->pivot->sort
                 ];
             })
-            ->sortBy('type')
-            ->values()
-            ->all();
+            ->toArray();
 
-            foreach( $failures as $key => $row ) {
-                $tmp_type_array[$key] = $row["type"];
-                $tmp_sort_array[$key] = $row["sort"];
-            }
+        foreach( $failures as $key => $row ) {
+            $f_type_array[$key] = $row['type'];
+            $f_label_array[$key] = $row['label'];
+            $f_sort_array[$key] = $row['sort'];
+        }
 
-            array_multisort($tmp_type_array, $tmp_sort_array, $failures);
+        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failures);
+
+        $modifications = Inspection::where('en', 'tenaoshi')
+            ->where('process_id', 'jointing')
+            ->first()
+            ->modifications
+            ->map(function ($m) {
+                return [
+                    'id' => $m->id,
+                    'label' => $m->label,
+                    'message' => $m->name,
+                    'type' => $m->pivot->type,
+                    'sort' => $m->pivot->sort
+                ];
+            })
+            ->toArray();
+
+        foreach( $modifications as $key => $row ) {
+            $m_type_array[$key] = $row['type'];
+            $m_label_array[$key] = $row['label'];
+            $m_sort_array[$key] = $row['sort'];
+        }
+
+        array_multisort($m_type_array, $m_sort_array, $m_label_array, $modifications);
 
         $n1 = count($failures);
-
-        $comments = Inspection::find(6)
-            ->comments()
-            ->orderBy('sort')
-            ->get(['id', 'sort', 'message']);
-        $n2 = $comments->count();
+        $n2 = count($modifications);
 
         $body = [];
         $row_sum = [5 => '合計'];

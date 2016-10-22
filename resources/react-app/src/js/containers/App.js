@@ -24,9 +24,10 @@ class App extends Component {
     const { children, routes, alerts, actions } = this.props;
 
     const links = [
-      { en: 'dashboard', name: 'マッピング' },
-      { en: 'report', name: '直レポート印刷' },
-      { en: 'association', name: '小部品ID紐付' }
+      { en: 'dashboard', name: 'マッピング', disable: false},
+      { en: 'reference', name: '検査結果照会', disable: true },
+      { en: 'report', name: '直レポート印刷', disable: false },
+      { en: 'association', name: '小部品ID紐付', disable: false }
     ]
 
     const nameList = [

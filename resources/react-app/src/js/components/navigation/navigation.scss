@@ -10,7 +10,7 @@
             position: absolute;
             left: 20px;
             right: 20px;
-            margin-top: 10px;
+            margin-top: 4px;
         }
     }
 
@@ -22,7 +22,7 @@
             display: inline-block;
             width: 160px;
             text-align: center;
-            padding: 12px 0 12px 0;
+            padding: 10px 0 10px 0;
             color: #4A4A4A;
             text-decoration: none;
             font-size: 14px;
@@ -31,7 +31,38 @@
                 background-color: #4A4A4A;
                 color: #FFF;
             }
+
+            &.disable {
+                cursor: pointer;
+                pointer-events: none;
+                color: #bbb;
+            }
         }
+    }
+
+    .login-wrap {
+        width: 140px;
+        margin: 40px auto;
+        cursor: pointer;
+        pointer-events: none;
+
+        .login-btn {
+            height: 30px;
+            width: 138px;
+            background-color: #F5F7FA;
+            border: 2px solid #4A4A4A;
+            border-radius: 20px; 
+            text-align: center;
+            // color: #4A4A4A;
+            color: #bbb;
+            border-color: #bbb;
+
+            &:hover {
+                background-color: #CCD1D9;
+                color: #4A4A4A;
+            }
+        }
+
     }
 }
 

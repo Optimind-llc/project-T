@@ -15,6 +15,7 @@ use App\Models\InspectorGroup;
 use App\Models\PageType;
 use App\Models\PartType;
 use App\Models\Client\PartFamily;
+use App\Models\Client\Part;
 
 // Exceptions
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -293,20 +294,21 @@ class ShowController extends Controller
 
     protected function formatPage($pages, $partTypeId) {
         return [
-            'failures' => $pages->reduce(function ($carry, $page) {
-                return $carry->merge($page->failurePositions->map(function($failure) {
+            'failures' => $pages->reduce(function ($carry, $page) use($partTypeId){
+                return $carry->merge($page->failurePositions->map(function($fp) use($page) {
                     return [
-                        'id' => $failure->failure->id,
-                        'sort' => $failure->failure->sort,
-                        'point' => $failure->point,
-                        'type' => $failure->type,
-                        'part' => $failure->part->partType->id
+                        'id' => $fp->failure->id,
+                        'label' => $fp->failure->label,
+                        'point' => $fp->point,
+                        'type' => $fp->type,
+                        'part' => $fp->part->partType->id,
+                        'choku' => $page->inspector_group
                     ];
                 }));
             }, collect([]))
-            // ->filter(function($fp) use($partTypeId) {
-            //     return $fp['part'] == $partTypeId;
-            // })
+            ->filter(function($fp) use($partTypeId) {
+                return $fp['part'] == $partTypeId;
+            })
             ->values(),
             'comments' => $pages->reduce(function ($carry, $page) {
                 return $carry->merge($page->comments->map(function($hole) {
@@ -318,7 +320,7 @@ class ShowController extends Controller
                 }));
             }, collect([])),
             'inlines' => [],
-            'pages' => $pages->count()
+            'pages' => $pages
         ];
     }
 
@@ -402,6 +404,19 @@ class ShowController extends Controller
             ];
         });
 
+        $page_ids = null;
+        if (isset($request->panelId)) {
+            $page_ids = Part::where('panel_id', $request->panelId)
+                ->where('part_type_id', $partTypeId)
+                ->first()
+                ->pages()
+                ->get(['id'])
+                ->map(function($p) {
+                    return $p->id;
+                })
+                ->toArray();
+        }
+// return $page_ids;
         $holePoints = InspectionGroup::find($itionGId)
             ->pageTypes()
             ->select(['figure_id', 'number'])
@@ -409,9 +424,15 @@ class ShowController extends Controller
                 'figure' => function($q) {
                     $q->select(['id']);
                 },
-                'figure.holes' => function($q) use ($partTypeId) {
+                'figure.holes' => function($q) use ($partTypeId, $page_ids) {
                     $q->where('part_type_id', $partTypeId)
                         ->leftJoin('hole_page as hp', 'holes.id', '=', 'hp.hole_id')
+                        ->join('pages', function ($join) use ($page_ids){
+                            $join = $join->on('pages.id', '=', 'hp.page_id');
+                            if ($page_ids) {
+                                $join->whereIn('pages.id', $page_ids);
+                            }
+                        })
                         ->select(DB::raw(
                             'holes.id, holes.point, holes.label, holes.direction, figure_id, COUNT(hp.status) as sum, SUM(hp.status = 0) as s0, SUM(hp.status = 1) as s1, SUM(hp.status = 2) as s2'
                         ))
@@ -460,7 +481,7 @@ class ShowController extends Controller
         $page_type = $page_types->first();
 
         $pages = $page_type->pagesWithRelated($itorG_name, $start_at, $end_at, $panel_id);
-        $data = $this->formatPage($pages, $itionGId, $partTypeId);
+        $data = $this->formatPage($pages, $partTypeId);
         $data['path'] = '/img/figures/'.$page_type->figure->path;
         $data['pageNum'] = $page_type->number;
         $data['failureTypes'] = $failureTypes;

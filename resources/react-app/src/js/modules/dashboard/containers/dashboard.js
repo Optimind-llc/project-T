@@ -36,7 +36,6 @@ class Dashboard extends Component {
       panelId: '',
       intervalId: null,
       interval: 30000,
-      // defaultActive: Symbol('failure')
       defaultActive: {
         name: 'failure',
         time: new Date().getTime()
@@ -317,8 +316,9 @@ function mapStateToProps(state, ownProps) {
         return {
           id: f.id,
           point: `${x},${y}`,
-          sort: f.sort,
-          type: f.type
+          label: f.label,
+          type: f.type,
+          choku: f.choku
         }
       });
 

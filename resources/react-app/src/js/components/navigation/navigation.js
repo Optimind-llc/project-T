@@ -16,11 +16,20 @@ class Navigation extends Component {
           {
             links.map((link, i) => 
               <li key={i}>
-                <Link activeClassName="active" to={`/manager/${link.en}`}>{link.name}</Link>
+                <Link
+                  className={link.disable ? 'disable' : ''}
+                  activeClassName="active"
+                  to={`/manager/${link.en}`}
+                >
+                  {link.name}
+                </Link>
               </li>
             )
           }
         </ul>
+        <div className="login-wrap">
+          <button className="login-btn">管理者ログイン</button>
+        </div>
       </div>
     );
   }

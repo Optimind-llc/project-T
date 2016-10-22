@@ -34,10 +34,10 @@ class Mapping extends Component {
     let ly = y;
 
     switch (hole.direction) {
-      case 'left':   lx = lx-14; break;
-      case 'right':  lx = lx+14; break;
-      case 'top':    ly = ly-14; break;
-      case 'bottom': ly = ly+14; break;
+      case 'left':   lx = lx-22; break;
+      case 'right':  lx = lx+22; break;
+      case 'top':    ly = ly-22; break;
+      case 'bottom': ly = ly+22; break;
       default: break;
     }
 
@@ -79,7 +79,7 @@ class Mapping extends Component {
                         }}
                       >
                         <span>{index === -1 && <p>{'✔'}︎</p>}</span>
-                        <span>{`${ft.sort}. ${ft.name}`}</span>
+                        <span>{`${ft.label}. ${ft.name}`}</span>
                       </li>
                     );
                   })}
@@ -92,7 +92,7 @@ class Mapping extends Component {
                     {
                       data.failureTypes.map(ft => 
                         <li>
-                          {data.failures == undefined ? 0 : data.failures.filter(f => f.sort == ft.sort).length}
+                          {data.failures == undefined ? 0 : data.failures.filter(f => f.label == ft.label).length}
                         </li>
                       )
                     }
@@ -195,7 +195,7 @@ class Mapping extends Component {
                         }}
                       >
                         <span>{index === -1 &&<p>{'✔'}︎</p>}</span>
-                        <span>{`${ct.sort}. ${ct.message}`}</span>
+                        <span>{`${ct.label}. ${ct.name}`}</span>
                       </li>
                     );
                   })}
@@ -226,7 +226,7 @@ class Mapping extends Component {
                 <ul>
                   {
                     Object.keys(data.inlines).map(id =>
-                      <li>{data.inlines[id][0].sort}</li>
+                      <li>{data.inlines[id][0].label}</li>
                     )
                   }
                 </ul>
@@ -273,7 +273,7 @@ class Mapping extends Component {
                   if (Array.isArray(data.path)) {
                     return (
                       <g>
-                        <circle cx={x} cy={y} r={6} fill="red" />
+                        <circle cx={x} cy={y} r={6} fill={f.choku == '白直' ? 'red' : 'yellow'} />
                       </g>
                     );                    
                   }
@@ -306,7 +306,7 @@ class Mapping extends Component {
                         x={h.lx}
                         y={h.ly}
                         dy="6"
-                        fontSize="18"
+                        fontSize="14"
                         fill="black"
                         textAnchor="middle"
                         fontWeight="bold"
@@ -355,7 +355,7 @@ class Mapping extends Component {
                           fontWeight="bold"
                           text-anchor="middle"
                         >
-                          {i.sort}
+                          {i.label}
                         </text>
                         {
                           i.face &&
