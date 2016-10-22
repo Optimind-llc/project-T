@@ -149,7 +149,7 @@ class CreateTablesRelatedToManager extends Migration
 
         Schema::create('figures', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('path', 16)->unique();
+            $table->string('path', 32)->unique();
             $table->integer('part_type_id')->unsigned()->nullable();
             $table->integer('inspection_id')->unsigned()->nullable();
             $table->timestamps();

@@ -68,7 +68,7 @@ class Page extends Model
     public function comments()
     {
         return $this->hasMany(
-            'App\Models\Client\modification_failure_position',
+            'App\Models\Client\ModificationFailurePosition',
             'page_id',
             'id'
         );

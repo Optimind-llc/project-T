@@ -5,12 +5,12 @@ namespace App\Models\Client;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class CommentFailurePosition
+ * Class ModificationFailurePosition
  * @package App\Models
  */
-class CommentFailurePosition extends Model
+class ModificationFailurePosition extends Model
 {
-    protected $table = 'comment_failure_position';
+    protected $table = 'modification_failure_position';
 
     /**
      * The attributes that are not mass assignable.
@@ -32,7 +32,7 @@ class CommentFailurePosition extends Model
     {
         return $this->belongsTo(
             'App\Models\Comment',
-            'comment_id',
+            'm_id',
             'id'
         );
     }
@@ -41,7 +41,7 @@ class CommentFailurePosition extends Model
     {
         return $this->belongsTo(
             'App\Models\Client\FailurePosition',
-            'failure_position_id',
+            'fp_id',
             'id'
         );
     }

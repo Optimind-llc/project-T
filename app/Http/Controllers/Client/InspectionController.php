@@ -327,8 +327,11 @@ class InspectionController extends Controller
             $status = $family['status'];
             $panel_id = $family['pages'][0]['parts'][0]['panelId'];
             $failures = $family['pages'][0]['failures'];
+            $c_failures = collect($failures)->groupBy('id')->map(function($f){
+                return $f->count();
+            })->toArray();
 
-            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures);
+            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $c_failures);
         }
 
         if ($groupId == 11 || $groupId == 14) {
