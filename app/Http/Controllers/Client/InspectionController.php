@@ -313,7 +313,7 @@ class InspectionController extends Controller
                             'page_id' => $newPage->id,
                             'fp_id' => $c['failurePositionId'],
                             'm_id' => $c['commentId'],
-                            'comment' => array_key_exists('comment', $f) ? $c['comment'] : ''
+                            'comment' => array_key_exists('comment', $c) ? $c['comment'] : ''
                         ];
                     },
                     $page['comments'])
@@ -321,21 +321,36 @@ class InspectionController extends Controller
             }
         }
 
-        if ($groupId == 1 || $groupId == 2 || $groupId == 10 || $groupId == 11 || $groupId == 12 || $groupId == 13 || $groupId == 14) {
+        if ($groupId == 1 || $groupId == 2 || $groupId == 10 || $groupId == 12 || $groupId == 13) {
             $itorG = $family['inspectorGroup'];
             $itor = explode(',',$family['inspector'])[1];
             $status = $family['status'];
             $panel_id = $family['pages'][0]['parts'][0]['panelId'];
             $failures = $family['pages'][0]['failures'];
-            // $modifications = $family['pages'][0]['comments'];
 
-            // $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures, $modifications);
+            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures);
+        }
+
+        if ($groupId == 11 || $groupId == 14) {
+            $itorG = $family['inspectorGroup'];
+            $itor = explode(',',$family['inspector'])[1];
+            $status = $family['status'];
+            $panel_id = $family['pages'][0]['parts'][0]['panelId'];
+            $failures = $family['pages'][0]['failures'];
+            $modifications = array_merge($failures, $family['pages'][0]['comments']);
+            $modifications = collect($modifications)
+                ->groupBy('commentId')->map(function($m){
+                    return $m->count();
+                })
+                ->toArray();
+
+            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures, $modifications);
         }
 
         return 'Excellent';
     }
 
-    public function exportCSV($gId, $pId, $itorG, $itor, $status, $c_failures, $c_modifications)
+    public function exportCSV($gId, $pId, $itorG, $itor, $status, $c_failures, $c_modifications = null)
     {
         $now = Carbon::now();
         $choku = new Choku($now);
@@ -436,14 +451,10 @@ class InspectionController extends Controller
             }
             array_multisort($m_type_array, $m_sort_array, $m_label_array, $modifications);
 
-            $c_modifications = collect($c_failures)->groupBy('id')->map(function($f){
-                return $f->count();
-            })->toArray();
-
             $export = array_merge($export, ['680A',$itorG,$choku_num,$itor,$status]);
 
-            foreach ($failures as $f) {
-                array_push($export, array_key_exists($f['id'], $c_failures) ? $c_failures[$f['id']] : '');
+            foreach ($modifications as $m) {
+                array_push($export, array_key_exists($m['id'], $c_modifications) ? $c_modifications[$f['id']] : '');
             }
         }
 

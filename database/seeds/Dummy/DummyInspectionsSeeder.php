@@ -51,7 +51,6 @@ class DummyInspectionsSeeder extends Seeder
             $C = [];
 
             foreach (array_rand($history, 2) as $k) {
-                
                 array_push($C, [
                     'failurePositionId' => $history[$k]['failurePositionId'],
                     'commentId' => $comments[array_rand($comments)]['id'],
