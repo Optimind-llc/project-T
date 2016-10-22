@@ -327,9 +327,9 @@ class InspectionController extends Controller
             $status = $family['status'];
             $panel_id = $family['pages'][0]['parts'][0]['panelId'];
             $failures = $family['pages'][0]['failures'];
-            $modifications = $family['pages'][0]['comments'];
+            // $modifications = $family['pages'][0]['comments'];
 
-            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures, $modifications);
+            // $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures, $modifications);
         }
 
         return 'Excellent';
@@ -428,6 +428,7 @@ class InspectionController extends Controller
                     ];
                 })
                 ->toArray();
+
             foreach( $modifications as $key => $row ) {
                 $m_type_array[$key] = $row['type'];
                 $m_label_array[$key] = $row['label'];
