@@ -87,7 +87,7 @@ class PageType extends Model
                     $q->select(['id', 'point', 'type', 'page_id', 'part_id', 'failure_id']);
                 },
                 'failurePositions.failure' => function ($q) {
-                    $q->select(['id', 'name', 'sort']);
+                    $q->select(['id', 'name', 'label']);
                 },
                 'failurePositions.part' => function ($q) {
                     $q->select(['id', 'panel_id', 'part_type_id']);

@@ -337,14 +337,20 @@ class InspectionController extends Controller
             $status = $family['status'];
             $panel_id = $family['pages'][0]['parts'][0]['panelId'];
             $failures = $family['pages'][0]['failures'];
-            $modifications = array_merge($failures, $family['pages'][0]['comments']);
-            $modifications = collect($modifications)
-                ->groupBy('commentId')->map(function($m){
+            $modifications = $family['pages'][0]['comments'];
+
+            $c_failures = collect($failures)->groupBy('id')->map(function($f){
+                return $f->count();
+            })->toArray();
+
+            $c_modifications = collect(array_merge($failures, $modifications))
+                ->groupBy('commentId')
+                ->map(function($m){
                     return $m->count();
                 })
                 ->toArray();
 
-            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures, $modifications);
+            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $c_failures, $c_modifications);
         }
 
         return 'Excellent';
@@ -396,6 +402,8 @@ class InspectionController extends Controller
                 break;
         }
 
+        $export = array_merge($export, ['680A',$itorG,$choku_num,$itor,$status]);
+
         $failures = InspectionGroup::find($gId)
             ->inspection
             ->failures()
@@ -416,15 +424,14 @@ class InspectionController extends Controller
             $f_sort_array[$key] = $row['sort'];
         }
         array_multisort($f_type_array, $f_sort_array, $f_label_array, $failures);
-
-        $c_failures = collect($c_failures)->groupBy('id')->map(function($f){
-            return $f->count();
-        })->toArray();
-
-        $export = array_merge($export, ['680A',$itorG,$choku_num,$itor,$status]);
-
         foreach ($failures as $f) {
-            array_push($export, array_key_exists($f['id'], $c_failures) ? $c_failures[$f['id']] : '');
+            if (array_key_exists(intval($f['id']), $c_failures)) {
+                $f_sum = $c_failures[$f['id']];
+            }
+            else {
+                $f_sum = '';
+            }
+            array_push($export, $f_sum);
         }
 
         // push modification result
@@ -451,10 +458,15 @@ class InspectionController extends Controller
             }
             array_multisort($m_type_array, $m_sort_array, $m_label_array, $modifications);
 
-            $export = array_merge($export, ['680A',$itorG,$choku_num,$itor,$status]);
-
             foreach ($modifications as $m) {
-                array_push($export, array_key_exists($m['id'], $c_modifications) ? $c_modifications[$f['id']] : '');
+                if (array_key_exists($m['id'], $c_modifications)) {
+                    $modi_sum = $c_modifications[$m['id']];
+                }
+                else {
+                    $modi_sum = '';
+                }
+
+                array_push($export, $modi_sum);
             }
         }
 

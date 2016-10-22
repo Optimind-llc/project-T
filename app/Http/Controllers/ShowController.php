@@ -386,20 +386,22 @@ class ShowController extends Controller
            throw new NotFoundHttpException('検索条件が不正です');
         }
 
-        $failureTypes = InspectionGroup::find($itionGId)->inspection->process->failures;
-        if ($itionGId == 10) {
-            $failureTypes = $failureTypes->filter(function($f) {
-                return $f->id == 30;
-            })
-            ->values();
-        }
-        $commentTypes = InspectionGroup::find($itionGId)->inspection->comments->map(function($c) {
+        $failureTypes = InspectionGroup::find($itionGId)->inspection->failures->map(function($f) {
             return [
-                'id' => $c->id,
-                'sort' => $c->sort,
-                'message' => $c->message
+                'id' => $f->id,
+                'label' => $f->label,
+                'name' => $f->name
             ];
         });
+
+        $commentTypes = InspectionGroup::find($itionGId)->inspection->modifications->map(function($m) {
+            return [
+                'id' => $m->id,
+                'label' => $m->label,
+                'name' => $m->name
+            ];
+        });
+
         $holePoints = InspectionGroup::find($itionGId)
             ->pageTypes()
             ->select(['figure_id', 'number'])
