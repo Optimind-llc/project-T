@@ -6,4 +6,8 @@ Homestead.json
 .env
 xdebug.log
 .DS_Store
-/FailureMapping
+/FailureMapping/Inline-buckup
+/FailureMapping/Inline/*
+/FailureMapping/Output/Seikei/*
+/FailureMapping/Output/Setchaku/*
+!.gitkeep

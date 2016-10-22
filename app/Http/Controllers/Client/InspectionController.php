@@ -321,37 +321,63 @@ class InspectionController extends Controller
             }
         }
 
-        if ($groupId == 1 || $groupId == 2) {
+        if ($groupId == 1 || $groupId == 2 || $groupId == 10 || $groupId == 11 || $groupId == 12 || $groupId == 13 || $groupId == 14) {
             $itorG = $family['inspectorGroup'];
             $itor = explode(',',$family['inspector'])[1];
             $status = $family['status'];
             $panel_id = $family['pages'][0]['parts'][0]['panelId'];
             $failures = $family['pages'][0]['failures'];
 
-            // $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures);
+            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $failures);
         }
 
         return 'Excellent';
     }
 
-    public function exportCSV($gId, $pId, $itorG, $itor, $status, $failures)
+    public function exportCSV($gId, $pId, $itorG, $itor, $status, $c_failures)
     {
         $now = Carbon::now();
         $choku = new Choku($now);
         $choku_num = $choku->getChoku();
 
-        $dir_path = config('path.'.env('SERVER'));
+        switch ($gId) {
+            case 1:
+                $export = ['67149','47060','A',substr($pId, 1,7),'成型','001'];
+                $file_name = 'M001_67149_'.$now->format('Ymd_His');
+                break;
+            case 2:
+                $export = ['67149','47060','A',substr($pId, 1,7),'成型','002'];
+                $file_name = 'M001_67149_'.$now->format('Ymd_His');
+                break;
+            case 10:
+                $export = ['67007','47120','A',substr($pId, 1,7),'接着','止水'];
+                $file_name = 'J_67007_'.$now->format('Ymd_His');
+                break;
+            case 11:
+                $export = ['67007','47120','A',substr($pId, 1,7),'接着','仕上'];
+                $file_name = 'J_67007_'.$now->format('Ymd_His');
+                break;
+            case 12:
+                $export = ['67007','47120','A',substr($pId, 1,7),'接着','検査'];
+                $file_name = 'J_67007_'.$now->format('Ymd_His');
+                break;
+            case 13:
+                $export = ['67007','47120','A',substr($pId, 1,7),'接着','特検'];
+                $file_name = 'J_67007_'.$now->format('Ymd_His');
+                break;
+            case 14:
+                $export = ['67007','47120','A',substr($pId, 1,7),'接着','手直し'];
+                $file_name = 'J_67007_'.$now->format('Ymd_His');
+                break;
+        }
 
-
-        $XXXX = $gId == 1 ? 'M0001' : 'M0002';
-        $line = $gId == 1 ? '001' : '002';
-
-        $file_name = $XXXX.'_'.'67149'.'_'.$now->format('Ymd_His');
+        $dir_path = config('path.'.env('SERVER').'.Output');
         $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
 
-        $failures = Process::find('molding')
+        $failures = InspectionGroup::find($gId)
+            ->inspection
             ->failures()
-            ->get(['id', 'sort', 'name'])
+            ->get(['id', 'label', 'name'])
             ->map(function($f) {
                 return [
                     'id' => $f->id,
@@ -371,23 +397,11 @@ class InspectionController extends Controller
 
         array_multisort($f_type_array, $f_sort_array, $f_label_array, $failures);
 
-        $c_failures = collect($failures)->groupBy('id')->map(function($f){
+        $c_failures = collect($c_failures)->groupBy('id')->map(function($f){
             return $f->count();
         })->toArray();
 
-        $export = [
-            '67149',
-            '47060',
-            'A',
-            substr($pId, 1,7),
-            '成型',
-            $line,
-            '680A',
-            $itorG,
-            $choku,
-            $itor,
-            $status
-        ];
+        $export = array_merge($export, ['680A',$itorG,$choku_num,$itor,$status]);
 
         foreach ($failures as $f) {
             array_push($export, array_key_exists($f['id'], $c_failures) ? $c_failures[$f['id']] : '');
