@@ -37,7 +37,7 @@ class Association extends Component {
 
     return (
       <div id="association">
-        <div className="serch">
+        <div className="serch bg-white">
           <div>
             <RangeCalendar
               defaultValue={date}
@@ -71,24 +71,30 @@ class Association extends Component {
         </div>
         <div className="result bg-white">
           <div className="column">
-            <div className="row aline-right"></div>
-            <div className="row">バックドアインナASSY</div>
-            <div className="row">バックドアインナー</div>
-            <div className="row">アッパー</div>
-            <div className="row">サイドアッパーRH</div>
-            <div className="row">サイドアッパーLH</div>
-            <div className="row">サイドロアRH</div>
-            <div className="row">サイドロアLH</div>
+            <p className="row aline-right"></p>
+            <p className="row">ASSY</p>
+            <p className="row border-left">インナー</p>
+            <p className="row border-left">アウター</p>
+          </div>
+          <div className="column">
+            <p className="row aline-right"></p>
+            <p className="row">バックドアインナASSY</p>
+            <p className="row border-left">バックドアインナー</p>
+            <p className="row border-left">アッパー</p>
+            <p className="row">サイドアッパーRH</p>
+            <p className="row">サイドアッパーLH</p>
+            <p className="row">サイドロアRH</p>
+            <p className="row">サイドロアLH</p>
           </div>
           <div className="column border">
-            <div className="row aline-right"></div>
-            <div className="row">67007 47120 000</div>
-            <div className="row">67149 47060 000</div>
-            <div className="row">67119 47060 000</div>
-            <div className="row">67175 47060 000</div>
-            <div className="row">67176 47060 000</div>
-            <div className="row">67177 47050 000</div>
-            <div className="row">67178 47010 000</div>
+            <p className="row aline-right"></p>
+            <p className="row">67007 47120 000</p>
+            <p className="row border-left">67149 47060 000</p>
+            <p className="row border-left">67119 47060 000</p>
+            <p className="row">67175 47060 000</p>
+            <p className="row">67176 47060 000</p>
+            <p className="row">67177 47050 000</p>
+            <p className="row">67178 47010 000</p>
           </div>
           {
             PartFData.data && PartFData.data.length != 0 &&
@@ -96,24 +102,23 @@ class Association extends Component {
               {
                 return(
                   <div className="column">
-                    <div className="row aline-right"><p>{i+1}</p></div>
-                    <div className="row">{f.parts['67007'][0].panelId}</div>
-                    <div className="row">{f.parts['67149'][0].panelId}</div>
-                    <div className="row">{f.parts['67119'][0].panelId}</div>
-                    <div className="row">{f.parts['67175'][0].panelId}</div>
-                    <div className="row">{f.parts['67176'][0].panelId}</div>
-                    <div className="row">{f.parts['67177'][0].panelId}</div>
-                    <div className="row">{f.parts['67178'][0].panelId}</div>
+                    <p className="row aline-right"><p>{i+1}</p></p>
+                    <p className="row">{f.parts['67007'][0].panelId}</p>
+                    <p className="row border-left">{f.parts['67149'][0].panelId}</p>
+                    <p className="row border-left">{f.parts['67119'][0].panelId}</p>
+                    <p className="row">{f.parts['67175'][0].panelId}</p>
+                    <p className="row">{f.parts['67176'][0].panelId}</p>
+                    <p className="row">{f.parts['67177'][0].panelId}</p>
+                    <p className="row">{f.parts['67178'][0].panelId}</p>
                   </div>
                 )
               }              
             )
+          }{
+            PartFData.data && PartFData.data.length == 0 &&
+            <p className="no-data">結果なし</p>
           }
         </div>
-        {
-          PartFData.data && PartFData.data.length == 0 &&
-          <p className="no-data">結果なし</p>
-        }
       </div>
     );
   }

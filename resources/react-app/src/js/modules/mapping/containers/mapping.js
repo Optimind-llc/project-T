@@ -253,6 +253,18 @@ class Mapping extends Component {
     return (
       <div id="mapping-wrap" className="">
         <div className="mapping-body">
+          {active == 'failure' &&
+            <div className="color-label">
+              <div>
+                <div className="circle-red"></div>
+                <p>白直</p>
+              </div>
+              <div>
+                <div className="circle-olive"></div>
+                <p>黄直</p>
+              </div>
+            </div>
+          }
           <div className="figure-wrap">
             <div className="figure">
               {
@@ -273,7 +285,7 @@ class Mapping extends Component {
                   if (Array.isArray(data.path)) {
                     return (
                       <g>
-                        <circle cx={x} cy={y} r={6} fill={f.choku == '白直' ? 'red' : 'yellow'} />
+                        <circle cx={x} cy={y} r={6} fill={f.choku == '白直' ? 'red' : 'olive'} />
                       </g>
                     );                    
                   }
@@ -281,7 +293,7 @@ class Mapping extends Component {
                     if (f.part == this.props.partTId.value) {
                       return (
                         <g>
-                          <circle cx={x} cy={y} r={6} fill="red" />
+                          <circle cx={x} cy={y} r={6} fill={f.choku == '白直' ? 'red' : 'olive'} />
                         </g>
                       );
                     }
@@ -408,6 +420,14 @@ class Mapping extends Component {
                 >
                   穴検査
                 </button>
+              }{
+                data.commentTypes.length !== 0 &&
+                <button
+                  className={active == 'comment' ? '' : 'disable'}
+                  onClick={() => this.setState({ active: 'comment'})}
+                >
+                  手直し検査
+                </button>
               }
               <button
                 className={active == 'failure' ? '' : 'disable'}
@@ -416,14 +436,6 @@ class Mapping extends Component {
                 不良検査
               </button>
               {
-                data.commentTypes.length !== 0 &&
-                <button
-                  className={active == 'comment' ? '' : 'disable'}
-                  onClick={() => this.setState({ active: 'comment'})}
-                >
-                  手直し検査
-                </button>
-              }{
                 data.inlines.length !== 0 &&
                 <button
                   className={active == 'inline' ? '' : 'disable'}

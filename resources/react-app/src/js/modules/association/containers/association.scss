@@ -1,48 +1,67 @@
 #association {
-	p {
-		text-align: right;
-		margin: 0 0 0 18px;
-		padding: 0;
-	}
-	.serch {
-		display: flex;
-		flex-flow: row nowrap;
+    padding: 4px 4px 0 4px;
+    min-width: 1100px;
 
-		div {
-			flex-basis: 200px;
-		}
-	}
-	.result {
-		display: flex;
-		flex-flow: column nowrap;
-		margin: 6px;
+    .border-left {
+        border-left: 1px solid #4A4A4A;
+    }
+    .border {
+        border-bottom: 1px solid #4A4A4A;
+        margin-bottom: 4px;
+    }
 
-		div {
-			display: flex;
-			flex-flow: row nowrap;
-			height: 20px;
+    .serch {
+        display: flex;
+        flex-flow: row nowrap;
+        padding: 10px;
 
-			div {
-				flex-basis: 160px;
-				font-size: 12px;
+        div {
+            flex-basis: 200px;
+        }
 
-			}
-		}
+        button {
+            height: 36px;
+            width: 60px;
+            margin-left: 10px;
+            font-size: 16px;
+        }
+    }
 
-		.aline-right{
-			flex-basis: 30px;
-		}
-	}
+    .result {
+        display: flex;
+        flex-flow: column nowrap;
+        padding: 10px;
+        margin: 6px 0;
 
-	.border {
-		border-bottom: 1px solid #4A4A4A;
-	}
+        div {
+            display: flex;
+            flex-flow: row nowrap;
+            height: 24px;
 
-	p.no-data {
-		text-align: left;
-	}
+            p {
+                flex-basis: 160px;
+                font-size: 12px;
+                padding: 0 0 0 10px;
+                margin: 0;
+            }
 
-	.Select-menu-outer {
-		max-height: 400px;
-	}
+            &:nth-child(1) {
+                p {
+                    font-weight: 600;
+                }
+                p.row:nth-child(4) {
+                    flex-basis: 840px;
+                    text-align: center;
+                }
+            }
+        }
+
+        .aline-right{
+            flex-basis: 30px;
+        }
+    }
+
+    p.no-data {
+        text-align: left;
+    }
 }

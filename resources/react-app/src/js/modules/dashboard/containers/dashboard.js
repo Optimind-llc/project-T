@@ -85,12 +85,6 @@ class Dashboard extends Component {
         break;
     }
 
-    // let defaultActive = '';
-    // if (state.itionGId.value == 4 || state.itionGId.value == 8) defaultActive = Symbol('hole');
-    // else if (state.itionGId.value == 3 || state.itionGId.value == 7) defaultActive = Symbol('inline');
-    // else defaultActive = Symbol('failure');
-    // this.setState({defaultActive});
-
     let time = new Date().getTime();
     let defaultActive = {
       name: 'failure',
@@ -99,6 +93,7 @@ class Dashboard extends Component {
 
     if (state.itionGId.value == 4 || state.itionGId.value == 8) name = 'hole';
     else if (state.itionGId.value == 3 || state.itionGId.value == 7) name = 'inline';
+    else if (state.itionGId.value == 11 || state.itionGId.value == 14) name = 'comment';
     else name = 'failure';
     this.setState({ defaultActive: { name, time }});
 
