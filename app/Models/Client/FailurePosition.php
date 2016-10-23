@@ -43,4 +43,13 @@ class FailurePosition extends Model
             'id'
         );
     }
+
+    public function modifications()
+    {
+        return $this->hasMany(
+            'App\Models\Client\ModificationFailurePosition',
+            'fp_id',
+            'id'
+        );
+    }
 }

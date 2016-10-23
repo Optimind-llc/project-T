@@ -320,7 +320,7 @@ class ShowController extends Controller
                 }));
             }, collect([])),
             'inlines' => [],
-            'pages' => $pages
+            'pages' => $pages->count()
         ];
     }
 
@@ -341,6 +341,27 @@ class ShowController extends Controller
 
         $now = Carbon::now();
         $panel_id = $request->panelId;
+
+        //Checke Panel ID isset
+        if (isset($request->panelId)) {
+            $searched_part = Part::where('panel_id', $request->panelId)
+                ->where('part_type_id', $partTypeId)
+                ->get();
+            
+            if ($searched_part->count() === 0) {
+               return [
+                    'data' => [
+                        'pages' => 0,
+                        'failureTypes' => [],
+                        'failures' => [],
+                        'holePoints' => [],
+                        'commentTypes' => [],
+                        'comments' => [],
+                        'inlines' => []
+                    ]
+               ];
+            }
+        }
 
         if (isset($request->start) && isset($request->end)) {
             $start_at = Carbon::createFromFormat('Y-m-d-H-i-s', $request->start.'-00-00-00')->addHours(2);

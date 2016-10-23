@@ -104,6 +104,9 @@ class InspectionController extends Controller
                         },
                         'failurePositions.failure' => function($q) {
                             $q->select(['id', 'label']);
+                        },
+                        'failurePositions.modifications.modification' => function($q) {
+                            $q->select(['id', 'name', 'label']);
                         }
                     ])
                     ->get();
@@ -114,11 +117,17 @@ class InspectionController extends Controller
                     ->toArray();
 
                 $history = $inspected->map(function($page) {
-                    return $page->failurePositions->map(function($f) {
+                    return $page->failurePositions->map(function($fp) {
+                        $cLabel = "";
+                        if ($fp->modifications->count() !== 0) {
+                            $cLabel = $fp->modifications->first()->modification->label;
+                        }
+
                         return [
-                            'failurePositionId' => $f->id,
-                            'label' => $f->failure->label,
-                            'point' => $f->point
+                            'failurePositionId' => $fp->id,
+                            'label' => $fp->failure->label,
+                            'point' => $fp->point,
+                            'cLabel' => $cLabel
                         ];
                     });
                 })
