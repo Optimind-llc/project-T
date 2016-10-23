@@ -31,7 +31,7 @@ class ModificationFailurePosition extends Model
     public function comment()
     {
         return $this->belongsTo(
-            'App\Models\Comment',
+            'App\Models\Modification',
             'm_id',
             'id'
         );

@@ -416,7 +416,7 @@ class ShowController extends Controller
                 })
                 ->toArray();
         }
-// return $page_ids;
+
         $holePoints = InspectionGroup::find($itionGId)
             ->pageTypes()
             ->select(['figure_id', 'number'])
