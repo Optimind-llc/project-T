@@ -96,7 +96,7 @@ class PageType extends Model
                     $q->select(['id', 'name', 'pn']);
                 },
                 'comments',
-                'comments.comment',
+                'comments.modification',
                 'comments.failurePosition'
             ]);
 

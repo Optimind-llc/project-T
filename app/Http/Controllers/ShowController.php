@@ -311,11 +311,11 @@ class ShowController extends Controller
             })
             ->values(),
             'comments' => $pages->reduce(function ($carry, $page) {
-                return $carry->merge($page->comments->map(function($hole) {
-                    return [
-                        'id' => $hole->comment_id,
-                        'message' => $hole->comment->message,
-                        'point' => $hole->failurePosition->point
+                return $carry->merge($page->comments->map(function($cf) {
+                    return [    
+                        'id' => $cf->m_id,
+                        'message' => $cf->modification->name,
+                        'point' => $cf->failurePosition->point
                     ];
                 }));
             }, collect([])),

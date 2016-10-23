@@ -28,7 +28,7 @@ class ModificationFailurePosition extends Model
         );
     }
 
-    public function comment()
+    public function modification()
     {
         return $this->belongsTo(
             'App\Models\Modification',
