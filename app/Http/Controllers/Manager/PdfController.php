@@ -324,7 +324,8 @@ class PdfController extends Controller
                     array_push($body[$r], $i['status']);
                 }
 
-                $at = preg_replace("/(-| |:)/", "", $inlines[0]['inspected_at']);
+                // $at = preg_replace("/(-| |:)/", "", $inlines[0]['inspected_at']);
+                $at = preg_replace("/(-| |:)/", "", $family->inspected_at);
                 array_push($body[$r], $at);
 
                 $r = $r+1;
@@ -1614,9 +1615,9 @@ class PdfController extends Controller
             $c_comments = $family->pages->reduce(function ($carry, $page) {
                 $comments = $page->comments->map(function ($comment){
                     return [
-                        'id' => $comment->comment->id,
-                        'sort' => $comment->comment->sort,
-                        'message' => $comment->comment->message
+                        'id' => $comment->modification->id,
+                        'sort' => $comment->modification->label,
+                        'message' => $comment->modification->name
                     ];
                 });
                 return array_merge($carry, $comments->toArray());
@@ -1642,7 +1643,7 @@ class PdfController extends Controller
                     $row_sum[$c1+6] = array_key_exists($c1+6, $row_sum) ? $row_sum[$c1+6]+$sum : $sum;
                 }
 
-                foreach ($comments as $c2 => $c) {
+                foreach ($modifications as $c2 => $c) {
                     $sum = count(array_filter($c_comments, function($comment) use ($c){
                         return $comment['id'] == $c['id'];
                     }));
@@ -1785,7 +1786,7 @@ class PdfController extends Controller
                 $tcpdf->Text($x0+array_sum($d)+$i*$fd, $x0+12, $f['name']);
             }
 
-            foreach ($comments as $i => $c) {
+            foreach ($modifications as $i => $c) {
                 $tcpdf->Text($x0+array_sum($d)+($n1+$i)*$fd, $x0+12, $c['message']);
             }
 
@@ -2328,9 +2329,9 @@ class PdfController extends Controller
             $c_comments = $family->pages->reduce(function ($carry, $page) {
                 $comments = $page->comments->map(function ($comment){
                     return [
-                        'id' => $comment->comment->id,
-                        'sort' => $comment->comment->sort,
-                        'message' => $comment->comment->message
+                        'id' => $comment->modification->id,
+                        'sort' => $comment->modification->label,
+                        'message' => $comment->modification->name
                     ];
                 });
                 return array_merge($carry, $comments->toArray());
@@ -2356,11 +2357,7 @@ class PdfController extends Controller
                     $row_sum[$c1+6] = array_key_exists($c1+6, $row_sum) ? $row_sum[$c1+6]+$sum : $sum;
                 }
 
-                foreach ($comments as $c2 => $c) {
-                    // $sum = count(array_filter($c_comments, function($comments) use ($c){
-                    //     return $comments['sort'] = $c['sort'];
-                    // }));
-
+                foreach ($modifications as $c2 => $c) {
                     $sum = count(array_filter($c_comments, function($comment) use ($c){
                         return $comment['id'] == $c['id'];
                     }));
@@ -2503,7 +2500,7 @@ class PdfController extends Controller
                 $tcpdf->Text($x0+array_sum($d)+$i*$fd, $x0+12, $f['name']);
             }
 
-            foreach ($comments as $i => $c) {
+            foreach ($modifications as $i => $c) {
                 $tcpdf->Text($x0+array_sum($d)+($n1+$i)*$fd, $x0+12, $c['message']);
             }
 
@@ -2589,8 +2586,6 @@ class PdfController extends Controller
                 $pdf_path = 'nothing.pdf';
                 $tcpdf->output($pdf_path, 'I');
             }
-
-            return $families;
         }
         else {
             $families = InspectionGroup::find($itionG_id)
@@ -2609,7 +2604,7 @@ class PdfController extends Controller
                     'pages.holes',
                     'pages.holes.partType',
                     'pages.comments',
-                    'pages.comments.comment'
+                    'pages.comments.modification'
                 ])
                 ->get();            
         }

@@ -70,54 +70,58 @@ class Association extends Component {
           </div>
         </div>
         <div className="result bg-white">
-          <div className="column">
-            <p className="row aline-right"></p>
-            <p className="row">ASSY</p>
-            <p className="row border-left">インナー</p>
-            <p className="row border-left">アウター</p>
-          </div>
-          <div className="column">
-            <p className="row aline-right"></p>
-            <p className="row">バックドアインナASSY</p>
-            <p className="row border-left">バックドアインナー</p>
-            <p className="row border-left">アッパー</p>
-            <p className="row">サイドアッパーRH</p>
-            <p className="row">サイドアッパーLH</p>
-            <p className="row">サイドロアRH</p>
-            <p className="row">サイドロアLH</p>
-          </div>
-          <div className="column border">
-            <p className="row aline-right"></p>
-            <p className="row">67007 47120 000</p>
-            <p className="row border-left">67149 47060 000</p>
-            <p className="row border-left">67119 47060 000</p>
-            <p className="row">67175 47060 000</p>
-            <p className="row">67176 47060 000</p>
-            <p className="row">67177 47050 000</p>
-            <p className="row">67178 47010 000</p>
-          </div>
-          {
-            PartFData.data && PartFData.data.length != 0 &&
-            PartFData.data.map((f, i)=> 
+          <table>
+            <tbody>
+              <tr>
+                <td colSpan={1}>No.</td>
+                <td colSpan={1} >ASSY</td>
+                <td colSpan={1} >インナー</td>
+                <td colSpan={5} >アウター</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>バックドアインナASSY</td>
+                <td>バックドアインナー</td>
+                <td>アッパー</td>
+                <td>サイドアッパーRH</td>
+                <td>サイドアッパーLH</td>
+                <td>サイドロアRH</td>
+                <td>サイドロアLH</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>67007 47120 000</td>
+                <td>67149 47060 000</td>
+                <td>67119 47060 000</td>
+                <td>67175 47060 000</td>
+                <td>67176 47060 000</td>
+                <td>67177 47050 000</td>
+                <td>67178 47010 000</td>
+              </tr>
               {
-                return(
-                  <div className="column">
-                    <p className="row aline-right"><p>{i+1}</p></p>
-                    <p className="row">{f.parts['67007'][0].panelId}</p>
-                    <p className="row border-left">{f.parts['67149'][0].panelId}</p>
-                    <p className="row border-left">{f.parts['67119'][0].panelId}</p>
-                    <p className="row">{f.parts['67175'][0].panelId}</p>
-                    <p className="row">{f.parts['67176'][0].panelId}</p>
-                    <p className="row">{f.parts['67177'][0].panelId}</p>
-                    <p className="row">{f.parts['67178'][0].panelId}</p>
-                  </div>
+                PartFData.data && PartFData.data.length != 0 &&
+                PartFData.data.map((f, i)=> 
+                  {
+                    return(
+                      <tr>
+                        <td>{i+1}</td>
+                        <td>{f.parts['67007'][0].panelId}</td>
+                        <td>{f.parts['67149'][0].panelId}</td>
+                        <td>{f.parts['67119'][0].panelId}</td>
+                        <td>{f.parts['67175'][0].panelId}</td>
+                        <td>{f.parts['67176'][0].panelId}</td>
+                        <td>{f.parts['67177'][0].panelId}</td>
+                        <td>{f.parts['67178'][0].panelId}</td>
+                      </tr>
+                    )
+                  }              
                 )
-              }              
-            )
-          }{
-            PartFData.data && PartFData.data.length == 0 &&
-            <p className="no-data">結果なし</p>
-          }
+              }{
+                PartFData.data && PartFData.data.length == 0 &&
+                <td colspan="8">結果なし</td>
+              }
+            </tbody>
+          </table>
         </div>
       </div>
     );

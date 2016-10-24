@@ -27,9 +27,6 @@ class Navigation extends Component {
             )
           }
         </ul>
-        <div className="login-wrap">
-          <button className="login-btn">管理者ログイン</button>
-        </div>
       </div>
     );
   }

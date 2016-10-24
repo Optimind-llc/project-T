@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return 'Hello World';
+    return 'failure mapping system';
 });
 
 // Get infomations for inspection 
@@ -20,6 +20,12 @@ Route::get('client/inspection/{itionG_id}', 'Client\InspectionController@inspect
 	->where([
 		'itionG_id' => '[0-9]+'
 	]);
+
+Route::get('client/i2/{itionG_id}', 'Client\InspectionController@inspection2')
+	->where([
+		'itionG_id' => '[0-9]+'
+	]);
+
 Route::get('client/history/{inspectionGroupId}/{partTypeId}/{panelId}', 'Client\InspectionController@history')
 	->where([
 		'inspectionGroupId' => '[0-9]+',

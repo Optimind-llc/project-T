@@ -45,9 +45,9 @@ class PrintPDF extends Command
      */
     public function handle()
     {
-        $files = Storage::disk('inline')->files();
+        // $files = Storage::disk('inline')->files();
 
-        $this->info(Storage::disk('inline')->root());
+        // $this->info(Storage::disk('inline')->root());
 
         // foreach ($files as $key => $value) {
         //     $this->info($value);
@@ -62,6 +62,6 @@ class PrintPDF extends Command
         //     unlink($list);
         // }
 
-        $this->info('');
+        $this->info('ok');
     }
 }

@@ -27,7 +27,12 @@ class App extends Component {
       { en: 'dashboard', name: 'マッピング', disable: false},
       { en: 'reference', name: '検査結果照会', disable: true },
       { en: 'report', name: '直レポート印刷', disable: false },
-      { en: 'association', name: '小部品ID紐付', disable: false }
+      { en: 'association', name: '小部品ID紐付', disable: false },
+      { en: 'master', name: '担当者マスタメンテ', disable: true },
+      { en: 'master', name: '品番マスタメンテ', disable: true },
+      { en: 'master', name: '穴あけ加工ポイント登録', disable: true },
+      { en: 'master', name: '不良区分マスタメンテ', disable: true },
+      { en: 'master', name: '手直し区分マスタメンテ', disable: true }
     ]
 
     const nameList = [

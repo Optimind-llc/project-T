@@ -111,7 +111,7 @@ class ShowController extends Controller
     protected function inspectorGData($option) {
         switch ($option) {
             case 'all':
-                $vehicles = InspectorGroup::select(['code as c', 'name as n'])->get();
+                $vehicles = InspectorGroup::where('status', 1)->select(['code as c', 'name as n'])->get();
                 break;
 
             case 'withInspectors':
@@ -311,11 +311,12 @@ class ShowController extends Controller
             })
             ->values(),
             'comments' => $pages->reduce(function ($carry, $page) {
-                return $carry->merge($page->comments->map(function($cf) {
+                return $carry->merge($page->comments->map(function($cf) use($page) {
                     return [    
                         'id' => $cf->m_id,
                         'message' => $cf->modification->name,
-                        'point' => $cf->failurePosition->point
+                        'point' => $cf->failurePosition->point,
+                        'choku' => $page->inspector_group
                     ];
                 }));
             }, collect([])),

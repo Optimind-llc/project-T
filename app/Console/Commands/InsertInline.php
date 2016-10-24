@@ -77,12 +77,15 @@ class InsertInline extends Command
                         $newPart->save();
                     }
 
+                    $status = $raw[5] == 'OK' ? 1 : 0;
+
                     // Create new Family, inspection_group_id = 3
                     $newFamily = new InspectionFamily;
                     $newFamily->inspection_group_id = 3;
                     $newFamily->inspector_group = '不明';
                     $newFamily->created_by = '精度検査';
                     $newFamily->inspected_at = $inspected_at;
+                    $newFamily->status = $status;
                     $newFamily->save();
 
                     // Create new page, page_type_id = 3
@@ -93,7 +96,6 @@ class InsertInline extends Command
                     $newPage->save();
 
                     // Attach parts status to page
-                    $status = $raw[5] == 'OK' ? 1 : 0;
                     $newPage->parts()->attach($newPart->id, ['status' => $status]);
 
                     $data = [
@@ -302,11 +304,14 @@ class InsertInline extends Command
                         $newPart->save();
                     }
 
+                    $status = $raw[5] == 'OK' ? 1 : 0;
+
                     // Create new Family, inspection_group_id = 9
                     $newFamily = new InspectionFamily;
                     $newFamily->inspection_group_id = 9;
                     $newFamily->inspector_group = '不明';
                     $newFamily->created_by = '精度検査';
+                    $newFamily->status = $status;
                     $newFamily->save();
 
                     // Create new page, page_type_id = 15
@@ -317,7 +322,6 @@ class InsertInline extends Command
                     $newPage->save();
 
                     // Attach parts status to page
-                    $status = $raw[5] == 'OK' ? 1 : 0;
                     $newPage->parts()->attach($newPart->id, ['status' => $status]);
 
                     $data = [
@@ -502,10 +506,11 @@ class InsertInline extends Command
 
                     DB::table('inline_page')->insert($data);
                 }
-
-                // unlink($filepath['path']);
             }
         }
+
+        $file = null;
+        unlink($filepath['path']);
     }
 
     /**
@@ -517,7 +522,7 @@ class InsertInline extends Command
     {
         // $dirPath = config('path.inline');
 
-        $dirPath = base_path('input/Inline');
+        $dirPath = config('path.'.env('SERVER').'.inline');
         // $dirPath = 'D:'.DIRECTORY_SEPARATOR.'FailureMapping'.DIRECTORY_SEPARATOR.'InLine';
 
         $files = scandir($dirPath);

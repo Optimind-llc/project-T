@@ -21,6 +21,13 @@ class Mapping extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if (this.props.PageData.isFetching && !nextProps.PageData.isFetching) {
+      this.setState({
+        fFilter: [],
+        cFilter: []
+      });
+    }
+
     if (this.props.active.time !== nextProps.active.time) {
       this.setState({active: nextProps.active.name});
     }
@@ -253,14 +260,27 @@ class Mapping extends Component {
     return (
       <div id="mapping-wrap" className="">
         <div className="mapping-body">
-          {active == 'failure' &&
+          {
+            active == 'failure' &&
             <div className="color-label">
               <div>
-                <div className="circle-red"></div>
+                <div className="circle-white"></div>
                 <p>白直</p>
               </div>
               <div>
-                <div className="circle-olive"></div>
+                <div className="circle-yellow"></div>
+                <p>黄直</p>
+              </div>
+            </div>
+          }{
+            active == 'comment' &&
+            <div className="color-label">
+              <div>
+                <div className="rect-white"></div>
+                <p>白直</p>
+              </div>
+              <div>
+                <div className="rect-yellow"></div>
                 <p>黄直</p>
               </div>
             </div>
@@ -283,17 +303,33 @@ class Mapping extends Component {
                   const x = point[0]/2;
                   const y = point[1]/2;
                   if (Array.isArray(data.path)) {
-                    return (
-                      <g>
-                        <circle cx={x} cy={y} r={6} fill={f.choku == '白直' ? 'red' : 'olive'} />
-                      </g>
-                    );                    
-                  }
-                  else {
-                    if (f.part == this.props.partTId.value) {
+                    if (f.choku == '白直') {
                       return (
                         <g>
-                          <circle cx={x} cy={y} r={6} fill={f.choku == '白直' ? 'red' : 'olive'} />
+                          <circle cx={x} cy={y} r={6} fill="black" />
+                          <circle cx={x} cy={y} r={4} fill="white" />
+                        </g>
+                      );
+                    } else {
+                      return (
+                        <g>
+                          <circle cx={x} cy={y} r={6} fill="#C6B700" />
+                        </g>
+                      );
+                    }
+                  }
+                  else {
+                    if (f.choku == '白直') {
+                      return (
+                        <g>
+                          <circle cx={x} cy={y} r={6} fill="black" />
+                          <circle cx={x} cy={y} r={4} fill="white" />
+                        </g>
+                      );
+                    } else {
+                      return (
+                        <g>
+                          <circle cx={x} cy={y} r={6} fill="#C6B700" />
                         </g>
                       );
                     }
@@ -334,11 +370,21 @@ class Mapping extends Component {
                   const point = c.point.split(',');
                   const x = point[0]/2;
                   const y = point[1]/2;
-                  return (
-                    <g>
-                      <circle cx={x} cy={y} r={6} fill="blue" />
-                    </g>
-                  );
+                  if (c.choku == '白直') {
+                    return (
+                      <g>
+                        <rect x={x-7} y={y-7} width="14" height="14" fill="white"/>
+                        <rect x={x-6} y={y-6} width="12" height="12" fill="black"/>
+                        <rect x={x-4} y={y-4} width="8" height="8" fill="white"/>
+                      </g>
+                    ); 
+                  } else {
+                    return (
+                      <g>
+                        <rect x={x-6} y={y-6} width="12" height="12" fill="#C6B700"/>
+                      </g>
+                    ); 
+                  }
                 })
               }{
                 active == 'inline' &&
@@ -467,8 +513,7 @@ class Mapping extends Component {
 Mapping.propTypes = {
   PageData: PropTypes.object.isRequired,
   realtime: PropTypes.bool.isRequired,
-  active: PropTypes.object.isRequired,
-  partTId: PropTypes.object.isRequired
+  active: PropTypes.object.isRequired
 };
 
 export default Mapping;
