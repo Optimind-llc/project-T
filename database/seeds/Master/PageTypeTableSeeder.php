@@ -200,6 +200,24 @@ class PageTypeTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],
+            //穴あけ：外観検査：インナ
+            [
+                'number'     => 1,
+                'group_id'   => 15,
+                'figure_id'  => 1,
+                'pdf_id'     => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //接着：簡易CF：インナASSY
+            [
+                'number'     => 1,
+                'group_id'   => 16,
+                'figure_id'  => 10,
+                'pdf_id'     => 17,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
         ];
 
         DB::table($table_name)->insert($data);
