@@ -149,14 +149,14 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);        
         }
 
-        //接着：止水：インナASSY
-        $group = $controller->inspection(10);
+        // //接着：止水：インナASSY
+        // $group = $controller->inspection(10);
 
-        for ($id = 1; $id <= 10; $id++) {
-            $data = $this->createData($group['group'], $id);
-            $request->setFamily($data);
-            $controller->saveInspection($request);        
-        }
+        // for ($id = 1; $id <= 10; $id++) {
+        //     $data = $this->createData($group['group'], $id);
+        //     $request->setFamily($data);
+        //     $controller->saveInspection($request);        
+        // }
 
         // //接着：仕上：インナASSY
         // for ($id = 1; $id <= 10; $id++) {
@@ -168,23 +168,23 @@ class DummyInspectionsSeeder extends Seeder
         //     $controller->saveInspection($request);        
         // }
 
-        //接着：検査：インナASSY
-        $group = $controller->inspection(12);
+        // //接着：検査：インナASSY
+        // $group = $controller->inspection(12);
 
-        for ($id = 1; $id <= 10; $id++) {
-            $data = $this->createData($group['group'], $id);
-            $request->setFamily($data);
-            $controller->saveInspection($request);        
-        }
+        // for ($id = 1; $id <= 10; $id++) {
+        //     $data = $this->createData($group['group'], $id);
+        //     $request->setFamily($data);
+        //     $controller->saveInspection($request);        
+        // }
 
-        //接着：特検：インナASSY
-        $group = $controller->inspection(13);
+        // //接着：特検：インナASSY
+        // $group = $controller->inspection(13);
 
-        for ($id = 1; $id <= 10; $id++) {
-            $data = $this->createData($group['group'], $id);
-            $request->setFamily($data);
-            $controller->saveInspection($request);        
-        }
+        // for ($id = 1; $id <= 10; $id++) {
+        //     $data = $this->createData($group['group'], $id);
+        //     $request->setFamily($data);
+        //     $controller->saveInspection($request);        
+        // }
 
         // //接着：手直し：インナASSY
         // for ($id = 1; $id <= 10; $id++) {

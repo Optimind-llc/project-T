@@ -97,6 +97,53 @@ class CommentTableSeeder extends Seeder
         }
 
         $data = [
+            //止水
+            [
+                'modification_id' => 1,
+                'inspection_id'   => 5,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 2,
+                'inspection_id'   => 5,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 3,
+                'inspection_id'   => 5,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 4,
+                'inspection_id'   => 5,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 5,
+                'inspection_id'   => 5,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 6,
+                'inspection_id'   => 5,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 7,
+                'inspection_id'   => 5,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 8,
+                'inspection_id'   => 5,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 9,
+                'inspection_id'   => 5,
+                'type'            => 1,
+                'sort'            => 1
+            ],
             //仕上
             [
                 'modification_id' => 1,
@@ -136,6 +183,105 @@ class CommentTableSeeder extends Seeder
             ],[
                 'modification_id' => 8,
                 'inspection_id'   => 6,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 9,
+                'inspection_id'   => 6,
+                'type'            => 1,
+                'sort'            => 1
+            ],
+            //検査
+            [
+                'modification_id' => 1,
+                'inspection_id'   => 7,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 2,
+                'inspection_id'   => 7,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 3,
+                'inspection_id'   => 7,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 4,
+                'inspection_id'   => 7,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 5,
+                'inspection_id'   => 7,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 6,
+                'inspection_id'   => 7,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 7,
+                'inspection_id'   => 7,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 8,
+                'inspection_id'   => 7,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 9,
+                'inspection_id'   => 7,
+                'type'            => 1,
+                'sort'            => 1
+            ],
+            //特検
+            [
+                'modification_id' => 1,
+                'inspection_id'   => 8,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 2,
+                'inspection_id'   => 8,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 3,
+                'inspection_id'   => 8,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 4,
+                'inspection_id'   => 8,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 5,
+                'inspection_id'   => 8,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 6,
+                'inspection_id'   => 8,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 7,
+                'inspection_id'   => 8,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 8,
+                'inspection_id'   => 8,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 9,
+                'inspection_id'   => 8,
                 'type'            => 1,
                 'sort'            => 1
             ],
@@ -180,7 +326,59 @@ class CommentTableSeeder extends Seeder
                 'inspection_id'   => 9,
                 'type'            => 1,
                 'sort'            => 1
-            ]
+            ],[
+                'modification_id' => 9,
+                'inspection_id'   => 9,
+                'type'            => 1,
+                'sort'            => 1
+            ],
+            //簡易CF
+            [
+                'modification_id' => 1,
+                'inspection_id'   => 11,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 2,
+                'inspection_id'   => 11,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 3,
+                'inspection_id'   => 11,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 4,
+                'inspection_id'   => 11,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 5,
+                'inspection_id'   => 11,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 6,
+                'inspection_id'   => 11,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 7,
+                'inspection_id'   => 11,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 8,
+                'inspection_id'   => 11,
+                'type'            => 1,
+                'sort'            => 1
+            ],[
+                'modification_id' => 9,
+                'inspection_id'   => 11,
+                'type'            => 1,
+                'sort'            => 1
+            ],
         ];
 
         DB::table($table_name)->insert($data);
