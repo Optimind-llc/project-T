@@ -52,7 +52,7 @@ class PageType extends Model
             'page_type_id',
             'part_type_id'
         )
-        ->withPivot('area');
+        ->withPivot('area', 'figure_id');
     }
 
     public function pages()

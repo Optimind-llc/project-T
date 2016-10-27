@@ -21,15 +21,12 @@ class Mapping extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.PageData.isFetching && !nextProps.PageData.isFetching) {
+    if (this.props.active.time !== nextProps.active.time) {
       this.setState({
+        active: nextProps.active.name,
         fFilter: [],
         cFilter: []
       });
-    }
-
-    if (this.props.active.time !== nextProps.active.time) {
-      this.setState({active: nextProps.active.name});
     }
   }
 
@@ -264,7 +261,7 @@ class Mapping extends Component {
             active == 'failure' &&
             <div className="color-label">
               <div>
-                <div className="circle-white"></div>
+                <div className="circle-red"></div>
                 <p>白直</p>
               </div>
               <div>
@@ -276,7 +273,7 @@ class Mapping extends Component {
             active == 'comment' &&
             <div className="color-label">
               <div>
-                <div className="rect-white"></div>
+                <div className="rect-red"></div>
                 <p>白直</p>
               </div>
               <div>
@@ -306,14 +303,19 @@ class Mapping extends Component {
                     if (f.choku == '白直') {
                       return (
                         <g>
-                          <circle cx={x} cy={y} r={6} fill="black" />
-                          <circle cx={x} cy={y} r={4} fill="white" />
+                          <circle cx={x} cy={y} r={5} fill="red" />
                         </g>
                       );
-                    } else {
+                    } else if (f.choku == '黄直'){
                       return (
                         <g>
-                          <circle cx={x} cy={y} r={6} fill="#C6B700" />
+                          <circle cx={x} cy={y} r={5} fill="#C6B700" />
+                        </g>
+                      );
+                    } else if (f.choku == '黒直'){
+                      return (
+                        <g>
+                          <circle cx={x} cy={y} r={5} fill="blue" />
                         </g>
                       );
                     }
@@ -322,14 +324,19 @@ class Mapping extends Component {
                     if (f.choku == '白直') {
                       return (
                         <g>
-                          <circle cx={x} cy={y} r={6} fill="black" />
-                          <circle cx={x} cy={y} r={4} fill="white" />
+                          <circle cx={x} cy={y} r={6} fill="red" />
                         </g>
                       );
-                    } else {
+                    } else if (f.choku == '黄直') {
                       return (
                         <g>
                           <circle cx={x} cy={y} r={6} fill="#C6B700" />
+                        </g>
+                      );
+                    } else if (f.choku == '黒直'){
+                      return (
+                        <g>
+                          <circle cx={x} cy={y} r={6} fill="blue" />
                         </g>
                       );
                     }
@@ -373,15 +380,19 @@ class Mapping extends Component {
                   if (c.choku == '白直') {
                     return (
                       <g>
-                        <rect x={x-7} y={y-7} width="14" height="14" fill="white"/>
-                        <rect x={x-6} y={y-6} width="12" height="12" fill="black"/>
-                        <rect x={x-4} y={y-4} width="8" height="8" fill="white"/>
+                        <rect x={x-6} y={y-6} width="12" height="12" fill="red"/>
                       </g>
                     ); 
-                  } else {
+                  } else if (c.choku == '黄直'){
                     return (
                       <g>
                         <rect x={x-6} y={y-6} width="12" height="12" fill="#C6B700"/>
+                      </g>
+                    ); 
+                  }else if (c.choku == '黒直'){
+                    return (
+                      <g>
+                        <rect x={x-6} y={y-6} width="12" height="12" fill="blue"/>
                       </g>
                     ); 
                   }

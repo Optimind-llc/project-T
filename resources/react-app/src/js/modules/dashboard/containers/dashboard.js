@@ -107,33 +107,33 @@ class Dashboard extends Component {
     const processes = {
       1: [
         {label: '成形工程ライン１', value: 1},
-        {label: '成形工程ライン２', value: 2},
+        {label: '成形工程ライン２', value: 2, disabled: true},
         {label: '成形工程：精度検査', value: 3},
         {label: '穴あけ工程', value: 4}
       ],
       2: [
         {label: '成形工程ライン１', value: 5},
-        {label: '成形工程ライン２', value: 6},
+        {label: '成形工程ライン２', value: 6, disabled: true},
         {label: '穴あけ工程', value: 8}
       ],
       3: [
         {label: '成形工程ライン１', value: 5},
-        {label: '成形工程ライン２', value: 6},
+        {label: '成形工程ライン２', value: 6, disabled: true},
         {label: '穴あけ工程', value: 8}
       ],
       4: [
         {label: '成形工程ライン１', value: 5},
-        {label: '成形工程ライン２', value: 6},
+        {label: '成形工程ライン２', value: 6, disabled: true},
         {label: '穴あけ工程', value: 8}
       ],
       5: [
         {label: '成形工程ライン１', value: 5},
-        {label: '成形工程ライン２', value: 6},
+        {label: '成形工程ライン２', value: 6, disabled: true},
         {label: '穴あけ工程', value: 8}
       ],
       6: [
         {label: '成形工程ライン１', value: 5},
-        {label: '成形工程ライン２', value: 6},
+        {label: '成形工程ライン２', value: 6, disabled: true},
         {label: '穴あけ工程', value: 8}
       ],
       7: [

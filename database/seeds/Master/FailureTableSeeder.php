@@ -109,77 +109,77 @@ class FailureTableSeeder extends Seeder
                 'updated_at' => $now
             ],[
                 'name'       => '端末欠け',
-                'label'      => 16,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => 'バリ',
                 'label'      => 17,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '材質記号NG',
+                'name'       => 'バリ',
                 'label'      => 18,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '仕上げ不良',
+                'name'       => '材質記号NG',
                 'label'      => 19,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '穴糸残り',
+                'name'       => '仕上げ不良',
                 'label'      => 20,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '接着剤はみ出',
+                'name'       => '穴糸残り',
                 'label'      => 21,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '接着剤付着',
+                'name'       => '接着剤はみ出',
                 'label'      => 22,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '汚れ',
+                'name'       => '接着剤付着',
                 'label'      => 23,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '剥離',
+                'name'       => '汚れ',
                 'label'      => 24,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'ボルト塗料剥',
+                'name'       => '剥離',
                 'label'      => 25,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'ボルト欠',
+                'name'       => 'ボルト塗料剥',
                 'label'      => 26,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'リテーナー欠',
+                'name'       => 'ボルト欠',
                 'label'      => 27,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'リテーナー誤品',
+                'name'       => 'リテーナー欠',
                 'label'      => 28,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '隙間大',
+                'name'       => 'リテーナー誤品',
                 'label'      => 29,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '水漏れ',
+                'name'       => '隙間大',
                 'label'      => 30,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '水漏れ',
+                'label'      => 31,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -187,7 +187,13 @@ class FailureTableSeeder extends Seeder
                 'label'      => 99,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => '未凍結',
+                'label'      => 16,
+                'created_at' => $now,
+                'updated_at' => $now
             ],
+
         ];
 
         DB::table($table_name)->insert($data);
@@ -286,6 +292,11 @@ class FailureTableSeeder extends Seeder
                 'failure_id' => 31,
                 'inspection_id' => 1,
                 'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 32,
+                'inspection_id' => 1,
+                'type'       => 1,
                 'sort'       => 1
             ],
             //穴あけ

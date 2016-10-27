@@ -149,9 +149,7 @@ class CreateTablesRelatedToManager extends Migration
 
         Schema::create('figures', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('path', 32)->unique();
-            $table->integer('part_type_id')->unsigned()->nullable();
-            $table->integer('inspection_id')->unsigned()->nullable();
+            $table->string('path', 32);
             $table->timestamps();
         });
 
@@ -212,26 +210,10 @@ class CreateTablesRelatedToManager extends Migration
                 ->onDelete('restrict');
         });
 
-        Schema::table('figures', function ($table) {
-            /**
-             * Add Foreign
-             */
-            $table->foreign('part_type_id')
-                ->references('id')
-                ->on('part_types')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-
-            $table->foreign('inspection_id')
-                ->references('id')
-                ->on('inspections')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-        });
-
         Schema::create('part_type_page_type', function (Blueprint $table) {
             $table->integer('part_type_id')->unsigned();
             $table->integer('page_type_id')->unsigned();
+            $table->integer('figure_id')->unsigned()->nullable()->default(null);
             $table->string('area', 64)->nullable()->default('null');
             $table->timestamps();
 
@@ -247,6 +229,12 @@ class CreateTablesRelatedToManager extends Migration
             $table->foreign('page_type_id')
                 ->references('id')
                 ->on('page_types')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('figure_id')
+                ->references('id')
+                ->on('figures')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
 
@@ -400,10 +388,6 @@ class CreateTablesRelatedToManager extends Migration
         Schema::drop('failure_inspection');
         Schema::drop('failures');
         Schema::drop('part_type_page_type');
-        Schema::table('figures', function ($table) {
-            $table->dropForeign('figures_part_type_id_foreign');
-            $table->dropForeign('figures_inspection_id_foreign');
-        });
         Schema::drop('part_types');
         Schema::drop('page_types');
         Schema::drop('pdf_templates');

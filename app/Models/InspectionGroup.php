@@ -149,7 +149,8 @@ class InspectionGroup extends Model
                             'id' => $part->id,
                             'name' => $part->name,
                             'pn' => $part->pn,
-                            'vehicle' => $part->vehicle_num
+                            'vehicle' => $part->vehicle_num,
+                            'area' => $part->pivot->area
                         ];
                     }),
                     'figure' => [

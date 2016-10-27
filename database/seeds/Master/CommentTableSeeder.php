@@ -68,6 +68,11 @@ class CommentTableSeeder extends Seeder
                 'label'      => 8,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => '手直不可',
+                'label'      => 9,
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ];
 

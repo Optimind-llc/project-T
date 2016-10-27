@@ -165,6 +165,7 @@ class Report extends Component {
               <div>
                 <p>ライン２</p>
                 <div
+                  className="disable"
                   onClick={() => this.setState({
                     modal: true,
                     path: `/manager/pdf/report/2/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
@@ -173,6 +174,7 @@ class Report extends Component {
                   <p>インナー</p>
                 </div>
                 <div
+                  className="disable"
                   onClick={() => this.setState({
                     modal: true,
                     path: `/manager/pdf/report/6/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
