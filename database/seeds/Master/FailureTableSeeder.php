@@ -192,8 +192,17 @@ class FailureTableSeeder extends Seeder
                 'label'      => 16,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => '精度NG',
+                'label'      => 32,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '穴位置NG',
+                'label'      => 33,
+                'created_at' => $now,
+                'updated_at' => $now
             ],
-
         ];
 
         DB::table($table_name)->insert($data);
@@ -840,7 +849,7 @@ class FailureTableSeeder extends Seeder
                 'type'       => 2,
                 'sort'       => 1
             ],
-            //接着 止水　
+            //接着 簡易CF
             [
                 'failure_id' => 1,
                 'inspection_id' => 11,
@@ -923,6 +932,16 @@ class FailureTableSeeder extends Seeder
                 'sort'       => 1
             ],[
                 'failure_id' => 31,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 33,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 34,
                 'inspection_id' => 11,
                 'type'       => 2,
                 'sort'       => 1
