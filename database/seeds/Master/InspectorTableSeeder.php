@@ -618,6 +618,19 @@ class InspectorTableSeeder extends Seeder
                 'sort'            => 7
             ],
 
+            //穴あけ_外観検査_インナ_白
+            [
+                'inspection_g_id' => 15,
+                'inspector_id'    => 1,
+                'sort'            => 1
+            ],
+
+            //穴あけ_外観検査_インナ_黄色
+            [
+                'inspection_g_id' => 15,
+                'inspector_id'    => 8,
+                'sort'            => 1
+            ],
 
             //穴あけ_検査_インナ①_白
             [
@@ -900,6 +913,18 @@ class InspectorTableSeeder extends Seeder
                 'sort'            => 11
             ],
 
+            //接着_簡易CF_インナASSY_白
+            [
+                'inspection_g_id' => 16,
+                'inspector_id'    => 1,
+                'sort'            => 1
+            ],
+            //接着_簡易CF_インナASSY_黄
+            [
+                'inspection_g_id' => 16,
+                'inspector_id'    => 8,
+                'sort'            => 1
+            ],
 
             //接着_止水_インナASSY_白
             [

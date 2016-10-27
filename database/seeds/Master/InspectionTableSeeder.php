@@ -45,7 +45,7 @@ class InspectionTableSeeder extends Seeder
             ],[
                 'name'       => '検査',
                 'en'         => 'kensa',
-                'sort'       => 1,
+                'sort'       => 2,
                 'process_id' => 'holing',
                 'created_at' => $now,
                 'updated_at' => $now
@@ -59,35 +59,49 @@ class InspectionTableSeeder extends Seeder
             ],[
                 'name'       => '止水',
                 'en'         => 'shisui',
-                'sort'       => 2,
+                'sort'       => 3,
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '仕上',
                 'en'         => 'shiage',
-                'sort'       => 3,
+                'sort'       => 4,
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '検査',
                 'en'         => 'kensa',
-                'sort'       => 4,
+                'sort'       => 5,
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '特検',
                 'en'         => 'tokken',
-                'sort'       => 5,
+                'sort'       => 6,
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '手直し',
                 'en'         => 'tenaoshi',
-                'sort'       => 6,
+                'sort'       => 7,
+                'process_id' => 'jointing',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '外観検査',
+                'en'         => 'gaikan',
+                'sort'       => 1,
+                'process_id' => 'holing',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '簡易CF',
+                'en'         => 'kanicf',
+                'sort'       => 2,
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now

@@ -299,7 +299,7 @@ class FailureTableSeeder extends Seeder
                 'type'       => 1,
                 'sort'       => 1
             ],
-            //穴あけ
+            //穴あけ(検査)
             [
                 'failure_id' => 1,
                 'inspection_id' => 3,
@@ -343,6 +343,53 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 31,
                 'inspection_id' => 3,
+                'type'       => 2,
+                'sort'       => 1
+            ],
+            //穴あけ(外観検査)
+            [
+                'failure_id' => 1,
+                'inspection_id' => 10,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 2,
+                'inspection_id' => 10,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 3,
+                'inspection_id' => 10,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 4,
+                'inspection_id' => 10,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 5,
+                'inspection_id' => 10,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 7,
+                'inspection_id' => 10,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 13,
+                'inspection_id' => 10,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 24,
+                'inspection_id' => 10,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 31,
+                'inspection_id' => 10,
                 'type'       => 2,
                 'sort'       => 1
             ],
@@ -792,7 +839,94 @@ class FailureTableSeeder extends Seeder
                 'inspection_id' => 9,
                 'type'       => 2,
                 'sort'       => 1
-            ]
+            ],
+            //接着 止水　
+            [
+                'failure_id' => 1,
+                'inspection_id' => 11,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 2,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 3,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 4,
+                'inspection_id' => 11,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 6,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 9,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 16,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 17,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 21,
+                'inspection_id' => 11,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 22,
+                'inspection_id' => 11,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 23,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 24,
+                'inspection_id' => 11,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 25,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 26,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 29,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],[
+                'failure_id' => 30,
+                'inspection_id' => 11,
+                'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 31,
+                'inspection_id' => 11,
+                'type'       => 2,
+                'sort'       => 1
+            ],
         ];
 
         DB::table($table_name)->insert($data);
