@@ -33,6 +33,9 @@ Route::get('client/history/{inspectionGroupId}/{partTypeId}/{panelId}', 'Client\
 		'panelId' => '[a-zA-Z0-9]+'
 	]);
 
+Route::post('client/history', 'Client\InspectionController@history');
+
+
 // Save inspection data
 Route::post('client/inspection', 'Client\InspectionController@saveInspection');
 

@@ -70,18 +70,126 @@ class InspectionController extends Controller
         ];
     }
 
-    public function history($inspectionGroupId, $partTypeId, $panelId)
+    // public function history($inspectionGroupId, $partTypeId, $panelId)
+    // {
+    //     switch ($inspectionGroupId) {
+    //         case 11: $expect = ['shisui' => 10]; break;
+    //         case 14: $expect = ['shisui' => 10, 'shiage' => 11, 'kensa' => 12, 'tokken' => 13]; break;
+    //         default: $expect = []; break;
+    //     }
+
+    //     $heritage = [];
+
+    //     $part = Part::where('panel_id', $panelId)
+    //         ->where('part_type_id', $partTypeId)
+    //         ->first();
+
+    //     if (!$part instanceof Part) {
+    //         $inspected_array = [];
+    //         $history = [];
+    //     }
+    //     else {
+    //         if ($part->pages->count() == 0) {
+    //             $inspected_array = [];
+    //             $history = [];
+    //         }
+    //         else {
+    //             $inspected = $part->pages()
+    //                 ->join('inspection_families as if', 'pages.family_id', '=', 'if.id')
+    //                 ->select('pages.*', 'if.inspection_group_id')
+    //                 ->whereIn('if.inspection_group_id', array_values($expect))
+    //                 ->with([
+    //                     'failurePositions' => function($q) {
+    //                         $q->select(['id', 'point', 'page_id', 'failure_id']);
+    //                     },
+    //                     'failurePositions.failure' => function($q) {
+    //                         $q->select(['id', 'label']);
+    //                     },
+    //                     'failurePositions.modifications.modification' => function($q) {
+    //                         $q->select(['id', 'name', 'label']);
+    //                     }
+    //                 ])
+    //                 ->get();
+
+    //             $inspected_array = $inspected->map(function($ig) {
+    //                     return $ig->inspection_group_id;
+    //                 })
+    //                 ->toArray();
+
+    //             $history = $inspected->map(function($page) {
+    //                 return $page->failurePositions->map(function($fp) {
+    //                     $cLabel = "";
+    //                     if ($fp->modifications->count() !== 0) {
+    //                         $cLabel = $fp->modifications->first()->modification->label;
+    //                     }
+
+    //                     return [
+    //                         'failurePositionId' => $fp->id,
+    //                         'label' => $fp->failure->label,
+    //                         'point' => $fp->point,
+    //                         'cLabel' => $cLabel
+    //                     ];
+    //                 });
+    //             })
+    //             ->reduce(function ($carry, $failures) {
+    //                 return array_merge($carry, $failures->toArray());
+    //             }, []);
+    //         }
+    //     }
+
+    //     foreach ($expect as $name => $id) {
+    //         $heritage[$name] = in_array($id, $inspected_array) ? 1 : 0;
+    //     }
+
+    //     return [
+    //         'heritage' => $heritage,
+    //         'group' => [
+    //             'pages' => [
+    //                 [
+    //                     'history' => $history
+    //                 ]
+    //             ]
+    //         ]
+    //     ];
+    // }
+
+    public function history(Request $request)
     {
-        switch ($inspectionGroupId) {
-            case 11: $expect = ['shisui' => 10]; break;
-            case 14: $expect = ['shisui' => 10, 'shiage' => 11, 'kensa' => 12, 'tokken' => 13]; break;
-            default: $expect = []; break;
+        $validator = app('validator')->make(
+            $request->all(),
+            [
+                'panelId' => ['required', 'alpha_num'],
+                'partType' => ['required', 'alpha_num'],
+                'id' => ['required']
+            ]
+        );
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Validation error', $validator->errors());
         }
+
+        // $except = InspectionGroup::whereIn('id', $request->id)
+        //     ->with(['inspection' => function($q) {
+        //         $q->select(['id', 'en']);
+        //     }])
+        //     ->get(['id', 'inspection_id'])
+        //     ->map(function($ig) {
+        //         return [
+        //             'id' => $ig->id,
+        //             'en' => $ig->inspection->en
+        //         ];
+        //     });
+
+        // switch ($inspectionGroupId) {
+        //     case 11: $expect = ['shisui' => 10]; break;
+        //     case 14: $expect = ['shisui' => 10, 'shiage' => 11, 'kensa' => 12, 'tokken' => 13]; break;
+        //     default: $expect = []; break;
+        // }
 
         $heritage = [];
 
-        $part = Part::where('panel_id', $panelId)
-            ->where('part_type_id', $partTypeId)
+        $part = Part::where('panel_id', $request->panelId)
+            ->where('part_type_id', $request->partType)
             ->first();
 
         if (!$part instanceof Part) {
@@ -97,7 +205,7 @@ class InspectionController extends Controller
                 $inspected = $part->pages()
                     ->join('inspection_families as if', 'pages.family_id', '=', 'if.id')
                     ->select('pages.*', 'if.inspection_group_id')
-                    ->whereIn('if.inspection_group_id', array_values($expect))
+                    ->whereIn('if.inspection_group_id', $request->id)
                     ->with([
                         'failurePositions' => function($q) {
                             $q->select(['id', 'point', 'page_id', 'failure_id']);
@@ -137,7 +245,8 @@ class InspectionController extends Controller
             }
         }
 
-        foreach ($expect as $name => $id) {
+        foreach ($request->id as $id) {
+            $name = InspectionGroup::find($id)->inspection->en;
             $heritage[$name] = in_array($id, $inspected_array) ? 1 : 0;
         }
 
