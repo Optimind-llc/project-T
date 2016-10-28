@@ -274,6 +274,20 @@ class PartTypeTableSeeder extends Seeder
                 'area'         => '0/0/1740/1030',
                 'figure_id'    => 29
             ],
+            //穴あけ：外観検査：インナ
+            [
+                'page_type_id' => 21,
+                'part_type_id' => 1,
+                'area'         => '0/0/1740/1030',
+                'figure_id'    => 13
+            ],
+            //接着：簡易CF：インナASSY
+            [
+                'page_type_id' => 22,
+                'part_type_id' => 1,
+                'area'         => '0/0/1740/1030',
+                'figure_id'    => 29
+            ],
         ];
 
         DB::table($table_name)->insert($data);
