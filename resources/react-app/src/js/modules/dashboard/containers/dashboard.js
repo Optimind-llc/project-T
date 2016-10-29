@@ -138,6 +138,7 @@ class Dashboard extends Component {
       ],
       7: [
         {label: '接着工程：精度検査', value: 9},
+        {label: '接着工程：簡易CF', value: 16},
         {label: '接着工程：止水', value: 10},
         {label: '接着工程：仕上', value: 11},
         {label: '接着工程：検査', value: 12},

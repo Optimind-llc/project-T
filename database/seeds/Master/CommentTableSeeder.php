@@ -333,52 +333,52 @@ class CommentTableSeeder extends Seeder
                 'sort'            => 1
             ],
             //簡易CF
-            [
-                'modification_id' => 1,
-                'inspection_id'   => 11,
-                'type'            => 1,
-                'sort'            => 1
-            ],[
-                'modification_id' => 2,
-                'inspection_id'   => 11,
-                'type'            => 1,
-                'sort'            => 1
-            ],[
-                'modification_id' => 3,
-                'inspection_id'   => 11,
-                'type'            => 1,
-                'sort'            => 1
-            ],[
-                'modification_id' => 4,
-                'inspection_id'   => 11,
-                'type'            => 1,
-                'sort'            => 1
-            ],[
-                'modification_id' => 5,
-                'inspection_id'   => 11,
-                'type'            => 1,
-                'sort'            => 1
-            ],[
-                'modification_id' => 6,
-                'inspection_id'   => 11,
-                'type'            => 1,
-                'sort'            => 1
-            ],[
-                'modification_id' => 7,
-                'inspection_id'   => 11,
-                'type'            => 1,
-                'sort'            => 1
-            ],[
-                'modification_id' => 8,
-                'inspection_id'   => 11,
-                'type'            => 1,
-                'sort'            => 1
-            ],[
-                'modification_id' => 9,
-                'inspection_id'   => 11,
-                'type'            => 1,
-                'sort'            => 1
-            ],
+            // [
+            //     'modification_id' => 1,
+            //     'inspection_id'   => 11,
+            //     'type'            => 1,
+            //     'sort'            => 1
+            // ],[
+            //     'modification_id' => 2,
+            //     'inspection_id'   => 11,
+            //     'type'            => 1,
+            //     'sort'            => 1
+            // ],[
+            //     'modification_id' => 3,
+            //     'inspection_id'   => 11,
+            //     'type'            => 1,
+            //     'sort'            => 1
+            // ],[
+            //     'modification_id' => 4,
+            //     'inspection_id'   => 11,
+            //     'type'            => 1,
+            //     'sort'            => 1
+            // ],[
+            //     'modification_id' => 5,
+            //     'inspection_id'   => 11,
+            //     'type'            => 1,
+            //     'sort'            => 1
+            // ],[
+            //     'modification_id' => 6,
+            //     'inspection_id'   => 11,
+            //     'type'            => 1,
+            //     'sort'            => 1
+            // ],[
+            //     'modification_id' => 7,
+            //     'inspection_id'   => 11,
+            //     'type'            => 1,
+            //     'sort'            => 1
+            // ],[
+            //     'modification_id' => 8,
+            //     'inspection_id'   => 11,
+            //     'type'            => 1,
+            //     'sort'            => 1
+            // ],[
+            //     'modification_id' => 9,
+            //     'inspection_id'   => 11,
+            //     'type'            => 1,
+            //     'sort'            => 1
+            // ],
         ];
 
         DB::table($table_name)->insert($data);

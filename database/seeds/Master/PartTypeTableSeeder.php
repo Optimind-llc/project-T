@@ -284,7 +284,7 @@ class PartTypeTableSeeder extends Seeder
             //接着：簡易CF：インナASSY
             [
                 'page_type_id' => 22,
-                'part_type_id' => 1,
+                'part_type_id' => 7,
                 'area'         => '0/0/1740/1030',
                 'figure_id'    => 29
             ],

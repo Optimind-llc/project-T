@@ -11,7 +11,7 @@ use Database\Seeding\DummyRequest;
  */
 class DummyInspectionsSeeder extends Seeder
 {
-    protected function createData($group, $id)
+    protected function createData($group, $id, $history)
     {
         /***** HARD CODE *****/
         $img = ['x' => 1740, 'y' => 800, 'margin' => 100, 'arrow' => 80];
@@ -61,14 +61,14 @@ class DummyInspectionsSeeder extends Seeder
             return $C;
         };
 
-        $createPage = function($page) use ($img, $id, $createPart, $createFailures, $createHole, $createComments, $group) {
+        $createPage = function($page) use ($img, $id, $createPart, $createFailures, $createHole, $createComments, $group, $history) {
             return [
                 'pageId' => $page['id'],
                 'table' => 'A',
                 'parts' => $page['parts']->map($createPart),
                 'failures' => count($group['failures']) ? $createFailures($group['failures']) : null,
                 'holes' => count($page['figure']['holes']) ? array_map($createHole, $page['figure']['holes']->toArray()) : null,
-                'comments' => count($group['comments']) ? $createComments($group['comments'], $page['history']) : null
+                'comments' => count($history) ? $createComments($group['comments'], $history) : null
             ];
         };
 
@@ -98,7 +98,7 @@ class DummyInspectionsSeeder extends Seeder
         //成型：検査：ライン１：インナー
         $group = $controller->inspection(1);
         for ($id = 1; $id <= 10; $id++) {
-            $data = $this->createData($group['group'], $id);
+            $data = $this->createData($group['group'], $id ,[]);
             // var_dump(json_encode($data));
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -108,7 +108,7 @@ class DummyInspectionsSeeder extends Seeder
         $group = $controller->inspection(2);
 
         for ($id = 11; $id <= 20; $id++) {
-            $data = $this->createData($group['group'], $id);
+            $data = $this->createData($group['group'], $id ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
         }
@@ -117,7 +117,7 @@ class DummyInspectionsSeeder extends Seeder
         $group = $controller->inspection(5);
 
         for ($id = 1; $id <= 10; $id++) {
-            $data = $this->createData($group['group'], $id);
+            $data = $this->createData($group['group'], $id ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
         }
@@ -126,7 +126,7 @@ class DummyInspectionsSeeder extends Seeder
         $group = $controller->inspection(6);
 
         for ($id = 11; $id <= 20; $id++) {
-            $data = $this->createData($group['group'], $id);
+            $data = $this->createData($group['group'], $id ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
         }
@@ -135,7 +135,7 @@ class DummyInspectionsSeeder extends Seeder
         $group = $controller->inspection(4);
 
         for ($id = 1; $id <= 10; $id++) {
-            $data = $this->createData($group['group'], $id);
+            $data = $this->createData($group['group'], $id ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
         }
@@ -144,56 +144,80 @@ class DummyInspectionsSeeder extends Seeder
         $group = $controller->inspection(8);
 
         for ($id = 1; $id <= 10; $id++) {
-            $data = $this->createData($group['group'], $id);
+            $data = $this->createData($group['group'], $id ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
         }
 
-        // //接着：止水：インナASSY
-        // $group = $controller->inspection(10);
+        //接着：簡易CF：インナASSY
+        $group = $controller->inspection(16);
 
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        for ($id = 1; $id <= 10; $id++) {
+            $data = $this->createData($group['group'], $id, []);
 
-        // //接着：仕上：インナASSY
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $request->set('jointing', 'finish', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
-        //     $group = $controller->inspection($request);
+            $request->setFamily($data);
+            $controller->saveInspection($request);
+        }
 
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        //接着：止水：インナASSY
+        $group = $controller->inspection(10);
 
-        // //接着：検査：インナASSY
-        // $group = $controller->inspection(12);
+        for ($id = 1; $id <= 10; $id++) {
+            $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16]);
+            $history = $controller->history($request)['group']['pages'][0]['history'];
 
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+            $data = $this->createData($group['group'], $id, $history);
+
+            $request->setFamily($data);
+            $controller->saveInspection($request);
+        }
+
+        //接着：仕上：インナASSY
+        $group = $controller->inspection(11);
+
+        for ($id = 1; $id <= 10; $id++) {
+            $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10]);
+            $history = $controller->history($request)['group']['pages'][0]['history'];
+
+            $data = $this->createData($group['group'], $id, $history);
+
+            $request->setFamily($data);
+            $controller->saveInspection($request);
+        }
+
+        //接着：検査：インナASSY
+        $group = $controller->inspection(12);
+
+        for ($id = 1; $id <= 10; $id++) {
+            $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10, 11]);
+            $history = $controller->history($request)['group']['pages'][0]['history'];
+
+            $data = $this->createData($group['group'], $id, $history);
+
+            $request->setFamily($data);
+            $controller->saveInspection($request);
+        }
 
         // //接着：特検：インナASSY
         // $group = $controller->inspection(13);
 
         // for ($id = 1; $id <= 10; $id++) {
-        //     $data = $this->createData($group['group'], $id);
+        //     $data = $this->createData($group['group'], $id ,[]);
         //     $request->setFamily($data);
         //     $controller->saveInspection($request);        
         // }
 
-        // //接着：手直し：インナASSY
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $request->set('jointing', 'adjust', 'inner_assy', '', 'B'.str_pad($id, 7, 0, STR_PAD_LEFT));
-        //     $group = $controller->inspection($request);
+        //接着：手直し：インナASSY
+        $group = $controller->inspection(14);
 
-        //     $data = $this->createData($group['group'], $id);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);
-        // }
+        for ($id = 1; $id <= 10; $id++) {
+            $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10, 11, 12]);
+            $history = $controller->history($request)['group']['pages'][0]['history'];
+
+            $data = $this->createData($group['group'], $id, $history);
+
+            $request->setFamily($data);
+            $controller->saveInspection($request);
+        }
     }
 }
