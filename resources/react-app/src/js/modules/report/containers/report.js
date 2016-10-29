@@ -199,7 +199,18 @@ class Report extends Component {
           this.state.process == 'holing' &&
           <div className="bg-white process-flex">
             <div>
-              <p>検査</p>
+              <p>外観検査</p>
+              <div
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/pdf/report/15/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>インナー</p>
+              </div>
+            </div>
+            <div>
+              <p>穴検査</p>
               <div
                 onClick={() => this.setState({
                   modal: true,
@@ -217,6 +228,18 @@ class Report extends Component {
                 <p>アウター</p>
               </div>
             </div>
+            <div>
+              <p>オフライン検査</p>
+              <div
+                className="disable"
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/pdf/report/15/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>インナー</p>
+              </div>
+            </div>
           </div>
         }{
           this.state.process == 'jointing' &&
@@ -227,6 +250,17 @@ class Report extends Component {
                 onClick={() => this.setState({
                   modal: true,
                   path: `/manager/pdf/report/9/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>インナーASSY</p>
+              </div>
+            </div>
+            <div>
+              <p>簡易CF</p>
+              <div
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/pdf/report/16/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -268,6 +302,7 @@ class Report extends Component {
             <div>
               <p>特検</p>
               <div
+                className="disable"
                 onClick={() => this.setState({
                   modal: true,
                   path: `/manager/pdf/report/13/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
