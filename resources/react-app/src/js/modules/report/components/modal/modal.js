@@ -9,8 +9,8 @@ class Modal extends Component {
       <div className="modal-pdf">
         <object
           data={path}
-          width="900"
-          height="650"
+          width="90%"
+          height="100%"
           hspace="0"
           vspace="0"
           internalinstanceid="15"

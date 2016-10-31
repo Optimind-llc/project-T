@@ -168,24 +168,6 @@ class InspectionController extends Controller
             throw new StoreResourceFailedException('Validation error', $validator->errors());
         }
 
-        // $except = InspectionGroup::whereIn('id', $request->id)
-        //     ->with(['inspection' => function($q) {
-        //         $q->select(['id', 'en']);
-        //     }])
-        //     ->get(['id', 'inspection_id'])
-        //     ->map(function($ig) {
-        //         return [
-        //             'id' => $ig->id,
-        //             'en' => $ig->inspection->en
-        //         ];
-        //     });
-
-        // switch ($inspectionGroupId) {
-        //     case 11: $expect = ['shisui' => 10]; break;
-        //     case 14: $expect = ['shisui' => 10, 'shiage' => 11, 'kensa' => 12, 'tokken' => 13]; break;
-        //     default: $expect = []; break;
-        // }
-
         $heritage = [];
 
         $part = Part::where('panel_id', $request->panelId)

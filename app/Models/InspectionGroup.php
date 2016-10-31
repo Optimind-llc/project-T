@@ -110,7 +110,7 @@ class InspectionGroup extends Model
         $modifications = $group->inspection->modifications->map(function ($m) {
             return [
                 'id' => $m->id,
-                'label' => $m->label,
+                'label' => intval($m->label),
                 'message' => $m->name,
                 'type' => $m->pivot->type,
                 'sort' => $m->pivot->sort
