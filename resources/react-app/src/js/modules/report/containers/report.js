@@ -300,18 +300,6 @@ class Report extends Component {
               </div>
             </div>
             <div>
-              <p>特検</p>
-              <div
-                className="disable"
-                onClick={() => this.setState({
-                  modal: true,
-                  path: `/manager/pdf/report/13/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
-                })}
-              >
-                <p>インナーASSY</p>
-              </div>
-            </div>
-            <div>
               <p>手直し</p>
               <div
                 onClick={() => this.setState({

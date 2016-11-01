@@ -28,6 +28,7 @@ class Dashboard extends Component {
     this.state = {
       vehicle: {value: '680A', label: '680A'},
       partTId: null,
+      processId: null,
       itionGId: null,
       itorG: null,
       narrowedBy: 'realtime',
@@ -101,52 +102,78 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { vehicle, partTId, itionGId, itorG, narrowedBy, startDate, endDate, panelId, mapping, defaultActive } = this.state;
+    const { vehicle, partTId, processId, itionGId, itorG, narrowedBy, startDate, endDate, panelId, mapping, defaultActive } = this.state;
     const { VehicleData, ItorGData, PageData, actions } = this.props;
     const format = 'YYYY-MM-DD';
-    const processes = {
+
+    const processes2 = {
       1: [
         {label: '成形工程ライン１', value: 1},
         {label: '成形工程ライン２', value: 2, disabled: true},
-        {label: '成形工程：精度検査', value: 3},
-        {label: '穴あけ工程：外観検査', value: 8},
-        {label: '穴あけ工程：穴検査', value: 8},
-        {label: '穴あけ工程：オフライン', value: 8}
+        {label: '穴あけ工程', value: 3}
       ],
       2: [
-        {label: '成形工程ライン１', value: 5},
-        {label: '成形工程ライン２', value: 6, disabled: true},
-        {label: '穴あけ工程', value: 8}
+        {label: '成形工程ライン１', value: 4},
+        {label: '成形工程ライン２', value: 5, disabled: true},
+        {label: '穴あけ工程', value: 6}
       ],
       3: [
-        {label: '成形工程ライン１', value: 5},
-        {label: '成形工程ライン２', value: 6, disabled: true},
-        {label: '穴あけ工程', value: 8}
+        {label: '成形工程ライン１', value: 4},
+        {label: '成形工程ライン２', value: 5, disabled: true},
+        {label: '穴あけ工程', value: 6}
       ],
       4: [
-        {label: '成形工程ライン１', value: 5},
-        {label: '成形工程ライン２', value: 6, disabled: true},
-        {label: '穴あけ工程', value: 8}
+        {label: '成形工程ライン１', value: 4},
+        {label: '成形工程ライン２', value: 5, disabled: true},
+        {label: '穴あけ工程', value: 6}
       ],
       5: [
-        {label: '成形工程ライン１', value: 5},
-        {label: '成形工程ライン２', value: 6, disabled: true},
-        {label: '穴あけ工程', value: 8}
+        {label: '成形工程ライン１', value: 4},
+        {label: '成形工程ライン２', value: 5, disabled: true},
+        {label: '穴あけ工程', value: 6}
       ],
       6: [
-        {label: '成形工程ライン１', value: 5},
-        {label: '成形工程ライン２', value: 6, disabled: true},
-        {label: '穴あけ工程', value: 8}
+        {label: '成形工程ライン１', value: 4},
+        {label: '成形工程ライン２', value: 5, disabled: true},
+        {label: '穴あけ工程', value: 6}
       ],
       7: [
-        {label: '接着工程：精度検査', value: 9},
-        {label: '接着工程：簡易CF', value: 16},
-        {label: '接着工程：止水', value: 10},
-        {label: '接着工程：仕上', value: 11},
-        {label: '接着工程：検査', value: 12},
-        {label: '接着工程：特検', value: 13},
-        {label: '接着工程：手直し', value: 14},
+        {label: '接着工程', value: 7}
+      ]
+    };
+
+    const inspections = {
+      1: [
+        {label: '検査', value: 1},
+        {label: '精度検査', value: 2}
       ],
+      2: [
+        {label: '検査', value: 3, disabled: true},
+        {label: '精度検査', value: 0, disabled: true}
+      ],
+      3: [
+        {label: '外観検査', value: 15},
+        {label: '穴検査', value: 4},
+      ],
+      4: [
+        {label: '検査', value: 5},
+        {label: '精度検査', value: 7, disabled: true}
+      ],
+      5: [
+        {label: '検査', value: 6, disabled: true},
+        {label: '精度検査', value: 0, disabled: true}
+      ],
+      6: [
+        {label: '穴検査', value: 8},
+      ],
+      7: [
+        {label: '精度検査', value: 9},
+        {label: '簡易CF', value: 16},
+        {label: '止水', value: 10},
+        {label: '仕上', value: 11},
+        {label: '検査', value: 12},
+        {label: '手直し', value: 14}
+      ]
     };
 
     return (
@@ -188,7 +215,7 @@ class Dashboard extends Component {
                     {label: 'サイドアッパーLH', value: 4},
                     {label: 'サイドロアRH', value: 5},
                     {label: 'サイドロアLH', value: 6},
-                    {label: 'バックドアインナASSY', value: 7}
+                    {label: 'バックドアインナーASSY', value: 7}
                   ]}
                   onChange={value => this.setState({
                     partTId: value,
@@ -205,8 +232,22 @@ class Dashboard extends Component {
                   disabled={partTId == null}
                   clearable={false}
                   Searchable={true}
+                  value={processId}
+                  options={partTId ? processes2[partTId.value] : null}
+                  onChange={value => this.setState({processId: value})}
+                />
+              </div>
+              <div>
+                <p>検査*</p>
+                <Select
+                  name="検査"
+                  styles={{height: 36}}
+                  placeholder={processId == null ? '先に工程を選択' :'検査を選択'}
+                  disabled={processId == null}
+                  clearable={false}
+                  Searchable={true}
                   value={itionGId}
-                  options={partTId ? processes[partTId.value] : null}
+                  options={processId ? inspections[processId.value] : null}
                   onChange={value => this.setState({itionGId: value})}
                 />
               </div>
@@ -215,14 +256,15 @@ class Dashboard extends Component {
                 <Select
                   name="直"
                   styles={{height: 36}}
-                  placeholder="選択してください"
+                  placeholder="直を選択"
                   clearable={false}
                   Searchable={true}
                   value={itorG}
                   options={[
                     {label: '黄直', value: 'Y'},
                     {label: '白直', value: 'W'},
-                    {label: '両直', value: 'both'}
+                    {label: '黒直', value: 'B', disabled: true},
+                    {label: '全直', value: 'both'}
                   ]}
                   onChange={value => this.setState({itorG: value})}
                 />

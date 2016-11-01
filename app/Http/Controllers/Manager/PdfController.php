@@ -184,7 +184,7 @@ class PdfController extends Controller
                     foreach ($row as $c => $val) {
                         if ($c < 6) {
                             $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                        } elseif ($c == 21) {
+                        } elseif ($c == 22) {
                             $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                         }
                     }
@@ -206,7 +206,7 @@ class PdfController extends Controller
                         foreach ($row as $c => $val) {
                             if ($c < 6) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                            } elseif ($c == 21) {
+                            } elseif ($c == 22) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                             }
                         }
@@ -218,7 +218,7 @@ class PdfController extends Controller
         }
 
         /*
-         * Render A4 PDF
+         * Render A3 PDF
          */
         array_push($body, $row_sum);
 
@@ -226,7 +226,7 @@ class PdfController extends Controller
         $y0 = 10;
         $y1 = 12;
         $d = [12, 14, 30, 20, 22, 20];
-        $fd = 17;
+        $fd = 16;
         $th = 6;
 
         foreach (array_chunk($body, 40) as $page => $value) {
@@ -568,7 +568,7 @@ class PdfController extends Controller
             // Render page header
             $tcpdf->SetFont('kozgopromedium', '', 12);
             $tcpdf->Text($x0, $y0, '工程：穴あけ工程');
-            $tcpdf->Text(60, $y0, 'インナー外観検査結果');
+            $tcpdf->Text(50, $y0, 'インナー外観検査結果');
             $tcpdf->Text(100, $y0, strtr($date,'-','/'));
             $tcpdf->Text(134, $y0, $itorG_name);
             $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -600,7 +600,7 @@ class PdfController extends Controller
                     foreach ($row as $c => $val) {
                         if ($c < 6) {
                             $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                        } elseif ($c == 21) {
+                        } elseif ($c == 15) {
                             $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                         }
                     }
@@ -622,7 +622,7 @@ class PdfController extends Controller
                         foreach ($row as $c => $val) {
                             if ($c < 6) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                            } elseif ($c == 21) {
+                            } elseif ($c == 15) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                             }
                         }
@@ -824,7 +824,7 @@ class PdfController extends Controller
         $x0 = 10;
         $y0 = 10;
         $y1 = 12;
-        $d = [6, 7, 22, 11, 12, 10];
+        $d = [6, 7, 20, 11, 12, 10];
         $fd = 3.6;
         $th = 6;
 
@@ -999,7 +999,7 @@ class PdfController extends Controller
             $tcpdf->SetFont('kozgopromedium', '', 8);
             $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H:i:s'));
 
-            if ($page ==0 ) {
+            if ($page == 0) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
                 $tcpdf->Rect($x0+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
                 $tcpdf->Text($x0+2, $y0+$y1, '○');
@@ -1025,7 +1025,7 @@ class PdfController extends Controller
                     foreach ($row as $c => $val) {
                         if ($c < 6) {
                             $tcpdf->Text($x0+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                        } elseif ($c == 21) {
+                        } elseif ($c == 22) {
                             $tcpdf->Text($x0+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                         }
                     }
@@ -1047,7 +1047,7 @@ class PdfController extends Controller
                         foreach ($row as $c => $val) {
                             if ($c < 6) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,$c)), $y0+$y2+($r+1)*$th, $val);
-                            } elseif ($c == 21) {
+                            } elseif ($c == 22) {
                                 $tcpdf->Text($x0+$column*$x1+array_sum($d), $y0+$y2+($r+1)*$th, $val);
                             }
                         }
@@ -1064,7 +1064,7 @@ class PdfController extends Controller
         $y0 = 10;
         $y1 = 12;
         $d = [12, 14, 30, 20, 22, 20];
-        $fd = 17;
+        $fd = 16;
         $th = 6;
 
         foreach (array_chunk($body, 40) as $page => $value) {
@@ -1105,16 +1105,6 @@ class PdfController extends Controller
 
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
-
-        // report_680A_20161014_m001_outer_w.pdf
-        // report_680A_20161014_m001_inline_w.pdf
-        // report_680A_20161014_h_inner_w.pdf
-        
-        // report_680A_20161014_j_tome_w.pdf
-        // report_680A_20161014_j_siage_w.pdf
-        // report_680A_20161014_j_kensa_w.pdf
-        // report_680A_20161014_j_tokken_w.pdf
-        // report_680A_20161014_j_tenaosi_w.pdf
 
         if ($line == '１') {
             $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m001_outer_w.pdf';

@@ -414,17 +414,40 @@ class ShowController extends Controller
             return [
                 'id' => $f->id,
                 'label' => $f->label,
-                'name' => $f->name
+                'name' => $f->name,
+                'type' => $f->pivot->type,
+                'sort' => $f->pivot->sort
             ];
-        });
+        })->toArray();
 
-        $commentTypes = InspectionGroup::find($itionGId)->inspection->modifications->map(function($m) {
+        foreach( $failureTypes as $key => $row ) {
+            // $f_type_array[$key] = $row['type'];
+            $f_label_array[$key] = $row['label'];
+            // $f_sort_array[$key] = $row['sort'];
+        }
+
+        // array_multisort($f_type_array, $f_sort_array, $f_label_array, $failureTypes);
+        array_multisort($f_label_array, $failureTypes);
+
+        $modificationTypes = InspectionGroup::find($itionGId)->inspection->modifications->map(function($m) {
             return [
                 'id' => $m->id,
-                'label' => $m->label,
-                'name' => $m->name
+                'label' => intval($m->label),
+                'name' => $m->name,
+                'type' => $m->pivot->type,
+                'sort' => $m->pivot->sort
             ];
-        });
+        })->toArray();
+
+        foreach( $modificationTypes as $key => $row ) {
+            $m_type_array[$key] = $row['type'];
+            $m_label_array[$key] = $row['label'];
+            $m_sort_array[$key] = $row['sort'];
+        }
+
+        if (count($modificationTypes) !== 0 ) {
+            array_multisort($m_type_array, $m_sort_array, $m_label_array, $modificationTypes);
+        }
 
         $page_ids = null;
         if (isset($request->panelId)) {
@@ -493,7 +516,7 @@ class ShowController extends Controller
                 'data' => [
                     'pageTypes' => $pageTypes,
                     'failureTypes' => $failureTypes,
-                    'commentTypes' => $commentTypes,
+                    'commentTypes' => $modificationTypes,
                     'holePoints' => $holePoints,
                     'path' => []
                 ]
@@ -507,7 +530,7 @@ class ShowController extends Controller
         $data['path'] = '/img/figures/'.$page_type->figure->path;
         $data['pageNum'] = $page_type->number;
         $data['failureTypes'] = $failureTypes;
-        $data['commentTypes'] = $commentTypes;
+        $data['commentTypes'] = $modificationTypes;
         $data['holePoints'] = $holePoints;
 
         return [

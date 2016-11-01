@@ -70,89 +70,6 @@ class InspectionController extends Controller
         ];
     }
 
-    // public function history($inspectionGroupId, $partTypeId, $panelId)
-    // {
-    //     switch ($inspectionGroupId) {
-    //         case 11: $expect = ['shisui' => 10]; break;
-    //         case 14: $expect = ['shisui' => 10, 'shiage' => 11, 'kensa' => 12, 'tokken' => 13]; break;
-    //         default: $expect = []; break;
-    //     }
-
-    //     $heritage = [];
-
-    //     $part = Part::where('panel_id', $panelId)
-    //         ->where('part_type_id', $partTypeId)
-    //         ->first();
-
-    //     if (!$part instanceof Part) {
-    //         $inspected_array = [];
-    //         $history = [];
-    //     }
-    //     else {
-    //         if ($part->pages->count() == 0) {
-    //             $inspected_array = [];
-    //             $history = [];
-    //         }
-    //         else {
-    //             $inspected = $part->pages()
-    //                 ->join('inspection_families as if', 'pages.family_id', '=', 'if.id')
-    //                 ->select('pages.*', 'if.inspection_group_id')
-    //                 ->whereIn('if.inspection_group_id', array_values($expect))
-    //                 ->with([
-    //                     'failurePositions' => function($q) {
-    //                         $q->select(['id', 'point', 'page_id', 'failure_id']);
-    //                     },
-    //                     'failurePositions.failure' => function($q) {
-    //                         $q->select(['id', 'label']);
-    //                     },
-    //                     'failurePositions.modifications.modification' => function($q) {
-    //                         $q->select(['id', 'name', 'label']);
-    //                     }
-    //                 ])
-    //                 ->get();
-
-    //             $inspected_array = $inspected->map(function($ig) {
-    //                     return $ig->inspection_group_id;
-    //                 })
-    //                 ->toArray();
-
-    //             $history = $inspected->map(function($page) {
-    //                 return $page->failurePositions->map(function($fp) {
-    //                     $cLabel = "";
-    //                     if ($fp->modifications->count() !== 0) {
-    //                         $cLabel = $fp->modifications->first()->modification->label;
-    //                     }
-
-    //                     return [
-    //                         'failurePositionId' => $fp->id,
-    //                         'label' => $fp->failure->label,
-    //                         'point' => $fp->point,
-    //                         'cLabel' => $cLabel
-    //                     ];
-    //                 });
-    //             })
-    //             ->reduce(function ($carry, $failures) {
-    //                 return array_merge($carry, $failures->toArray());
-    //             }, []);
-    //         }
-    //     }
-
-    //     foreach ($expect as $name => $id) {
-    //         $heritage[$name] = in_array($id, $inspected_array) ? 1 : 0;
-    //     }
-
-    //     return [
-    //         'heritage' => $heritage,
-    //         'group' => [
-    //             'pages' => [
-    //                 [
-    //                     'history' => $history
-    //                 ]
-    //             ]
-    //         ]
-    //     ];
-    // }
-
     public function history(Request $request)
     {
         $validator = app('validator')->make(
@@ -421,7 +338,7 @@ class InspectionController extends Controller
             }
         }
 
-        if ($groupId == 1 || $groupId == 2 || $groupId == 10 || $groupId == 12 || $groupId == 13) {
+        if ($groupId == 1 || $groupId == 2) {
             $itorG = $family['inspectorGroup'];
             $itor = explode(',',$family['inspector'])[1];
             // $status = $family['status'];
@@ -435,26 +352,33 @@ class InspectionController extends Controller
             $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $c_failures);
         }
 
-        if ($groupId == 11 || $groupId == 14) {
+        if ($groupId == 16 || $groupId == 10 || $groupId == 11 || $groupId == 12 || $groupId == 13 || $groupId == 14) {
             $itorG = $family['inspectorGroup'];
             $itor = explode(',',$family['inspector'])[1];
             // $status = $family['status'];
             $status = $family['status'] == 1 ? 0 : 1;
             $panel_id = $family['pages'][0]['parts'][0]['panelId'];
             $failures = $family['pages'][0]['failures'];
-            $modifications = $family['pages'][0]['comments'];
+
+            $modifications = [];
+            if (array_key_exists('comments', $family['pages'][0])) {
+                $modifications = $family['pages'][0]['comments'];
+            }
 
             $c_failures = collect($failures)->groupBy('id')->map(function($f){
                 return $f->count();
             })->toArray();
 
-            $c_modifications = collect(array_merge($failures, $modifications))
-                ->groupBy('commentId')
-                ->map(function($m){
-                    return $m->count();
-                })
-                ->toArray();
-
+            $c_modifications = null;
+            if (count($modifications) !== 0) {
+                $c_modifications = collect(array_merge($failures, $modifications))
+                    ->groupBy('commentId')
+                    ->map(function($m){
+                        return $m->count();
+                    })
+                    ->toArray();
+            }
+            
             $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $c_failures, $c_modifications);
         }
 
@@ -502,6 +426,11 @@ class InspectionController extends Controller
                 break;
             case 14:
                 $export = ['67007','47120','A',substr($pId, 1,7),'接着','手直し'];
+                $file_name = 'J_tenaoshi_67007_'.$now->format('Ymd_His');
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                break;
+            case 16:
+                $export = ['67007','47120','A',substr($pId, 1,7),'接着','簡易CF'];
                 $file_name = 'J_tenaoshi_67007_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
@@ -565,7 +494,7 @@ class InspectionController extends Controller
 
             foreach ($modifications as $m) {
                 if (array_key_exists($m['id'], $c_modifications)) {
-                    $modi_sum = $c_modifications[$m['id']];
+                    $modi_sum = $c_modifications[$m['id']];                 
                 }
                 else {
                     $modi_sum = '';
