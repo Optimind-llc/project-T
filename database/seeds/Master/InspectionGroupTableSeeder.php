@@ -127,7 +127,7 @@ class InspectionGroupTableSeeder extends Seeder
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],
-            //(追加) 穴あけ：外観検査：インナ
+            //(追加) 穴あけ：外観検査：インナー
             [
                 'division_en'   => 'inner',
                 'vehicle_num'   => '680A',
@@ -136,12 +136,30 @@ class InspectionGroupTableSeeder extends Seeder
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],
-            //(追加) 接着：簡易CF：インナASSY
+            //(追加) 接着：簡易CF：インナーASSY
             [
                 'division_en'   => 'inner_assy',
                 'vehicle_num'   => '680A',
                 'line'          => null,
                 'inspection_id' => 11,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],
+            //(追加) 穴あけ：オフライン手直し：インナー
+            [
+                'division_en'   => 'inner',
+                'vehicle_num'   => '680A',
+                'line'          => null,
+                'inspection_id' => 12,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],
+            //(追加) 穴あけ：オフライン手直し：アウター
+            [
+                'division_en'   => 'inner',
+                'vehicle_num'   => '680A',
+                'line'          => null,
+                'inspection_id' => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],

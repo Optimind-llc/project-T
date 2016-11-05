@@ -218,6 +218,60 @@ class PageTypeTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],
+            //穴あけ：オフライン手直し：インナ：page1
+            [
+                'number'     => 1,
+                'group_id'   => 17,
+                'figure_id'  => 4,
+                'pdf_id'     => 3,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //穴あけ：オフライン手直し：インナ：page2
+            [
+                'number'     => 2,
+                'group_id'   => 17,
+                'figure_id'  => 5,
+                'pdf_id'     => 4,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //穴あけ：オフライン手直し：インナ：page3
+            [
+                'number'     => 3,
+                'group_id'   => 17,
+                'figure_id'  => 6,
+                'pdf_id'     => 5,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //穴あけ：オフライン手直し：インナ：page4
+            [
+                'number'     => 4,
+                'group_id'   => 17,
+                'figure_id'  => 7,
+                'pdf_id'     => 6,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //穴あけ：穴検査：アウター：page2(サイドとロアを分離)
+            [
+                'number'     => 2,
+                'group_id'   => 8,
+                'figure_id'  => 13,
+                'pdf_id'     => 12,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //穴あけ：穴検査：アウター：page3(サイドとロアを分離)
+            [
+                'number'     => 3,
+                'group_id'   => 8,
+                'figure_id'  => 14,
+                'pdf_id'     => 12,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
         ];
 
         DB::table($table_name)->insert($data);

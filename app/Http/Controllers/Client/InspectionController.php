@@ -114,7 +114,8 @@ class InspectionController extends Controller
                         },
                         'failurePositions.modifications.modification' => function($q) {
                             $q->select(['id', 'name', 'label']);
-                        }
+                        },
+                        'holes'
                     ])
                     ->get();
 

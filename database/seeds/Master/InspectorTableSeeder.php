@@ -350,6 +350,12 @@ class InspectorTableSeeder extends Seeder
                 'group_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => '高田 一輝',
+                'code'       => '00054',
+                'group_code' => 'W',
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ];
 
@@ -616,20 +622,6 @@ class InspectorTableSeeder extends Seeder
                 'inspection_g_id' => 6,
                 'inspector_id'    => 14,
                 'sort'            => 7
-            ],
-
-            //穴あけ_外観検査_インナ_白
-            [
-                'inspection_g_id' => 15,
-                'inspector_id'    => 1,
-                'sort'            => 1
-            ],
-
-            //穴あけ_外観検査_インナ_黄色
-            [
-                'inspection_g_id' => 15,
-                'inspector_id'    => 8,
-                'sort'            => 1
             ],
 
             //穴あけ_検査_インナ①_白
@@ -913,19 +905,6 @@ class InspectorTableSeeder extends Seeder
                 'sort'            => 11
             ],
 
-            //接着_簡易CF_インナASSY_白
-            [
-                'inspection_g_id' => 16,
-                'inspector_id'    => 1,
-                'sort'            => 1
-            ],
-            //接着_簡易CF_インナASSY_黄
-            [
-                'inspection_g_id' => 16,
-                'inspector_id'    => 8,
-                'sort'            => 1
-            ],
-
             //接着_止水_インナASSY_白
             [
                 'inspection_g_id' => 10,
@@ -1085,6 +1064,127 @@ class InspectorTableSeeder extends Seeder
                 'inspection_g_id' => 14,
                 'inspector_id'    => 44,
                 'sort'            => 3
+            ],
+            //接着_簡易CF_インナASSY_白
+            [
+                'inspection_g_id' => 16,
+                'inspector_id'    => 54,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 16,
+                'inspector_id'    => 39,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 16,
+                'inspector_id'    => 40,
+                'sort'            => 3
+            ],
+            //接着_簡易CF_インナASSY_黄色
+            [
+                'inspection_g_id' => 16,
+                'inspector_id'    => 12,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 16,
+                'inspector_id'    => 45,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 16,
+                'inspector_id'    => 44,
+                'sort'            => 3
+            ],
+
+            //穴あけ_外観検査_インナ_白
+            [
+                'inspection_g_id' => 15,
+                'inspector_id'    => 15,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 16,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 17,
+                'sort'            => 3
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 18,
+                'sort'            => 4
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 19,
+                'sort'            => 5
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 20,
+                'sort'            => 6
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 21,
+                'sort'            => 7
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 22,
+                'sort'            => 8
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 23,
+                'sort'            => 9
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 24,
+                'sort'            => 10
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 25,
+                'sort'            => 11
+            ],
+            //穴あけ_外観検査_インナ_黄
+            [
+                'inspection_g_id' => 15,
+                'inspector_id'    => 26,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 27,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 28,
+                'sort'            => 3
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 29,
+                'sort'            => 4
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 30,
+                'sort'            => 5
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 31,
+                'sort'            => 6
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 32,
+                'sort'            => 7
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 33,
+                'sort'            => 8
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 34,
+                'sort'            => 9
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 35,
+                'sort'            => 10
+            ],[
+                'inspection_g_id' => 15,
+                'inspector_id'    => 36,
+                'sort'            => 11
             ],
         ];
 

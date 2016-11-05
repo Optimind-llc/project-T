@@ -60,17 +60,17 @@ class CommentTableSeeder extends Seeder
                 'updated_at' => $now
             ],[
                 'name'       => '手直し不要',
-                'label'      => 7,
+                'label'      => 6,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'その他',
-                'label'      => 8,
+                'label'      => 99,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '手直不可',
-                'label'      => 9,
+                'label'      => 7,
                 'created_at' => $now,
                 'updated_at' => $now
             ]

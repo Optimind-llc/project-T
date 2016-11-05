@@ -61,7 +61,7 @@ class FigureTableSeeder extends Seeder
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
-                'path'         => 'holing_small_2.png',
+                'path'         => 'holing_small_2_old.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],[
@@ -76,8 +76,15 @@ class FigureTableSeeder extends Seeder
                 'path'         => 'jointing_assy_inline.png',
                 'created_at'   => $now,
                 'updated_at'   => $now
+            ],[
+                'path'         => 'holing_small_2.png',
+                'created_at'   => $now,
+                'updated_at'   => $now
+            ],[
+                'path'         => 'holing_small_3.png',
+                'created_at'   => $now,
+                'updated_at'   => $now
             ],
-
             /*
              * For each parts
              */
@@ -149,7 +156,7 @@ class FigureTableSeeder extends Seeder
                 'created_at'   => $now,
                 'updated_at'   => $now
             ],
-            //ASSY画像
+            //インナーASSY画像
             [
                 'path'         => 'jointing_assy.png',
                 'created_at'   => $now,

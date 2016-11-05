@@ -158,7 +158,7 @@ class PdfController extends Controller
             $tcpdf->SetFont('kozgopromedium', '', 8);
             $tcpdf->Text(162, $y0+2, '印刷日時　'.$now->format('Y/m/d H:i:s'));
 
-            if ($page ==0 ) {
+            if ($page == 0) {
                 $tcpdf->Rect($x0, $y0+$y1-0.3, 7, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
                 $tcpdf->Rect($x0+7, $y0+$y1-0.3, 12, 4, 'DF', ['LTRB' => ['color' => [0, 0, 0]]], [255,255,255]);
                 $tcpdf->Text($x0+2, $y0+$y1, '○');
@@ -1033,7 +1033,7 @@ class PdfController extends Controller
             } else {
                 $tcpdf->Line(106, 28, 106, 281);
 
-                foreach (array_chunk($body, 50) as $column => $value) {
+                foreach (array_chunk($value, 50) as $column => $value) {
                     $tcpdf->SetFont('kozgopromedium', '', 6);
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');

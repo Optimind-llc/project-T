@@ -242,6 +242,30 @@ class PartTypeTableSeeder extends Seeder
                 'area'         => '1250/0/1740/820',
                 'figure_id'    => 28
             ],
+            //穴あけ：検査：アウター：page2 (サイドとロア分離後)
+            [
+                'page_type_id' => 27,
+                'part_type_id' => 4,
+                'area'         => '0/0/870/900',
+                'figure_id'    => 25
+            ],[
+                'page_type_id' => 27,
+                'part_type_id' => 3,
+                'area'         => '870/0/1740/900',
+                'figure_id'    => 26
+            ],
+            //穴あけ：検査：アウター：page3 (サイドとロア分離後)
+            [
+                'page_type_id' => 28,
+                'part_type_id' => 6,
+                'area'         => '0/0/870/900',
+                'figure_id'    => 27
+            ],[
+                'page_type_id' => 28,
+                'part_type_id' => 5,
+                'area'         => '870/0/1740/900',
+                'figure_id'    => 28
+            ],
             //接着：インライン検査：インナASSY
             [
                 'page_type_id' => 15,
@@ -288,6 +312,29 @@ class PartTypeTableSeeder extends Seeder
                 'area'         => '0/0/1740/1030',
                 'figure_id'    => 29
             ],
+            //穴あけ：オフライン手直し検査：インナ page1~4
+            [
+                'page_type_id' => 23,
+                'part_type_id' => 1,
+                'area'         => '0/0/1740/1030',
+                'figure_id'    => 15
+            ],[
+                'page_type_id' => 24,
+                'part_type_id' => 1,
+                'area'         => '0/0/1740/1030',
+                'figure_id'    => 16
+            ],[
+                'page_type_id' => 25,
+                'part_type_id' => 1,
+                'area'         => '0/0/1740/1030',
+                'figure_id'    => 17
+            ],[
+                'page_type_id' => 26,
+                'part_type_id' => 1,
+                'area'         => '0/0/1740/1030',
+                'figure_id'    => 18
+            ],
+
         ];
 
         DB::table($table_name)->insert($data);

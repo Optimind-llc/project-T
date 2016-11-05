@@ -1327,9 +1327,187 @@ class HoleTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],
+            //穴あけ：小部品：page2 (サイドとロア分離後)
+            [
+                'figure_id'  => 13,
+                'part_type_id' => 4,
+                'point'      => '418,227',
+                'label'      => 2,
+                'direction'  => 'left',
+                'color'      => 'FFFFFF',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 13,
+                'part_type_id' => 4,
+                'point'      => '394,638',
+                'label'      => 6,
+                'direction'  => 'left',
+                'color'      => 'FFFFFF',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 13,
+                'part_type_id' => 3,
+                'point'      => '1324,224',
+                'label'      => 2,
+                'direction'  => 'right',
+                'color'      => 'FFFFFF',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 13,
+                'part_type_id' => 3,
+                'point'      => '1347,638',
+                'label'      => 6,
+                'direction'  => 'right',
+                'color'      => 'FFFFFF',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 13,
+                'part_type_id' => 4,
+                'point'      => '465,360',
+                'label'      => 8,
+                'direction'  => 'right',
+                'color'      => 'F8E71C',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 13,
+                'part_type_id' => 3,
+                'point'      => '1275,360',
+                'label'      => 8,
+                'direction'  => 'right',
+                'color'      => 'F8E71C',
+                'border'     => 'solid',
+                'shape'      => 'square',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //穴あけ：小部品：page3 (サイドとロア分離後)
+            [
+                'figure_id'  => 14,
+                'part_type_id' => 6,
+                'point'      => '356,372',
+                'label'      => 1,
+                'direction'  => 'left',
+                'color'      => 'F8E71C',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 14,
+                'part_type_id' => 6,
+                'point'      => '367,580',
+                'label'      => 2,
+                'direction'  => 'left',
+                'color'      => 'F8E71C',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 14,
+                'part_type_id' => 6,
+                'point'      => '430,628',
+                'label'      => 3,
+                'direction'  => 'bottom',
+                'color'      => 'F8E71C',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 14,
+                'part_type_id' => 6,
+                'point'      => '527,596',
+                'label'      => 4,
+                'direction'  => 'right',
+                'color'      => 'F8E71C',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 14,
+                'part_type_id' => 5,
+                'point'      => '1373,372',
+                'label'      => 1,
+                'direction'  => 'right',
+                'color'      => 'F8E71C',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 14,
+                'part_type_id' => 5,
+                'point'      => '1363,580',
+                'label'      => 2,
+                'direction'  => 'right',
+                'color'      => 'F8E71C',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 14,
+                'part_type_id' => 5,
+                'point'      => '1300,627',
+                'label'      => 3,
+                'direction'  => 'bottom',
+                'color'      => 'F8E71C',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 14,
+                'part_type_id' => 5,
+                'point'      => '1202,596',
+                'label'      => 4,
+                'direction'  => 'left',
+                'color'      => 'F8E71C',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 14,
+                'part_type_id' => 6,
+                'point'      => '381,730',
+                'label'      => 5,
+                'direction'  => 'left',
+                'color'      => 'FFFFFF',
+                'border'     => 'dotted',
+                'shape'      => 'square',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'figure_id'  => 14,
+                'part_type_id' => 5,
+                'point'      => '1347,725',
+                'label'      => 5,
+                'direction'  => 'bottom',
+                'color'      => '000000',
+                'border'     => 'solid',
+                'shape'      => 'circle',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
         ];
-
-
 
         DB::table($table_name)->insert($data);
 

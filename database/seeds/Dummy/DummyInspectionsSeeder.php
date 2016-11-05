@@ -80,7 +80,11 @@ class DummyInspectionsSeeder extends Seeder
             'inspectorGroup' => $tyoku,
             'status' => 1,
             'inspector' => $tyoku.','.$group['inspectorGroups']['Y'][0]['name'],
-            'pages' => $group['pages']->map($createPage)->toArray(),
+            'pages' => $group['pages']->filter(function($p){
+                    return $p['id'] != 14;
+                })
+                ->map($createPage)
+                ->toArray(),
             'photos' => [
                 'example1.jpg',
                 'example2.jpg',
@@ -97,7 +101,7 @@ class DummyInspectionsSeeder extends Seeder
 
         //成型：検査：ライン１：インナー
         $group = $controller->inspection(1);
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 20; $id++) {
             $data = $this->createData($group['group'], $id ,[]);
             // var_dump(json_encode($data));
             $request->setFamily($data);
@@ -107,7 +111,7 @@ class DummyInspectionsSeeder extends Seeder
         //成型：検査：ライン２：インナー
         $group = $controller->inspection(2);
 
-        for ($id = 11; $id <= 20; $id++) {
+        for ($id = 21; $id <= 40; $id++) {
             $data = $this->createData($group['group'], $id ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -116,7 +120,7 @@ class DummyInspectionsSeeder extends Seeder
         //成型：検査：ライン１：アウター
         $group = $controller->inspection(5);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 100; $id++) {
             $data = $this->createData($group['group'], $id ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -125,7 +129,7 @@ class DummyInspectionsSeeder extends Seeder
         //成型：検査：ライン２：アウター
         $group = $controller->inspection(6);
 
-        for ($id = 11; $id <= 20; $id++) {
+        for ($id = 101; $id <= 200; $id++) {
             $data = $this->createData($group['group'], $id ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        

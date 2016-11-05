@@ -91,7 +91,9 @@ class InspectionTableSeeder extends Seeder
                 'process_id' => 'jointing',
                 'created_at' => $now,
                 'updated_at' => $now
-            ],[
+            ],
+            //(追加)
+            [
                 'name'       => '外観検査',
                 'en'         => 'gaikan',
                 'sort'       => 1,
@@ -103,6 +105,13 @@ class InspectionTableSeeder extends Seeder
                 'en'         => 'kanicf',
                 'sort'       => 2,
                 'process_id' => 'jointing',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => 'オフライン手直し',
+                'en'         => 'offline',
+                'sort'       => 3,
+                'process_id' => 'holing',
                 'created_at' => $now,
                 'updated_at' => $now
             ]
