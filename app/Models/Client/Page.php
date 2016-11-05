@@ -62,7 +62,7 @@ class Page extends Model
             'page_id',
             'hole_id'
         )
-        ->withPivot('status');
+        ->withPivot('status', 'id');
     }
 
     public function comments()

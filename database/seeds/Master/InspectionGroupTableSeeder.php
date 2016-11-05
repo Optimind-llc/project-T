@@ -156,7 +156,7 @@ class InspectionGroupTableSeeder extends Seeder
             ],
             //(追加) 穴あけ：オフライン手直し：アウター
             [
-                'division_en'   => 'inner',
+                'division_en'   => 'small',
                 'vehicle_num'   => '680A',
                 'line'          => null,
                 'inspection_id' => 12,

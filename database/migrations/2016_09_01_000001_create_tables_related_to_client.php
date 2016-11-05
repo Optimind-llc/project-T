@@ -231,10 +231,16 @@ class CreateTablesRelatedToClient extends Migration
         });
 
         Schema::create('hole_page', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('hole_id')->unsigned();
             $table->integer('page_id')->unsigned();
             $table->tinyInteger('status')->unsigned()->default(1);
             $table->timestamps();
+
+            /**
+             * Add Primary
+             */
+            $table->unique(['hole_id', 'page_id']);
 
             /**
              * Add Foreign
@@ -250,11 +256,6 @@ class CreateTablesRelatedToClient extends Migration
                 ->on('pages')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
-
-            /**
-             * Add Primary
-             */
-            $table->primary(['hole_id', 'page_id']);
         });
     }
 

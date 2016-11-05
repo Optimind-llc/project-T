@@ -177,8 +177,11 @@ class DummyInspectionsSeeder extends Seeder
 
         for ($id = 1; $id <= 10; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16]);
-            $history = $controller->history($request)['group']['pages'][0]['history'];
-
+            $history = [];
+            foreach ($controller->history($request)['group']['pages'] as $key => $page) {
+                $history = array_merge($history, $page['history']->toArray());
+            }
+            
             $data = $this->createData($group['group'], $id, $history);
 
             $request->setFamily($data);
@@ -190,7 +193,10 @@ class DummyInspectionsSeeder extends Seeder
 
         for ($id = 1; $id <= 10; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10]);
-            $history = $controller->history($request)['group']['pages'][0]['history'];
+            $history = [];
+            foreach ($controller->history($request)['group']['pages'] as $key => $page) {
+                $history = array_merge($history, $page['history']->toArray());
+            }
 
             $data = $this->createData($group['group'], $id, $history);
 
@@ -203,7 +209,10 @@ class DummyInspectionsSeeder extends Seeder
 
         for ($id = 1; $id <= 10; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10, 11]);
-            $history = $controller->history($request)['group']['pages'][0]['history'];
+            $history = [];
+            foreach ($controller->history($request)['group']['pages'] as $key => $page) {
+                $history = array_merge($history, $page['history']->toArray());
+            }
 
             $data = $this->createData($group['group'], $id, $history);
 
@@ -225,7 +234,10 @@ class DummyInspectionsSeeder extends Seeder
 
         for ($id = 1; $id <= 10; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10, 11, 12]);
-            $history = $controller->history($request)['group']['pages'][0]['history'];
+            $history = [];
+            foreach ($controller->history($request)['group']['pages'] as $key => $page) {
+                $history = array_merge($history, $page['history']->toArray());
+            }
 
             $data = $this->createData($group['group'], $id, $history);
 

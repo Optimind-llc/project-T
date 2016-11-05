@@ -342,6 +342,41 @@ class CreateTablesRelatedToManager extends Migration
             $table->primary(['modification_id', 'inspection_id']);
         });
 
+        Schema::create('hole_modifications', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 16);
+            $table->integer('label')->unsigned()->default(1);
+            $table->timestamps();
+        });
+
+        Schema::create('hole_modification_inspection', function (Blueprint $table) {
+            $table->integer('hole_m_id')->unsigned();
+            $table->integer('inspection_id')->unsigned();
+            $table->tinyInteger('type')->unsigned()->default(1);
+            $table->tinyInteger('sort')->unsigned()->default(1);
+            $table->timestamps();
+
+            /**
+             * Add Foreign
+             */
+            $table->foreign('hole_m_id')
+                ->references('id')
+                ->on('hole_modifications')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('inspection_id')
+                ->references('id')
+                ->on('inspections')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            /**
+             * Add Primary
+             */
+            $table->primary(['hole_m_id', 'inspection_id']);
+        });
+
         Schema::create('inlines', function (Blueprint $table) {
             $table->increments('id');
             $table->string('point', 16);
@@ -382,6 +417,8 @@ class CreateTablesRelatedToManager extends Migration
     public function down()
     {
         Schema::drop('inlines');
+        Schema::drop('hole_modification_inspection');
+        Schema::drop('hole_modifications');
         Schema::drop('modification_inspection');
         Schema::drop('modifications');
         Schema::drop('holes');

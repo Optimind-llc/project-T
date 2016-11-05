@@ -29,8 +29,8 @@ class InspectionTableSeeder extends Seeder
 
         $data = [
             [
-                'name'       => '検査',
-                'en'         => 'kensa',
+                'name'       => '外観検査',
+                'en'         => 'gaikan',
                 'sort'       => 1,
                 'process_id' => 'molding',
                 'created_at' => $now,
@@ -43,8 +43,8 @@ class InspectionTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '検査',
-                'en'         => 'kensa',
+                'name'       => '穴検査',
+                'en'         => 'ana',
                 'sort'       => 2,
                 'process_id' => 'holing',
                 'created_at' => $now,

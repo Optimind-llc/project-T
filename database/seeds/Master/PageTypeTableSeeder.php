@@ -272,6 +272,33 @@ class PageTypeTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],
+            //穴あけ：オフライン手直し：アウター：page1
+            [
+                'number'     => 1,
+                'group_id'   => 18,
+                'figure_id'  => 8,
+                'pdf_id'     => 11,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //穴あけ：オフライン手直し：アウター：page2
+            [
+                'number'     => 2,
+                'group_id'   => 18,
+                'figure_id'  => 13,
+                'pdf_id'     => 12,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //穴あけ：オフライン手直し：アウター：page3
+            [
+                'number'     => 3,
+                'group_id'   => 18,
+                'figure_id'  => 14,
+                'pdf_id'     => 13,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
         ];
 
         DB::table($table_name)->insert($data);

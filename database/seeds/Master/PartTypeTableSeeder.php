@@ -312,7 +312,7 @@ class PartTypeTableSeeder extends Seeder
                 'area'         => '0/0/1740/1030',
                 'figure_id'    => 29
             ],
-            //穴あけ：オフライン手直し検査：インナ page1~4
+            //穴あけ：オフライン手直し検査：インナー page1~4
             [
                 'page_type_id' => 23,
                 'part_type_id' => 1,
@@ -333,6 +333,37 @@ class PartTypeTableSeeder extends Seeder
                 'part_type_id' => 1,
                 'area'         => '0/0/1740/1030',
                 'figure_id'    => 18
+            ],
+            //穴あけ：オフライン手直し検査：アウター：page1
+            [
+                'page_type_id' => 29,
+                'part_type_id' => 2,
+                'area'         => '0/0/1740/1030',
+                'figure_id'    => 24
+            ],
+            //穴あけ：オフライン手直し検査：アウター：page2 (サイドとロア分離後)
+            [
+                'page_type_id' => 30,
+                'part_type_id' => 4,
+                'area'         => '0/0/870/900',
+                'figure_id'    => 25
+            ],[
+                'page_type_id' => 30,
+                'part_type_id' => 3,
+                'area'         => '870/0/1740/900',
+                'figure_id'    => 26
+            ],
+            //穴あけ：オフライン手直し検査：アウター：page3 (サイドとロア分離後)
+            [
+                'page_type_id' => 31,
+                'part_type_id' => 6,
+                'area'         => '0/0/870/900',
+                'figure_id'    => 27
+            ],[
+                'page_type_id' => 31,
+                'part_type_id' => 5,
+                'area'         => '870/0/1740/900',
+                'figure_id'    => 28
             ],
 
         ];

@@ -123,25 +123,6 @@ class InspectionController extends Controller
                         return $ig->inspection_group_id;
                     })
                     ->toArray();
-
-                $history = $inspected->map(function($page) {
-                    return $page->failurePositions->map(function($fp) {
-                        $cLabel = "";
-                        if ($fp->modifications->count() !== 0) {
-                            $cLabel = $fp->modifications->first()->modification->label;
-                        }
-
-                        return [
-                            'failurePositionId' => $fp->id,
-                            'label' => $fp->failure->label,
-                            'point' => $fp->point,
-                            'cLabel' => $cLabel
-                        ];
-                    });
-                })
-                ->reduce(function ($carry, $failures) {
-                    return array_merge($carry, $failures->toArray());
-                }, []);
             }
         }
 
@@ -153,11 +134,36 @@ class InspectionController extends Controller
         return [
             'heritage' => $heritage,
             'group' => [
-                'pages' => [
-                    [
-                        'history' => $history
-                    ]
-                ]
+                'pages' => $inspected->map(function($page) {
+                    return [
+                        'pageTypeId' => $page->page_type_id,
+                        'history' => $page->failurePositions->map(function($fp) {
+                            $cLabel = "";
+                            if ($fp->modifications->count() !== 0) {
+                                $cLabel = $fp->modifications->first()->modification->label;
+                            }
+
+                            return [
+                                'failurePositionId' => $fp->id,
+                                'label' => $fp->failure->label,
+                                'point' => $fp->point,
+                                'cLabel' => $cLabel
+                            ];
+                        }),
+                        'holeHistory' => $page->holes->map(function($h) {
+                            return [
+                                'point' => $h->point,
+                                'label' => $h->label,
+                                'direction' => $h->direction,
+                                'color' => $h->color,
+                                'border' => $h->border,
+                                'shape' => $h->shape,
+                                'holePageId' => $h->pivot->id,
+                                'status' => $h->pivot->status
+                            ];
+                        })
+                    ];
+                })
             ]
         ];
     }

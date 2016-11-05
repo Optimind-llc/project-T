@@ -78,6 +78,9 @@ class InspectionGroup extends Model
             'inspection.modifications' => function($q) {
                 $q->select(['id', 'name', 'label']);
             },
+            'inspection.hModifications' => function($q) {
+                $q->select(['id', 'name', 'label']);
+            },
             'pageTypes',
             'pageTypes.figure',
             'pageTypes.figure.holes' => function($q) {
@@ -127,6 +130,26 @@ class InspectionGroup extends Model
             array_multisort($m_type_array, $m_sort_array, $m_label_array, $modifications);
         }
 
+        $hModifications = $group->inspection->hModifications->map(function ($hm) {
+            return [
+                'id' => $hm->id,
+                'label' => $hm->label,
+                'name' => $hm->name,
+                'type' => $hm->pivot->type,
+                'sort' => $hm->pivot->sort
+            ];
+        })->toArray();
+
+        foreach( $hModifications as $key => $row ) {
+            $hm_type_array[$key] = $row['type'];
+            $hm_label_array[$key] = $row['label'];
+            $hm_sort_array[$key] = $row['sort'];
+        }
+
+        if (count($hModifications) !== 0 ) {
+            array_multisort($hm_type_array, $hm_sort_array, $hm_label_array, $hModifications);
+        }
+
         return [
             'id' => $group->id,
             'inspectorGroups' => $group->inspectors->map(function ($i) {
@@ -141,6 +164,7 @@ class InspectionGroup extends Model
             ->groupBy('group'),
             'failures' => $failures,
             'comments' => $modifications,
+            'holeModifications' => $hModifications,
             'pages' => $group->pageTypes->map(function ($page) {
                 return [
                     'id' => $page->id,

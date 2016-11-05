@@ -57,6 +57,17 @@ class Inspection extends Model
         ->withPivot(['type', 'sort']);
     }
 
+    public function hModifications()
+    {
+        return $this->belongsToMany(
+            'App\Models\HoleModification',
+            'hole_modification_inspection',
+            'inspection_id',
+            'hole_m_id'
+        )
+        ->withPivot(['type', 'sort']);
+    }
+
     /**
      * lineが指定された時はlineでフィルタリング
      * lineが指定されなかった時は人した最初のものを返す
