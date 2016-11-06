@@ -171,7 +171,7 @@ class DummyInspectionsSeeder extends Seeder
         }
 
         //穴あけ：オフライン手直し検査：インナー
-        $group = $controller->inspection(18);
+        $group = $controller->inspection(17);
 
         for ($id = 1; $id <= 1; $id++) {
             $request->set(1, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [4]);
