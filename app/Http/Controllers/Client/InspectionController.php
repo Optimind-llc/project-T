@@ -93,12 +93,12 @@ class InspectionController extends Controller
 
         if (!$part instanceof Part) {
             $inspected_array = [];
-            $history = [];
+            $pages = [['history' => []]];
         }
         else {
             if ($part->pages->count() == 0) {
                 $inspected_array = [];
-                $history = [];
+                $pages = [['history' => []]];
             }
             else {
                 $inspected = $part->pages()
@@ -123,18 +123,8 @@ class InspectionController extends Controller
                         return $ig->inspection_group_id;
                     })
                     ->toArray();
-            }
-        }
 
-        foreach ($request->id as $id) {
-            $name = InspectionGroup::find($id)->inspection->en;
-            $heritage[$name] = in_array($id, $inspected_array) ? 1 : 0;
-        }
-
-        return [
-            'heritage' => $heritage,
-            'group' => [
-                'pages' => $inspected->map(function($page) {
+                $pages = $inspected->map(function($page) {
                     return [
                         'pageTypeId' => $page->page_type_id,
                         'history' => $page->failurePositions->map(function($fp) {
@@ -163,7 +153,19 @@ class InspectionController extends Controller
                             ];
                         })
                     ];
-                })
+                });
+            }
+        }
+
+        foreach ($request->id as $id) {
+            $name = InspectionGroup::find($id)->inspection->en;
+            $heritage[$name] = in_array($id, $inspected_array) ? 1 : 0;
+        }
+
+        return [
+            'heritage' => $heritage,
+            'group' => [
+                'pages' => $pages
             ]
         ];
     }

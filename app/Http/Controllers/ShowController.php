@@ -478,8 +478,11 @@ class ShowController extends Controller
                                 $join->whereIn('pages.id', $page_ids);
                             }
                         })
+                        ->leftJoin('hole_page_hole_modification as hphm', function ($join) {
+                            $join = $join->on('hp.id', '=', 'hphm.hp_id');
+                        })
                         ->select(DB::raw(
-                            'holes.id, holes.point, holes.label, holes.direction, figure_id, COUNT(hp.status) as sum, SUM(hp.status = 0) as s0, SUM(hp.status = 1) as s1, SUM(hp.status = 2) as s2'
+                            'holes.id, holes.point, holes.label, holes.direction, figure_id, COUNT(hp.status) as sum, SUM(hp.status = 0) as s0, SUM(hp.status = 1) as s1, SUM(hp.status = 2) as s2, hphm.hm_id'
                         ))
                         ->groupBy('holes.id');
                 }
@@ -495,6 +498,7 @@ class ShowController extends Controller
                         's2' => $h->s2,
                         's0' => $h->s0,
                         'sum' => $h->sum,
+                        'modi' => $h->hm_id,
                         'pageNum' => $pt->number
                     ];
                 })
