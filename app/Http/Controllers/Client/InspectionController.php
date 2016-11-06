@@ -142,12 +142,7 @@ class InspectionController extends Controller
                         }),
                         'holeHistory' => $page->holes->map(function($h) {
                             return [
-                                'point' => $h->point,
-                                'label' => $h->label,
-                                'direction' => $h->direction,
-                                'color' => $h->color,
-                                'border' => $h->border,
-                                'shape' => $h->shape,
+                                'id' => $h->id,
                                 'holePageId' => $h->pivot->id,
                                 'status' => $h->pivot->status
                             ];

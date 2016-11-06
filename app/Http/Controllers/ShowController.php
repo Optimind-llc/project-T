@@ -449,6 +449,27 @@ class ShowController extends Controller
             array_multisort($m_type_array, $m_sort_array, $m_label_array, $modificationTypes);
         }
 
+        // Get Hole Modifications list
+        $holeModificationTypes = InspectionGroup::find($itionGId)->inspection->hModifications->map(function($hm) {
+            return [
+                'id' => $hm->id,
+                'label' => $hm->label,
+                'name' => $hm->name,
+                'type' => $hm->pivot->type,
+                'sort' => $hm->pivot->sort
+            ];
+        })->toArray();
+
+        foreach( $holeModificationTypes as $key => $row ) {
+            $hm_type_array[$key] = $row['type'];
+            $hm_label_array[$key] = $row['label'];
+            $hm_sort_array[$key] = $row['sort'];
+        }
+
+        if (count($holeModificationTypes) !== 0 ) {
+            array_multisort($hm_type_array, $hm_sort_array, $hm_label_array, $holeModificationTypes);
+        }
+
         $page_ids = null;
         if (isset($request->panelId)) {
             $page_ids = Part::where('panel_id', $request->panelId)
@@ -482,9 +503,15 @@ class ShowController extends Controller
                             $join = $join->on('hp.id', '=', 'hphm.hp_id');
                         })
                         ->select(DB::raw(
-                            'holes.id, holes.point, holes.label, holes.direction, figure_id, COUNT(hp.status) as sum, SUM(hp.status = 0) as s0, SUM(hp.status = 1) as s1, SUM(hp.status = 2) as s2, hphm.hm_id'
+                            'holes.id, holes.point, holes.label, holes.direction, figure_id, COUNT(hp.status) as sum, SUM(hp.status = 0) as s0, SUM(hp.status = 1) as s1, SUM(hp.status = 2) as s2, SUM(hphm.hm_id IS NOT NULL) as s3'
                         ))
                         ->groupBy('holes.id');
+                },
+                'figure.holes.holePages' => function($q) {
+                    $q->select(['hole_page.id', 'hole_id', 'page_id']);
+                },
+                'figure.holes.holePages.holeModification' => function($q) {
+                    $q->select(['hole_modifications.id', 'name', 'label']);
                 }
             ])
             ->get()
@@ -492,19 +519,29 @@ class ShowController extends Controller
                 $holes = $pt->figure->holes->map(function($h) use($pt) {
                     return [
                         'id' => $h->id,
+                        'label' => $h->label,
                         'point' => $h->point,
                         'direction' => $h->direction,
                         's1' => $h->s1,
                         's2' => $h->s2,
                         's0' => $h->s0,
+                        's3' => $h->s3,
                         'sum' => $h->sum,
                         'modi' => $h->hm_id,
-                        'pageNum' => $pt->number
+                        'pageNum' => $pt->number,
+                        'holes' => $h->holePages->map(function($hp) {
+                            if ($hp->holeModification->count() != 0) {
+                                return $hp->holeModification[0]->id;
+                            }
+                            return 0;
+                        }),
                     ];
                 })
+                ->sortBy('label')
                 ->toArray();
                 return array_merge($array, $holes);
             }, []);
+
 
         if ($page_types->count() > 1) {
             $pageTypes = $page_types->map(function($pt) use($partTypeId, $itionGId, $itorG_name, $start_at, $end_at, $panel_id) {
@@ -522,6 +559,7 @@ class ShowController extends Controller
                     'failureTypes' => $failureTypes,
                     'commentTypes' => $modificationTypes,
                     'holePoints' => $holePoints,
+                    'holeModificationTypes' => $holeModificationTypes,
                     'path' => []
                 ]
             ];
@@ -536,6 +574,7 @@ class ShowController extends Controller
         $data['failureTypes'] = $failureTypes;
         $data['commentTypes'] = $modificationTypes;
         $data['holePoints'] = $holePoints;
+        $data['holeModifications'] = $holeModifications;
 
         return [
             'data' => $data

@@ -220,18 +220,22 @@
 
 				.hole .collection {
 					> div:nth-child(1) {
-						flex-basis: 80px;
-						border-right: 1px solid #BFBFBF;						
+						flex-basis: 40px;
+						border-right: 1px solid #BFBFBF;	
 					}
 					> div:nth-child(2) {
 						flex-basis: 60px;
-						border-right: 1px solid #BFBFBF;						
+						border-right: 1px solid #BFBFBF;
 					}
 					> div:nth-child(3) {
 						flex-basis: 60px;
-						border-right: 1px solid #BFBFBF;						
+						border-right: 1px solid #BFBFBF;
 					}
 					> div:nth-child(4) {
+						flex-basis: 60px;
+						border-right: 1px solid #BFBFBF;
+					}
+					> div:nth-child(5) {
 						flex-basis: 60px;
 					}
 
@@ -276,6 +280,50 @@
                                         padding: 0;
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+
+				.hModification .collection {
+                    min-width: 254px;
+                    
+					> div:nth-child(1) {
+						flex-basis: 36px;
+						border-right: 1px solid #BFBFBF;	
+					}
+					> div:nth-child(2) {
+						flex-basis: 70px;
+						border-right: 1px solid #BFBFBF;
+					}
+					> div:nth-child(3) {
+						flex-basis: 90px;
+						border-right: 1px solid #BFBFBF;
+					}
+					> div:nth-child(4) {
+						flex-basis: 70px;
+					}
+
+					ul span {
+						margin-top: 4px;
+						margin-left: 4px;
+						font-size: 10px;
+					}
+
+                    ul li:nth-child(1) {
+                        font-size: 12px;
+
+                        span {
+                            border: 1px solid #BBB;
+                            border-radius: 4px;
+                            margin: 3px 6px 3px 0;
+                            height: 12px;
+                            width: 12px;
+                            font-size: 10px;
+
+                            p {
+                                margin: -1px 0 0 2px;
+                                padding: 0;
                             }
                         }
                     }

@@ -67,6 +67,24 @@ class HoleModificationTableSeeder extends Seeder
         }
 
         $data = [
+            //穴検査
+            [
+                'hole_m_id'     => 1,
+                'inspection_id' => 3,
+                'type'          => 1,
+                'sort'          => 1
+            ],[
+                'hole_m_id'     => 2,
+                'inspection_id' => 3,
+                'type'          => 1,
+                'sort'          => 1
+            ],[
+                'hole_m_id'     => 3,
+                'inspection_id' => 3,
+                'type'          => 1,
+                'sort'          => 1
+            ],
+            //オフライン手直し検査
             [
                 'hole_m_id'     => 1,
                 'inspection_id' => 12,

@@ -34,4 +34,13 @@ class Hole extends Model
             'id'
         );
     }
+
+    public function holePages()
+    {
+        return $this->hasMany(
+            'App\Models\Client\HolePage',
+            'hole_id',
+            'id'
+        );
+    }
 }
