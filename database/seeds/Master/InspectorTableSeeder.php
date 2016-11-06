@@ -1186,6 +1186,80 @@ class InspectorTableSeeder extends Seeder
                 'inspector_id'    => 36,
                 'sort'            => 11
             ],
+
+            //穴あけ_オフライン手直し検査_アウター_白
+            [
+                'inspection_g_id' => 17,
+                'inspector_id'    => 21,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 17,
+                'inspector_id'    => 20,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 17,
+                'inspector_id'    => 19,
+                'sort'            => 3
+            ],[
+                'inspection_g_id' => 17,
+                'inspector_id'    => 25,
+                'sort'            => 4
+            ],
+            //穴あけ_オフライン手直し検査_アウター_黄
+            [
+                'inspection_g_id' => 17,
+                'inspector_id'    => 35,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 17,
+                'inspector_id'    => 33,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 17,
+                'inspector_id'    => 34,
+                'sort'            => 3
+            ],[
+                'inspection_g_id' => 17,
+                'inspector_id'    => 36,
+                'sort'            => 4
+            ],
+
+            //穴あけ_オフライン手直し検査_アウター_白
+            [
+                'inspection_g_id' => 18,
+                'inspector_id'    => 21,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 18,
+                'inspector_id'    => 20,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 18,
+                'inspector_id'    => 19,
+                'sort'            => 3
+            ],[
+                'inspection_g_id' => 18,
+                'inspector_id'    => 25,
+                'sort'            => 4
+            ],
+            //穴あけ_オフライン手直し検査_アウター_黄
+            [
+                'inspection_g_id' => 18,
+                'inspector_id'    => 35,
+                'sort'            => 1
+            ],[
+                'inspection_g_id' => 18,
+                'inspector_id'    => 33,
+                'sort'            => 2
+            ],[
+                'inspection_g_id' => 18,
+                'inspector_id'    => 34,
+                'sort'            => 3
+            ],[
+                'inspection_g_id' => 18,
+                'inspector_id'    => 36,
+                'sort'            => 4
+            ],
         ];
 
         DB::table($table_name)->insert($data);

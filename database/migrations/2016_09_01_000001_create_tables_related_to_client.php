@@ -257,6 +257,41 @@ class CreateTablesRelatedToClient extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });
+
+        Schema::create('hole_page_hole_modification', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('page_id')->unsigned();
+            $table->integer('hp_id')->unsigned();
+            $table->integer('hm_id')->unsigned();
+            $table->string('comment', 100);
+            $table->timestamps();
+
+            /**
+             * Add Index
+             */
+            $table->unique(['page_id','hp_id','hm_id']);
+
+            /**
+             * Add Foreign
+             */
+            $table->foreign('page_id')
+                ->references('id')
+                ->on('pages')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('hp_id')
+                ->references('id')
+                ->on('hole_page')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('hm_id')
+                ->references('id')
+                ->on('hole_modifications')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+        });
     }
 
     /**
@@ -266,6 +301,7 @@ class CreateTablesRelatedToClient extends Migration
      */
     public function down()
     {
+        Schema::drop('hole_page_hole_modification');
         Schema::drop('hole_page');
         Schema::drop('modification_failure_position');
         Schema::drop('failure_positions');

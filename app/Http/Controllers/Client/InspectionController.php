@@ -343,8 +343,23 @@ class InspectionController extends Controller
                     $page['comments'])
                 );
             }
+
+            // Create hole modification
+            if (array_key_exists('holeModifications', $page) && count($page['holeModifications']) !== 0) {
+                DB::table('hole_page_hole_modification')->insert(array_map(function($hm) use ($newPage) {
+                        return [
+                            'page_id' => $newPage->id,
+                            'hp_id' => $hm['holePageId'],
+                            'hm_id' => $hm['holeModificationId'],
+                            'comment' => array_key_exists('comment', $hm) ? $hm['comment'] : ''
+                        ];
+                    },
+                    $page['holeModifications'])
+                );
+            }
         }
 
+        // Export CSV
         if ($groupId == 1 || $groupId == 2) {
             $itorG = $family['inspectorGroup'];
             $itor = explode(',',$family['inspector'])[1];
