@@ -358,6 +358,7 @@ class ShowController extends Controller
                         'holePoints' => [],
                         'commentTypes' => [],
                         'comments' => [],
+                        'holeModificationTypes' => [],
                         'inlines' => []
                     ]
                ];
@@ -493,13 +494,17 @@ class ShowController extends Controller
                 'figure' => function($q) {
                     $q->select(['id']);
                 },
-                'figure.holes' => function($q) use ($partTypeId, $page_ids) {
+                'figure.holes' => function($q) use ($partTypeId, $page_ids, $start_at, $end_at) {
                     $q->where('part_type_id', $partTypeId)
                         ->leftJoin('hole_page as hp', 'holes.id', '=', 'hp.hole_id')
-                        ->join('pages', function ($join) use ($page_ids){
+                        ->join('pages', function ($join) use ($page_ids, $start_at, $end_at){
                             $join = $join->on('pages.id', '=', 'hp.page_id');
                             if ($page_ids) {
                                 $join->whereIn('pages.id', $page_ids);
+                            }
+                            if ($start_at) {
+                                $join->where('pages.created_at', '>=', $start_at)
+                                    ->where('pages.created_at', '<=', $end_at);
                             }
                         })
                         ->leftJoin('hole_page_hole_modification as hphm', function ($join) {
@@ -552,7 +557,6 @@ class ShowController extends Controller
                 ->toArray();
                 return array_merge($array, $holes);
             }, []);
-
 
         if ($page_types->count() > 1) {
             $pageTypes = $page_types->map(function($pt) use($partTypeId, $itionGId, $itorG_name, $start_at, $end_at, $panel_id) {
