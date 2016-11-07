@@ -86,9 +86,10 @@ class InspectionController extends Controller
         }
 
         $heritage = [];
+        $part_type_id = $request->partType;
 
         $part = Part::where('panel_id', $request->panelId)
-            ->where('part_type_id', $request->partType)
+            ->where('part_type_id', $part_type_id)
             ->first();
 
         if (!$part instanceof Part) {
@@ -106,8 +107,12 @@ class InspectionController extends Controller
                     ->select('pages.*', 'if.inspection_group_id')
                     ->whereIn('if.inspection_group_id', $request->id)
                     ->with([
-                        'failurePositions' => function($q) {
-                            $q->select(['id', 'point', 'page_id', 'failure_id']);
+                        'failurePositions' => function($q) use ($part_type_id) {
+                            $q->whereHas('part', function ($q) use ($part_type_id) {
+                                $q->where('part_type_id', '=', $part_type_id);
+                            })
+                            ->select(['id', 'point', 'page_id', 'failure_id'])
+                            ->get();
                         },
                         'failurePositions.failure' => function($q) {
                             $q->select(['id', 'label']);
@@ -115,7 +120,11 @@ class InspectionController extends Controller
                         'failurePositions.modifications.modification' => function($q) {
                             $q->select(['id', 'name', 'label']);
                         },
-                        'holes'
+                        'holes' => function($q) use ($part_type_id) {
+                            $q->whereHas('partType', function ($q) use ($part_type_id) {
+                                $q->where('id', '=', $part_type_id);
+                            })->get();
+                        }
                     ])
                     ->get();
 

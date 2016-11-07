@@ -404,7 +404,10 @@ class ShowController extends Controller
             ->with('figure')
             ->where('group_id', $itionGId)
             ->orderBy('number')
-            ->get();
+            ->get()
+            ->filter(function($pt) {
+                return $pt->id != 14;
+            });
 
         if ($page_types->count() == 0) {
            throw new NotFoundHttpException('検索条件が不正です');
@@ -574,7 +577,7 @@ class ShowController extends Controller
         $data['failureTypes'] = $failureTypes;
         $data['commentTypes'] = $modificationTypes;
         $data['holePoints'] = $holePoints;
-        $data['holeModifications'] = $holeModifications;
+        $data['holeModificationTypes'] = $holeModificationTypes;
 
         return [
             'data' => $data

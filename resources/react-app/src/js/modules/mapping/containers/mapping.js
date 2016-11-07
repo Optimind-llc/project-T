@@ -174,13 +174,13 @@ class Mapping extends Component {
                     onClick={() => this.setState({holeStatus: 's3'})}
                   >
                     {/*<span>{holeStatus == 's3' && <p>{'✔'}︎</p>}</span>*/}
-                    {'◇'}
+                    {'手直'}
                   </li>
                   {data.holePoints.map(h => {
                     let percentage = 0;
                     if (h.sum !== 0 && h.s3 != 0) percentage = Math.round(1000*h.s3/h.sum)/10;
                     return (
-                      <li>{h.s3 ? h.s3 : '-'}<span>{`${percentage}%`}</span></li>
+                      <li>{h.s3 ? h.s3 : '-'}</li>
                     )
                   })}
                 </ul>
@@ -262,12 +262,12 @@ class Mapping extends Component {
                           {hm.name}
                         </li>
                         {data.holePoints.map(h => {
-                          let percentage = 0;
-                          const sum = h.holes.length;
+                          let percentage = null;
+                          const sum = h.holes.filter(hmId => hmId !== 0).length;
                           const modified = h.holes.filter(hmId => hmId == hm.id).length;
                           if (h.sum !== 0 && modified != 0) percentage = Math.round(1000*modified/sum)/10;
                           return (
-                            <li>{modified ? modified : '-'}<span>{`${percentage}%`}</span></li>
+                            <li>{modified ? modified : '-'}<span>{percentage ? `${percentage}%`: ''}</span></li>
                           )
                         })}
                       </ul>

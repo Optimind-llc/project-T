@@ -29,7 +29,7 @@ class Hole extends Model
     public function partType()
     {
         return $this->belongsTo(
-            'App\Models\partType',
+            'App\Models\PartType',
             'part_type_id',
             'id'
         );

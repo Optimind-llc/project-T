@@ -9,7 +9,6 @@ import { vehicleActions } from '../ducks/vehicle';
 import { itorGActions } from '../ducks/itorG';
 import { pageTActions } from '../ducks/pageT';
 import { pageActions } from '../ducks/page';
-
 // Material-ui Components
 import { Paper, Dialog, RaisedButton, FlatButton } from 'material-ui';
 import { grey50, indigo500 } from 'material-ui/styles/colors';
@@ -144,11 +143,11 @@ class Dashboard extends Component {
 
     const inspections = {
       1: [
-        {label: '検査', value: 1},
+        {label: '外観検査', value: 1},
         {label: '精度検査', value: 2}
       ],
       2: [
-        {label: '検査', value: 3, disabled: true},
+        {label: '外観検査', value: 3, disabled: true},
         {label: '精度検査', value: 0, disabled: true}
       ],
       3: [
@@ -156,11 +155,11 @@ class Dashboard extends Component {
         {label: '穴検査', value: 4},
       ],
       4: [
-        {label: '検査', value: 5},
+        {label: '外観検査', value: 5},
         {label: '精度検査', value: 7, disabled: true}
       ],
       5: [
-        {label: '検査', value: 6, disabled: true},
+        {label: '外観検査', value: 6, disabled: true},
         {label: '精度検査', value: 0, disabled: true}
       ],
       6: [
@@ -219,6 +218,7 @@ class Dashboard extends Component {
                   ]}
                   onChange={value => this.setState({
                     partTId: value,
+                    processId: null,
                     itionGId: null
                   })}
                 />
