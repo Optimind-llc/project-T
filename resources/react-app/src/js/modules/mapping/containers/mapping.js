@@ -120,16 +120,16 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li
-                    onClick={() => this.setState({holeStatus: 's1'})}
+                    onClick={() => this.setState({holeStatus: 's0'})}
                   >
-                    {/*<span>{holeStatus == 's1' && <p>{'✔'}︎</p>}</span>*/}
-                    {'○'}
+                    {/*<span>{holeStatus == 's0' && <p>{'✔'}︎</p>}</span>*/}
+                    {'×'}
                   </li>
                   {data.holePoints.map(h => {
                     let percentage = 0;
-                    if (h.sum !== 0 && h.s1 != 0) percentage = Math.round(1000*h.s1/h.sum)/10;
+                    if (h.sum !== 0 && h.s0 != 0) percentage = Math.round(1000*h.s0/h.sum)/10;
                     return (
-                      <li>{h.s1 ? h.s1 : '-'}<span>{`${percentage}%`}</span></li>
+                      <li>{`${percentage}%`}<span>({h.s0 ? h.s0 : '-'})</span></li>
                     )
                   })}
                 </ul>
@@ -146,7 +146,7 @@ class Mapping extends Component {
                     let percentage = 0;
                     if (h.sum !== 0 && h.s2 != 0) percentage = Math.round(1000*h.s2/h.sum)/10;
                     return (
-                      <li>{h.s2 ? h.s2 : '-'}<span>{`${percentage}%`}</span></li>
+                      <li>{`${percentage}%`}<span>({h.s2 ? h.s2 : '-'})</span></li>
                     )
                   })}
                 </ul>
@@ -154,16 +154,16 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li
-                    onClick={() => this.setState({holeStatus: 's0'})}
+                    onClick={() => this.setState({holeStatus: 's1'})}
                   >
-                    {/*<span>{holeStatus == 's0' && <p>{'✔'}︎</p>}</span>*/}
-                    {'×'}
+                    {/*<span>{holeStatus == 's1' && <p>{'✔'}︎</p>}</span>*/}
+                    {'○'}
                   </li>
                   {data.holePoints.map(h => {
                     let percentage = 0;
-                    if (h.sum !== 0 && h.s0 != 0) percentage = Math.round(1000*h.s0/h.sum)/10;
+                    if (h.sum !== 0 && h.s1 != 0) percentage = Math.round(1000*h.s1/h.sum)/10;
                     return (
-                      <li>{h.s0 ? h.s0 : '-'}<span>{`${percentage}%`}</span></li>
+                      <li>{`${percentage}%`}<span>({h.s1 ? h.s1 : '-'})</span></li>
                     )
                   })}
                 </ul>
@@ -267,7 +267,7 @@ class Mapping extends Component {
                           const modified = h.holes.filter(hmId => hmId == hm.id).length;
                           if (h.sum !== 0 && modified != 0) percentage = Math.round(1000*modified/sum)/10;
                           return (
-                            <li>{modified ? modified : '-'}<span>{percentage ? `${percentage}%`: ''}</span></li>
+                            <li>{modified ? modified : ''}{/*<span>{percentage ? `${percentage}%`: ''}</span>*/}</li>
                           )
                         })}
                       </ul>
@@ -576,7 +576,7 @@ class Mapping extends Component {
                   className={active == 'comment' ? '' : 'disable'}
                   onClick={() => this.setState({ active: 'comment'})}
                 >
-                  手直し検査
+                  手直し
                 </button>
               }{
                 data.holeModificationTypes.length !== 0 &&
@@ -584,14 +584,14 @@ class Mapping extends Component {
                   className={active == 'hModification' ? '' : 'disable'}
                   onClick={() => this.setState({ active: 'hModification'})}
                 >
-                  手直し検査
+                  手直し
                 </button>
               }
               <button
                 className={active == 'failure' ? '' : 'disable'}
                 onClick={() => this.setState({ active: 'failure'})}
               >
-                不良検査
+                外観検査
               </button>
               {
                 data.inlines.length !== 0 &&
