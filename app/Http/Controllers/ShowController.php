@@ -518,8 +518,8 @@ class ShowController extends Controller
                 }
             ])
             ->get()
-            ->reduce(function($array, $pt) {
-                $holes = $pt->figure->holes->map(function($h) use($pt) {
+            ->reduce(function($array, $pt) use($page_ids) {
+                $holes = $pt->figure->holes->map(function($h) use($pt, $page_ids) {
                     return [
                         'id' => $h->id,
                         'label' => $h->label,
@@ -532,11 +532,19 @@ class ShowController extends Controller
                         'sum' => $h->sum,
                         'modi' => $h->hm_id,
                         'pageNum' => $pt->number,
-                        'holes' => $h->holePages->map(function($hp) {
-                            if ($hp->holeModification->count() != 0) {
-                                return $hp->holeModification[0]->id;
+                        'holes' => $h->holePages->map(function($hp) use ($page_ids) {
+                            if ($hp->holeModification->count() == 0) {
+                                return 0;
                             }
-                            return 0;
+
+                            if ($page_ids) {
+                                if (in_array($hp->page_id, $page_ids)) {
+                                    return $hp->holeModification[0]->id;
+                                }
+                                return 0;
+                            }
+
+                            return $hp->holeModification[0]->id;
                         }),
                     ];
                 })
