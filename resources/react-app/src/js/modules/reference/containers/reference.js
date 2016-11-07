@@ -29,7 +29,7 @@ class Reference extends Component {
       RequiredF: [],
       RequiredM: [],
       RequiredHM: [],
-      narrowedBy: 'term',
+      narrowedBy: 'advanced',
       startDate: moment(),
       endDate: moment(),
       panelId: ''
@@ -131,8 +131,10 @@ const hModifications = [
               </div>
             </div>
             <div className="flex-row col-2">
-              <div className="advanced-wrap">
-                <p>詳細条件</p>
+              <div
+                className={narrowedBy === 'advanced' ? "advanced-wrap active" : "advanced-wrap"}
+                onClick={() => this.setState({narrowedBy: 'advanced'})}
+              >
                 <div
                   className={narrowedBy === 'term' ? 'term-wrap active' : 'term-wrap'}
                   onClick={() => this.setState({narrowedBy: 'term'})}
@@ -142,7 +144,6 @@ const hModifications = [
                       <p>直*</p>
                       <Select
                         name="直"
-                        styles={{height: 36}}
                         placeholder="直を選択"
                         clearable={false}
                         Searchable={true}
@@ -160,7 +161,6 @@ const hModifications = [
                       <p>判定*</p>
                       <Select
                         name="判定"
-                        styles={{height: 36}}
                         placeholder="直を選択"
                         clearable={false}
                         Searchable={true}
@@ -174,7 +174,7 @@ const hModifications = [
                       />
                     </div>
                     <div>
-                      <p>期間：</p>
+                      <p>期間*</p>
                       <CustomCalendar
                         defaultValue={startDate}
                         setState={startDate => this.setState({
@@ -195,7 +195,6 @@ const hModifications = [
                       <p>不良</p>
                       <Select
                         name="直"
-                        styles={{height: 36}}
                         placeholder="不良を選択"
                         clearable={false}
                         Searchable={false}
@@ -209,7 +208,6 @@ const hModifications = [
                       <p>手直</p>
                       <Select
                         name="手直"
-                        styles={{height: 36}}
                         placeholder="手直を選択"
                         clearable={false}
                         Searchable={false}
@@ -223,7 +221,6 @@ const hModifications = [
                       <p>穴手直</p>
                       <Select
                         name="穴手直"
-                        styles={{height: 36}}
                         placeholder="穴手直を選択"
                         clearable={false}
                         Searchable={false}
@@ -253,7 +250,7 @@ const hModifications = [
             className={`serch-btn ${partTId && itionGId && itorG && 'active'}`}
             onClick={() => this.showMapping()}
           >
-            <p>表示</p>
+            <p>この条件で検索</p>
           </div>
         </div>
       </div>
