@@ -311,6 +311,7 @@ class InsertInline extends Command
                     $newFamily->inspection_group_id = 9;
                     $newFamily->inspector_group = '不明';
                     $newFamily->created_by = '精度検査';
+                    $newFamily->inspected_at = $inspected_at;
                     $newFamily->status = $status;
                     $newFamily->save();
 

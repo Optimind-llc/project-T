@@ -13,17 +13,19 @@
   .Select-control {
     position: static;    
   }
-  .Select--multi .Select-value-label {
-    white-space: nowrap;
-  }
-  .Select--multi .Select-value-icon {
-    padding: 1px 5px 1px;
-    border-right: 1px solid #4A4A4A;
-  }
-  .Select--multi .Select-value {
+  .Select--multi {
+    .Select-value-label {
+      white-space: nowrap;
+    }
+    .Select-value-icon {
+      padding: 1px 5px 1px;
+      border-right: 1px solid #4A4A4A;
+    }
+    .Select-value {
       background-color: rgba(0, 0, 0, 0.1);
       border: 1px solid #4A4A4A;
       color: #4A4A4A;
+    }
   }
 
   .serch-wrap {
@@ -355,6 +357,15 @@
           color: #FFF;
         }
       }
+    }
+  }
+
+  .result-wrap {
+    margin-top: 10px;
+    overflow: scroll;
+    
+    table {
+      white-space: nowrap;
     }
   }
 }

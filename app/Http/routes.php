@@ -47,7 +47,6 @@ Route::post('client/association', 'Client\AssociationController@saveAssociation'
 
 
 
-
 Route::get('manager/dashboard', 'Manager\ReferenceController@index');
 Route::get('manager/reference', 'Manager\ReferenceController@index');
 Route::get('manager/mapping', 'Manager\ReferenceController@index');
@@ -55,8 +54,53 @@ Route::get('manager/mapping/{pageType}/{itorG}', 'Manager\ReferenceController@in
 Route::get('manager/report', 'Manager\ReferenceController@index');
 Route::get('manager/association', 'Manager\ReferenceController@index');
 
+// Old Report PDF method
 Route::get('manager/pdf/report/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@report');
+
+// New Report PDF method
+Route::post('manager/report/{itionGId}', 'Manager\ReportController@report')
+  ->where([
+    'itionGId' => '[0-9]+'
+  ]);
+
+
+
+
 Route::get('manager/pdf/checkReport/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@checkReport');
+
+Route::get('show/page2/{partTypeId}/{itionGId}/{itorG}', 'ShowController@page2')
+  ->where([
+    'partTypeId' => '[0-9]+',
+    'itionGId' => '[0-9]+',
+    'itorG' => '[a-zA-Z]+'
+  ]);
+
+Route::get('show/panelIdSerch/{partTypeId}/{itionGId}/{panelId}', 'ShowController@panelIdSerch')
+  ->where([
+    'partTypeId' => '[0-9]+',
+    'itionGId' => '[0-9]+',
+    'panelId' => '[a-zA-Z0-9]+'
+  ]);
+
+Route::post('show/advancedSerch/{partTypeId}/{itionGId}', 'ShowController@advancedSerch')
+  ->where([
+    'partTypeId' => '[0-9]+',
+    'itionGId' => '[0-9]+'
+  ]);
+
+Route::get('show/failures/{itionGId}', 'ShowController@failures')
+  ->where([
+    'itionGId' => '[0-9]+'
+  ]);
+
+Route::get('show/modifications/{itionGId}', 'ShowController@modifications')
+  ->where([
+    'itionGId' => '[0-9]+'
+  ]);
+
+
+
+
 
 Route::get('show', 'ShowController@tableData');
 Route::get('show/pageType/{vehicle}/{process}/{inspection}/{division}/{line?}', 'ShowController@pageType')
@@ -68,26 +112,19 @@ Route::get('show/pageType/{vehicle}/{process}/{inspection}/{division}/{line?}', 
 		'line' => '[0-9]+'
 	]);
 
-Route::get('show/page/{pageType}/{itorG}', 'ShowController@page')
-	->where([
-		'pageType' => '[0-9]+',
-		'itorG' => '[a-zA-Z]+'
-	]);
-
-Route::get('show/page2/{partTypeId}/{itionGId}/{itorG}', 'ShowController@page2')
-	->where([
-		'partTypeId' => '[0-9]+',
-		'itorG' => '[a-zA-Z]+'
-	]);
-
 Route::get('show/inspectionGroup', 'ShowController@inspectionGroup');
 Route::get('show/allInspectionGroupNow', 'ShowController@allInspectionGroupNow');
 
 Route::get('show/partFamily/{date}/{tyoku}', 'ShowController@partFamily');
-
-
-
 Route::get('show/test', 'ShowController@test');
+
+
+
+
+
+
+
+
 
 
 // $api = app('Dingo\Api\Routing\Router');

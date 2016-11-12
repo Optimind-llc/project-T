@@ -276,14 +276,14 @@ class InspectionController extends Controller
             // Get part_id from point
             $getPartIdfromArea = function($f) use ($matuken, $newParts, $area) {
                 if ($matuken($f)) {
-                   $exploded = explode(',', $matuken($f));
+                    $exploded = explode(',', $matuken($f));
 
-                   $x = intval($exploded[0]);
-                   $y = intval($exploded[1]);
+                    $x = intval($exploded[0]);
+                    $y = intval($exploded[1]);
 
-                   $part_type_id = 0;
+                    $part_type_id = 0;
 
-                   foreach ($area as $a) {
+                    foreach ($area as $a) {
                         $x1 = intval($a['area'][0]);
                         $y1 = intval($a['area'][1]);
                         $x2 = intval($a['area'][2]);
@@ -292,9 +292,9 @@ class InspectionController extends Controller
                         if ($x1 <= $x && $x < $x2 && $y1 <= $y && $y < $y2) {
                             $part_type_id = $a['id'];
                         }
-                   }
+                    }
 
-                   $filtered = $newParts->filter(function ($part) use ($part_type_id) {
+                    $filtered = $newParts->filter(function ($part) use ($part_type_id) {
                         return $part['type_id'] == $part_type_id;
                     });
 

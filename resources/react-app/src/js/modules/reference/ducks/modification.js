@@ -1,9 +1,10 @@
+
 import {fromJS, Map as iMap, List as iList} from 'immutable';
 import { CALL_API } from '../../../middleware/fetchMiddleware';
 
-export const REDUEST_INSPECTION_DATA = 'REDUEST_INSPECTION_DATA';
-export const REDUEST_INSPECTION_DATA_SUCCESS = 'REDUEST_INSPECTION_DATA_SUCCESS';
-export const REDUEST_INSPECTION_DATA_FAIL = 'REDUEST_INSPECTION_DATA_FAIL';
+export const REQUEST_MODIFICATIONS = 'REQUEST_MODIFICATIONS';
+export const REQUEST_MODIFICATIONS_SUCCESS = 'REQUEST_MODIFICATIONS_SUCCESS';
+export const REQUEST_MODIFICATIONS_FAIL = 'REQUEST_MODIFICATIONS_FAIL';
 
 const initialState = {
   data: null,
@@ -11,22 +12,22 @@ const initialState = {
   didInvalidate: false
 };
 
-export default function application(state = initialState, action) {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case REDUEST_INSPECTION_DATA:
+    case REQUEST_MODIFICATIONS:
       return Object.assign({}, state, {
         isFetching: true,
         didInvalidate: false
       });
 
-    case REDUEST_INSPECTION_DATA_SUCCESS:
+    case REQUEST_MODIFICATIONS_SUCCESS:
       return Object.assign({}, state, {
         data: action.payload.data,
         isFetching: false,
         didInvalidate: false
       });
 
-    case REDUEST_INSPECTION_DATA_FAIL:
+    case REQUEST_MODIFICATIONS_FAIL:
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: true
@@ -37,21 +38,21 @@ export default function application(state = initialState, action) {
   }
 }
 
-export function getInspectionData() {
+export function getModifications(itionGId) {
   return {
     [CALL_API]: {
       types: [
-        REDUEST_INSPECTION_DATA,
-        REDUEST_INSPECTION_DATA_SUCCESS,
-        REDUEST_INSPECTION_DATA_FAIL
+        REQUEST_MODIFICATIONS,
+        REQUEST_MODIFICATIONS_SUCCESS,
+        REQUEST_MODIFICATIONS_FAIL
       ],
-      endpoint: `manager/inspections`,
+      endpoint: `/show/modifications/${itionGId}`,
       method: 'GET',
       body: null
     }
   };
 }
 
-export const referenceActions = {
-  getInspectionData,
+export const modificationActions = {
+  getModifications
 };

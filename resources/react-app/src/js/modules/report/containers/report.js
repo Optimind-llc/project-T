@@ -228,18 +228,6 @@ class Report extends Component {
                 <p>アウター</p>
               </div>
             </div>
-            <div>
-              <p>オフライン検査</p>
-              <div
-                className="disable"
-                onClick={() => this.setState({
-                  modal: true,
-                  path: `/manager/pdf/report/15/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
-                })}
-              >
-                <p>インナー</p>
-              </div>
-            </div>
           </div>
         }{
           this.state.process == 'jointing' &&

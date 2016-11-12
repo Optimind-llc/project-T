@@ -16,7 +16,8 @@ class InspectionFamily extends Model
      * @var array
      */
     protected $guarded = ['id'];
-
+    protected $dates = ['inspected_at'];
+    
     public function groups()
     {
         return $this->belongsTo(

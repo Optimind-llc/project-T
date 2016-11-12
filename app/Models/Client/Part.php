@@ -33,7 +33,7 @@ class Part extends Model
             'part_page',
             'part_id',
             'page_id'
-        );
+        )->withPivot('status');
     }
 
     public function family()
@@ -41,6 +41,15 @@ class Part extends Model
         return $this->belongsTo(
             'App\Models\Client\PartFamily',
             'family_id',
+            'id'
+        );
+    }
+
+    public function failurePositions()
+    {
+        return $this->hasMany(
+            'App\Models\Client\FailurePosition',
+            'part_id',
             'id'
         );
     }

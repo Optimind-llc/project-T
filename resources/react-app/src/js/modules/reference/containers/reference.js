@@ -5,7 +5,11 @@ import moment from 'moment';
 import Select from 'react-select';
 import { parts, processes, inspections } from '../../../utils/Processes';
 // Actions
-import { referenceActions } from '../ducks/reference';
+import { push } from 'react-router-redux';
+import { serchActions } from '../ducks/serch';
+import { failureActions } from '../ducks/failure';
+import { modificationActions } from '../ducks/modification';
+
 // Material-ui Components
 import { Paper, Dialog, RaisedButton, FlatButton } from 'material-ui';
 import { grey50, indigo500 } from 'material-ui/styles/colors';
@@ -37,29 +41,18 @@ class Reference extends Component {
   }
 
   render() {
+    const { SerchedData, FailureData, ModificationData, actions } = this.props;
     const {
       vehicle, partTId, processId, itionGId,
       itorG, judgement, RequiredF, RequiredM, RequiredHM,
       narrowedBy, startDate, endDate, panelId
     } = this.state;
 
-const failures = [
-  {label: 'キズ', value: 1},
-  {label: '凸', value: 2},
-  {label: '凹', value: 3},
-  {label: 'その他', value: 4}
-];
-const modifications = [
-  {label: '削り', value: 1},
-  {label: '除去', value: 2},
-  {label: '樹脂盛り', value: 3},
-  {label: 'その他', value: 4}
-];
-const hModifications = [
-  {label: '穴径修正', value: 1},
-  {label: 'トリム部修正', value: 2},
-  {label: 'その他', value: 3}
-];
+// const hModifications = [
+//   {label: '穴径修正', value: 1},
+//   {label: 'トリム部修正', value: 2},
+//   {label: 'その他', value: 3}
+// ];
 
     return (
       <div id="referenceWrap">
@@ -126,7 +119,11 @@ const hModifications = [
                   Searchable={true}
                   value={itionGId}
                   options={processId ? inspections[processId.value] : null}
-                  onChange={value => this.setState({itionGId: value})}
+                  onChange={value => {
+                    actions.getFailures(value.value);
+                    actions.getModifications(value.value);
+                    this.setState({itionGId: value});
+                  }}
                 />
               </div>
             </div>
@@ -200,7 +197,7 @@ const hModifications = [
                         Searchable={false}
                         multi={true}
                         value={RequiredF}
-                        options={failures}
+                        options={FailureData.data ? FailureData.data.map(f => {return {label: f.name, value: f.id};}) : []}
                         onChange={value => {console.log(value); this.setState({RequiredF: value});}}
                       />
                     </div>
@@ -213,10 +210,11 @@ const hModifications = [
                         Searchable={false}
                         multi={true}
                         value={RequiredM}
-                        options={modifications}
+                        options={ModificationData.data ? ModificationData.data.map(m => {return {label: m.name, value: m.id};}) : []}
                         onChange={value => {console.log(value); this.setState({RequiredM: value});}}
                       />
                     </div>
+                    {/*
                     <div>
                       <p>穴手直</p>
                       <Select
@@ -230,6 +228,7 @@ const hModifications = [
                         onChange={value => {console.log(value); this.setState({RequiredHM: value});}}
                       />
                     </div>
+                    */}
                   </div>
                 </div>
               </div>
@@ -248,10 +247,66 @@ const hModifications = [
           </div>
           <div
             className={`serch-btn ${partTId && itionGId && itorG && 'active'}`}
-            onClick={() => this.showMapping()}
+            onClick={() => {
+              console.log(partTId, itionGId, panelId);
+
+              if (narrowedBy == 'panelId') {
+                actions.panelIdSerch(partTId.value, itionGId.value, panelId);
+              }
+              else if (narrowedBy == 'advanced') {
+                actions.panelIdSerch(1, 1, 'B0000001');
+              }
+            }}
           >
             <p>この条件で検索</p>
           </div>
+        </div>
+        <div className="result-wrap bg-white">
+          {
+            SerchedData.data != null && !SerchedData.isFetching &&
+            <table>
+              <tbody>
+                <tr>
+                  <th>NO.</th>
+                  <th>車種</th>
+                  <th>品番</th>
+                  <th>名称</th>
+                  <th>パネルID</th>
+                  <th>直</th>
+                  <th>検査者</th>
+                  <th>判定</th>
+                  {
+                    FailureData.data != null &&
+                    FailureData.data.map(f => <th key={f.id}>{f.name}</th>)
+                  }{
+                    ModificationData.data != null &&
+                    ModificationData.data.map(m => <th key={m.id}>{m.name}</th>)
+                  }
+                </tr>
+                {
+                  SerchedData.data.parts.map((p, i) =>
+                    <tr key={p.id}>
+                      <td>{i+1}</td>
+                      <td>{p.vehicle}</td>
+                      <td>{p.pn}</td>
+                      <td>{p.name}</td>
+                      <td>{p.panelId}</td>
+                      <td>{p.tyoku}</td>
+                      <td>{p.createdBy}</td>
+                      <td>{p.status}</td>
+                      {
+                        FailureData.data != null &&
+                        FailureData.data.map(f => <td>{p.failures[f.id] ? p.failures[f.id] : 0}</td>)
+                      }
+                    </tr>
+                  )
+                }{
+                  SerchedData.data.count == 0 &&
+                  <tr>結果なし</tr>
+                }
+              </tbody>
+            </table>
+          }
         </div>
       </div>
     );
@@ -266,14 +321,19 @@ Reference.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    // id: ownProps.params.id,
-    // application: state.application,
-    // conference: state.conference,
+    SerchedData: state.SerchedData,
+    FailureData: state.FailureData,
+    ModificationData: state.ModificationData
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({}, referenceActions);
+  const actions = Object.assign({push},
+    serchActions,
+    failureActions,
+    modificationActions
+  );
+
   return {
     actions: bindActionCreators(actions, dispatch)
   };

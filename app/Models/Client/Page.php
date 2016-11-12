@@ -65,6 +65,15 @@ class Page extends Model
         ->withPivot('status', 'id');
     }
 
+    public function holePages()
+    {
+        return $this->hasMany(
+            'App\Models\Client\HolePage',
+            'page_id',
+            'id'
+        );
+    }
+
     public function comments()
     {
         return $this->hasMany(

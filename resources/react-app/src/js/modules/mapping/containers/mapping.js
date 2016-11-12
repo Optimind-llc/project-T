@@ -15,7 +15,7 @@ class Mapping extends Component {
     this.state = {
       active: props.active.name,
       fFilter: [],
-      holeStatus: 's1',
+      holeStatus: 's0',
       hModification: 1,
       cFilter: []
     };
@@ -122,7 +122,7 @@ class Mapping extends Component {
                   <li
                     onClick={() => this.setState({holeStatus: 's0'})}
                   >
-                    {/*<span>{holeStatus == 's0' && <p>{'✔'}︎</p>}</span>*/}
+                    <span>{holeStatus == 's0' && <p>{'✔'}︎</p>}</span>
                     {'×'}
                   </li>
                   {data.holePoints.map(h => {
@@ -139,7 +139,7 @@ class Mapping extends Component {
                   <li
                     onClick={() => this.setState({holeStatus: 's2'})}
                   >
-                    {/*<span>{holeStatus == 's2' && <p>{'✔'}︎</p>}</span>*/}
+                    <span>{holeStatus == 's2' && <p>{'✔'}︎</p>}</span>
                     {'△'}
                   </li>
                   {data.holePoints.map(h => {
@@ -156,7 +156,7 @@ class Mapping extends Component {
                   <li
                     onClick={() => this.setState({holeStatus: 's1'})}
                   >
-                    {/*<span>{holeStatus == 's1' && <p>{'✔'}︎</p>}</span>*/}
+                    <span>{holeStatus == 's1' && <p>{'✔'}︎</p>}</span>
                     {'○'}
                   </li>
                   {data.holePoints.map(h => {
@@ -259,6 +259,7 @@ class Mapping extends Component {
                         <li
                           onClick={() => this.setState({hModification: hm.id})}
                         >
+                          <span>{hModification == hm.id && <p>{'✔'}︎</p>}</span>
                           {hm.name}
                         </li>
                         {data.holePoints.map(h => {
@@ -308,7 +309,7 @@ class Mapping extends Component {
 
   render() {
     const { isFetching, data } = this.props.PageData;
-    const { active, fFilter, holeStatus, cFilter } = this.state;
+    const { active, fFilter, holeStatus, cFilter, hModification } = this.state;
 
     return (
       <div id="mapping-wrap" className="">
@@ -411,18 +412,18 @@ class Mapping extends Component {
                     }
                   }
                   
-                  let percentage = 0;
-                  if (h.sum !== 0 && h[holeStatus] != 0) percentage = Math.round(100*h[holeStatus]/h.sum);
+                  // let percentage = 0;
+                  // if (h.sum !== 0 && h[holeStatus] != 0) percentage = Math.round(100*h[holeStatus]/h.sum);
 
                   return (
                     <g>
-                      <circle cx={h.x} cy={h.y} r={4} fill="red" />
+                      <circle cx={h.x} cy={h.y} r={4} fill={h[holeStatus] == 0 ? 'rgba(255,0,0,0.4)' : 'rgba(255,0,0,1)'} />
                       <text
                         x={h.lx}
                         y={h.ly}
                         dy="6"
                         fontSize="12"
-                        fill="black"
+                        fill={h[holeStatus] == 0 ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
                         textAnchor="middle"
                         fontWeight="bold"
                         >
@@ -473,15 +474,17 @@ class Mapping extends Component {
                   let percentage = 0;
                   if (h.sum !== 0 && h[holeStatus] != 0) percentage = Math.round(100*h[holeStatus]/h.sum);
 
+                  let includ = h.holes.indexOf(hModification) == -1;
+
                   return (
                     <g>
-                      <circle cx={h.x} cy={h.y} r={4} fill="red" />
+                      <circle cx={h.x} cy={h.y} r={4} fill={includ ? 'rgba(255,0,0,0.4)' : 'rgba(255,0,0,1)'} />
                       <text
                         x={h.lx}
                         y={h.ly}
                         dy="6"
                         fontSize="12"
-                        fill="black"
+                        fill={includ ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
                         textAnchor="middle"
                         fontWeight="bold"
                         >

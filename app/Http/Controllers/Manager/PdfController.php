@@ -55,7 +55,7 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
-        $failures = Inspection::where('en', 'kensa')
+        $failures = Inspection::where('en', 'gaikan')
             ->where('process_id', 'molding')
             ->first()
             ->failures
@@ -119,7 +119,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('Y/m/d H:i:s'));
+                array_push($body[$r], $family->created_at->format('H:i'));
                 $r = $r+1;
             }
 
@@ -217,6 +217,102 @@ class PdfController extends Controller
             $tcpdf->Text(103, 287, 'page '.($page+1));
         }
 
+
+        $timeChunks = [
+            '6:30〜7:30' => [],
+            '7:30〜8:30' => [],
+            '8:40〜9:40' => [],
+            '9:40〜10:40' => [],
+            '11:25〜12:25' => [],
+            '12:25〜13:25' => [],
+            '13:35〜14:35' => [],
+            '14:45〜15:15' => [],
+            '16:15〜17:15' => [],
+            '17:15〜18:15' => [],
+            '18:25〜19:25' => [],
+            '19:25〜20:25' => [],
+            '21:20〜22:10' => [],
+            '22:10〜23:20' => [],
+            '23:20〜0:20' => [],
+            '0:30〜1:00' => []
+        ];
+
+        foreach ($body as $value) {
+            $time = intval(str_replace(':', '', $value[22]));
+
+            if ($time >= 630 && $time < 730) {
+                $timeChunks['6:30〜7:30'][] = $value;
+            }
+            elseif ($time >= 730 && $time < 840) {
+                $timeChunks['7:30〜8:30'][] = $value;
+            }
+            elseif ($time >= 840 && $time < 940) {
+                $timeChunks['8:40〜9:40'][] = $value;
+            }
+            elseif ($time >= 940 && $time < 1125) {
+                $timeChunks['9:40〜10:40'][] = $value;
+            }
+            elseif ($time >= 1125 && $time < 1225) {
+                $timeChunks['11:25〜12:25'][] = $value;
+            }
+            elseif ($time >= 1225 && $time < 1335) {
+                $timeChunks['12:25〜13:25'][] = $value;
+            }
+            elseif ($time >= 1335 && $time < 1445) {
+                $timeChunks['13:35〜14:35'][] = $value;
+            }
+            elseif ($time >= 1445 && $time < 1615) {
+                $timeChunks['14:45〜15:15'][] = $value;
+            }
+            elseif ($time >= 1615 && $time < 1715) {
+                $timeChunks['16:15〜17:15'][] = $value;
+            }
+            elseif ($time >= 1715 && $time < 1825) {
+                $timeChunks['17:15〜18:15'][] = $value;
+            }
+            elseif ($time >= 1825 && $time < 1925) {
+                $timeChunks['18:25〜19:25'][] = $value;
+            }
+            elseif ($time >= 1925 && $time < 2120) {
+                $timeChunks['19:25〜20:25'][] = $value;
+            }
+            elseif ($time >= 2120 && $time < 2210) {
+                $timeChunks['21:20〜22:10'][] = $value;
+            }
+            elseif ($time >= 2210 && $time < 2320) {
+                $timeChunks['22:10〜23:20'][] = $value;
+            }
+            elseif ($time >= 2320 && $time < 2400) {
+                $timeChunks['23:20〜0:20'][] = $value;
+            }
+            elseif ($time >= 0 && $time < 30) {
+                $timeChunks['23:20〜0:20'][] = $value;
+            }
+            elseif ($time >= 30 && $time < 300) {
+                $timeChunks['0:30〜1:00'][] = $value;
+            }
+        }
+
+        $timeChunkSum = [];
+        foreach ($timeChunks as $chunk_name => $chunk) {
+            if (!array_key_exists($chunk_name, $timeChunkSum)) {
+                $timeChunkSum[$chunk_name] = [];
+            }
+
+            $timeChunkSum[$chunk_name] = array_reduce($chunk, function ($carry, $item) {
+
+                foreach ($item as $i => $value) {
+                    if (!array_key_exists($i, $carry)) {
+                        $carry[$i] = 0;
+                    }
+
+                    $carry[$i] = $carry[$i] + $value;
+                }
+
+                return $carry;
+            }, []);
+        }
+
         /*
          * Render A3 PDF
          */
@@ -268,6 +364,38 @@ class PdfController extends Controller
             $tcpdf->Text(210, 280, 'page '.($page+1));
         }
 
+        $tcpdf->AddPage('L', 'A3');
+        // Render page header
+        $tcpdf->SetFont('kozgopromedium', '', 12);
+        $tcpdf->Text($x0, $y0, '工程：成形工程ライン'.$line);
+        $tcpdf->Text(80, $y0, 'インナー検査　時間別集計結果');
+        $tcpdf->Text(160, $y0, strtr($date,'-','/'));
+        $tcpdf->Text(200, $y0, $itorG_name);
+        $tcpdf->Text(350, $y0, '印刷日時　'.$now->format('Y/m/d H:i:s'));
+
+        // Render table header
+        $tcpdf->SetFont('kozgopromedium', '', 8);
+
+        foreach ($failures as $i => $f) {
+            $tcpdf->Text($x0-70+array_sum($d)+$i*$fd, $x0+12, $f['name']);
+        }
+
+        // Render table body
+        $n = 0;
+        foreach ($timeChunkSum as $key => $sum) {
+            $tcpdf->Text($x0+20, $y0+$y1+($n+1)*$th, $key);
+
+            foreach ($sum as $c => $val) {
+                if ($c > 5 && $c < 22){
+                    $tcpdf->Text($x0-70+array_sum($d)+($c-6)*$fd, $y0+$y1+($n+1)*$th, $val);
+                }
+            }
+            $n = $n+1;
+        }
+
+        // var_dump($timeChunkSum["19:25~20:25"]);
+
+
         if ($line == '１') {
             $pdf_path = 'report_'.$parts[0]['vehicle'].'_'.$now->format('Ymd').'_m001_inner_w.pdf';
         } else {
@@ -284,10 +412,10 @@ class PdfController extends Controller
         $body = [];
         $row_sum = [5 => '合計'];
 
-        $inlines = $families[0]->pages->map(function($inline) {
+        $inlines = $families[0]->pages[0]->inlines->map(function($inline) {
             return [
                 'sort' => $inline->sort,
-                'status' => $inline->status,
+                'status' => $inline->pivot->status,
                 'inspected_at' => $inline->inspected_at
             ];
         });
@@ -320,12 +448,13 @@ class PdfController extends Controller
                     $part['status'] == 1 ? 'OK' : 'NG'
                 ];
 
-                foreach ($family->pages as $c => $i) {
-                    array_push($body[$r], $i['status']);
+                foreach ($family->pages[0]->inlines as $c => $i) {
+                    array_push($body[$r], $i->pivot->status);
                 }
 
                 // $at = preg_replace("/(-| |:)/", "", $inlines[0]['inspected_at']);
                 $at = preg_replace("/(-| |:)/", "", $family->inspected_at);
+                $at = $family->inspected_at->format('H:i');
                 array_push($body[$r], $at);
 
                 $r = $r+1;
@@ -395,7 +524,7 @@ class PdfController extends Controller
             } else {
                 $tcpdf->Line(106, 28, 106, 281);
 
-                foreach (array_chunk($body, 50) as $column => $value) {
+                foreach (array_chunk($value, 50) as $column => $value) {
                     $tcpdf->SetFont('kozgopromedium', '', 6);
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
@@ -535,7 +664,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('Y/m/d H:i:s'));
+                array_push($body[$r], $family->created_at->format('H:i'));
                 $r = $r+1;
             }
 
@@ -608,7 +737,7 @@ class PdfController extends Controller
             } else {
                 $tcpdf->Line(106, 28, 106, 281);
 
-                foreach (array_chunk($body, 50) as $column => $value) {
+                foreach (array_chunk($value, 50) as $column => $value) {
                     $tcpdf->SetFont('kozgopromedium', '', 6);
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
@@ -726,7 +855,7 @@ class PdfController extends Controller
                 $i = $i+1;
             }
 
-            array_push($body[$row], $family->created_at->format('Y/m/d H:i:s'));
+            array_push($body[$row], $family->created_at->format('H:i'));
         }
 
         $x0 = 8;
@@ -792,7 +921,7 @@ class PdfController extends Controller
             } else {
                 $tcpdf->Line(106, 28, 106, 281);
 
-                foreach (array_chunk($body, 50) as $column => $value) {
+                foreach (array_chunk($value, 50) as $column => $value) {
                     $tcpdf->SetFont('kozgopromedium', '', 6);
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
@@ -888,7 +1017,7 @@ class PdfController extends Controller
     {
         $now = Carbon::now();
 
-        $failures = Inspection::where('en', 'kensa')
+        $failures = Inspection::where('en', 'gaikan')
             ->where('process_id', 'molding')
             ->first()
             ->failures
@@ -963,7 +1092,7 @@ class PdfController extends Controller
                     $row_sum[$c+6] = array_key_exists($c+6, $row_sum) ? $row_sum[$c+6]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('Y/m/d H:i:s'));
+                array_push($body[$r], $family->created_at->format('H:i'));
                 $r = $r+1;
             }
 
@@ -1183,7 +1312,7 @@ class PdfController extends Controller
                     array_push($body[$r], $sign);
                 }
 
-                array_push($body[$r], $family->created_at->format('Y/m/d H:i:s'));
+                array_push($body[$r], $family->created_at->format('H:i'));
                 $r = $r+1;
             }
             $r = $r+1;
@@ -1252,7 +1381,7 @@ class PdfController extends Controller
             } else {
                 $tcpdf->Line(106, 28, 106, 281);
 
-                foreach (array_chunk($body, 50) as $column => $value) {
+                foreach (array_chunk($value, 50) as $column => $value) {
                     $tcpdf->SetFont('kozgopromedium', '', 6);
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
@@ -1351,7 +1480,7 @@ class PdfController extends Controller
             return [
                 'sort' => $inline->sort,
                 'status' => $inline->pivot->status,
-                'inspected_at' => $inline->pivot->inspected_at
+                'inspected_at' => $inline->inspected_at
             ];
         });
 
@@ -1383,11 +1512,13 @@ class PdfController extends Controller
                     $part['status'] == 1 ? 'OK' : 'NG'
                 ];
 
-                foreach ($inlines as $c => $i) {
-                    array_push($body[$r], $i['status']);
+                foreach ($family->pages[0]->inlines as $c => $i) {
+                    array_push($body[$r], $i->pivot->status);
                 }
 
-                $at = preg_replace("/(-| |:)/", "", $inlines[0]['inspected_at']);
+                // $at = preg_replace("/(-| |:)/", "", $inlines[0]['inspected_at']);
+                $at = preg_replace("/(-| |:)/", "", $family->inspected_at);
+                $at = $family->inspected_at->format('H:i');
                 array_push($body[$r], $at);
 
                 $r = $r+1;
@@ -1641,7 +1772,7 @@ class PdfController extends Controller
                     $row_sum[6+$c1+1+$c2] = array_key_exists(6+$c1+1+$c2, $row_sum) ? $row_sum[6+$c1+1+$c2]+$sum : $sum;
                 }
 
-                array_push($body[$r], $family->created_at->format('Y/m/d H:i:s'));
+                array_push($body[$r], $family->created_at->format('H:i'));
                 $r = $r+1;
             }
 
@@ -1714,7 +1845,7 @@ class PdfController extends Controller
             } else {
                 $tcpdf->Line(106, 28, 106, 281);
 
-                foreach (array_chunk($body, 50) as $column => $value) {
+                foreach (array_chunk($value, 50) as $column => $value) {
                     $tcpdf->SetFont('kozgopromedium', '', 6);
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,0)), $y0+$y2, '車種');
                     $tcpdf->Text($x0+$column*$x1+array_sum(array_slice($d,0,1)), $y0+$y2, '品番');
@@ -1842,15 +1973,18 @@ class PdfController extends Controller
                         $q->join('inline_page as ip', 'pages.id', '=', 'ip.page_id')
                         ->where('inspected_at', '>=', $date_obj->addHours(2))
                         ->where('inspected_at', '<', $date_obj->copy()->addDay(1))
-                        ->select('pages.*', 'ip.status', 'ip.id', 'ip.inspected_at')
-                        ->join('inlines as i', 'ip.inline_id', '=', 'i.id')
-                        ->select('pages.*', 'ip.status', 'ip.id as ip_id', 'ip.inspected_at', 'i.sort')
-                        ->orderBy('i.sort');
+                        ->select('pages.*')
+                        ->groupBy('pages.id');
                     },
+                    'pages.inlines',
                     'pages.parts',
                     'pages.parts.partType'
                 ])
-                ->get();
+                ->get()
+                ->filter(function($f) {
+                    return $f->pages->count() > 0;
+                })
+                ->values();
 
             $has_report = array_every($families);
 

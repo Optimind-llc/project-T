@@ -137,7 +137,7 @@ class DummyInspectionsSeeder extends Seeder
         //成型：検査：ライン１：アウター
         $group = $controller->inspection(5);
 
-        for ($id = 1; $id <= 100; $id++) {
+        for ($id = 1; $id <= 200; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -146,7 +146,7 @@ class DummyInspectionsSeeder extends Seeder
         //成型：検査：ライン２：アウター
         $group = $controller->inspection(6);
 
-        for ($id = 101; $id <= 200; $id++) {
+        for ($id = 201; $id <= 400; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        

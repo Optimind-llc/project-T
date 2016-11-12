@@ -287,22 +287,22 @@
                 }
 
 				.hModification .collection {
-                    min-width: 254px;
+                    min-width: 314px;
 
 					> div:nth-child(1) {
 						flex-basis: 36px;
 						border-right: 1px solid #BFBFBF;	
 					}
 					> div:nth-child(2) {
-						flex-basis: 70px;
-						border-right: 1px solid #BFBFBF;
-					}
-					> div:nth-child(3) {
 						flex-basis: 90px;
 						border-right: 1px solid #BFBFBF;
 					}
+					> div:nth-child(3) {
+						flex-basis: 116px;
+						border-right: 1px solid #BFBFBF;
+					}
 					> div:nth-child(4) {
-						flex-basis: 70px;
+						flex-basis: 90px;
 					}
 
 					ul span {

@@ -35,6 +35,7 @@ class PartTypeTableSeeder extends Seeder
             [
                 'pn'          => 67149,
                 'name'        => 'バックドアインナー',
+                'short_name'  => '',
                 'vehicle_num' => '680A',
                 'sort'        => 1,
                 'created_at'  => $now,
@@ -42,6 +43,7 @@ class PartTypeTableSeeder extends Seeder
             ],[
                 'pn'          => 67119,
                 'name'        => 'アッパー',
+                'short_name'  => 'U',
                 'vehicle_num' => '680A',
                 'sort'        => 2,
                 'created_at'  => $now,
@@ -49,6 +51,7 @@ class PartTypeTableSeeder extends Seeder
             ],[
                 'pn'          => 67175,
                 'name'        => 'サイドアッパーRH',
+                'short_name'  => 'SUR',
                 'vehicle_num' => '680A',
                 'sort'        => 4,
                 'created_at'  => $now,
@@ -56,6 +59,7 @@ class PartTypeTableSeeder extends Seeder
             ],[
                 'pn'          => 67176,
                 'name'        => 'サイドアッパーLH',
+                'short_name'  => 'SUL',
                 'vehicle_num' => '680A',
                 'sort'        => 3,
                 'created_at'  => $now,
@@ -63,6 +67,7 @@ class PartTypeTableSeeder extends Seeder
             ],[
                 'pn'          => 67177,
                 'name'        => 'サイドロアRH',
+                'short_name'  => 'SLR',
                 'vehicle_num' => '680A',
                 'sort'        => 6,
                 'created_at'  => $now,
@@ -70,13 +75,15 @@ class PartTypeTableSeeder extends Seeder
             ],[
                 'pn'          => 67178,
                 'name'        => 'サイドロアLH',
+                'short_name'  => 'SLL',
                 'vehicle_num' => '680A',
                 'sort'        => 5,
                 'created_at'  => $now,
                 'updated_at'  => $now
             ],[
                 'pn'          => 67007,
-                'name'        => 'バックドアインナASSY',
+                'name'        => 'バックドアインナーASSY',
+                'short_name'  => '',
                 'vehicle_num' => '680A',
                 'sort'        => 7,
                 'created_at'  => $now,

@@ -25,7 +25,7 @@ class App extends Component {
 
     const links = [
       { en: 'dashboard', name: 'マッピング', disable: false},
-      { en: 'reference', name: '検査結果検索', disable: false },
+      { en: 'reference', name: '検査結果検索', disable: true },
       { en: 'report', name: '直レポート印刷', disable: false },
       { en: 'association', name: 'パネルID検索', disable: false },
       { en: 'master', name: '担当者マスタメンテ', disable: true },

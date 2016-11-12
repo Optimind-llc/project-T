@@ -27,4 +27,13 @@ class HolePage extends Model
             'hm_id'
         );
     }
+
+    public function hole()
+    {
+        return $this->belongsTo(
+            'App\Models\Hole',
+            'hole_id',
+            'id'
+        );
+    }
 }

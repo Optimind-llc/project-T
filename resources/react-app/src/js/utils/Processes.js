@@ -47,10 +47,10 @@ export const processes = {
 export const inspections = {
   1: [
     {label: '外観検査', value: 1},
-    {label: '精度検査', value: 2}
+    {label: '精度検査', value: 3}
   ],
   2: [
-    {label: '外観検査', value: 3, disabled: true},
+    {label: '外観検査', value: 2, disabled: true},
     {label: '精度検査', value: 0, disabled: true}
   ],
   3: [

@@ -27,7 +27,8 @@ use Dingo\Api\Exception\StoreResourceFailedException;
  */
 class ShowController extends Controller
 {
-    protected function findInspection($process_id, $inspection_en) {
+    protected function findInspection($process_id, $inspection_en)
+    {
         $inspection = Inspection::where('process_id', $process_id)
             ->where('en', $inspection_en)
             ->first();
@@ -39,7 +40,8 @@ class ShowController extends Controller
         return $inspection;
     }
 
-    protected function findInspectionGroup($vehicle, $process_id, $inspection_en, $division_en, $line = null) {
+    protected function findInspectionGroup($vehicle, $process_id, $inspection_en, $division_en, $line = null)
+    {
         $group = $this->findInspection($process_id, $inspection_en)
             ->getGroupByVehicleDivisionLine($vehicle, $division_en, $line);
 
@@ -50,7 +52,8 @@ class ShowController extends Controller
         return $group;
     }
 
-    protected function processData($option) {
+    protected function processData($option)
+    {
         switch ($option) {
             case 'all':
                 $processes = Process::select(['id', 'name as n', 'sort as s'])
@@ -78,7 +81,8 @@ class ShowController extends Controller
         return $processes;
     }
 
-    protected function vehicleData($option) {
+    protected function vehicleData($option)
+    {
         switch ($option) {
             case 'all':
                 $vehicles = Vehicle::select(['number as c', 'name as n'])->get();
@@ -108,7 +112,8 @@ class ShowController extends Controller
         return $vehicles;
     }
 
-    protected function inspectorGData($option) {
+    protected function inspectorGData($option)
+    {
         switch ($option) {
             case 'all':
                 $vehicles = InspectorGroup::where('status', 1)->select(['code as c', 'name as n'])->get();
@@ -594,6 +599,256 @@ class ShowController extends Controller
         return [
             'data' => $data
         ];
+    }
+
+    protected function getDetails($part_id, $partTypeId, $itionGId) {
+        $part = Part::with([
+            'partType',
+            'pages' => function($q) use ($itionGId) {
+                $q->join('inspection_families as if', function ($join) use ($itionGId) {
+                    $join->on('pages.family_id', '=', 'if.id')
+                        ->where('if.inspection_group_id', '=', $itionGId);
+                })
+                ->orderBy('if.inspected_at')
+                ->select(['pages.*', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.status']);
+            },
+            'pages.failurePositions' => function ($q) use($part_id) {
+                $q->where('part_id', '=', $part_id)
+                    ->select(['id','page_id', 'part_id', 'failure_id']);
+            },
+            'pages.comments',
+            'pages.comments.modification',
+            'pages.comments.failurePosition',
+            'pages.holePages' => function($q) use($partTypeId) {
+                $q->join('holes', 'hole_page.hole_id', '=', 'holes.id')
+                    ->where('holes.part_type_id', '=', $partTypeId)
+                    ->select('hole_page.*')
+                    ->get();
+            },
+            'pages.holePages.hole' => function($q) use($partTypeId) {
+                $q->select(['id', 'label']);
+            },
+            'pages.holePages.holeModification' => function($q) {
+                $q->select(['hole_modifications.id', 'name']);
+            },
+            'pages.inlines'
+        ])
+        ->find($part_id);
+
+        if ($part->pages->count() == 0) {
+            return null;
+        }
+
+        $merged_page = $part->pages->reduce(function($carry, $page) {
+            $carry->put('tyoku', $page->inspector_group);
+            $createdBy = explode(',', $page->created_by);
+            $carry->put('createdBy', array_key_exists(1, $createdBy) ? $createdBy[1] : $createdBy[0]);
+            $carry->put('updatedBy', $page->updated_by ? explode(',', $page->updated_by)[1] : '');
+            $carry->put('failures', $page->failurePositions->merge($carry->has('failures') ? $carry['failures'] : []));
+            $carry->put('holes', $page->holePages->merge($carry->has('holes') ? $carry['holes'] : []));
+            $carry->put('inlines', $page->inlines);
+            $carry->put('createdAt', $page->created_at->format('Y/m/d H:i:s'));
+            $carry->put('updatedAt', $page->updated_at->format('Y/m/d H:i:s'));
+            $carry->put('status', $page->pivot->status);
+            return $carry;
+        }, collect([]));
+
+        return [
+            'vehicle' => $part->partType->vehicle_num,
+            'pn' => $part->partType->pn,
+            'name' => $part->partType->name,
+            'panelId' => $part->panel_id,
+            'tyoku' => $merged_page['tyoku'],
+            'createdBy' => $merged_page['createdBy'],
+            'updatedBy' => $merged_page['updatedBy'],
+            'createdAt' => $merged_page['createdAt'],
+            'updatedAt' => $merged_page['updatedAt'],
+            'status' => $merged_page['status'],
+            'failures' => array_count_values($merged_page['failures']->map(function($f) {
+                return $f->failure_id;
+            })
+            ->toArray()),
+            'holes' => $merged_page['holes']->map(function($h) {
+                $m = null;
+                if ($h->holeModification->count() != 0) {
+                    $m['id'] = $h->holeModification->first()->id;
+                    $m['name'] = $h->holeModification->first()->name;
+                };
+
+                return [
+                    'label' => $h->hole->label,
+                    'status' => $h->status,
+                    'm' => $m,
+                ];
+            })
+            ->toArray(),
+            'inlines' => $merged_page['inlines']
+        ];
+    }
+
+    public function panelIdSerch($partTypeId, $itionGId, $panelId)
+    {
+        $part = Part::where('panel_id', $panelId)->where('part_type_id', $partTypeId)->first();
+
+        if (!$part instanceof Part) {
+            return ['data' => [
+                'count' => 0,
+                'parts' => []
+            ]];
+        }
+
+        $part = $this->getDetails($part->id, $partTypeId, $itionGId);
+
+        return ['data' => [
+            'count' => $part ? 1 : 0,
+            'parts' => $part ? [$part] : []
+        ]];
+    }
+
+    public function advancedSerch($partTypeId, $itionGId, Request $request)
+    {
+        $validator = app('validator')->make(
+            $request->all(),
+            [
+                'tyoku' => ['required', 'array'],
+                'judgement' => ['required', 'array'],
+                'start' => ['required', 'date'],
+                'end' => ['required', 'date'],
+                'f' => ['array'],
+                'm' => ['array'],
+                'hm' => ['array']
+            ]
+        );
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Validation error', $validator->errors());
+        }
+
+        $judgement = $request->judgement;
+        $f = $request->f;
+        $m = $request->m;
+
+        $parts = $page_types = PartType::find($partTypeId)
+            ->parts()
+            ->join('part_page as pp', function($join) use ($judgement) {
+                $join->on('pp.part_id', '=', 'parts.id')->whereIn('pp.status', $judgement);
+            })
+            ->join('pages as pg', function($join) {
+                $join->on('pg.id', '=', 'pp.page_id');
+            })
+            ->join('inspection_families as if', function($join) use ($itionGId) {
+                $join->on('if.id', '=', 'pg.family_id')->where('inspection_group_id', '=', $itionGId);
+            })
+            ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at'])
+            ->orderBy('if.inspected_at', 'if.created_at')
+            ->groupBy('parts.id')
+            ->with([
+                'pages' => function($q) use ($itionGId, $partTypeId, $f, $m) {
+                    $q = $q->join('inspection_families as if', function($join) use ($itionGId) {
+                        $join->on('if.id', '=', 'pages.family_id')->where('inspection_group_id', '=', $itionGId);
+                    });
+                    if (count($f) != 0) {
+                        $q = $q->whereHas('failurePositions', function($q) use($partTypeId, $f) {
+                            $q->join('parts as p', 'p.id', '=', 'failure_positions.part_id')
+                                ->where('p.part_type_id', '=', $partTypeId)
+                                ->whereIn('failure_id', $f);
+                        });
+                    }
+                    if (count($m) != 0) {
+                        $q = $q->whereHas('comments', function($q) use($partTypeId, $m) {
+                            $q->join('failure_positions as fp', 'fp.id', '=', 'modification_failure_position.fp_id')
+                                ->join('parts as p', 'p.id', '=', 'fp.part_id')
+                                ->where('p.part_type_id', '=', $partTypeId)
+                                ->whereIn('m_id', $m);
+                        });
+                    }
+                    $q->get();
+                },
+                'pages.failurePositions',
+                'pages.comments'
+            ])
+            ->get()
+            ->filter(function($part) {
+                return $part->pages->count() > 0;
+            })
+            ->map(function($part) {
+                return $part->id;
+            })
+            ->values()
+            ->sort();
+
+        $count = $parts->count();
+        $data = [];
+
+        if ($count > 100) {
+            for ($i=0; $i < 100; $i++) { 
+                $data[] = $this->getDetails($parts[$i], $partTypeId, $itionGId);
+            }
+        }
+        else {
+            foreach ($parts as $part_id) {
+                $data[] = $this->getDetails($part_id, $partTypeId, $itionGId);
+            }
+        }
+
+        return ['data' => [
+            'count' => $count,
+            'parts' => $data
+        ]];
+    }
+
+    public function failures($itionGId) {
+        $failureTypes = InspectionGroup::find($itionGId)->inspection->failures->map(function($f) {
+            return [
+                'id' => $f->id,
+                'label' => $f->label,
+                'name' => $f->name,
+                'type' => $f->pivot->type,
+                'sort' => $f->pivot->sort
+            ];
+        })->toArray();
+
+        if (count($failureTypes) == 0) {
+            return ['data' => []];
+        }
+
+        foreach( $failureTypes as $key => $row ) {
+            $f_type_array[$key] = $row['type'];
+            $f_label_array[$key] = $row['label'];
+            $f_sort_array[$key] = $row['sort'];
+        }
+
+        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failureTypes);
+
+        return ['data' => $failureTypes];
+    }
+
+    public function modifications($itionGId) {
+        $modificationTypes = InspectionGroup::find($itionGId)->inspection->modifications->map(function($m) {
+            return [
+                'id' => $m->id,
+                'label' => intval($m->label),
+                'name' => $m->name,
+                'type' => $m->pivot->type,
+                'sort' => $m->pivot->sort
+            ];
+        })->toArray();
+
+        if (count($modificationTypes) == 0) {
+            return ['data' => []];
+        }
+
+        foreach( $modificationTypes as $key => $row ) {
+            $m_type_array[$key] = $row['type'];
+            $m_label_array[$key] = $row['label'];
+            $m_sort_array[$key] = $row['sort'];
+        }
+
+        if (count($modificationTypes) !== 0 ) {
+            array_multisort($m_type_array, $m_sort_array, $m_label_array, $modificationTypes);
+        }
+
+        return ['data' => $modificationTypes];
     }
 
     public function partFamily($date, $tyoku)
