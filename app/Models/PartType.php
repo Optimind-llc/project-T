@@ -45,4 +45,12 @@ class PartType extends Model
         );
     }
 
+    public function holes()
+    {
+        return $this->hasMany(
+            'App\Models\Hole',
+            'part_type_id',
+            'id'
+        );
+    }
 }

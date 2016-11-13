@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Choku;
+use App\Export;
 // Models
 use App\Models\Process;
 use App\Models\Inspector;
@@ -180,235 +181,251 @@ class InspectionController extends Controller
         $groupId = $family['groupId'];
 
         //Duplicate detection
+        // foreach ($family['pages'] as $page) {
+        //     $page_type_id = $page['pageId'];
+
+        //     foreach ($page['parts'] as $part) {
+        //         $newPart = Part::where('panel_id', $part['panelId'])
+        //             ->where('part_type_id', $part['partTypeId'])
+        //             ->first();
+
+        //         if ($newPart instanceof Part) {
+        //             $newPage = Page::where('page_type_id', $page['pageId'])
+        //                 ->whereHas('parts', function($q) use ($newPart) {
+        //                     $q->where('id', $newPart->id);
+        //                 })
+        //                 ->first();
+
+        //             if ($newPage instanceof Page) {
+        //                 return \Response::json([
+        //                     'message' => $part['panelId'].' already be inspected in ather page(page_id = '.$newPage->id.').',
+        //                     'pageId' => $newPage->id,
+        //                     'panelId' => $part['panelId'],
+        //                     'pn' => $newPart->partType->pn
+        //                 ], 400);
+        //                 throw new JsonException($part['panelId'].' already be inspected in ather page(page_id = '.$newPage->id.').');
+        //             }
+        //         }
+        //     }
+        // }
+
+        // $newFamily = new InspectionFamily;
+        // $newFamily->inspection_group_id = $groupId;
+        // $newFamily->status = $family['status'];
+        // $newFamily->inspector_group = $family['inspectorGroup'];
+        // $newFamily->created_by = $family['inspector'];
+        // $newFamily->save();
+
+        // foreach ($family['pages'] as $key => $page) {
+        //     $newPage = new Page;
+        //     $newPage->page_type_id = $page['pageId'];
+        //     $newPage->table = isset($page['table']) ? $page['table'] : null;
+        //     $newPage->family_id = $newFamily->id;
+        //     $newPage->save();
+
+        //     foreach ($page['parts'] as $part) {
+        //         $newPart = Part::where('panel_id', $part['panelId'])
+        //             ->where('part_type_id', $part['partTypeId'])
+        //             ->first();
+
+        //         if (!$newPart instanceof Part) {
+        //             $newPart = new Part;
+        //             $newPart->panel_id = $part['panelId'];
+        //             $newPart->part_type_id = $part['partTypeId'];
+        //             $newPart->save();
+        //         }
+
+        //         $newPage->parts()->attach($newPart->id, ['status' => $part['status']]);
+        //     }
+
+        //     //Get divided area from page type
+        //     $area = PageType::find($page['pageId'])
+        //         ->partTypes()
+        //         ->get()
+        //         ->map(function($part){
+        //             return [
+        //                 'id' => $part->id,
+        //                 'area' => explode('/', $part->pivot->area)
+        //             ];
+        //         })
+        //         ->toArray();
+
+        //     //Get part_id in newPage
+        //     $newParts = $newPage
+        //         ->parts()
+        //         ->get(['id', 'part_type_id'])
+        //         ->map(function($part) {
+        //             return [
+        //                 'id' => $part->id,
+        //                 'type_id' => $part->part_type_id
+        //             ];
+        //         });
+
+        //     // Change point to pixel for Matuken
+        //     $matuken = function($f) {
+        //         if (isset($f['point'])) {
+        //            return $f['point'];
+        //         } elseif (isset($f['pointK'])) {
+        //             $exploded = explode(',', $f['pointK']);
+        //             $point = ($exploded[0]*2).','.($exploded[1]*2);
+        //             return $point;
+        //         } else {
+        //             return null;
+        //         }
+        //     };
+
+        //     // Get part_id from point
+        //     $getPartIdfromArea = function($f) use ($matuken, $newParts, $area) {
+        //         if ($matuken($f)) {
+        //             $exploded = explode(',', $matuken($f));
+
+        //             $x = intval($exploded[0]);
+        //             $y = intval($exploded[1]);
+
+        //             $part_type_id = 0;
+
+        //             foreach ($area as $a) {
+        //                 $x1 = intval($a['area'][0]);
+        //                 $y1 = intval($a['area'][1]);
+        //                 $x2 = intval($a['area'][2]);
+        //                 $y2 = intval($a['area'][3]);
+
+        //                 if ($x1 <= $x && $x < $x2 && $y1 <= $y && $y < $y2) {
+        //                     $part_type_id = $a['id'];
+        //                 }
+        //             }
+
+        //             $filtered = $newParts->filter(function ($part) use ($part_type_id) {
+        //                 return $part['type_id'] == $part_type_id;
+        //             });
+
+        //            return $filtered->first()['id'];
+        //         }
+        //     };
+
+        //     // Create failure
+        //     if (array_key_exists('failures', $page) && count($page['failures']) !== 0) {
+        //         foreach ($page['failures'] as $f) {
+        //             $new_fp = new FailurePosition;
+        //             $new_fp->page_id = $newPage->id;
+        //             $new_fp->failure_id = $f['id'];
+        //             $new_fp->part_id = $getPartIdfromArea($f);
+        //             $new_fp->point = $matuken($f);
+        //             $new_fp->save();
+
+        //             if (array_key_exists('commentId', $f)) {
+        //                 DB::table('modification_failure_position')->insert([
+        //                     'page_id' => $newPage->id,
+        //                     'fp_id' => $new_fp->id,
+        //                     'm_id' => $f['commentId'],
+        //                     'comment' => array_key_exists('comment', $f) ? $f['comment'] : ''
+        //                 ]);
+        //             }
+        //         }
+        //     }
+
+        //     // Create holes
+        //     if (array_key_exists('holes', $page) && count($page['holes']) !== 0) {
+        //         DB::table('hole_page')->insert(array_map(function($h) use ($newPage) {
+        //                 return [
+        //                     'page_id' => $newPage->id,
+        //                     'hole_id' => $h['id'],
+        //                     'status' => $h['status']
+        //                 ];
+        //             },
+        //             $page['holes'])
+        //         );
+        //     }
+
+        //     // Create comments
+        //     if (array_key_exists('comments', $page) && count($page['comments']) !== 0) {
+        //         DB::table('modification_failure_position')->insert(array_map(function($c) use ($newPage) {
+        //                 return [
+        //                     'page_id' => $newPage->id,
+        //                     'fp_id' => $c['failurePositionId'],
+        //                     'm_id' => $c['commentId'],
+        //                     'comment' => array_key_exists('comment', $c) ? $c['comment'] : ''
+        //                 ];
+        //             },
+        //             $page['comments'])
+        //         );
+        //     }
+
+        //     // Create hole modification
+        //     if (array_key_exists('holeModifications', $page) && count($page['holeModifications']) !== 0) {
+        //         DB::table('hole_page_hole_modification')->insert(array_map(function($hm) use ($newPage) {
+        //                 return [
+        //                     'page_id' => $newPage->id,
+        //                     'hp_id' => $hm['holePageId'],
+        //                     'hm_id' => $hm['holeModificationId'],
+        //                     'comment' => array_key_exists('comment', $hm) ? $hm['comment'] : ''
+        //                 ];
+        //             },
+        //             $page['holeModifications'])
+        //         );
+        //     }
+        // }
+
+        $export_parts = [];
         foreach ($family['pages'] as $page) {
-            $page_type_id = $page['pageId'];
-
             foreach ($page['parts'] as $part) {
-                $newPart = Part::where('panel_id', $part['panelId'])
-                    ->where('part_type_id', $part['partTypeId'])
-                    ->first();
-
-                if ($newPart instanceof Part) {
-                    $newPage = Page::where('page_type_id', $page['pageId'])
-                        ->whereHas('parts', function($q) use ($newPart) {
-                            $q->where('id', $newPart->id);
-                        })
-                        ->first();
-
-                    if ($newPage instanceof Page) {
-                        return \Response::json([
-                            'message' => $part['panelId'].' already be inspected in ather page(page_id = '.$newPage->id.').',
-                            'pageId' => $newPage->id,
-                            'panelId' => $part['panelId'],
-                            'pn' => $newPart->partType->pn
-                        ], 400);
-                        throw new JsonException($part['panelId'].' already be inspected in ather page(page_id = '.$newPage->id.').');
-                    }
-                }
+                $part_id = Part::where('panel_id', '=', $part['panelId'])->first()->id;
+                $export_parts[$part['partTypeId']] = [
+                    'itionGId' => $groupId,
+                    'partTypeId' => $part['partTypeId'],
+                    'partId' => $part_id
+                ];
             }
         }
 
-        $newFamily = new InspectionFamily;
-        $newFamily->inspection_group_id = $groupId;
-        $newFamily->status = $family['status'];
-        $newFamily->inspector_group = $family['inspectorGroup'];
-        $newFamily->created_by = $family['inspector'];
-        $newFamily->save();
+        // $export = new Export;
+        // return $export->exportCSV($export_parts[1]['partId'], $export_parts[1]['partTypeId'], $export_parts[1]['itionGId']);
+         
 
-        foreach ($family['pages'] as $key => $page) {
-            $newPage = new Page;
-            $newPage->page_type_id = $page['pageId'];
-            $newPage->table = isset($page['table']) ? $page['table'] : null;
-            $newPage->family_id = $newFamily->id;
-            $newPage->save();
+        // // Export CSV
+        // if ($groupId == 1 || $groupId == 2) {
+        //     $itorG = $family['inspectorGroup'];
+        //     $itor = explode(',',$family['inspector'])[1];
+        //     // $status = $family['status'];
+        //     $status = $family['status'] == 1 ? 0 : 1;
+        //     $panel_id = $family['pages'][0]['parts'][0]['panelId'];
+        //     $failures = $family['pages'][0]['failures'];
+        //     $c_failures = collect($failures)->groupBy('id')->map(function($f){
+        //         return $f->count();
+        //     })->toArray();
 
-            foreach ($page['parts'] as $part) {
-                $newPart = Part::where('panel_id', $part['panelId'])
-                    ->where('part_type_id', $part['partTypeId'])
-                    ->first();
+        //     $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $c_failures);
+        // }
 
-                if (!$newPart instanceof Part) {
-                    $newPart = new Part;
-                    $newPart->panel_id = $part['panelId'];
-                    $newPart->part_type_id = $part['partTypeId'];
-                    $newPart->save();
-                }
+        // if ($groupId == 16 || $groupId == 10 || $groupId == 11 || $groupId == 12 || $groupId == 13 || $groupId == 14) {
+        //     $itorG = $family['inspectorGroup'];
+        //     $itor = explode(',',$family['inspector'])[1];
+        //     // $status = $family['status'];
+        //     $status = $family['status'] == 1 ? 0 : 1;
+        //     $panel_id = $family['pages'][0]['parts'][0]['panelId'];
+        //     $failures = $family['pages'][0]['failures'];
 
-                $newPage->parts()->attach($newPart->id, ['status' => $part['status']]);
-            }
+        //     $modifications = [];
+        //     if (array_key_exists('comments', $family['pages'][0])) {
+        //         $modifications = $family['pages'][0]['comments'];
+        //     }
 
-            //Get divided area from page type
-            $area = PageType::find($page['pageId'])
-                ->partTypes()
-                ->get()
-                ->map(function($part){
-                    return [
-                        'id' => $part->id,
-                        'area' => explode('/', $part->pivot->area)
-                    ];
-                })
-                ->toArray();
+        //     $c_failures = collect($failures)->groupBy('id')->map(function($f){
+        //         return $f->count();
+        //     })->toArray();
 
-            //Get part_id in newPage
-            $newParts = $newPage
-                ->parts()
-                ->get(['id', 'part_type_id'])
-                ->map(function($part) {
-                    return [
-                        'id' => $part->id,
-                        'type_id' => $part->part_type_id
-                    ];
-                });
-
-            // Change point to pixel for Matuken
-            $matuken = function($f) {
-                if (isset($f['point'])) {
-                   return $f['point'];
-                } elseif (isset($f['pointK'])) {
-                    $exploded = explode(',', $f['pointK']);
-                    $point = ($exploded[0]*2).','.($exploded[1]*2);
-                    return $point;
-                } else {
-                    return null;
-                }
-            };
-
-            // Get part_id from point
-            $getPartIdfromArea = function($f) use ($matuken, $newParts, $area) {
-                if ($matuken($f)) {
-                    $exploded = explode(',', $matuken($f));
-
-                    $x = intval($exploded[0]);
-                    $y = intval($exploded[1]);
-
-                    $part_type_id = 0;
-
-                    foreach ($area as $a) {
-                        $x1 = intval($a['area'][0]);
-                        $y1 = intval($a['area'][1]);
-                        $x2 = intval($a['area'][2]);
-                        $y2 = intval($a['area'][3]);
-
-                        if ($x1 <= $x && $x < $x2 && $y1 <= $y && $y < $y2) {
-                            $part_type_id = $a['id'];
-                        }
-                    }
-
-                    $filtered = $newParts->filter(function ($part) use ($part_type_id) {
-                        return $part['type_id'] == $part_type_id;
-                    });
-
-                   return $filtered->first()['id'];
-                }
-            };
-
-            // Create failure
-            if (array_key_exists('failures', $page) && count($page['failures']) !== 0) {
-                foreach ($page['failures'] as $f) {
-                    $new_fp = new FailurePosition;
-                    $new_fp->page_id = $newPage->id;
-                    $new_fp->failure_id = $f['id'];
-                    $new_fp->part_id = $getPartIdfromArea($f);
-                    $new_fp->point = $matuken($f);
-                    $new_fp->save();
-
-                    if (array_key_exists('commentId', $f)) {
-                        DB::table('modification_failure_position')->insert([
-                            'page_id' => $newPage->id,
-                            'fp_id' => $new_fp->id,
-                            'm_id' => $f['commentId'],
-                            'comment' => array_key_exists('comment', $f) ? $f['comment'] : ''
-                        ]);
-                    }
-                }
-            }
-
-            // Create holes
-            if (array_key_exists('holes', $page) && count($page['holes']) !== 0) {
-                DB::table('hole_page')->insert(array_map(function($h) use ($newPage) {
-                        return [
-                            'page_id' => $newPage->id,
-                            'hole_id' => $h['id'],
-                            'status' => $h['status']
-                        ];
-                    },
-                    $page['holes'])
-                );
-            }
-
-            // Create comments
-            if (array_key_exists('comments', $page) && count($page['comments']) !== 0) {
-                DB::table('modification_failure_position')->insert(array_map(function($c) use ($newPage) {
-                        return [
-                            'page_id' => $newPage->id,
-                            'fp_id' => $c['failurePositionId'],
-                            'm_id' => $c['commentId'],
-                            'comment' => array_key_exists('comment', $c) ? $c['comment'] : ''
-                        ];
-                    },
-                    $page['comments'])
-                );
-            }
-
-            // Create hole modification
-            if (array_key_exists('holeModifications', $page) && count($page['holeModifications']) !== 0) {
-                DB::table('hole_page_hole_modification')->insert(array_map(function($hm) use ($newPage) {
-                        return [
-                            'page_id' => $newPage->id,
-                            'hp_id' => $hm['holePageId'],
-                            'hm_id' => $hm['holeModificationId'],
-                            'comment' => array_key_exists('comment', $hm) ? $hm['comment'] : ''
-                        ];
-                    },
-                    $page['holeModifications'])
-                );
-            }
-        }
-
-        // Export CSV
-        if ($groupId == 1 || $groupId == 2) {
-            $itorG = $family['inspectorGroup'];
-            $itor = explode(',',$family['inspector'])[1];
-            // $status = $family['status'];
-            $status = $family['status'] == 1 ? 0 : 1;
-            $panel_id = $family['pages'][0]['parts'][0]['panelId'];
-            $failures = $family['pages'][0]['failures'];
-            $c_failures = collect($failures)->groupBy('id')->map(function($f){
-                return $f->count();
-            })->toArray();
-
-            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $c_failures);
-        }
-
-        if ($groupId == 16 || $groupId == 10 || $groupId == 11 || $groupId == 12 || $groupId == 13 || $groupId == 14) {
-            $itorG = $family['inspectorGroup'];
-            $itor = explode(',',$family['inspector'])[1];
-            // $status = $family['status'];
-            $status = $family['status'] == 1 ? 0 : 1;
-            $panel_id = $family['pages'][0]['parts'][0]['panelId'];
-            $failures = $family['pages'][0]['failures'];
-
-            $modifications = [];
-            if (array_key_exists('comments', $family['pages'][0])) {
-                $modifications = $family['pages'][0]['comments'];
-            }
-
-            $c_failures = collect($failures)->groupBy('id')->map(function($f){
-                return $f->count();
-            })->toArray();
-
-            $c_modifications = null;
-            if (count($modifications) !== 0) {
-                $c_modifications = collect(array_merge($failures, $modifications))
-                    ->groupBy('commentId')
-                    ->map(function($m){
-                        return $m->count();
-                    })
-                    ->toArray();
-            }
+        //     $c_modifications = null;
+        //     if (count($modifications) !== 0) {
+        //         $c_modifications = collect(array_merge($failures, $modifications))
+        //             ->groupBy('commentId')
+        //             ->map(function($m){
+        //                 return $m->count();
+        //             })
+        //             ->toArray();
+        //     }
             
-            $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $c_failures, $c_modifications);
-        }
+        //     $this->exportCSV($groupId, $panel_id, $itorG, $itor, $status, $c_failures, $c_modifications);
+        // }
 
         return 'Excellent';
     }

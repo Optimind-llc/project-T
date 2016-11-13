@@ -118,7 +118,7 @@ class DummyInspectionsSeeder extends Seeder
 
         //成型：検査：ライン１：インナー
         $group = $controller->inspection(1);
-        for ($id = 1; $id <= 20; $id++) {
+        for ($id = 1; $id <= 200; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             // var_dump(json_encode($data));
             $request->setFamily($data);
@@ -128,7 +128,7 @@ class DummyInspectionsSeeder extends Seeder
         //成型：検査：ライン２：インナー
         $group = $controller->inspection(2);
 
-        for ($id = 21; $id <= 40; $id++) {
+        for ($id = 201; $id <= 400; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -155,7 +155,7 @@ class DummyInspectionsSeeder extends Seeder
         //穴あけ：外観検査：インナー
         $group = $controller->inspection(15);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 200; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -164,7 +164,7 @@ class DummyInspectionsSeeder extends Seeder
         //穴あけ：検査：インナー
         $group = $controller->inspection(4);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 200; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -189,7 +189,7 @@ class DummyInspectionsSeeder extends Seeder
         //穴あけ：検査：アウター
         $group = $controller->inspection(8);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 200; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        

@@ -43,4 +43,14 @@ class Hole extends Model
             'id'
         );
     }
+
+    // public function pages()
+    // {
+    //     return $this->belongsToMany(
+    //         'App\Models\Client\Page',
+    //         'hole_page',
+    //         'hole_id',
+    //         'page_id'
+    //     )->withPivot('status');
+    // }
 }

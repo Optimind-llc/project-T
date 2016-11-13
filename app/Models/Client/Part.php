@@ -53,4 +53,14 @@ class Part extends Model
             'id'
         );
     }
+
+    public function inlines()
+    {
+        return $this->belongsToMany(
+            'App\Models\Inline',
+            'inline_page',
+            'part_id',
+            'inline_id'
+        )->withPivot('status');
+    }
 }

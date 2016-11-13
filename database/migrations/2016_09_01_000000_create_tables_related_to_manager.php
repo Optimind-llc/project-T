@@ -386,8 +386,8 @@ class CreateTablesRelatedToManager extends Migration
             $table->string('face', 16)->nullable();
             $table->string('position', 16)->nullable();
             $table->string('calibration', 16)->nullable();
-            $table->string('standard_tolerance', 16);
-            $table->string('input_tolerance', 16)->nullable();
+            $table->double('max_tolerance', 6, 3);
+            $table->double('min_tolerance', 6, 3)->nullable();
             $table->integer('sort')->unsigned()->default(1);
             $table->integer('part_type_id')->unsigned();
             $table->integer('figure_id')->unsigned();
