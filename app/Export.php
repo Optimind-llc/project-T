@@ -4,6 +4,8 @@ namespace App;
 
 use Carbon\Carbon;
 // Models
+use App\Models\PartType;
+use App\Models\InspectionGroup;
 use App\Models\Client\Part;
 
 class Export
@@ -54,6 +56,7 @@ class Export
             $carry->put('createdBy', array_key_exists(1, $createdBy) ? $createdBy[1] : $createdBy[0]);
             $carry->put('updatedBy', $page->updated_by ? explode(',', $page->updated_by)[1] : '');
             $carry->put('failures', $page->failurePositions->merge($carry->has('failures') ? $carry['failures'] : []));
+            $carry->put('modifications', $page->comments->merge($carry->has('modifications') ? $carry['modifications'] : []));
             $carry->put('holes', $page->holePages->merge($carry->has('holes') ? $carry['holes'] : []));
             $carry->put('inlines', $page->inlines);
             $carry->put('createdAt', $page->created_at->format('Y/m/d H:i:s'));
@@ -77,6 +80,10 @@ class Export
                 return $f->failure_id;
             })
             ->toArray()),
+            'modifications' => array_count_values($merged_page['modifications']->map(function($m) {
+                return $m->modification->id;
+            })
+            ->toArray()),
             // 'holes' => $merged_page['holes']->map(function($h) {
             //     $m = null;
             //     if ($h->holeModification->count() != 0) {
@@ -95,10 +102,15 @@ class Export
         ];
     }
 
-    public function exportCSV($partId, $partTypeId, $itionGId)
+    public function exportCSV($panelId, $partTypeId, $itionGId)
     {
-        $details = $this->getDetails($partId, $partTypeId, $itionGId);
+        $partId = Part::where('panel_id', '=', $panelId)
+            ->where('part_type_id', '=', $partTypeId)
+            ->first()
+            ->id;
+        $part_type = PartType::find($partTypeId);
 
+        $details = $this->getDetails($partId, $partTypeId, $itionGId);
 
         $now = Carbon::now();
         $choku = new Choku($now);
@@ -108,73 +120,86 @@ class Export
 
         switch ($itionGId) {
             case 1:
-                $export = ['67149','47060','A',substr($pId, 1,7),'成型','001'];
-                $file_name = 'M001_67149_'.$now->format('Ymd_His');
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成型','001','680A'];
+                $file_name = 'M001_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 2:
-                $export = ['67149','47060','A',substr($pId, 1,7),'成型','002'];
-                $file_name = 'M001_67149_'.$now->format('Ymd_His');
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成型','002','680A'];
+                $file_name = 'M002_'.$part_type->pn.'_'.$now->format('Ymd_His');
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                break;
+            case 5:
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成型','001','680A'];
+                $file_name = 'M001_'.$part_type->pn.'_'.$now->format('Ymd_His');
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                break;
+            case 6:
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成型','002','680A'];
+                $file_name = 'M002_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 10:
-                $export = ['67007','47120','A',substr($pId, 1,7),'接着','止水'];
-                $file_name = 'J_shisui_67007_'.$now->format('Ymd_His');
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','止水','680A'];
+                $file_name = 'J_shisui_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 11:
-                $export = ['67007','47120','A',substr($pId, 1,7),'接着','仕上'];
-                $file_name = 'J_shiage_67007_'.$now->format('Ymd_His');
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','仕上','680A'];
+                $file_name = 'J_shiage_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 12:
-                $export = ['67007','47120','A',substr($pId, 1,7),'接着','検査'];
-                $file_name = 'J_kensa_67007_'.$now->format('Ymd_His');
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','検査','680A'];
+                $file_name = 'J_kensa_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 13:
-                $export = ['67007','47120','A',substr($pId, 1,7),'接着','特検'];
-                $file_name = 'J_tokken_67007_'.$now->format('Ymd_His');
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','特検','680A'];
+                $file_name = 'J_tokken_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 14:
-                $export = ['67007','47120','A',substr($pId, 1,7),'接着','手直し'];
-                $file_name = 'J_tenaoshi_67007_'.$now->format('Ymd_His');
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','手直し','680A'];
+                $file_name = 'J_tenaoshi_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 16:
-                $export = ['67007','47120','A',substr($pId, 1,7),'接着','簡易CF'];
-                $file_name = 'J_tenaoshi_67007_'.$now->format('Ymd_His');
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','簡易CF','680A'];
+                $file_name = 'J_kanicf_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
         }
 
-        $export = array_merge($export, ['680A',$itorG,$choku_num,$itor,$status]);
+        $by = $details['updatedBy'] == '' ? $details['createdBy'] : $details['updatedBy'];
+        $export = array_merge($export, [
+            $details['tyoku'],
+            $choku_num,
+            $by,
+            $details['status']
+        ]);
 
-        $failures = InspectionGroup::find($gId)
-            ->inspection
-            ->failures()
-            ->get(['id', 'label', 'name'])
-            ->map(function($f) {
-                return [
-                    'id' => $f->id,
-                    'label' => $f->label,
-                    'name' => $f->name,
-                    'type' => $f->pivot->type,
-                    'sort' => $f->pivot->sort
-                ];
-            })
-            ->toArray();
-        foreach( $failures as $key => $row ) {
+        $failureTypes = InspectionGroup::find($itionGId)->inspection->failures->map(function($f) {
+            return [
+                'id' => $f->id,
+                'label' => $f->label,
+                'name' => $f->name,
+                'type' => $f->pivot->type,
+                'sort' => $f->pivot->sort
+            ];
+        })->toArray();
+
+        foreach( $failureTypes as $key => $row ) {
             $f_type_array[$key] = $row['type'];
             $f_label_array[$key] = $row['label'];
             $f_sort_array[$key] = $row['sort'];
         }
-        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failures);
 
-        foreach ($failures as $f) {
-            if (array_key_exists(intval($f['id']), $c_failures)) {
-                $f_sum = $c_failures[$f['id']];
+        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failureTypes);
+
+        foreach ($failureTypes as $ft) {
+            if (array_key_exists($ft['id'], $details['failures'])) {
+                $f_sum = $details['failures'][$ft['id']];
             }
             else {
                 $f_sum = '';
@@ -182,33 +207,31 @@ class Export
             array_push($export, $f_sum);
         }
 
-        // push modification result
-        if (isset($c_modifications)) {
-            $modifications = InspectionGroup::find($gId)
-                ->inspection
-                ->modifications()
-                ->get(['id', 'label', 'name'])
-                ->map(function($f) {
-                    return [
-                        'id' => $f->id,
-                        'label' => $f->label,
-                        'name' => $f->name,
-                        'type' => $f->pivot->type,
-                        'sort' => $f->pivot->sort
-                    ];
-                })
-                ->toArray();
+        // Push modification result
+        if (array_key_exists('modifications', $details) && count($details['modifications'])) {
+            $modificationTypes = InspectionGroup::find($itionGId)->inspection->modifications->map(function($m) {
+                return [
+                    'id' => $m->id,
+                    'label' => intval($m->label),
+                    'name' => $m->name,
+                    'type' => $m->pivot->type,
+                    'sort' => $m->pivot->sort
+                ];
+            })->toArray();
 
-            foreach( $modifications as $key => $row ) {
+            foreach( $modificationTypes as $key => $row ) {
                 $m_type_array[$key] = $row['type'];
                 $m_label_array[$key] = $row['label'];
                 $m_sort_array[$key] = $row['sort'];
             }
-            array_multisort($m_type_array, $m_sort_array, $m_label_array, $modifications);
 
-            foreach ($modifications as $m) {
-                if (array_key_exists($m['id'], $c_modifications)) {
-                    $modi_sum = $c_modifications[$m['id']];                 
+            if (count($modificationTypes) !== 0 ) {
+                array_multisort($m_type_array, $m_sort_array, $m_label_array, $modificationTypes);
+            }
+
+            foreach ($modificationTypes as $mt) {
+                if (array_key_exists($mt['id'], $details['modifications'])) {
+                    $modi_sum = $details['modifications'][$mt['id']];                 
                 }
                 else {
                     $modi_sum = '';
@@ -220,7 +243,7 @@ class Export
 
         array_push($export, $now->format('Y/m/d H:i:s'));
 
-        if( touch($file_path) ){
+        if(touch($file_path)){
             $file = new \SplFileObject($file_path, 'w');
 
             foreach( $export as $key => $val ){
@@ -229,5 +252,7 @@ class Export
 
             $file->fputcsv($export_raw);
         }
+
+        return true;
     }
 }

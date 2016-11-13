@@ -34,6 +34,7 @@ class PartTypeTableSeeder extends Seeder
         $data = [
             [
                 'pn'          => 67149,
+                'pn2'         => 47060,
                 'name'        => 'バックドアインナー',
                 'short_name'  => '',
                 'vehicle_num' => '680A',
@@ -42,6 +43,7 @@ class PartTypeTableSeeder extends Seeder
                 'updated_at'  => $now
             ],[
                 'pn'          => 67119,
+                'pn2'         => 47060,
                 'name'        => 'アッパー',
                 'short_name'  => 'U',
                 'vehicle_num' => '680A',
@@ -50,6 +52,7 @@ class PartTypeTableSeeder extends Seeder
                 'updated_at'  => $now
             ],[
                 'pn'          => 67175,
+                'pn2'         => 47060,
                 'name'        => 'サイドアッパーRH',
                 'short_name'  => 'SUR',
                 'vehicle_num' => '680A',
@@ -58,6 +61,7 @@ class PartTypeTableSeeder extends Seeder
                 'updated_at'  => $now
             ],[
                 'pn'          => 67176,
+                'pn2'         => 47060,
                 'name'        => 'サイドアッパーLH',
                 'short_name'  => 'SUL',
                 'vehicle_num' => '680A',
@@ -66,6 +70,7 @@ class PartTypeTableSeeder extends Seeder
                 'updated_at'  => $now
             ],[
                 'pn'          => 67177,
+                'pn2'         => 47050,
                 'name'        => 'サイドロアRH',
                 'short_name'  => 'SLR',
                 'vehicle_num' => '680A',
@@ -74,6 +79,7 @@ class PartTypeTableSeeder extends Seeder
                 'updated_at'  => $now
             ],[
                 'pn'          => 67178,
+                'pn2'         => 47010,
                 'name'        => 'サイドロアLH',
                 'short_name'  => 'SLL',
                 'vehicle_num' => '680A',
@@ -82,6 +88,7 @@ class PartTypeTableSeeder extends Seeder
                 'updated_at'  => $now
             ],[
                 'pn'          => 67007,
+                'pn2'         => 47120,
                 'name'        => 'バックドアインナーASSY',
                 'short_name'  => '',
                 'vehicle_num' => '680A',

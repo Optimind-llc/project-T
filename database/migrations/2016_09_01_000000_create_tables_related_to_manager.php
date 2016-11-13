@@ -195,6 +195,7 @@ class CreateTablesRelatedToManager extends Migration
         Schema::create('part_types', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('pn')->unique()->unsigned();
+            $table->integer('pn2')->unsigned();
             $table->string('name', 16)->unique();
             $table->string('short_name', 16);
             $table->integer('sort')->unsigned()->default(1);
