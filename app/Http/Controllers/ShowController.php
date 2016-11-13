@@ -668,6 +668,10 @@ class ShowController extends Controller
                 return $f->failure_id;
             })
             ->toArray()),
+            'modifications' => array_count_values($merged_page['modifications']->map(function($m) {
+                return $m->modification->id;
+            })
+            ->toArray()),
             'holes' => $merged_page['holes']->map(function($h) {
                 $m = null;
                 if ($h->holeModification->count() != 0) {

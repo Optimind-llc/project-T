@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
+import {Table, Column, Cell} from 'fixed-data-table';
 import { parts, processes, inspections } from '../../../utils/Processes';
 // Actions
 import { push } from 'react-router-redux';
@@ -18,6 +19,7 @@ import './reference.scss';
 // Components
 import Loading from '../../../components/loading/loading';
 import CustomCalendar from '../components/customCalendar/customCalendar';
+import CustomTable from '../components/customTable/customTable';
 
 class Reference extends Component {
   constructor(props, context) {
@@ -48,11 +50,13 @@ class Reference extends Component {
       narrowedBy, startDate, endDate, panelId
     } = this.state;
 
-// const hModifications = [
-//   {label: '穴径修正', value: 1},
-//   {label: 'トリム部修正', value: 2},
-//   {label: 'その他', value: 3}
-// ];
+const rows = [
+  {name: 'Rylan'},
+  {name: 'Amelia'},
+  {name: 'Estevan'},
+  {name: 'Florence'},
+  {name: 'Tressa'}
+];
 
     return (
       <div id="referenceWrap">
@@ -262,6 +266,7 @@ class Reference extends Component {
           </div>
         </div>
         <div className="result-wrap bg-white">
+        <CustomTable />
           {
             SerchedData.data != null && !SerchedData.isFetching &&
             <table>

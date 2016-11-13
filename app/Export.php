@@ -243,14 +243,16 @@ class Export
 
         array_push($export, $now->format('Y/m/d H:i:s'));
 
-        if(touch($file_path)){
-            $file = new \SplFileObject($file_path, 'w');
+        if (isset($file_path)) {
+            if(touch($file_path)){
+                $file = new \SplFileObject($file_path, 'w');
 
-            foreach( $export as $key => $val ){
-                $export_raw[] = mb_convert_encoding($val, 'SJIS-win');
+                foreach( $export as $key => $val ){
+                    $export_raw[] = mb_convert_encoding($val, 'SJIS-win');
+                }
+
+                $file->fputcsv($export_raw);
             }
-
-            $file->fputcsv($export_raw);
         }
 
         return true;
