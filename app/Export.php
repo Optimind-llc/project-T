@@ -171,6 +171,10 @@ class Export
                 break;
         }
 
+        if (!isset($file_path)) {
+            return false;
+        }
+
         $by = $details['updatedBy'] == '' ? $details['createdBy'] : $details['updatedBy'];
         $export = array_merge($export, [
             $details['tyoku'],
@@ -243,16 +247,14 @@ class Export
 
         array_push($export, $now->format('Y/m/d H:i:s'));
 
-        if (isset($file_path)) {
-            if(touch($file_path)){
-                $file = new \SplFileObject($file_path, 'w');
+        if(touch($file_path)){
+            $file = new \SplFileObject($file_path, 'w');
 
-                foreach( $export as $key => $val ){
-                    $export_raw[] = mb_convert_encoding($val, 'SJIS-win');
-                }
-
-                $file->fputcsv($export_raw);
+            foreach( $export as $key => $val ){
+                $export_raw[] = mb_convert_encoding($val, 'SJIS-win');
             }
+
+            $file->fputcsv($export_raw);
         }
 
         return true;
