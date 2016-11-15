@@ -60,7 +60,7 @@ export function advancedSerch(partTypeId, itionGId, body) {
         SERCH_RESULT_SUCCESS,
         SERCH_RESULT_FAIL
       ],
-      endpoint: `/show/panelIdSerch/${partTypeId}/${itionGId}`,
+      endpoint: `/show/advancedSerch/${partTypeId}/${itionGId}`,
       method: 'POST',
       body
     }

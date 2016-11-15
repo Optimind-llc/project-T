@@ -325,7 +325,23 @@ class ShowController extends Controller
                     ];
                 }));
             }, collect([])),
-            'inlines' => [],
+            'inlines' => $pages->reduce(function ($carry, $page) {
+                return $carry->merge($page->inlines->map(function($i) use($page) {
+                    return [
+                        'id' => $i->id,
+                        'point' => $i->point,
+                        'labelPoint' => $i->label_point,
+                        'max' => $i->max_tolerance,
+                        'min' => $i->min_tolerance,
+                        'position' => $i->position,
+                        'side' => $i->side,
+                        'sort' => $i->sort,
+                        'status' => $i->pivot->status
+                    ];
+                }));
+            }, collect([]))
+            ->groupBy('id')
+            ->values(),
             'pages' => $pages->count()
         ];
     }
@@ -374,8 +390,7 @@ class ShowController extends Controller
             $start_at = Carbon::createFromFormat('Y-m-d-H-i-s', $request->start.'-00-00-00')->addHours(2);
             $end_at = Carbon::createFromFormat('Y-m-d-H-i-s', $request->end.'-00-00-00')->addHours(26);
         }
-        elseif (!isset($request->panelId))
-        {
+        elseif (!isset($request->panelId)) {
             $today = Carbon::today();
             $t2_end_at = $today->copy()->addHours(1);
             $t1_start_at = $today->copy()->addHours(6);
@@ -393,8 +408,8 @@ class ShowController extends Controller
             }
 
             $end_at = $now;
-        } elseif (isset($request->panelId))
-        {
+        }
+        elseif (isset($request->panelId)) {
             $start_at = false;
             $end_at = false;
         }
@@ -419,44 +434,11 @@ class ShowController extends Controller
            throw new NotFoundHttpException('検索条件が不正です');
         }
 
-        $failureTypes = InspectionGroup::find($itionGId)->inspection->failures->map(function($f) {
-            return [
-                'id' => $f->id,
-                'label' => $f->label,
-                'name' => $f->name,
-                'type' => $f->pivot->type,
-                'sort' => $f->pivot->sort
-            ];
-        })->toArray();
+        // Get Failure list
+        $failureTypes = $this->failures($itionGId)['data'];
 
-        foreach( $failureTypes as $key => $row ) {
-            // $f_type_array[$key] = $row['type'];
-            $f_label_array[$key] = $row['label'];
-            // $f_sort_array[$key] = $row['sort'];
-        }
-
-        // array_multisort($f_type_array, $f_sort_array, $f_label_array, $failureTypes);
-        array_multisort($f_label_array, $failureTypes);
-
-        $modificationTypes = InspectionGroup::find($itionGId)->inspection->modifications->map(function($m) {
-            return [
-                'id' => $m->id,
-                'label' => intval($m->label),
-                'name' => $m->name,
-                'type' => $m->pivot->type,
-                'sort' => $m->pivot->sort
-            ];
-        })->toArray();
-
-        foreach( $modificationTypes as $key => $row ) {
-            $m_type_array[$key] = $row['type'];
-            $m_label_array[$key] = $row['label'];
-            $m_sort_array[$key] = $row['sort'];
-        }
-
-        if (count($modificationTypes) !== 0 ) {
-            array_multisort($m_type_array, $m_sort_array, $m_label_array, $modificationTypes);
-        }
+        // Get Failure Modifications list
+        $modificationTypes = $this->modifications($itionGId)['data'];
 
         // Get Hole Modifications list
         $holeModificationTypes = InspectionGroup::find($itionGId)->inspection->hModifications->map(function($hm) {
@@ -645,6 +627,7 @@ class ShowController extends Controller
             $carry->put('createdBy', array_key_exists(1, $createdBy) ? $createdBy[1] : $createdBy[0]);
             $carry->put('updatedBy', $page->updated_by ? explode(',', $page->updated_by)[1] : '');
             $carry->put('failures', $page->failurePositions->merge($carry->has('failures') ? $carry['failures'] : []));
+            $carry->put('modifications', $page->comments->merge($carry->has('modifications') ? $carry['modifications'] : []));
             $carry->put('holes', $page->holePages->merge($carry->has('holes') ? $carry['holes'] : []));
             $carry->put('inlines', $page->inlines);
             $carry->put('createdAt', $page->created_at->format('Y/m/d H:i:s'));
@@ -653,7 +636,7 @@ class ShowController extends Controller
             return $carry;
         }, collect([]));
 
-        return [
+        $result = [
             'vehicle' => $part->partType->vehicle_num,
             'pn' => $part->partType->pn,
             'name' => $part->partType->name,
@@ -688,6 +671,40 @@ class ShowController extends Controller
             ->toArray(),
             'inlines' => $merged_page['inlines']
         ];
+
+        $formated_result = [
+            '車種' => $result['vehicle'],
+            '品番' => $result['pn'],
+            '品名' => $result['name'],
+            'パネルID' => $result['panelId'],
+            '直' => $result['tyoku'],
+            '検査者' => $result['createdBy'],
+            '判定' => $result['status'],
+        ];
+
+        foreach ($this->failures($itionGId)['data'] as $key => $f) {
+            $f_name = '不良:'.$f['name'];
+            $f_sum = 0;
+            if (array_key_exists($f['id'], $result['failures'])) {
+                $f_sum = $result['failures'][$f['id']];
+            }
+
+            $formated_result[$f_name] = $f_sum;
+        }
+
+        foreach ($this->modifications($itionGId)['data'] as $key => $m) {
+            $m_name = '手直:'.$m['name'];
+            $m_sum = 0;
+            if (array_key_exists($m['id'], $result['modifications'])) {
+                $m_sum = $result['modifications'][$m['id']];
+            }
+
+            $formated_result[$m_name] = $m_sum;
+        }
+
+        $formated_result['検査日'] = $result['createdAt'];
+
+        return $formated_result;
     }
 
     public function panelIdSerch($partTypeId, $itionGId, $panelId)
@@ -702,6 +719,7 @@ class ShowController extends Controller
         }
 
         $part = $this->getDetails($part->id, $partTypeId, $itionGId);
+        $part = array_merge(['No.' => 1], $part);
 
         return ['data' => [
             'count' => $part ? 1 : 0,
@@ -729,6 +747,8 @@ class ShowController extends Controller
         }
 
         $judgement = $request->judgement;
+        $start = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 02:00:00');
+        $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 02:00:00')->addDay(1);
         $f = $request->f;
         $m = $request->m;
 
@@ -740,8 +760,11 @@ class ShowController extends Controller
             ->join('pages as pg', function($join) {
                 $join->on('pg.id', '=', 'pp.page_id');
             })
-            ->join('inspection_families as if', function($join) use ($itionGId) {
-                $join->on('if.id', '=', 'pg.family_id')->where('inspection_group_id', '=', $itionGId);
+            ->join('inspection_families as if', function($join) use ($itionGId, $start, $end) {
+                $join->on('if.id', '=', 'pg.family_id')
+                    ->where('if.updated_at', '>=', $start)
+                    ->where('if.updated_at', '<', $end)
+                    ->where('inspection_group_id', '=', $itionGId);
             })
             ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at'])
             ->orderBy('if.inspected_at', 'if.created_at')
@@ -784,14 +807,22 @@ class ShowController extends Controller
         $count = $parts->count();
         $data = [];
 
-        if ($count > 100) {
-            for ($i=0; $i < 100; $i++) { 
-                $data[] = $this->getDetails($parts[$i], $partTypeId, $itionGId);
+        if ($count > 1000) {
+            for ($i=0; $i < 1000; $i++) {
+                // $data[] = $this->getDetails($parts[$i], $partTypeId, $itionGId);
+
+                $part = array_merge(['No.' => $i+1], $this->getDetails($parts[$i], $partTypeId, $itionGId));
+                $data[] = $part;
             }
         }
         else {
+            $i = 0;
             foreach ($parts as $part_id) {
-                $data[] = $this->getDetails($part_id, $partTypeId, $itionGId);
+                // $data[] = $this->getDetails($part_id, $partTypeId, $itionGId);
+
+                $part = array_merge(['No.' => $i+1], $this->getDetails($parts[$i], $partTypeId, $itionGId));
+                $data[] = $part;
+                $i += 1;
             }
         }
 

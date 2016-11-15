@@ -1,3 +1,12 @@
-.rc-calendar {
-	font-family: Lato, "游ゴシック Medium", "游ゴシック体", "Yu Gothic Medium", YuGothic, "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+table {
+	table-layout: fixed;
+}
+
+table,th,td {
+  border: 1px solid #bbb;
+}
+
+th, td {
+	width: 120px;
+	padding: 5px 10px;
 }

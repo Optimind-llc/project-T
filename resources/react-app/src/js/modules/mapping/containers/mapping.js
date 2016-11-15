@@ -17,7 +17,8 @@ class Mapping extends Component {
       fFilter: [],
       holeStatus: 's0',
       hModification: 1,
-      cFilter: []
+      cFilter: [],
+      inlineStatus: 's1'
     };
   }
 
@@ -51,7 +52,7 @@ class Mapping extends Component {
 
   renderContent() {
     const { data } = this.props.PageData;
-    const { active, fFilter, holeStatus, cFilter, hModification } = this.state;
+    const { active, fFilter, holeStatus, cFilter, hModification, inlineStatus } = this.state;
 
     switch (active) {
       case 'failure':
@@ -285,20 +286,47 @@ class Mapping extends Component {
             <div className="collection">
               <div>
                 <ul>
-                  {
-                    Object.keys(data.inlines).map(id =>
-                      <li>{data.inlines[id][0].label}</li>
-                    )
-                  }
+                  <li>{'精度検査'}</li>
+                  {data.inlines.map(i => 
+                    <li>{i[0].sort}</li>
+                  )}
                 </ul>
               </div>
               <div>
                 <ul>
-                  {
-                    Object.keys(data.inlines).map(id =>
-                      <li>{data.inlines[id][0].tolerance}</li>
+                  <li
+                    onClick={() => this.setState({inlineStatus: 's0'})}
+                  >
+                    {'×'}
+                  </li>
+                  {data.inlines.map(is => {
+                    let percentage = 0;
+                    const sum = is.length;
+                    // const sum1 = is.filter(i => i.max > i.status && i.min < i.status ).length;
+                    const sum0 = is.filter(i => i.max < i.status || i.min > i.status ).length;
+                    if (sum !== 0 && sum0 != 0) percentage = Math.round(1000*sum0/sum)/10;
+                    return (
+                      <li>{`${percentage}%`}<span>({sum0})</span></li>
                     )
-                  }
+                  })}
+                </ul>
+              </div>
+              <div>
+                <ul>
+                  <li
+                    onClick={() => this.setState({inlineStatus: 's1'})}
+                  >
+                    {'○'}
+                  </li>
+                  {data.inlines.map(is => {
+                    let percentage = 0;
+                    const sum = is.length;
+                    const sum1 = is.filter(i => i.max > i.status && i.min < i.status ).length;
+                    if (sum !== 0 && sum1 != 0) percentage = Math.round(1000*sum1/sum)/10;
+                    return (
+                      <li>{`${percentage}%`}<span>({sum1})</span></li>
+                    )
+                  })}
                 </ul>
               </div>
             </div>
@@ -411,10 +439,6 @@ class Mapping extends Component {
                       case 4: h.x = (h.x + 1740/2)/2; h.y = (h.y + 1030/2)/2; h.lx = (h.lx + 1740/2)/2; h.ly = (h.ly + 1030/2)/2; break;
                     }
                   }
-                  
-                  // let percentage = 0;
-                  // if (h.sum !== 0 && h[holeStatus] != 0) percentage = Math.round(100*h[holeStatus]/h.sum);
-
                   return (
                     <g>
                       <circle cx={h.x} cy={h.y} r={4} fill={h[holeStatus] == 0 ? 'rgba(255,0,0,0.4)' : 'rgba(255,0,0,1)'} />
@@ -497,7 +521,7 @@ class Mapping extends Component {
                 active == 'inline' &&
                 Object.keys(data.inlines).map(id => {
                   return data.inlines[id].map(i => {
-                    const width = 120;
+                    const width = 100;
                     const point = i.point.split(',');
                     const x = point[0]/2;
                     const y = point[1]/2;
@@ -544,7 +568,7 @@ class Mapping extends Component {
                           fontSize="10"
                           fill="black"
                         >
-                          {`結果：${i.status}`}
+                          {`MAX：${i.max}`}
                         </text>
                         <text
                           x={lx}
@@ -554,7 +578,7 @@ class Mapping extends Component {
                           fontSize="10"
                           fill="black"
                         >
-                          {`公差：${i.tolerance}`}
+                          {`MIN：${i.min}`}
                         </text>
                       </g>
                     );
@@ -589,14 +613,15 @@ class Mapping extends Component {
                 >
                   手直し
                 </button>
-              }
-              <button
-                className={active == 'failure' ? '' : 'disable'}
-                onClick={() => this.setState({ active: 'failure'})}
-              >
-                外観検査
-              </button>
-              {
+              }{
+                data.inlines.length == 0 &&
+                <button
+                  className={active == 'failure' ? '' : 'disable'}
+                  onClick={() => this.setState({ active: 'failure'})}
+                >
+                  外観検査
+                </button>
+              }{
                 data.inlines.length !== 0 &&
                 <button
                   className={active == 'inline' ? '' : 'disable'}

@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
-import {Table, Column, Cell} from 'fixed-data-table';
 import { parts, processes, inspections } from '../../../utils/Processes';
 // Actions
 import { push } from 'react-router-redux';
@@ -49,14 +48,6 @@ class Reference extends Component {
       itorG, judgement, RequiredF, RequiredM, RequiredHM,
       narrowedBy, startDate, endDate, panelId
     } = this.state;
-
-const rows = [
-  {name: 'Rylan'},
-  {name: 'Amelia'},
-  {name: 'Estevan'},
-  {name: 'Florence'},
-  {name: 'Tressa'}
-];
 
     return (
       <div id="referenceWrap">
@@ -202,7 +193,9 @@ const rows = [
                         multi={true}
                         value={RequiredF}
                         options={FailureData.data ? FailureData.data.map(f => {return {label: f.name, value: f.id};}) : []}
-                        onChange={value => {console.log(value); this.setState({RequiredF: value});}}
+                        onChange={value => {
+                          this.setState({RequiredF: value, RequiredM: []});
+                        }}
                       />
                     </div>
                     <div>
@@ -215,7 +208,9 @@ const rows = [
                         multi={true}
                         value={RequiredM}
                         options={ModificationData.data ? ModificationData.data.map(m => {return {label: m.name, value: m.id};}) : []}
-                        onChange={value => {console.log(value); this.setState({RequiredM: value});}}
+                        onChange={value => {
+                          this.setState({RequiredM: value, RequiredF: []});
+                        }}
                       />
                     </div>
                     {/*
@@ -252,13 +247,21 @@ const rows = [
           <div
             className={`serch-btn ${partTId && itionGId && itorG && 'active'}`}
             onClick={() => {
-              console.log(partTId, itionGId, panelId);
-
               if (narrowedBy == 'panelId') {
                 actions.panelIdSerch(partTId.value, itionGId.value, panelId);
               }
               else if (narrowedBy == 'advanced') {
-                actions.panelIdSerch(1, 1, 'B0000001');
+                console.log(judgement);
+                const format = 'YYYY/MM/DD';
+                const body = {
+                  'tyoku': itorG.value == 'both' ? ['白直', '黄直', '黒直', '不明'] : [itorG.label],
+                  'judgement': judgement.value == 'both' ? [1, 0] : [judgement.value],
+                  'start': startDate.format(format),
+                  'end': endDate.format(format),
+                  'f': RequiredF.map(rf => rf.value),
+                  'm': RequiredM.map(rm => rm.value)
+                };
+                actions.advancedSerch(partTId.value, itionGId.value, body);
               }
             }}
           >
@@ -266,51 +269,10 @@ const rows = [
           </div>
         </div>
         <div className="result-wrap bg-white">
-        <CustomTable />
+        
           {
             SerchedData.data != null && !SerchedData.isFetching &&
-            <table>
-              <tbody>
-                <tr>
-                  <th>NO.</th>
-                  <th>車種</th>
-                  <th>品番</th>
-                  <th>名称</th>
-                  <th>パネルID</th>
-                  <th>直</th>
-                  <th>検査者</th>
-                  <th>判定</th>
-                  {
-                    FailureData.data != null &&
-                    FailureData.data.map(f => <th key={f.id}>{f.name}</th>)
-                  }{
-                    ModificationData.data != null &&
-                    ModificationData.data.map(m => <th key={m.id}>{m.name}</th>)
-                  }
-                </tr>
-                {
-                  SerchedData.data.parts.map((p, i) =>
-                    <tr key={p.id}>
-                      <td>{i+1}</td>
-                      <td>{p.vehicle}</td>
-                      <td>{p.pn}</td>
-                      <td>{p.name}</td>
-                      <td>{p.panelId}</td>
-                      <td>{p.tyoku}</td>
-                      <td>{p.createdBy}</td>
-                      <td>{p.status}</td>
-                      {
-                        FailureData.data != null &&
-                        FailureData.data.map(f => <td>{p.failures[f.id] ? p.failures[f.id] : 0}</td>)
-                      }
-                    </tr>
-                  )
-                }{
-                  SerchedData.data.count == 0 &&
-                  <tr>結果なし</tr>
-                }
-              </tbody>
-            </table>
+            <CustomTable data={SerchedData.data}/>
           }
         </div>
       </div>

@@ -58,7 +58,7 @@ Route::get('manager/association', 'Manager\ReferenceController@index');
 Route::get('manager/pdf/report/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@report');
 
 // New Report PDF method
-Route::post('manager/report/{itionGId}', 'Manager\ReportController@report')
+Route::get('manager/report/{itionGId}/{date}/{itorG}', 'Manager\ReportController@report')
   ->where([
     'itionGId' => '[0-9]+'
   ]);

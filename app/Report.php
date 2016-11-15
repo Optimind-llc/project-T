@@ -79,7 +79,7 @@ class Report
         $tcpdf = $this->createTCPDF();
 
         $families = $parts->groupBy('family_id')->values();
-        $part_types = $parts->groupBy('part_type_id');
+        $part_types = $parts->sortBy('part_type_id')->values()->groupBy('part_type_id');
         $parts_obj = PartType::whereIn('id', $part_types->keys())
             ->select(['id', 'pn', 'name', 'short_name'])
             ->get()
@@ -261,6 +261,178 @@ class Report
             $tcpdf->Text(210, 286, 'page '.($page+1));
         }
 
+        $formated_families = $families->map(function($f) {
+            return $f->map(function($part) {
+                return $part->failurePositions->map(function($fp) {
+                    return $fp->failure_id;
+                });
+            });
+        });
+
+        $timeChunks = [
+            '6:30〜7:30' => [],
+            '7:30〜8:30' => [],
+            '8:40〜9:40' => [],
+            '9:40〜10:40' => [],
+            '11:25〜12:25' => [],
+            '12:25〜13:25' => [],
+            '13:35〜14:35' => [],
+            '14:45〜15:15' => [],
+            '16:15〜17:15' => [],
+            '17:15〜18:15' => [],
+            '18:25〜19:25' => [],
+            '19:25〜20:25' => [],
+            '21:20〜22:10' => [],
+            '22:10〜23:20' => [],
+            '23:20〜0:20' => [],
+            '0:30〜1:00' => []
+        ];
+
+        foreach ($formated_families as $formated_family) {
+            $time = $family->first()->updated_at->format('Hi');
+
+            if ($time >= 630 && $time < 730) {
+                $timeChunks['6:30〜7:30'][] = $formated_family;
+            }
+            elseif ($time >= 730 && $time < 840) {
+                $timeChunks['7:30〜8:30'][] = $formated_family;
+            }
+            elseif ($time >= 840 && $time < 940) {
+                $timeChunks['8:40〜9:40'][] = $formated_family;
+            }
+            elseif ($time >= 940 && $time < 1125) {
+                $timeChunks['9:40〜10:40'][] = $formated_family;
+            }
+            elseif ($time >= 1125 && $time < 1225) {
+                $timeChunks['11:25〜12:25'][] = $formated_family;
+            }
+            elseif ($time >= 1225 && $time < 1335) {
+                $timeChunks['12:25〜13:25'][] = $formated_family;
+            }
+            elseif ($time >= 1335 && $time < 1445) {
+                $timeChunks['13:35〜14:35'][] = $formated_family;
+            }
+            elseif ($time >= 1445 && $time < 1615) {
+                $timeChunks['14:45〜15:15'][] = $formated_family;
+            }
+            elseif ($time >= 1615 && $time < 1715) {
+                $timeChunks['16:15〜17:15'][] = $formated_family;
+            }
+            elseif ($time >= 1715 && $time < 1825) {
+                $timeChunks['17:15〜18:15'][] = $formated_family;
+            }
+            elseif ($time >= 1825 && $time < 1925) {
+                $timeChunks['18:25〜19:25'][] = $formated_family;
+            }
+            elseif ($time >= 1925 && $time < 2120) {
+                $timeChunks['19:25〜20:25'][] = $formated_family;
+            }
+            elseif ($time >= 2120 && $time < 2210) {
+                $timeChunks['21:20〜22:10'][] = $formated_family;
+            }
+            elseif ($time >= 2210 && $time < 2320) {
+                $timeChunks['22:10〜23:20'][] = $formated_family;
+            }
+            elseif ($time >= 2320 && $time < 2400) {
+                $timeChunks['23:20〜0:20'][] = $formated_family;
+            }
+            elseif ($time >= 0 && $time < 30) {
+                $timeChunks['23:20〜0:20'][] = $formated_family;
+            }
+            elseif ($time >= 30 && $time < 300) {
+                $timeChunks['0:30〜1:00'][] = $formated_family;
+            }
+        }
+
+        $timeChunksSum = array_map(function($chunk) {
+            $new_chunk = [];
+            foreach ($chunk as $f_key => $fam) {
+                foreach ($fam as $p_key => $part) {
+                    if (!array_key_exists($p_key, $new_chunk)) {
+                        $new_chunk[$p_key] = $part->toArray();
+                    }
+                    else {
+                        $new_chunk[$p_key] = array_merge($new_chunk[$p_key], $part->toArray());
+                    }
+                }
+            }
+
+            if (count($new_chunk) == 0) {
+                $counted = $new_chunk;
+            }
+            else {
+                $counted = array_map(function($c) {
+                    return array_count_values($c);
+                }, $new_chunk);
+            }
+            
+            return $counted;
+        }, $timeChunks);
+// return $timeChunksSum;
+        $fd = ($A3['xmax'] - $A3['x0']*2 - 24)/$fn;
+        $fdj = $fd*0.85/$parts_obj->count();
+
+        $tcpdf->AddPage('L', 'A3');
+        // Render page header
+        $this->renderA3Header($tcpdf);
+
+        // Render table header
+        $tcpdf->SetFont('kozgopromedium', '', 8);
+
+        foreach ($failureTypes as $i => $f) {
+            $tcpdf->Text($A3['x0']+24+($i*$fd), $A3['y1'], $f['name']);
+        }
+
+        foreach ($parts_obj as $n => $part_obj) {
+            $tcpdf->StartTransform();
+            $tcpdf->Rotate(90, $A3['x0']+24+$n*$fdj-1, $A3['y1']+9);
+            $tcpdf->Text($A3['x0']+24+$n*$fdj-3, $A3['y1']+9, $part_obj->short_name);
+            $tcpdf->StopTransform();
+        }
+
+        $all_sum = [];
+        // Render table body
+        $n = 0;
+        foreach ($timeChunksSum as $key => $sum) {
+            $tcpdf->Text($A3['x0'], $A3['y2']+$n*$th, $key);
+
+            if (count($sum) != 0) {
+                foreach ($sum as $ip => $part_sum) {
+
+                    foreach ($failureTypes as $i => $f) {
+                        if (!array_key_exists($f['id'], $part_sum)) {
+                            $f_sum = 0;
+                        }
+                        else {
+                            $f_sum = $part_sum[$f['id']];
+                        }
+                        
+                        $tcpdf->Text($A3['x0']+24+($i*$fd)+$fdj*$ip, $A3['y2']+$n*$th, $f_sum);
+
+                        if (!array_key_exists($ip, $all_sum)) {
+                            $all_sum[$ip] = [];
+                        }
+
+                        if (!array_key_exists($i, $all_sum[$ip])) {
+                            $all_sum[$ip][$i] = $f_sum;
+                        }
+                        else {
+                            $all_sum[$ip][$i] = $all_sum[$ip][$i] + $f_sum;
+                        }
+                    }
+                }
+            }
+
+            $n = $n+1;
+        }
+
+        $tcpdf->Text($A3['x0'], $A3['y2']+$n*$th, '直合計');
+        foreach ($all_sum as $ip => $part_sum) {
+            foreach ($part_sum as $i => $val) {
+                $tcpdf->Text($A3['x0']+24+($i*$fd)+$fdj*$ip, $A3['y2']+$n*$th, $val);
+            }
+        }
+
         return $tcpdf;
     }
 
@@ -409,6 +581,169 @@ class Report
             $tcpdf->Text(210, 286, 'page '.($p+1));
         }
 
+
+
+        $formated_parts = $parts->map(function($part) {
+            return [
+                'holes' => $part->first()->pages->reduce(function($carry, $p) {
+                    return $carry->merge($p->holePages->map(function($h) {
+                        return $h->status;
+                    }));
+                }, collect([])),
+                'time' => $part->first()->pages->first()->created_at->format('Hi')
+            ];
+        });
+
+        $timeChunks = [
+            '6:30〜7:30' => [],
+            '7:30〜8:30' => [],
+            '8:40〜9:40' => [],
+            '9:40〜10:40' => [],
+            '11:25〜12:25' => [],
+            '12:25〜13:25' => [],
+            '13:35〜14:35' => [],
+            '14:45〜15:15' => [],
+            '16:15〜17:15' => [],
+            '17:15〜18:15' => [],
+            '18:25〜19:25' => [],
+            '19:25〜20:25' => [],
+            '21:20〜22:10' => [],
+            '22:10〜23:20' => [],
+            '23:20〜0:20' => [],
+            '0:30〜1:00' => []
+        ];
+
+        foreach ($formated_parts as $formated_part) {
+            $time = $formated_part['time'];
+
+            if ($time >= 630 && $time < 730) {
+                $timeChunks['6:30〜7:30'][] = $formated_part['holes'];
+            }
+            elseif ($time >= 730 && $time < 840) {
+                $timeChunks['7:30〜8:30'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 840 && $time < 940) {
+                $timeChunks['8:40〜9:40'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 940 && $time < 1125) {
+                $timeChunks['9:40〜10:40'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 1125 && $time < 1225) {
+                $timeChunks['11:25〜12:25'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 1225 && $time < 1335) {
+                $timeChunks['12:25〜13:25'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 1335 && $time < 1445) {
+                $timeChunks['13:35〜14:35'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 1445 && $time < 1615) {
+                $timeChunks['14:45〜15:15'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 1615 && $time < 1715) {
+                $timeChunks['16:15〜17:15'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 1715 && $time < 1825) {
+                $timeChunks['17:15〜18:15'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 1825 && $time < 1925) {
+                $timeChunks['18:25〜19:25'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 1925 && $time < 2120) {
+                $timeChunks['19:25〜20:25'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 2120 && $time < 2210) {
+                $timeChunks['21:20〜22:10'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 2210 && $time < 2320) {
+                $timeChunks['22:10〜23:20'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 2320 && $time < 2400) {
+                $timeChunks['23:20〜0:20'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 0 && $time < 30) {
+                $timeChunks['23:20〜0:20'][] = $formated_part['holes'];;
+            }
+            elseif ($time >= 30 && $time < 300) {
+                $timeChunks['0:30〜1:00'][] = $formated_part['holes'];;
+            }
+        }
+
+        $timeChunkSum = array_map(function($chunk) {
+            return array_reduce($chunk, function($carry, $item) {
+                if (count($carry) == 0) {
+                    foreach ($item as $key => $value) {
+                        $carry[$key] = [0 => 0, 1 => 0, 2 => 0];
+                        switch ($value) {
+                            case 0: $carry[$key][0] = 1; break;
+                            case 1: $carry[$key][1] = 1; break;
+                            case 2: $carry[$key][2] = 1; break;
+                        }
+                    }
+
+                    return $carry;
+                }
+                foreach ($item as $key => $value) {
+                    switch ($value) {
+                        case 0: $carry[$key][0] += 1; break;
+                        case 1: $carry[$key][1] += 1; break;
+                        case 2: $carry[$key][2] += 1; break;
+                    }
+                }
+
+                return $carry;
+            }, []);
+        }, $timeChunks);
+
+
+        $hd = ($A3['xmax'] - $A3['x0']*2 - 24)/$hn;
+
+        $tcpdf->AddPage('L', 'A3');
+        // Render page header
+        $this->renderA3Header($tcpdf);
+
+        // Render table header
+        $tcpdf->SetFont('kozgopromedium', '', 6);
+        foreach ($all_holes as $col => $h) {
+            $tcpdf->Text($A3['x0']+24+($col*$hd), $A3['y1'], $h['label']);
+        }
+
+        // Render table body
+        $all_sum = [];
+        $n = 0;
+        $tcpdf->SetFont('kozgopromedium', '', 7);
+        foreach ($timeChunkSum as $key => $sum) {
+            $tcpdf->Text($A3['x0'], $A3['y2']+$n*3*$th, $key);
+            $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th, '×');
+            $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th+$th, '○');
+            $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th+$th+$th, '△');
+            if (count($sum) != 0) {
+                foreach ($sum as $ih => $h_sum) {
+                    foreach ($h_sum as $ij => $j_sum) {
+                        $tcpdf->Text($A3['x0']+24+($ih*$hd), $A3['y2']+$n*3*$th+$ij*$th, $j_sum);
+
+                        if (!array_key_exists($ih, $all_sum)) {
+                            $all_sum[$ih] = $h_sum;
+                        }
+                        else {
+                            $all_sum[$ih][$ij] += $j_sum;
+                        }
+                    }
+                }
+            }
+
+            $n = $n+1;
+        }
+
+        $tcpdf->Text($A3['x0'], $A3['y2']+$n*3*$th, '直合計');
+        $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th, '×');
+        $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th+$th, '○');
+        $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th+$th+$th, '△');
+        foreach ($all_sum as $ih => $h_sum) {
+            foreach ($h_sum as $ij => $j_sum) {
+                $tcpdf->Text($A3['x0']+24+($ih*$hd), $A3['y2']+$n*3*$th+$ij*$th, $j_sum);
+            }
+        }
 
         return $tcpdf;
     }
@@ -597,6 +932,382 @@ class Report
 
                 $tcpdf->Text(210, 286, 'page '.($p+1));
             }
+        }
+
+
+        foreach ($part_types as $id => $parts) {
+            $all_holes = Hole::where('part_type_id', '=', $id)
+                ->whereNotIn('figure_id', [9])
+                ->orderBy('label')
+                ->get();
+            $hn = $all_holes->count();
+            $hd_max = 16;
+            $hd = ($A3['xmax'] - $A3['x0']*2 -24)/$hn;
+            if ($hd > $hd_max) {
+                $hd = $hd_max;
+            }
+
+            $formated_parts = $parts->map(function($part) use ($id) {
+                return [
+                    'holes' => $part->pages->first()->holePages->filter(function($hp) use ($id) {
+                        return $hp->hole->part_type_id == $id;
+                    })->map(function($hp) {
+                        return $hp->status;
+                    })->values(),
+                    'time' => $part->first()->pages->first()->created_at->format('Hi')
+                ];
+            });
+
+            $timeChunks = [
+                '6:30〜7:30' => [],
+                '7:30〜8:30' => [],
+                '8:40〜9:40' => [],
+                '9:40〜10:40' => [],
+                '11:25〜12:25' => [],
+                '12:25〜13:25' => [],
+                '13:35〜14:35' => [],
+                '14:45〜15:15' => [],
+                '16:15〜17:15' => [],
+                '17:15〜18:15' => [],
+                '18:25〜19:25' => [],
+                '19:25〜20:25' => [],
+                '21:20〜22:10' => [],
+                '22:10〜23:20' => [],
+                '23:20〜0:20' => [],
+                '0:30〜1:00' => []
+            ];
+
+            foreach ($formated_parts as $formated_part) {
+                $time = $formated_part['time'];
+
+                if ($time >= 630 && $time < 730) {
+                    $timeChunks['6:30〜7:30'][] = $formated_part['holes'];
+                }
+                elseif ($time >= 730 && $time < 840) {
+                    $timeChunks['7:30〜8:30'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 840 && $time < 940) {
+                    $timeChunks['8:40〜9:40'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 940 && $time < 1125) {
+                    $timeChunks['9:40〜10:40'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 1125 && $time < 1225) {
+                    $timeChunks['11:25〜12:25'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 1225 && $time < 1335) {
+                    $timeChunks['12:25〜13:25'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 1335 && $time < 1445) {
+                    $timeChunks['13:35〜14:35'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 1445 && $time < 1615) {
+                    $timeChunks['14:45〜15:15'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 1615 && $time < 1715) {
+                    $timeChunks['16:15〜17:15'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 1715 && $time < 1825) {
+                    $timeChunks['17:15〜18:15'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 1825 && $time < 1925) {
+                    $timeChunks['18:25〜19:25'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 1925 && $time < 2120) {
+                    $timeChunks['19:25〜20:25'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 2120 && $time < 2210) {
+                    $timeChunks['21:20〜22:10'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 2210 && $time < 2320) {
+                    $timeChunks['22:10〜23:20'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 2320 && $time < 2400) {
+                    $timeChunks['23:20〜0:20'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 0 && $time < 30) {
+                    $timeChunks['23:20〜0:20'][] = $formated_part['holes'];;
+                }
+                elseif ($time >= 30 && $time < 300) {
+                    $timeChunks['0:30〜1:00'][] = $formated_part['holes'];;
+                }
+            }
+
+            $timeChunkSum = array_map(function($chunk) {
+                return array_reduce($chunk, function($carry, $item) {
+                    if (count($carry) == 0) {
+                        foreach ($item as $key => $value) {
+                            $carry[$key] = [0 => 0, 1 => 0, 2 => 0];
+                            switch ($value) {
+                                case 0: $carry[$key][0] = 1; break;
+                                case 1: $carry[$key][1] = 1; break;
+                                case 2: $carry[$key][2] = 1; break;
+                            }
+                        }
+
+                        return $carry;
+                    }
+                    foreach ($item as $key => $value) {
+                        switch ($value) {
+                            case 0: $carry[$key][0] += 1; break;
+                            case 1: $carry[$key][1] += 1; break;
+                            case 2: $carry[$key][2] += 1; break;
+                        }
+                    }
+
+                    return $carry;
+                }, []);
+            }, $timeChunks);
+
+
+            $tcpdf->AddPage('L', 'A3');
+            // Render page header
+            $this->renderA3Header($tcpdf);
+
+            // Render table header
+            $tcpdf->SetFont('kozgopromedium', '', 6);
+            foreach ($all_holes as $col => $h) {
+                $tcpdf->Text($A3['x0']+24+($col*$hd), $A3['y1'], $h['label']);
+            }
+
+            // Render table body
+            $all_sum = [];
+            $n = 0;
+            $tcpdf->SetFont('kozgopromedium', '', 7);
+            foreach ($timeChunkSum as $key => $sum) {
+                $tcpdf->Text($A3['x0'], $A3['y2']+$n*3*$th, $key);
+                $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th, '×');
+                $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th+$th, '○');
+                $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th+$th+$th, '△');
+                if (count($sum) != 0) {
+                    foreach ($sum as $ih => $h_sum) {
+                        foreach ($h_sum as $ij => $j_sum) {
+                            $tcpdf->Text($A3['x0']+24+($ih*$hd), $A3['y2']+$n*3*$th+$ij*$th, $j_sum);
+
+                            if (!array_key_exists($ih, $all_sum)) {
+                                $all_sum[$ih] = $h_sum;
+                            }
+                            else {
+                                $all_sum[$ih][$ij] += $j_sum;
+                            }
+                        }
+                    }
+                }
+
+                $n = $n+1;
+            }
+
+            $tcpdf->Text($A3['x0'], $A3['y2']+$n*3*$th, '直合計');
+            $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th, '×');
+            $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th+$th, '○');
+            $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*3*$th+$th+$th, '△');
+            foreach ($all_sum as $ih => $h_sum) {
+                foreach ($h_sum as $ij => $j_sum) {
+                    $tcpdf->Text($A3['x0']+24+($ih*$hd), $A3['y2']+$n*3*$th+$ij*$th, $j_sum);
+                }
+            }
+
+            // return $timeChunkSum;
+        }
+
+
+
+        // $timeChunks = [
+        //     '6:30〜7:30' => [],
+        //     '7:30〜8:30' => [],
+        //     '8:40〜9:40' => [],
+        //     '9:40〜10:40' => [],
+        //     '11:25〜12:25' => [],
+        //     '12:25〜13:25' => [],
+        //     '13:35〜14:35' => [],
+        //     '14:45〜15:15' => [],
+        //     '16:15〜17:15' => [],
+        //     '17:15〜18:15' => [],
+        //     '18:25〜19:25' => [],
+        //     '19:25〜20:25' => [],
+        //     '21:20〜22:10' => [],
+        //     '22:10〜23:20' => [],
+        //     '23:20〜0:20' => [],
+        //     '0:30〜1:00' => []
+        // ];
+
+        // foreach ($formated_parts as $formated_part) {
+        //     $time = $formated_part['time'];
+
+        //     if ($time >= 630 && $time < 730) {
+        //         $timeChunks['6:30〜7:30'][] = $formated_part['holes'];
+        //     }
+        //     elseif ($time >= 730 && $time < 840) {
+        //         $timeChunks['7:30〜8:30'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 840 && $time < 940) {
+        //         $timeChunks['8:40〜9:40'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 940 && $time < 1125) {
+        //         $timeChunks['9:40〜10:40'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 1125 && $time < 1225) {
+        //         $timeChunks['11:25〜12:25'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 1225 && $time < 1335) {
+        //         $timeChunks['12:25〜13:25'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 1335 && $time < 1445) {
+        //         $timeChunks['13:35〜14:35'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 1445 && $time < 1615) {
+        //         $timeChunks['14:45〜15:15'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 1615 && $time < 1715) {
+        //         $timeChunks['16:15〜17:15'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 1715 && $time < 1825) {
+        //         $timeChunks['17:15〜18:15'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 1825 && $time < 1925) {
+        //         $timeChunks['18:25〜19:25'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 1925 && $time < 2120) {
+        //         $timeChunks['19:25〜20:25'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 2120 && $time < 2210) {
+        //         $timeChunks['21:20〜22:10'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 2210 && $time < 2320) {
+        //         $timeChunks['22:10〜23:20'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 2320 && $time < 2400) {
+        //         $timeChunks['23:20〜0:20'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 0 && $time < 30) {
+        //         $timeChunks['23:20〜0:20'][] = $formated_part['holes'];;
+        //     }
+        //     elseif ($time >= 30 && $time < 300) {
+        //         $timeChunks['0:30〜1:00'][] = $formated_part['holes'];;
+        //     }
+        // }
+
+        // $timeChunkSum = array_map(function($chunk) {
+        //     return array_reduce($chunk, function($carry, $item) {
+        //         if (count($carry) == 0) {
+        //             foreach ($item as $key => $value) {
+        //                 $carry[$key] = [0 => 0, 1 => 0, 2 => 0];
+        //                 switch ($value) {
+        //                     case 0: $carry[$key][0] = 1; break;
+        //                     case 1: $carry[$key][1] = 1; break;
+        //                     case 2: $carry[$key][2] = 1; break;
+        //                 }
+        //             }
+
+        //             return $carry;
+        //         }
+        //         foreach ($item as $key => $value) {
+        //             switch ($value) {
+        //                 case 0: $carry[$key][0] += 1; break;
+        //                 case 1: $carry[$key][1] += 1; break;
+        //                 case 2: $carry[$key][2] += 1; break;
+        //             }
+        //         }
+
+        //         return $carry;
+        //     }, []);
+        // }, $timeChunks);
+
+
+        // $hd = ($A3['xmax'] - $A3['x0']*2 - 24)/$hn;
+
+        // $tcpdf->AddPage('L', 'A3');
+        // // Render page header
+        // $this->renderA3Header($tcpdf);
+
+        // // Render table header
+        // $tcpdf->SetFont('kozgopromedium', '', 6);
+        // foreach ($all_holes as $col => $h) {
+        //     $tcpdf->Text($A3['x0']+24+($col*$hd), $A3['y1'], $h['label']);
+        // }
+
+
+
+        return $tcpdf;
+    }
+
+    public function forInline($parts)
+    {
+        $tcpdf = $this->createTCPDF();
+        $part_types = $parts->sortBy('part_type_id')->values()->groupBy('part_type_id');
+
+        /*
+         * Render A4
+         */
+        $A4 = config('report.A4');
+        $d = [8, 18, 20, 38];
+        $th = 5;
+        $dj = 7;
+        $dhj = 40;
+        $dhj1 = 7;
+        $dhj2 = $dhj/2 - $dhj1;
+        $hhj = 4;
+
+        foreach ($parts->chunk(100) as $p => $parts100) {
+            $tcpdf->AddPage('P', 'A4');
+
+            // Render page header
+            $this->renderA4Header($tcpdf);
+
+            if ($p == 0) {
+                $tcpdf->SetFont('kozgopromedium', '', 8);
+
+                $n = 0;
+                foreach ($part_types as $id => $part_type) {
+                    $part_obj = PartType::find($id);
+
+                    $sum1 = $part_type->filter(function($p) {
+                        if ($p->pages->count() == 0) {
+                            return $p->status == 1;
+                        }
+                        return $p->status == 1 && $p->pages->first()->pivot->status == 1;
+                    })->count();
+                    $sum0 = $part_type->count() - $sum1;
+
+                    $tcpdf->MultiCell($dhj, $hhj, $part_obj->name.'：'.$part_obj->pn, 1, 'C', 0, 1, $A4['x0']+($n*$dhj), $A4['y1'], true, 0, false, true, 0, 'M');
+                    $tcpdf->MultiCell($dhj1, $hhj, 'OK', 1, 'C', 0, 1, $A4['x0']+($n*$dhj), $A4['y1']+$hhj);
+                    $tcpdf->MultiCell($dhj2, $hhj, $sum1, 1, 'C', 0, 1, $A4['x0']+($n*$dhj)+$dhj1, $A4['y1']+$hhj);
+                    $tcpdf->MultiCell($dhj1, $hhj, 'NG', 1, 'C', 0, 1, $A4['x0']+($n*$dhj)+$dhj1+$dhj2, $A4['y1']+$hhj);
+                    $tcpdf->MultiCell($dhj2, $hhj, $sum0, 1, 'C', 0, 1, $A4['x0']+($n*$dhj)+$dhj1+$dhj2+$dhj1, $A4['y1']+$hhj);
+                    $n +=1;
+                }
+            }
+
+            foreach ($parts100->values()->chunk(50) as $col => $parts50) {
+                $tcpdf->SetFont('kozgopromedium', '', 8);
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x1'], $A4['y2'], 'No.');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y2'], 'パネルID');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y2'], '検査者');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y2'], '出荷判定');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '時間');
+
+                foreach ($parts_obj as $n => $part_obj) {
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1']+($n*$dj), $A4['y2']+4, $part_obj->short_name);
+                }
+
+                foreach ($parts50->values() as $row => $part) {
+                    $panel_id = $part->panel_id;
+                    $createdBy = explode(',', $part->created_by);
+                    $updatedAt = $part->updated_at->format('H:i');
+
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x1'], $A4['y3']+($row)*$th, $p*100+$col*50+$row+1);
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y3']+($row)*$th, $panel_id);
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y3']+($row)*$th, array_key_exists(1, $createdBy) ? $createdBy[1] : $createdBy[0]);
+
+                    $status = $part->status == 1 ? 'OK' : 'NG';
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1']+($n*$dj), $A4['y3']+($row)*$th, $status);
+
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y3']+($row)*$th, $updatedAt);
+                }
+            }
+
+            $tcpdf->Line(106, 28, 106, 286);
+            $tcpdf->Text(103, 287, 'page '.($p+1));
         }
 
         return $tcpdf;

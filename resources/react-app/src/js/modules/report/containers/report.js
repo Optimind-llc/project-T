@@ -82,7 +82,7 @@ class Report extends Component {
 
   render() {
     const { VeItorGProcData, ItionGData } = this.props;
-
+console.log(this.state)
     return (
       <div id="reportWrap">
         {VeItorGProcData.data !== null &&
@@ -148,7 +148,7 @@ class Report extends Component {
                 <div
                   onClick={() => this.setState({
                     modal: true,
-                    path: `/manager/pdf/report/1/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                    path: `/manager/report/1/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   })}
                 >
                   <p>インナー</p>
@@ -156,7 +156,7 @@ class Report extends Component {
                 <div
                   onClick={() => this.setState({
                     modal: true,
-                    path: `/manager/pdf/report/5/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                    path: `/manager/report/5/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   })}
                 >
                   <p>アウター</p>
@@ -168,7 +168,7 @@ class Report extends Component {
                   className="disable"
                   onClick={() => this.setState({
                     modal: true,
-                    path: `/manager/pdf/report/2/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                    path: `/manager/report/2/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   })}
                 >
                   <p>インナー</p>
@@ -177,7 +177,7 @@ class Report extends Component {
                   className="disable"
                   onClick={() => this.setState({
                     modal: true,
-                    path: `/manager/pdf/report/6/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                    path: `/manager/report/6/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   })}
                 >
                   <p>アウター</p>
@@ -188,6 +188,7 @@ class Report extends Component {
                 <div
                   onClick={() => this.setState({
                     modal: true,
+                    // path: `/manager/report/3/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                     path: `/manager/pdf/report/3/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   })}
                 >
@@ -203,7 +204,7 @@ class Report extends Component {
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/15/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/15/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナー</p>
@@ -214,7 +215,7 @@ class Report extends Component {
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/4/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/4/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナー</p>
@@ -222,7 +223,7 @@ class Report extends Component {
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/8/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/8/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>アウター</p>
@@ -237,6 +238,7 @@ class Report extends Component {
               <div
                 onClick={() => this.setState({
                   modal: true,
+                  // path: `/manager/report/9/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   path: `/manager/pdf/report/9/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
@@ -248,7 +250,7 @@ class Report extends Component {
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/16/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/16/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -259,7 +261,7 @@ class Report extends Component {
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/10/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/10/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -270,7 +272,7 @@ class Report extends Component {
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/11/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/11/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -281,7 +283,7 @@ class Report extends Component {
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/12/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/12/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -292,7 +294,7 @@ class Report extends Component {
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/14/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/14/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>

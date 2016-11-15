@@ -97,7 +97,8 @@ class PageType extends Model
                 },
                 'comments',
                 'comments.modification',
-                'comments.failurePosition'
+                'comments.failurePosition',
+                'inlines'
             ]);
 
         if ($start_at) {

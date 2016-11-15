@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
+import { parts, processes, inspections } from '../../../utils/Processes';
 // Actions
 import { push } from 'react-router-redux';
 import { vehicleActions } from '../ducks/vehicle';
@@ -92,7 +93,7 @@ class Dashboard extends Component {
     };
 
     if (state.itionGId.value == 4 || state.itionGId.value == 8) name = 'hole';
-    else if (state.itionGId.value == 3 || state.itionGId.value == 7) name = 'inline';
+    else if (state.itionGId.value == 3 || state.itionGId.value == 9) name = 'inline';
     else if (state.itionGId.value == 11 || state.itionGId.value == 14) name = 'comment';
     else name = 'failure';
     this.setState({ defaultActive: { name, time }});
@@ -104,76 +105,6 @@ class Dashboard extends Component {
     const { vehicle, partTId, processId, itionGId, itorG, narrowedBy, startDate, endDate, panelId, mapping, defaultActive } = this.state;
     const { VehicleData, ItorGData, PageData, actions } = this.props;
     const format = 'YYYY-MM-DD';
-
-    const processes2 = {
-      1: [
-        {label: '成形工程ライン１', value: 1},
-        {label: '成形工程ライン２', value: 2, disabled: true},
-        {label: '穴あけ工程', value: 3}
-      ],
-      2: [
-        {label: '成形工程ライン１', value: 4},
-        {label: '成形工程ライン２', value: 5, disabled: true},
-        {label: '穴あけ工程', value: 6}
-      ],
-      3: [
-        {label: '成形工程ライン１', value: 4},
-        {label: '成形工程ライン２', value: 5, disabled: true},
-        {label: '穴あけ工程', value: 6}
-      ],
-      4: [
-        {label: '成形工程ライン１', value: 4},
-        {label: '成形工程ライン２', value: 5, disabled: true},
-        {label: '穴あけ工程', value: 6}
-      ],
-      5: [
-        {label: '成形工程ライン１', value: 4},
-        {label: '成形工程ライン２', value: 5, disabled: true},
-        {label: '穴あけ工程', value: 6}
-      ],
-      6: [
-        {label: '成形工程ライン１', value: 4},
-        {label: '成形工程ライン２', value: 5, disabled: true},
-        {label: '穴あけ工程', value: 6}
-      ],
-      7: [
-        {label: '接着工程', value: 7}
-      ]
-    };
-
-    const inspections = {
-      1: [
-        {label: '外観検査', value: 1},
-        {label: '精度検査', value: 2}
-      ],
-      2: [
-        {label: '外観検査', value: 3, disabled: true},
-        {label: '精度検査', value: 0, disabled: true}
-      ],
-      3: [
-        {label: '外観検査', value: 15},
-        {label: '穴検査', value: 4},
-      ],
-      4: [
-        {label: '外観検査', value: 5},
-        {label: '精度検査', value: 7, disabled: true}
-      ],
-      5: [
-        {label: '外観検査', value: 6, disabled: true},
-        {label: '精度検査', value: 0, disabled: true}
-      ],
-      6: [
-        {label: '穴検査', value: 8},
-      ],
-      7: [
-        {label: '精度検査', value: 9},
-        {label: '簡易CF', value: 16},
-        {label: '止水', value: 10},
-        {label: '仕上', value: 11},
-        {label: '検査', value: 12},
-        {label: '手直し', value: 14}
-      ]
-    };
 
     return (
       <div id="dashboardWrap">
@@ -233,7 +164,7 @@ class Dashboard extends Component {
                   clearable={false}
                   Searchable={true}
                   value={processId}
-                  options={partTId ? processes2[partTId.value] : null}
+                  options={partTId ? processes[partTId.value] : null}
                   onChange={value => this.setState({processId: value})}
                 />
               </div>

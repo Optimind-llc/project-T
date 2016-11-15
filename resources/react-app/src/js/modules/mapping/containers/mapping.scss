@@ -329,6 +329,42 @@
                         }
                     }
                 }
+
+                .inline .collection {
+                    min-width: 282px;
+                    > div:nth-child(1) {
+                        flex-basis: 80px;
+                        border-right: 1px solid #BFBFBF;    
+                    }
+                    > div:nth-child(2) {
+                        flex-basis: 70px;
+                        border-right: 1px solid #BFBFBF;
+                    }
+                    > div:nth-child(3) {
+                        flex-basis: 70px;
+                        border-right: 1px solid #BFBFBF;
+                    }
+
+                    ul span {
+                        margin-top: 4px;
+                        margin-left: 4px;
+                        font-size: 10px;
+                    }
+
+                    ul li:nth-child(1) span {
+                        border: 1px solid #BBB;
+                        border-radius: 4px;
+                        margin: 3px 6px 3px 0;
+                        height: 12px;
+                        width: 12px;
+                        font-size: 10px;
+
+                        p {
+                            margin: -1px 0 0 2px;
+                            padding: 0;
+                        }
+                    }
+                }
             }
         }
     }

@@ -24,24 +24,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ReportController extends Controller
 {
-    public function report($itionGId, Request $request)
+    public function report($itionGId, $date, $itorG)
     {
-        $validator = app('validator')->make(
-            $request->all(),
-            [
-                'date' => ['required'],
-                'itorG' => ['required']
-            ]
-        );
-
-        if ($validator->fails()) {
-            throw new StoreResourceFailedException('Validation error', $validator->errors());
-        }
-
-        $date = Carbon::createFromFormat('Y/m/d H:i:s', $request->date.' 00:00:00');
+        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
         $start = $date->addHours(2);
         $end = $date->copy()->addDay(1);
-        $itorG = $request->itorG;
+        if ($itorG == 'W') {
+            $itorG = ['白直', '不明'];
+        }
+        else if ($itorG == 'Y') {
+            $itorG = ['黄直', '不明'];
+        }
 
         function array_every($arr) {
           foreach ($arr as $element) {
@@ -68,7 +61,9 @@ class ReportController extends Controller
             $f_sort_array[$key] = $row['sort'];
         }
 
-        array_multisort($f_type_array, $f_sort_array, $f_label_array, $failureTypes);
+        if (count($failureTypes) != 0) {
+            array_multisort($f_type_array, $f_sort_array, $f_label_array, $failureTypes);
+        }
 
         if (intval($itionGId) == 3 || intval($itionGId) == 9) {
             $parts = Part::where('parts.created_at', '<', $end)
@@ -84,12 +79,19 @@ class ReportController extends Controller
                         ->whereIn('inspector_group', $itorG);
                 })
                 ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at'])
-                ->orderBy('if.inspected_at', 'if.created_at')
-                ->get();
+                ->with(['inlines'])
+                ->get()
+                ->sortByDesc('inspected_at')
+                ->groupBy('panel_id')
+                ->map(function($part) {
+                    return $part->first();
+                })
+                ->sortBy('inspected_at')
+                ->values();
 
-            return "インライン検査は未実装";
+            // return $parts;
         }
-        elseif ($itionGId == 1 || $itionGId == 2 || $itionGId == 5 || $itionGId == 6) {
+        elseif ($itionGId == 1 || $itionGId == 2 || $itionGId == 5 || $itionGId == 6 || $itionGId == 15) {
             $parts = Part::where('parts.created_at', '<', $end)
                 ->join('part_page as pp', function($join) {
                     $join->on('pp.part_id', '=', 'parts.id');
@@ -169,7 +171,7 @@ class ReportController extends Controller
                             ->get();
                     },
                     'pages.holePages.hole' => function($q) {
-                        $q->select(['id', 'label']);
+                        $q->select(['id', 'label', 'part_type_id']);
                     },
                     'pages.holePages.holeModification' => function($q) {
                         $q->select(['hole_modifications.id', 'name']);
@@ -178,13 +180,20 @@ class ReportController extends Controller
                 ->get();
         }
 
-// return $parts;
+        if ($parts->count() == 0) {
+            $tcpdf = new TCPDF;
+            $tcpdf->AddPage('L', 'A4');
+            $tcpdf->SetFont('kozgopromedium', '', 16);
+            $tcpdf->Text(130, 80, '検索結果なし');
+            $pdf_path = 'nothing.pdf';
+            $tcpdf->output($pdf_path, 'I');
+        }
 
         $report = new Report;
         $now = Carbon::now();
 
-        switch (intval($itionGId)) {
-            case 1: 
+        switch ($itionGId) {
+            case 1:
                 $report->setInfo('680A', '成型工程ライン１', 'インナー外観検査結果', $date, implode(',', $itorG));
                 $tcpdf = $report->forGaikan($parts, $failureTypes);
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m001_inner';
@@ -193,6 +202,11 @@ class ReportController extends Controller
                 $report->setInfo('680A', '成型工程ライン２', 'インナー外観検査結果', $date, implode(',', $itorG));
                 $tcpdf = $report->forGaikan($parts, $failureTypes);
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m002_inner';
+                break;
+            case 3:
+                $report->setInfo('680A', '成型工程ライン１', 'インナー精度検査結果', $date, implode(',', $itorG));
+                $tcpdf = $report->forInline($parts, $failureTypes);
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m001_inline_inner';
                 break;
             case 5:
                 $report->setInfo('680A', '成型工程ライン１', 'アウター外観検査結果', $date, implode(',', $itorG));
@@ -214,7 +228,13 @@ class ReportController extends Controller
                 $tcpdf = $report->forAnaMulti($parts, $failureTypes);
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_h_outer';
                 break;
+            case 15:
+                $report->setInfo('680A', '穴あけ工程', 'インナー外観検査結果', $date, implode(',', $itorG));
+                $tcpdf = $report->forGaikan($parts, $failureTypes);
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_h_gaikan_inner';
+                break;
         }
+// return $tcpdf;
 
         $tcpdf->output($pdf_path, 'I');
     }
