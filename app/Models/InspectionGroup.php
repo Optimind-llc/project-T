@@ -63,6 +63,58 @@ class InspectionGroup extends Model
         );
     }
 
+    public function sortedFailures()
+    {
+        $sortedFailures = $this->inspection->failures->map(function($f) {
+                return [
+                    'id' => $f->id,
+                    'label' => $f->label,
+                    'name' => $f->name,
+                    'type' => $f->pivot->type,
+                    'sort' => $f->pivot->sort
+                ];
+            })
+            ->toArray();
+
+        foreach($sortedFailures as $key => $row) {
+            $f_type_array[$key] = $row['type'];
+            $f_label_array[$key] = $row['label'];
+            $f_sort_array[$key] = $row['sort'];
+        }
+
+        if (count($sortedFailures) > 0) {
+            array_multisort($f_type_array, $f_sort_array, $f_label_array, $sortedFailures);
+        }
+
+        return collect($sortedFailures);
+    }
+
+    public function sortedModifications()
+    {
+        $sortedModifications = $this->inspection->modifications->map(function ($m) {
+                return [
+                    'id' => $m->id,
+                    'label' => $m->label,
+                    'name' => $m->name,
+                    'type' => $m->pivot->type,
+                    'sort' => $m->pivot->sort
+                ];
+            })
+            ->toArray();
+
+        foreach($sortedModifications as $key => $row) {
+            $m_type_array[$key] = $row['type'];
+            $m_label_array[$key] = $row['label'];
+            $m_sort_array[$key] = $row['sort'];
+        }
+
+        if (count($sortedModifications) > 0) {
+            array_multisort($m_type_array, $m_sort_array, $m_label_array, $sortedModifications);
+        }
+
+        return collect($sortedModifications);
+    }
+
     public function findWithRelated($id)
     {
         $group = $this->with([

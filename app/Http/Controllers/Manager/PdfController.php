@@ -1905,7 +1905,7 @@ class PdfController extends Controller
             foreach ($failures as $i => $f) {
                 $tcpdf->Text($x0+array_sum($d)+$i*$fd, $x0+12, $f['name']);
             }
-
+$tcpdf->Line(296, 20, 296, 270);
             foreach ($modifications as $i => $c) {
                 $tcpdf->Text($x0+array_sum($d)+($n1+$i)*$fd, $x0+12, $c['message']);
             }
