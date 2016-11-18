@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
+import { parts, processes, inspections } from '../../../utils/Processes';
 // Actions
 import { partFActions } from '../ducks/partF';
 // Material-ui Components
@@ -19,8 +20,13 @@ class Association extends Component {
     super(props, context);
 
     this.state = {
-      date: moment(),
-      tyoku: null
+      vehicle: {value: '680A', label: '680A'},
+      partTId: null,
+      panelId: '',
+      startDate: moment(),
+      endDate: moment(),
+      processId: null,
+      itionGId: null,
     };
   }
 
@@ -33,40 +39,86 @@ class Association extends Component {
 
   render() {
     const { PartFData } = this.props;
-    const { date } = this.state;
+    const { vehicle, partTId, startDate, endDate, panelId, processId, itionGId } = this.state;
 
     return (
       <div id="association">
-        <div className="serch bg-white">
-          <div>
-            <RangeCalendar
-              defaultValue={date}
-              setState={date => this.setState({
-                date: date
-              })}
-            />
-          </div>
-          <div>
-            <Select
-              name="直"
-              placeholder="直を選択"
-              styles={{height: 36}}
-              clearable={false}
-              Searchable={false}
-              value={this.state.tyoku}
-              options={[
-                {label: '１直', value: 1},
-                {label: '２直', value: 2}
-              ]}
-              onChange={value => this.setState({tyoku: value})}
-            />
-          </div>
-          <div>
-            <button
-              onClick={() => this.serch()}
-            >
-              検索
-            </button>
+        <div className="bg-white">
+          <div className="serch-wrap">
+            <div className="vehicle-wrap">
+              <p>車種*</p>
+              <Select
+                name="車種"
+                placeholder="車種を選択"
+                styles={{height: 36}}
+                clearable={false}
+                Searchable={true}
+                value={this.state.vehicle}
+                options={[
+                  {label: '680A', value: '680A'},
+                  {label: '950A', value: '950A', disabled:true}
+                ]}
+                onChange={value => this.setState({vehicle: value})}
+              />
+            </div>
+            <div className="parts-wrap">
+              <p>部品</p>
+              <Select
+                name="部品"
+                styles={{height: 36}}
+                placeholder={vehicle == null ? '先に車種を選択' :'部品を選択'}
+                disabled={vehicle == null}
+                clearable={false}
+                Searchable={false}
+                scrollMenuIntoView={false}
+                value={this.state.partTId}
+                options={[
+                  {label: 'バックドアインナー', value: 1},
+                  {label: 'アッパー', value: 2},
+                  {label: 'サイドアッパーRH', value: 3},
+                  {label: 'サイドアッパーLH', value: 4},
+                  {label: 'サイドロアRH', value: 5},
+                  {label: 'サイドロアLH', value: 6},
+                  {label: 'バックドアインナーASSY', value: 7}
+                ]}
+                onChange={value => this.setState({
+                  partTId: value,
+                  processId: null,
+                  itionGId: null
+                })}
+              />
+            </div>
+            <div className="panel-id-wrap">
+              <p>パネルID</p>
+              <input
+                type="text"
+                value={panelId}
+                onChange={(e) => this.setState({panelId: e.target.value})}
+              />
+            </div>
+            <div className="term-wrap">
+              <p>期間：</p>
+                <RangeCalendar
+                  defaultValue={startDate}
+                  setState={startDate => this.setState({
+                    startDate: startDate
+                  })}
+                />
+                <p>〜</p>
+                <RangeCalendar
+                  defaultValue={endDate}
+                  setState={endDate => this.setState({
+                    endDate: endDate
+                  })}
+                />
+            </div>
+            <div>
+              <button
+                onClick={() => this.serch()}
+              >
+                検索
+              </button>
+            </div>
           </div>
         </div>
         <div className="result bg-white">
@@ -79,7 +131,7 @@ class Association extends Component {
                 <td colSpan={5} >アウター</td>
               </tr>
               <tr>
-                <td></td>
+                <td>部品名</td>
                 <td>バックドアインナASSY</td>
                 <td>バックドアインナー</td>
                 <td>アッパー</td>
@@ -89,7 +141,7 @@ class Association extends Component {
                 <td>サイドロアLH</td>
               </tr>
               <tr>
-                <td></td>
+                <td>品番</td>
                 <td>67007 47120 000</td>
                 <td>67149 47060 000</td>
                 <td>67119 47060 000</td>
@@ -97,6 +149,16 @@ class Association extends Component {
                 <td>67176 47060 000</td>
                 <td>67177 47050 000</td>
                 <td>67178 47010 000</td>
+              </tr>
+              <tr className="content">
+                <td>{1}</td>
+                <td>B0000001</td>
+                <td>B0000001</td>
+                <td>B0000001</td>
+                <td>B0000001</td>
+                <td>B0000001</td>
+                <td>B0000001</td>
+                <td>B0000001</td>
               </tr>
               {
                 PartFData.data && PartFData.data.length != 0 &&
@@ -122,6 +184,7 @@ class Association extends Component {
               }
             </tbody>
           </table>
+
         </div>
       </div>
     );

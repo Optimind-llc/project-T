@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Choku;
 use App\Export;
+use App\Result;
 // Models
 use App\Models\Process;
 use App\Models\Inspector;
@@ -88,91 +89,29 @@ class InspectionController extends Controller
         }
 
         $heritage = [];
-        $part_type_id = $request->partType;
+        $group = [];
+        $partTypeId = $request->partType;
 
         $part = Part::where('panel_id', $request->panelId)
-            ->where('part_type_id', $part_type_id)
+            ->where('part_type_id', $partTypeId)
             ->first();
 
-        if (!$part instanceof Part) {
-            $inspected_array = [];
-            $pages = [['history' => []]];
-        }
-        else {
-            if ($part->pages->count() == 0) {
-                $inspected_array = [];
-                $pages = [['history' => []]];
-            }
-            else {
-                $inspected = $part->pages()
-                    ->join('inspection_families as if', 'pages.family_id', '=', 'if.id')
-                    ->select('pages.*', 'if.inspection_group_id')
-                    ->whereIn('if.inspection_group_id', $request->id)
-                    ->with([
-                        'failurePositions' => function($q) use ($part_type_id) {
-                            $q->whereHas('part', function ($q) use ($part_type_id) {
-                                $q->where('part_type_id', '=', $part_type_id);
-                            })
-                            ->select(['id', 'point', 'page_id', 'failure_id'])
-                            ->get();
-                        },
-                        'failurePositions.failure' => function($q) {
-                            $q->select(['id', 'label']);
-                        },
-                        'failurePositions.modifications.modification' => function($q) {
-                            $q->select(['id', 'name', 'label']);
-                        },
-                        'holes' => function($q) use ($part_type_id) {
-                            $q->whereHas('partType', function ($q) use ($part_type_id) {
-                                $q->where('id', '=', $part_type_id);
-                            })->get();
-                        }
-                    ])
-                    ->get();
-
-                $inspected_array = $inspected->map(function($ig) {
-                        return $ig->inspection_group_id;
-                    })
-                    ->toArray();
-
-                $pages = $inspected->map(function($page) {
-                    return [
-                        'pageTypeId' => $page->page_type_id,
-                        'history' => $page->failurePositions->map(function($fp) {
-                            $cLabel = "";
-                            if ($fp->modifications->count() !== 0) {
-                                $cLabel = $fp->modifications->first()->modification->label;
-                            }
-
-                            return [
-                                'failurePositionId' => $fp->id,
-                                'label' => $fp->failure->label,
-                                'point' => $fp->point,
-                                'cLabel' => $cLabel
-                            ];
-                        }),
-                        'holeHistory' => $page->holes->map(function($h) {
-                            return [
-                                'id' => $h->id,
-                                'holePageId' => $h->pivot->id,
-                                'status' => $h->pivot->status
-                            ];
-                        })
-                    ];
-                });
+        if ($part instanceof Part) {
+            foreach ($request->id as $id) {
+                $detail = new Result($part->id, $partTypeId, $id);
+                $group[] = $detail->setDetails()->formatForClient()->get();
             }
         }
 
         foreach ($request->id as $id) {
             $name = InspectionGroup::find($id)->inspection->en;
-            $heritage[$name] = in_array($id, $inspected_array) ? 1 : 0;
+            $keys = collect($group)->keyBy('inspectionGroupId')->keys()->toArray();
+            $heritage[$name] = in_array($id, $keys) ? 1 : 0;
         }
 
         return [
             'heritage' => $heritage,
-            'group' => [
-                'pages' => $pages
-            ]
+            'group' => $group
         ];
     }
 

@@ -196,7 +196,7 @@ class ReportController extends Controller
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_h_gaikan_inner';
                 break;
         }
-        
+
 // return $tcpdf;
 
         $tcpdf->output($pdf_path, 'I');

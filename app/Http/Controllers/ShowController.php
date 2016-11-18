@@ -297,7 +297,8 @@ class ShowController extends Controller
         return ['data' => $page_types];
     }
 
-    protected function formatPage($pages, $partTypeId) {
+    protected function formatPage($pages, $partTypeId)
+    {
         return [
             'failures' => $pages->reduce(function ($carry, $page) use($partTypeId){
                 return $carry->merge($page->failurePositions->map(function($fp) use($page) {
