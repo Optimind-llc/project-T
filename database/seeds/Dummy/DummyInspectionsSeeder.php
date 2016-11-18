@@ -195,8 +195,11 @@ class DummyInspectionsSeeder extends Seeder
         for ($id = 1; $id <= 10; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16]);
             $history = [];
-            foreach ($controller->history($request)['group']['pages'] as $key => $page) {
-                $history = array_merge($history, $page['history']->toArray());
+            $groups = collect($controller->history($request)['group'])->map(function($g) {
+                return $g['pages']->first()['failures']->toArray();
+            });
+            foreach ($groups as $g) {
+                $history = array_merge($history, $g);
             }
             
             $data = $this->createData($group['group'], $id, $history ,[]);
@@ -205,14 +208,17 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);
         }
 
-        //接着：仕上：インナASSY
+        // 接着：仕上：インナASSY
         $group = $controller->inspection(11);
 
         for ($id = 1; $id <= 10; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10]);
             $history = [];
-            foreach ($controller->history($request)['group']['pages'] as $key => $page) {
-                $history = array_merge($history, $page['history']->toArray());
+            $groups = collect($controller->history($request)['group'])->map(function($g) {
+                return $g['pages']->first()['failures']->toArray();
+            });
+            foreach ($groups as $g) {
+                $history = array_merge($history, $g);
             }
 
             $data = $this->createData($group['group'], $id, $history ,[]);
@@ -227,8 +233,11 @@ class DummyInspectionsSeeder extends Seeder
         for ($id = 1; $id <= 10; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10, 11]);
             $history = [];
-            foreach ($controller->history($request)['group']['pages'] as $key => $page) {
-                $history = array_merge($history, $page['history']->toArray());
+            $groups = collect($controller->history($request)['group'])->map(function($g) {
+                return $g['pages']->first()['failures']->toArray();
+            });
+            foreach ($groups as $g) {
+                $history = array_merge($history, $g);
             }
 
             $data = $this->createData($group['group'], $id, $history ,[]);
@@ -252,8 +261,11 @@ class DummyInspectionsSeeder extends Seeder
         for ($id = 1; $id <= 10; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10, 11, 12]);
             $history = [];
-            foreach ($controller->history($request)['group']['pages'] as $key => $page) {
-                $history = array_merge($history, $page['history']->toArray());
+            $groups = collect($controller->history($request)['group'])->map(function($g) {
+                return $g['pages']->first()['failures']->toArray();
+            });
+            foreach ($groups as $g) {
+                $history = array_merge($history, $g);
             }
 
             $data = $this->createData($group['group'], $id, $history ,[]);
