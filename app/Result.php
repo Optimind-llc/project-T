@@ -82,6 +82,14 @@ class Result
                             'mId' => $mId,
                             'mLabel' => $mLabel
                         ]);
+                    }),
+                    'modifications' => $page->comments->map(function($m) {
+                        return [
+                            'failurePositionId' => $m->fp_id,
+                            'mId' => $m->modification->id,
+                            'mName' => $m->modification->name,
+                            'mLabel' => $m->modification->label
+                        ];
                     })
                 ];
             })
