@@ -36,6 +36,7 @@ class Result
 
         $this->result = collect([
             'inspectionGroupId' => $family->inspection_group_id,
+            'familyId' => $family->id,
             'status' => $family->status,
             'comment' => '書き込まれたコメント 同じパーツを複数ページで検査してる時はここ',
             'choku' => $family->inspector_group,
@@ -43,6 +44,7 @@ class Result
             'inspectedAt' => $family->updated_at->format('m月d日'),
             'pages' => $family->pages->map(function($page) {
                 return [
+                    'pageId' => $page->id,
                     'parts' => $page->parts->map(function($part) {
                         return [
                             'id' => $part->id,
@@ -77,18 +79,19 @@ class Result
                         }
 
                         return collect([
-                            'holeId' => $hp->hole_id,
+                            'holePageId' => $hp->id,
                             'status' => $hp->status,
-                            'mId' => $mId,
+                            'holeId' => $hp->hole_id,
+                            'hLabel' => $hp->hole->label,
                             'mLabel' => $mLabel
                         ]);
                     }),
                     'modifications' => $page->comments->map(function($m) {
                         return [
                             'failurePositionId' => $m->fp_id,
-                            'mId' => $m->modification->id,
-                            'mName' => $m->modification->name,
-                            'mLabel' => $m->modification->label
+                            'modificationId' => $m->id,
+                            'name' => $m->modification->name,
+                            'label' => $m->modification->label
                         ];
                     })
                 ];

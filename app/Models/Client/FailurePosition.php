@@ -3,6 +3,7 @@
 namespace App\Models\Client;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class FailurePage
@@ -10,12 +11,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class FailurePosition extends Model
 {
-    /**
-     * The attributes that are not mass assignable.
-     *
-     * @var array
-     */
+    use SoftDeletes;
+
     protected $guarded = ['id'];
+    protected $dates = ['deleted_at'];
 
     public function failure()
     {

@@ -354,6 +354,11 @@ class FailureTableSeeder extends Seeder
                 'inspection_id' => 3,
                 'type'       => 2,
                 'sort'       => 1
+            ],[
+                'failure_id' => 34,
+                'inspection_id' => 3,
+                'type'       => 2,
+                'sort'       => 1
             ],
             //穴あけ_外観検査
             [

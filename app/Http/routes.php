@@ -39,6 +39,12 @@ Route::post('client/history', 'Client\InspectionController@history');
 // Save inspection data
 Route::post('client/inspection', 'Client\InspectionController@saveInspection');
 
+// Update inspection data
+Route::post('client/inspection/update', 'Client\InspectionController@updateInspection');
+
+
+
+
 // Print iPad display clone
 Route::post('client/print', 'Client\PrintController@printByTemplate');
 

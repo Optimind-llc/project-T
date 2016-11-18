@@ -14,12 +14,14 @@ class CreateTablesRelatedToClient extends Migration
         Schema::create('inspection_families', function (Blueprint $table) {
             $table->increments('id');
             $table->tinyInteger('status')->nullable()->unsigned();
+            $table->string('comment', 100)->nullable();
             $table->string('inspector_group')->nullable();
             $table->string('created_by');
             $table->string('updated_by')->nullable();
             $table->timestamp('inspected_at')->nullable();
             $table->integer('inspection_group_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             /**
              * Add Foreign
@@ -93,7 +95,9 @@ class CreateTablesRelatedToClient extends Migration
             $table->integer('part_id')->unsigned();
             $table->integer('page_id')->unsigned();
             $table->integer('status')->unsigned();
+            $table->string('comment', 100)->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             /**
              * Add Foreign
@@ -172,6 +176,7 @@ class CreateTablesRelatedToClient extends Migration
             $table->integer('page_id')->unsigned();
             $table->integer('part_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             /**
              * Add Foreign
