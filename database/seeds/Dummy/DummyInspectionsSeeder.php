@@ -20,7 +20,8 @@ class DummyInspectionsSeeder extends Seeder
             return [
                 'partTypeId' => $part['id'],
                 'panelId' => 'B'.str_pad($id, 7, 0, STR_PAD_LEFT),
-                'status' => rand(0, 1)
+                'status' => rand(0, 1),
+                'comment' => '小部品のコメントだよ'
             ];
         };
 
@@ -96,6 +97,7 @@ class DummyInspectionsSeeder extends Seeder
             'groupId' => $group['id'],
             'inspectorGroup' => $tyoku,
             'status' => 1,
+            'comment' => 'コメントだよ！',
             'inspector' => $tyoku.','.$group['inspectorGroups']['Y'][0]['name'],
             'pages' => $group['pages']->filter(function($p){
                     return $p['id'] != 14;

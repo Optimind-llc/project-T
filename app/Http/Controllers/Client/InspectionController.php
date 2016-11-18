@@ -153,6 +153,7 @@ class InspectionController extends Controller
         $newFamily = new InspectionFamily;
         $newFamily->inspection_group_id = $groupId;
         $newFamily->status = $family['status'];
+        $newFamily->comment = array_key_exists('comment', $family) ? $family['comment'] : null;
         $newFamily->inspector_group = $family['inspectorGroup'];
         $newFamily->created_by = $family['inspector'];
         $newFamily->save();
@@ -176,7 +177,10 @@ class InspectionController extends Controller
                     $newPart->save();
                 }
 
-                $newPage->parts()->attach($newPart->id, ['status' => $part['status']]);
+                $newPage->parts()->attach($newPart->id, [
+                    'status' => $part['status'],
+                    'comment' => array_key_exists('comment', $part) ? $part['comment'] : null
+                ]);
             }
 
             //Get divided area from page type
@@ -340,6 +344,7 @@ class InspectionController extends Controller
 
         $family_odj = InspectionFamily::find($familyId);
         $family_odj->status = $family['status'];
+        $family_odj->comment = array_key_exists('comment', $family) ? $family['comment'] : null;
         $family_odj->inspector_group = $family['choku'];
         $family_odj->updated_by = $family['updatedBy'];
         $family_odj->save();
@@ -375,6 +380,15 @@ class InspectionController extends Controller
                     ];
                 })
                 ->keyBy('type_id');
+
+            foreach ($page['parts'] as $part) {
+                DB::table('part_page')->where('page_id', $pageId)
+                    ->where('part_id', $part['partId'])
+                    ->update([
+                        'status' => $part['status'],
+                        'comment' => array_key_exists('comment', $part) ? $part['comment'] : null
+                    ]);
+            }
 
             // Get divided area from page type
             $area = $page_odj->pageType->partTypes->map(function($part){

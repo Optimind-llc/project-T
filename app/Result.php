@@ -38,7 +38,7 @@ class Result
             'inspectionGroupId' => $family->inspection_group_id,
             'familyId' => $family->id,
             'status' => $family->status,
-            'comment' => '書き込まれたコメント 同じパーツを複数ページで検査してる時はここ',
+            'comment' => $family->comment,
             'choku' => $family->inspector_group,
             'inspectedBy' => $inspectedBy,
             'inspectedAt' => $family->updated_at->format('m月d日'),
@@ -53,7 +53,7 @@ class Result
                             'name' => $part->partType->name,
                             'panelId' => $part->panel_id,
                             'status' => $part->pivot->status,
-                            'comment' => '書き込まれたコメント 同じページで複数パーツを検査してる時はここ',
+                            'comment' => $part->pivot->comment
                         ];
                     }),
                     'failures' => $page->failurePositions->map(function($fp) {
