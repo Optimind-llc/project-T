@@ -101,10 +101,14 @@ class InspectionController extends Controller
             foreach ($request->id as $id) {
                 $detail = new Result($part->id, $partTypeId, $id);
                 $formated = $detail->setDetails()->formatForClient()->get();
-                $group[] = $formated;
 
                 $name = InspectionGroup::find($id)->inspection->en;
-                $heritage[$name] = $formated->has('familyId') ? 1 : 0;
+                $heritage[$name] = 0;
+
+                if (!is_null($formated)) {
+                    $group[] = $formated;
+                    $heritage[$name] = 1;
+                }
             }
         }
 

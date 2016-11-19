@@ -26,7 +26,6 @@ class Result
     {
         $family = $this->result;
         if (is_null($family)) {
-            $this->result = collect(['inspectionGroupId' => $this->itionGId]);
             return $this;
         }
 
