@@ -100,14 +100,12 @@ class InspectionController extends Controller
         if ($part instanceof Part) {
             foreach ($request->id as $id) {
                 $detail = new Result($part->id, $partTypeId, $id);
-                $group[] = $detail->setDetails()->formatForClient()->get();
-            }
-        }
+                $formated = $detail->setDetails()->formatForClient()->get();
+                $group[] = $formated;
 
-        foreach ($request->id as $id) {
-            $name = InspectionGroup::find($id)->inspection->en;
-            $keys = collect($group)->keyBy('inspectionGroupId')->keys()->toArray();
-            $heritage[$name] = in_array($id, $keys) ? 1 : 0;
+                $name = InspectionGroup::find($id)->inspection->en;
+                $heritage[$name] = $formated->has('familyId') ? 1 : 0;
+            }
         }
 
         return [
@@ -350,8 +348,14 @@ class InspectionController extends Controller
         $family_odj->save();
 
         if (array_key_exists('deletedM', $family) && count($family['deletedM']) !== 0) {
-            foreach ($family['deletedM'] as $mfp_id) {
-                DB::table('modification_failure_position')->where('id', '=', $mfp_id)->delete();
+            foreach ($family['deletedM'] as $fp_id) {
+                $fp = FailurePosition::find($fp_id);
+                if ($fp instanceof FailurePosition) {
+                    $mfp = $fp->modifications();
+                    if (!is_null($mfp)) {
+                        $mfp->delete();
+                    }
+                } 
             }
         }
 

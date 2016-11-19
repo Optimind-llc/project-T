@@ -25,6 +25,10 @@ class Result
     public function formatForClient()
     {
         $family = $this->result;
+        if (is_null($family)) {
+            $this->result = collect(['inspectionGroupId' => $this->itionGId]);
+            return $this;
+        }
 
         $exc = explode(',', $family->created_by);
         $inspectedBy = count($exc) > 1 ? $exc[1] : $exc[0];
@@ -38,7 +42,7 @@ class Result
             'inspectionGroupId' => $family->inspection_group_id,
             'familyId' => $family->id,
             'status' => $family->status,
-            'comment' => $family->comment,
+            'comment' => is_null($family->comment) ? '' : $family->comment,
             'choku' => $family->inspector_group,
             'inspectedBy' => $inspectedBy,
             'inspectedAt' => $family->updated_at->format('m月d日'),
@@ -53,7 +57,7 @@ class Result
                             'name' => $part->partType->name,
                             'panelId' => $part->panel_id,
                             'status' => $part->pivot->status,
-                            'comment' => $part->pivot->comment
+                            'comment' => is_null($part->pivot->comment) ? '' : $part->pivot->comment
                         ];
                     }),
                     'failures' => $page->failurePositions->map(function($fp) {

@@ -194,7 +194,7 @@ class DummyInspectionsSeeder extends Seeder
         //接着：止水：インナASSY
         $group = $controller->inspection(10);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 8; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16]);
             $history = [];
             $groups = collect($controller->history($request)['group'])->map(function($g) {
@@ -213,7 +213,7 @@ class DummyInspectionsSeeder extends Seeder
         // 接着：仕上：インナASSY
         $group = $controller->inspection(11);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 6; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10]);
             $history = [];
             $groups = collect($controller->history($request)['group'])->map(function($g) {
@@ -232,7 +232,7 @@ class DummyInspectionsSeeder extends Seeder
         //接着：検査：インナASSY
         $group = $controller->inspection(12);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 4; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10, 11]);
             $history = [];
             $groups = collect($controller->history($request)['group'])->map(function($g) {
@@ -248,19 +248,10 @@ class DummyInspectionsSeeder extends Seeder
             $controller->saveInspection($request);
         }
 
-        // //接着：特検：インナASSY
-        // $group = $controller->inspection(13);
-
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $data = $this->createData($group['group'], $id ,[] ,[]);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
-
         //接着：手直し：インナASSY
         $group = $controller->inspection(14);
 
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 2; $id++) {
             $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10, 11, 12]);
             $history = [];
             $groups = collect($controller->history($request)['group'])->map(function($g) {
