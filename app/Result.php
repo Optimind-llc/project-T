@@ -73,11 +73,9 @@ class Result
                         ]);
                     }),
                     'holes' => $page->holePages->map(function($hp) {
-                        $mId = 0;
-                        $mLabel = '';
+                        $mLabel = -1;
                         if ($hp->holeModification->count() !== 0) {
                             $hm = $hp->holeModification->first();
-                            $mId = $hm->id;
                             $mLabel = $hm->label;
                         }
 
