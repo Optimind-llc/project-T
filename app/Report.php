@@ -992,6 +992,7 @@ class Report
         $part_types = $parts->groupBy('part_type_id');
         $parts_obj = PartType::whereIn('id', $part_types->keys())
             ->select(['id', 'pn', 'name', 'short_name'])
+            ->orderBy('sort')
             ->get()
             ->values();
 
@@ -1033,10 +1034,9 @@ class Report
                 $tcpdf->SetFont('kozgopromedium', '', 8);
 
                 $n = 0;
-                foreach ($part_types as $id => $part_type) {
-                    $part_obj = PartType::find($id);
-
-                    $sum1 = $part_type->filter(function($p) {
+                // foreach ($part_types as $id => $part_type) {
+                foreach ($parts_obj as $id => $part_obj) {
+                    $sum1 = $part_types[$part_obj->id]->filter(function($p) {
                         return $p->status == 1;
                     })->count();
                     $sum0 = $part_type->count() - $sum1;
@@ -1051,7 +1051,9 @@ class Report
             }
 
             $col = 0;
-            foreach ($chunked_part_types as $id => $chunked_part_type) {
+            // foreach ($chunked_part_types as $id => $chunked_part_type) {
+            foreach ($parts_obj as $id => $part_obj) {
+    
                 $tcpdf->SetFont('kozgopromedium', '', 6);
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$dL, $A4['y2'], 'No.');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$dL, $A4['y2'], 'パネルID');
@@ -1059,7 +1061,8 @@ class Report
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$dL, $A4['y2'], '判定');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$dL, $A4['y2'], '時間');
 
-                foreach ($chunked_part_type[$p]->values() as $row => $part) {
+                // foreach ($chunked_part_type[$p]->values() as $row => $part) {
+                foreach ($chunked_part_types[$part_obj->id][$p]->values() as $row => $part) {
                     $createdBy = explode(',', $part->created_by);
 
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$dL, $A4['y3']+($row)*$A4['th'], $p*50+$row+1);
@@ -1087,8 +1090,8 @@ class Report
         $d_date = 10;
         $fd = 8;
 
-        foreach ($part_types as $id => $part_type) {
-            $formated_part_type = $part_type->map(function($part) {
+        foreach ($parts_obj as $id => $part_obj) {
+            $formated_part_type = $part_types[$part_obj->id]->map(function($part) {
                 $exc = explode(',', $part->created_by);
                 $inspectedBy = count($exc) > 1 ? $exc[1] : $exc[0];
 
@@ -1121,7 +1124,7 @@ class Report
                 ];
             });
 
-            $all_holes = Hole::where('part_type_id', '=', $id)
+            $all_holes = Hole::where('part_type_id', '=', $part_obj->id)
                 ->whereNotIn('figure_id', [9])
                 ->orderBy('label')
                 ->get();
@@ -1139,6 +1142,7 @@ class Report
 
                 // Render page header
                 $this->renderA3Header($tcpdf);
+                $tcpdf->Text($A3['x0']+$A3['header']['part'], $A3['y0'], $part_obj->name);
 
                 $tcpdf->SetFont('kozgopromedium', '', 6);
                 $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y1_ana'], 'No.');
@@ -1208,8 +1212,8 @@ class Report
             }
         }
 
-        foreach ($part_types as $id => $part_type) {
-            $formated_part_type = $part_type->map(function($part) {
+        foreach ($parts_obj as $id => $part_obj) {
+            $formated_part_type = $part_types[$part_obj->id]->map(function($part) {
                 $exc = explode(',', $part->created_by);
                 $inspectedBy = count($exc) > 1 ? $exc[1] : $exc[0];
 
@@ -1242,7 +1246,7 @@ class Report
                 ];
             });
 
-            $all_holes = Hole::where('part_type_id', '=', $id)
+            $all_holes = Hole::where('part_type_id', '=', $part_obj->id)
                 ->whereNotIn('figure_id', [9])
                 ->orderBy('label')
                 ->get();
@@ -1305,6 +1309,7 @@ class Report
             $tcpdf->AddPage('L', 'A3');
             // Render page header
             $this->renderA3Header($tcpdf);
+            $tcpdf->Text($A3['x0']+$A3['header']['part'], $A3['y0'], $part_obj->name);
 
             // Render table header
             $tcpdf->SetFont('kozgopromedium', '', 8);
