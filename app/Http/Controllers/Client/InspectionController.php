@@ -457,6 +457,8 @@ class InspectionController extends Controller
                 foreach ($page['holes'] as $h) {
                     $hole_page = HolePage::find($h['holePageId']);
                     $hole_page->status = $h['status'];
+                    $hole_page->save();
+
                     DB::table('hole_page_hole_modification')->where('hp_id', '=', $h['holePageId'])->delete();
 
                     if (array_key_exists('holeModificationId', $h)) {

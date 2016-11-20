@@ -135,6 +135,7 @@ class CustomTable extends Component {
               modifications.length > 0 &&
               <th colSpan={modifications.length}>不良手直</th>
             }
+            <th rowSpan="2">コメント</th>
             <th rowSpan="2">検査日</th>
             <th rowSpan="2">最終更新日</th>
           </tr>
@@ -245,6 +246,7 @@ class CustomTable extends Component {
                   return (<td>{sum}</td>);
                 })
               }
+              <td>{d.comment.slice(0,5)+'...'}</td>
               <td>{d.createdAt}</td>
               <td>{d.updatedAt}</td>
             </tr>

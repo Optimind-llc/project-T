@@ -746,7 +746,8 @@ class ShowController extends Controller
         ]];
     }
 
-    public function failures($itionGId) {
+    public function failures($itionGId)
+    {
         $failureTypes = InspectionGroup::find($itionGId)->inspection->failures->map(function($f) {
             return [
                 'id' => $f->id,
@@ -772,7 +773,8 @@ class ShowController extends Controller
         return ['data' => $failureTypes];
     }
 
-    public function modifications($itionGId) {
+    public function modifications($itionGId)
+    {
         $modificationTypes = InspectionGroup::find($itionGId)->inspection->modifications->map(function($m) {
             return [
                 'id' => $m->id,
