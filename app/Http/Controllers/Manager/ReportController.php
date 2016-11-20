@@ -104,7 +104,7 @@ class ReportController extends Controller
                         ->where('if.inspection_group_id', '=', $itionGId)
                         ->whereIn('if.inspector_group', $itorG);
                 })
-                ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'pg.family_id', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at'])
+                ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'pg.family_id', 'if.comment', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at'])
                 ->with([
                     'failurePositions' => function($q) use ($itionGId, $itorG) {
                         $q->join('pages as pg', 'pg.id', '=', 'failure_positions.page_id')
@@ -192,7 +192,7 @@ class ReportController extends Controller
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_h_outer';
                 break;
             case 15:
-                $tcpdf = $report->forGaikan($parts);
+                $tcpdf = $report->forAnaGaikan($parts);
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_h_gaikan_inner';
                 break;
         }
