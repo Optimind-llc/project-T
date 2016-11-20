@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Hole
@@ -10,12 +11,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Hole extends Model
 {
-    /**
-     * The attributes that are not mass assignable.
-     *
-     * @var array
-     */
+    use SoftDeletes;
+
     protected $guarded = ['id'];
+    protected $dates = ['deleted_at'];
 
     public function figure()
     {

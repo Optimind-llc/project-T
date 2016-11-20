@@ -83,6 +83,18 @@ class Page extends Model
         );
     }
 
+    public function hModifications()
+    {
+        return $this->belongsToMany(
+            'App\Models\HoleModification',
+            'hole_page_hole_modification',
+            'page_id',
+            'hm_id'
+        )
+        ->withPivot('comment', 'id');
+    }
+
+
     public function inlines()
     {
         return $this->belongsToMany(

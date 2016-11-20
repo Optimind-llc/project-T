@@ -302,7 +302,6 @@ class Mapping extends Component {
                   {data.inlines.map(is => {
                     let percentage = 0;
                     const sum = is.length;
-                    // const sum1 = is.filter(i => i.max > i.status && i.min < i.status ).length;
                     const sum0 = is.filter(i => i.max < i.status || i.min > i.status ).length;
                     if (sum !== 0 && sum0 != 0) percentage = Math.round(1000*sum0/sum)/10;
                     return (
@@ -522,6 +521,7 @@ class Mapping extends Component {
                 Object.keys(data.inlines).map(id => {
                   return data.inlines[id].map(i => {
                     const width = 100;
+                    const height = 20;
                     const point = i.point.split(',');
                     const x = point[0]/2;
                     const y = point[1]/2;
@@ -532,54 +532,47 @@ class Mapping extends Component {
                     return (
                       <g>
                         <circle cx={x} cy={y} r={6} fill="red" />
-                        <rect x={lx} y={ly} width={width} height="30" fill="white" stroke="gray"></rect>
-                        <line x1={x} y1={y} x2={i.side == 'left' ? lx : lx + width} y2={ly+15} stroke="#e74c3c" stroke-width="10" />
+                        <rect x={lx} y={ly} width={width} height={height} fill="white" stroke="gray"></rect>
+                        <line x1={x} y1={y} x2={i.side == 'left' ? lx : lx + width} y2={ly+height/2} stroke="#e74c3c" stroke-width="10" />
                         <text
                           x={lx}
                           y={ly}
-                          dx="4"
+                          dx="6"
                           dy="14"
                           fontSize="12"
                           fill="black"
                           fontWeight="bold"
                           text-anchor="middle"
                         >
-                          {i.label}
+                          {i.sort}
                         </text>
                         {
                           i.face &&
                           <text
                             x={lx}
                             y={ly}
-                            dx="4"
-                            dy="26"
-                            fontSize="10"
+                            dx="22"
+                            dy="14"
+                            fontSize="12"
                             fill="black"
                             text-anchor="middle"
                           >
-                            {i.face}
+                            {`(${i.face})`}
+                          </text>
+                        }{
+                          i.position &&
+                          <text
+                            x={lx}
+                            y={ly}
+                            dx="56"
+                            dy="14"
+                            fontSize="12"
+                            fill="black"
+                            text-anchor="middle"
+                          >
+                            {i.position}
                           </text>
                         }
-                        <text
-                          x={lx}
-                          y={ly}
-                          dx="24"
-                          dy="12"
-                          fontSize="10"
-                          fill="black"
-                        >
-                          {`MAX：${i.max}`}
-                        </text>
-                        <text
-                          x={lx}
-                          y={ly}
-                          dx="24"
-                          dy="24"
-                          fontSize="10"
-                          fill="black"
-                        >
-                          {`MIN：${i.min}`}
-                        </text>
                       </g>
                     );
                   })

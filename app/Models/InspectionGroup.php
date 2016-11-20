@@ -115,6 +115,32 @@ class InspectionGroup extends Model
         return collect($sortedModifications);
     }
 
+    public function sortedHoleModifications()
+    {
+        $sortedHoleModifications = $this->inspection->hModifications->map(function ($m) {
+                return [
+                    'id' => $m->id,
+                    'label' => $m->label,
+                    'name' => $m->name,
+                    'type' => $m->pivot->type,
+                    'sort' => $m->pivot->sort
+                ];
+            })
+            ->toArray();
+
+        foreach($sortedHoleModifications as $key => $row) {
+            $hm_type_array[$key] = $row['type'];
+            $hm_label_array[$key] = $row['label'];
+            $hm_sort_array[$key] = $row['sort'];
+        }
+
+        if (count($sortedHoleModifications) > 0) {
+            array_multisort($hm_type_array, $hm_sort_array, $hm_label_array, $sortedHoleModifications);
+        }
+
+        return collect($sortedHoleModifications);
+    }
+
     public function findWithRelated($id)
     {
         $group = $this->with([

@@ -33,7 +33,7 @@ class Result
         $inspectedBy = count($exc) > 1 ? $exc[1] : $exc[0];
 
         if ($family->updated_by) {
-            $exu = explode(',', $family->created_by);
+            $exu = explode(',', $family->updated_by);
             $inspectedBy = count($exu) > 1 ? $exu[1] : $exu[0];
         }
 
