@@ -50,6 +50,7 @@ class ReportController extends Controller
                 ->map(function($part) { return $part->first(); })
                 ->sortBy('inspected_at')
                 ->values();
+
         }
         elseif ($itionGId == 1 || $itionGId == 2 || $itionGId == 5 || $itionGId == 6 || $itionGId == 15) {
             $parts = Part::where('parts.created_at', '<', $end)
@@ -66,7 +67,7 @@ class ReportController extends Controller
                         ->where('if.inspection_group_id', '=', $itionGId)
                         ->whereIn('if.inspector_group', $itorG);
                 })
-                ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'pg.family_id', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at'])
+                ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'pg.family_id', 'if.comment', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at'])
                 ->with([
                     'failurePositions' => function($q) use ($itionGId, $itorG) {
                         $q->join('pages as pg', 'pg.id', '=', 'failure_positions.page_id')
@@ -190,6 +191,10 @@ class ReportController extends Controller
             case 8:
                 $tcpdf = $report->forAnaMulti($parts);
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_h_outer';
+                break;
+            case 9:
+                $tcpdf = $report->forInline($parts);
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_j001_inline_inner';
                 break;
             case 15:
                 $tcpdf = $report->forAnaGaikan($parts);

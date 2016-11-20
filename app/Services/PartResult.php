@@ -60,7 +60,7 @@ class PartResult
             'createdAt' => $merged_page['createdAt'],
             'updatedAt' => $merged_page['updatedAt'],
             'status' => $merged_page['status'],
-            'comment' => $merged_page['comment'],
+            'comment' => $merged_page->has('comment') ? $merged_page['comment'] : null,
             'failures' => array_count_values($merged_page['failures']->map(function($f) {
                 return $f->failure_id;
             })
@@ -83,7 +83,10 @@ class PartResult
                 ];
             })
             ->toArray(),
-            'hModifications' => $merged_page['hModifications'],
+            'hModifications' => array_count_values($merged_page['hModifications']->map(function($hm) {
+                return $hm->m_id;
+            })
+            ->toArray()),
             'inlines' => $merged_page['inlines']
         ]);
 

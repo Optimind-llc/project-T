@@ -488,10 +488,10 @@ class InlineTableSeeder extends Seeder
                 'face'          => 'Lh シール面',
                 'position'      => '',
                 'calibration'   => null,
-                'max_tolerance' => 0,
-                'min_tolerance' => 0,
-                'part_type_id'  => 1.3,
-                'figure_id'     => -1.2,
+                'max_tolerance' => 1.3,
+                'min_tolerance' => -1.2,
+                'part_type_id'  => 1,
+                'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[

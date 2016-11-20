@@ -136,7 +136,7 @@ class Report
                     'status' => $status,
                     'inspectedBy' => $inspectedBy,
                     'time' => $part->updated_at,
-                    'comment' => '任意のコメ..',
+                    'comment' => $part->comment,
                     'failures' => $part->failurePositions->map(function($fp) {
                         return $fp->failure_id;
                     }),
@@ -303,7 +303,13 @@ class Report
                     }
                 }
 
-                $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd, $A3['y2']+($row)*$A3['th'], '任意のコメ..');
+                foreach ($parts_obj as $n => $part_obj) {
+                    $part = $parts[$part_obj->id];
+                    $status = $part['gStatus'] == 1 ? '○' : '×';
+
+                    $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$n*($dj_gaikan-1), $A3['y2']+($row)*$A3['th'], is_null($part['comment']) ? '' : '有');
+                }
+
                 $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$d_comment, $A3['y2']+($row)*$A3['th'], $time);
             }
 
@@ -439,7 +445,7 @@ class Report
                     'status' => $status,
                     'inspectedBy' => $inspectedBy,
                     'time' => $part->updated_at,
-                    'comment' => '任意のコメ..',
+                    'comment' => mb_substr($part->comment, 0, 4, 'UTF-8').'..',
                     'failures' => $part->failurePositions->map(function($fp) {
                         return $fp->failure_id;
                     }),
@@ -587,7 +593,7 @@ class Report
                     }
                 }
 
-                $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd, $A3['y2']+($row)*$A3['th'], '任意のコメ..');
+                $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd, $A3['y2']+($row)*$A3['th'], $parts->first()['comment']);
                 $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$d_comment, $A3['y2']+($row)*$A3['th'], $time);
             }
 
@@ -1580,5 +1586,10 @@ class Report
         }
 
         return $tcpdf;
+    }
+
+    public function forJointing($parts)
+    {
+        return true;
     }
 }

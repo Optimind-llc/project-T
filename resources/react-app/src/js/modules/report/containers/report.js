@@ -238,8 +238,7 @@ console.log(this.state)
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  // path: `/manager/report/9/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
-                  path: `/manager/pdf/report/9/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/9/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -250,7 +249,7 @@ console.log(this.state)
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/report/16/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/pdf/report/16/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -261,7 +260,7 @@ console.log(this.state)
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/report/10/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/pdf/report/10/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -272,7 +271,7 @@ console.log(this.state)
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/report/11/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/pdf/report/11/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -283,7 +282,7 @@ console.log(this.state)
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/report/12/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/pdf/report/12/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -294,7 +293,7 @@ console.log(this.state)
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/report/14/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/pdf/report/14/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
 import { parts, processes, inspections } from '../../../utils/Processes';
+import { downloadCsv } from '../../../utils/Export';
 // Actions
 import { push } from 'react-router-redux';
 import { serchActions } from '../ducks/serch';
@@ -49,6 +50,81 @@ class Reference extends Component {
       narrowedBy, startDate, endDate, panelId
     } = this.state;
 
+    let table = [];
+    if (SerchedData.data != null && !SerchedData.isFetching) {
+      let header = ['No.','車種','品番','品名','パネルID','直','検査者','更新者','判定'];
+      if (SerchedData.data.h.length > 0) {
+        SerchedData.data.h.forEach(h => {
+          header.push(String(h.label));
+        })
+      }
+      if (SerchedData.data.hm.length > 0) {
+        SerchedData.data.hm.forEach(hm => {
+          header.push(hm.name);
+        })
+      }
+      if (SerchedData.data.f.length > 0) {
+        SerchedData.data.f.forEach(f => {
+          header.push(f.name);
+        })
+      }
+      if (SerchedData.data.m.length > 0) {
+        SerchedData.data.m.forEach(m => {
+          header.push(m.name);
+        })
+      }
+      header.push('コメント');
+      header.push('検査日');
+      header.push('更新日');
+
+      table.push(header);
+
+      let rows = SerchedData.data.parts.map((p,i) => {
+        let status = p.status == 1 ? '○' : '×';
+        let result = [String(i), p.vehicle, String(p.pn), p.name, p.panelId, p.tyoku, p.createdBy, p.updatedBy, status];
+
+        if (SerchedData.data.h.length > 0) {
+          SerchedData.data.h.forEach(h => {
+            let status = p.holes.find(hole => hole.id == h.id).status;
+            if (status == 0) {status = '×'}
+            if (status == 1) {status = '○'}
+            if (status == 2) {status = '△'}
+            result.push(status);
+          })
+        }
+
+        if (SerchedData.data.hm.length > 0) {
+          SerchedData.data.hm.forEach(hm => {
+            let sum = p.hModifications[hm.id] ? p.failures[hm.id] : 0;
+            result.push(String(sum));
+          })
+        }
+
+        if (SerchedData.data.f.length > 0) {
+          SerchedData.data.f.forEach(f => {
+            let sum = p.failures[f.id] ? p.failures[f.id] : 0;
+            result.push(String(sum));
+          })
+        }
+
+        if (SerchedData.data.m.length > 0) {
+          SerchedData.data.m.forEach(m => {
+            let sum = p.modifications[m.id] ? p.modifications[m.id] : 0;
+            result.push(String(sum));
+          })
+        }
+
+        result.push(p.comment);
+        result.push(p.createdAt);
+        result.push(p.updatedAt);
+
+        return result;
+      });
+
+      table = table.concat(rows);
+    };
+
+console.log(table);
     return (
       <div id="referenceWrap">
         <div className="serch-wrap bg-white">
@@ -267,6 +343,9 @@ class Reference extends Component {
           >
             <p>この条件で検索</p>
           </div>
+        </div>
+        <div className="btn-wrap">
+          <button onClick={() => downloadCsv(table)}>aaa</button>
         </div>
         <div className="result-wrap bg-white">
         

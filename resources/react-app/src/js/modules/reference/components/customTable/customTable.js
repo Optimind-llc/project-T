@@ -246,7 +246,7 @@ class CustomTable extends Component {
                   return (<td>{sum}</td>);
                 })
               }
-              <td>{d.comment.slice(0,5)+'...'}</td>
+              <td>{d.comment ? d.comment.slice(0,5)+'...' : ''}</td>
               <td>{d.createdAt}</td>
               <td>{d.updatedAt}</td>
             </tr>
