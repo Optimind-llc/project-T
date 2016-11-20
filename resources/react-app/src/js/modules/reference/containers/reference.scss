@@ -365,7 +365,69 @@
     overflow: scroll;
     
     table {
+      width: auto;
+      border-spacing: 0;
+      font-size:14px;
+      border-collapse: collapse;
       white-space: nowrap;
+
+      .clickable {
+        cursor: pointer;
+
+        &:after {
+          content: "";
+        }
+        &.asc:after {
+          content: "↑";
+        }
+        &.desc:after {
+          content: "↓";
+        }
+      }
+
+
+
+      th {
+        color: #fff;
+        padding: 4px 8px;
+        background: #258;
+        font-weight: bold;
+        border-left: 1px solid #258;
+        border-top: 1px solid #258;
+        border-bottom: 1px solid #CCC;
+        line-height: 120%;
+        text-align: center;
+
+        &:last-child {
+          border-right:1px solid #258;
+        }
+      }
+
+      tr {
+        background: #fff;
+
+        td {
+          padding: 4px 8px;
+          border-bottom: 1px solid #84b2e0;
+          border-left: 1px solid #84b2e0;
+          text-align: center;
+
+          &:last-child {
+            border-right: 1px solid #84b2e0;
+            box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+          }
+        }
+
+        &:nth-child(2n+1) {
+          background: #f1f6fc;
+        }
+        &:last-child td {
+          box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+        }
+        &:hover {
+          background: #bbd4ee;
+        }
+      }
     }
   }
 }

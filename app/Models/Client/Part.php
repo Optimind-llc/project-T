@@ -33,7 +33,7 @@ class Part extends Model
             'part_page',
             'part_id',
             'page_id'
-        )->withPivot('status');
+        )->withPivot('status', 'comment');
     }
 
     public function family()

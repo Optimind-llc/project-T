@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Services\PartResult;
 // Models
 use App\Models\Vehicle;
 use App\Models\Process;
@@ -719,12 +720,24 @@ class ShowController extends Controller
             ]];
         }
 
-        $part = $this->getDetails($part->id, $partTypeId, $itionGId);
-        $part = array_merge(['No.' => 1], $part);
+        $detail = new PartResult($part->id, $partTypeId, $itionGId);
+        $formated = $detail->setDetails()->formatForRerefence()->get();
+
+        $inspection_group = InspectionGroup::find($itionGId);
+        $f = $inspection_group->sortedFailures();
+        $m = $inspection_group->sortedModifications();
+        $h = [];
+        if ($inspection_group->inspection->en == 'ana') {
+            $h = PartType::find($partTypeId)->holes()->orderBy('label')->get();
+        }
 
         return ['data' => [
-            'count' => $part ? 1 : 0,
-            'parts' => $part ? [$part] : []
+            'count' => 1,
+            'f' => $f,
+            'm' => $m,
+            'h' => $h,
+            'hm' => $m,
+            'parts' => [$formated]
         ]];
     }
 
@@ -748,6 +761,7 @@ class ShowController extends Controller
         }
 
         $judgement = $request->judgement;
+        $tyoku = $request->tyoku;
         $start = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 02:00:00');
         $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 02:00:00')->addDay(1);
         $f = $request->f;
@@ -761,10 +775,11 @@ class ShowController extends Controller
             ->join('pages as pg', function($join) {
                 $join->on('pg.id', '=', 'pp.page_id');
             })
-            ->join('inspection_families as if', function($join) use ($itionGId, $start, $end) {
+            ->join('inspection_families as if', function($join) use ($itionGId, $start, $end, $tyoku) {
                 $join->on('if.id', '=', 'pg.family_id')
                     ->where('if.updated_at', '>=', $start)
                     ->where('if.updated_at', '<', $end)
+                    ->whereIn('if.inspector_group', $tyoku)
                     ->where('inspection_group_id', '=', $itionGId);
             })
             ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at'])
@@ -810,25 +825,33 @@ class ShowController extends Controller
 
         if ($count > 1000) {
             for ($i=0; $i < 1000; $i++) {
-                // $data[] = $this->getDetails($parts[$i], $partTypeId, $itionGId);
-
-                $part = array_merge(['No.' => $i+1], $this->getDetails($parts[$i], $partTypeId, $itionGId));
-                $data[] = $part;
+                $detail = new PartResult($parts[$i], $partTypeId, $itionGId);
+                $formated = $detail->setDetails()->formatForRerefence()->get();
+                $data[] = $formated;
             }
         }
         else {
-            $i = 0;
             foreach ($parts as $part_id) {
-                // $data[] = $this->getDetails($part_id, $partTypeId, $itionGId);
-
-                $part = array_merge(['No.' => $i+1], $this->getDetails($parts[$i], $partTypeId, $itionGId));
-                $data[] = $part;
-                $i += 1;
+                $detail = new PartResult($part_id, $partTypeId, $itionGId);
+                $formated = $detail->setDetails()->formatForRerefence()->get();
+                $data[] = $formated;
             }
+        }
+
+        $inspection_group = InspectionGroup::find($itionGId);
+        $f = $inspection_group->sortedFailures();
+        $m = $inspection_group->sortedModifications();
+        $h = [];
+        if ($inspection_group->inspection->en == 'ana') {
+            $h = PartType::find($partTypeId)->holes()->orderBy('label')->get();
         }
 
         return ['data' => [
             'count' => $count,
+            'f' => $f,
+            'm' => $m,
+            'h' => $h,
+            'hm' => $m,
             'parts' => $data
         ]];
     }

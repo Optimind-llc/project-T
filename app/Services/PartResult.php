@@ -8,7 +8,7 @@ use App\Models\Client\Part;
 use App\Models\Client\Page;
 use App\Models\Client\InspectionFamily;
 
-class Result
+class PartResult
 {
     protected $partId;
     protected $partTypeId;
@@ -20,6 +20,72 @@ class Result
         $this->partId = $partId;
         $this->partTypeId = $partTypeId;
         $this->itionGId = $itionGId;
+    }
+
+    public function formatForRerefence()
+    {
+        $part = $this->result;
+
+        $merged_page = $part->pages->reduce(function($carry, $page) {
+            $carry->put('tyoku', $page->inspector_group);
+            $createdBy = explode(',', $page->created_by);
+            $carry->put('createdBy', array_key_exists(1, $createdBy) ? $createdBy[1] : $createdBy[0]);
+            $carry->put('updatedBy', $page->updated_by ? explode(',', $page->updated_by)[1] : '');
+            $carry->put('failures', $page->failurePositions->merge($carry->has('failures') ? $carry['failures'] : []));
+            $carry->put('modifications', $page->comments->merge($carry->has('modifications') ? $carry['modifications'] : []));
+            $carry->put('holes', $page->holePages->merge($carry->has('holes') ? $carry['holes'] : []));
+            $carry->put('inlines', $page->inlines);
+            $carry->put('createdAt', $page->created_at->format('Y/m/d H:i:s'));
+            $carry->put('updatedAt', $page->updated_at->format('Y/m/d H:i:s'));
+            $carry->put('status', $page->pivot->status);
+            if (!is_null($page->comment)) {
+                $carry->put('comment', $page->comment);
+            }
+            if (!is_null($page->pivot->comment)) {
+                $carry->put('comment', $page->pivot->comment);
+            }
+
+            return $carry;
+        }, collect([]));
+
+        $this->result = collect([
+            'vehicle' => $part->partType->vehicle_num,
+            'pn' => $part->partType->pn,
+            'name' => $part->partType->name,
+            'panelId' => $part->panel_id,
+            'tyoku' => $merged_page['tyoku'],
+            'createdBy' => $merged_page['createdBy'],
+            'updatedBy' => $merged_page['updatedBy'],
+            'createdAt' => $merged_page['createdAt'],
+            'updatedAt' => $merged_page['updatedAt'],
+            'status' => $merged_page['status'],
+            'comment' => $merged_page['comment'],
+            'failures' => array_count_values($merged_page['failures']->map(function($f) {
+                return $f->failure_id;
+            })
+            ->toArray()),
+            'modifications' => array_count_values($merged_page['modifications']->map(function($m) {
+                return $m->modification->id;
+            })
+            ->toArray()),
+            'holes' => $merged_page['holes']->map(function($h) {
+                $m = null;
+                if ($h->holeModification->count() != 0) {
+                    $m['id'] = $h->holeModification->first()->id;
+                    $m['name'] = $h->holeModification->first()->name;
+                };
+
+                return [
+                    'id' => $h->hole->id,
+                    'status' => $h->status,
+                    'm' => $m,
+                ];
+            })
+            ->toArray(),
+            'inlines' => $merged_page['inlines']
+        ]);
+
+        return $this;
     }
 
     public function setDetails()
@@ -36,10 +102,10 @@ class Result
                         ->where('if.inspection_group_id', '=', $itionGId);
                 })
                 ->orderBy('if.inspected_at')
-                ->select(['pages.*', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.status']);
+                ->select(['pages.*', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.status', 'if.comment']);
             },
-            'pages.failurePositions' => function ($q) use($part_id) {
-                $q->where('part_id', '=', $part_id)
+            'pages.failurePositions' => function ($q) use($partId) {
+                $q->where('part_id', '=', $partId)
                     ->select(['id','page_id', 'part_id', 'failure_id']);
             },
             'pages.comments',
@@ -59,9 +125,9 @@ class Result
             },
             'pages.inlines'
         ])
-        ->find($part_id);
+        ->find($partId);
 
-        $this->result = $family;
+        $this->result = $part;
         return $this;
     }
 

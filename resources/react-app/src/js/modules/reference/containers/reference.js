@@ -272,7 +272,13 @@ class Reference extends Component {
         
           {
             SerchedData.data != null && !SerchedData.isFetching &&
-            <CustomTable data={SerchedData.data}/>
+            <CustomTable
+              data={SerchedData.data.parts}
+              failures={SerchedData.data.f}
+              holes={SerchedData.data.h}
+              modifications={SerchedData.data.m}
+              hModifications={SerchedData.data.hm}
+            />
           }
         </div>
       </div>

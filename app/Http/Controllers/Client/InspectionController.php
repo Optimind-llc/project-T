@@ -97,18 +97,20 @@ class InspectionController extends Controller
             ->where('part_type_id', $partTypeId)
             ->first();
 
-        if ($part instanceof Part) {
-            foreach ($request->id as $id) {
+        foreach ($request->id as $id) {
+            $formated = null;
+
+            if ($part instanceof Part) {
                 $detail = new Result($part->id, $partTypeId, $id);
                 $formated = $detail->setDetails()->formatForClient()->get();
+            }
 
-                $name = InspectionGroup::find($id)->inspection->en;
-                $heritage[$name] = 0;
+            $name = InspectionGroup::find($id)->inspection->en;
+            $heritage[$name] = 0;
 
-                if (!is_null($formated)) {
-                    $group[] = $formated;
-                    $heritage[$name] = 1;
-                }
+            if (!is_null($formated)) {
+                $group[] = $formated;
+                $heritage[$name] = 1;
             }
         }
 
@@ -154,7 +156,8 @@ class InspectionController extends Controller
 
         $newFamily = new InspectionFamily;
         $newFamily->inspection_group_id = $groupId;
-        $newFamily->status = $family['status'];
+        // $newFamily->status = $family['status'];
+        $newFamily->status = $family['status'] != '' ? $family['comment'] : null;
         $newFamily->comment = array_key_exists('comment', $family) ? $family['comment'] : null;
         $newFamily->inspector_group = $family['inspectorGroup'];
         $newFamily->created_by = $family['inspector'];
