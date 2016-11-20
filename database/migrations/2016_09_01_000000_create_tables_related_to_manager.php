@@ -292,6 +292,7 @@ class CreateTablesRelatedToManager extends Migration
             $table->integer('part_type_id')->unsigned();
             $table->integer('figure_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             /**
              * Add Foreign

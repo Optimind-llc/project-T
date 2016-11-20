@@ -484,5 +484,23 @@ class InspectionController extends Controller
                 );
             }
         }
+
+        $groupId = $family_odj->inspection_group_id;
+        $export_parts = [];
+        foreach ($family['pages'] as $page) {
+            foreach ($page['parts'] as $part) {
+                $parts_obj = Part::find($part['partId']);
+                $export_parts[$parts_obj->part_type_id] = [
+                    'itionGId' => $groupId,
+                    'partTypeId' => $parts_obj->part_type_id,
+                    'panelId' => $parts_obj->panel_id
+                ];
+            }
+        }
+
+        foreach ($export_parts as $key => $p) {
+            $export = new Export;
+            $export->exportCSV($p['panelId'], $p['partTypeId'], $p['itionGId']);
+        }
     }
 }

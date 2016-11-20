@@ -520,8 +520,8 @@ class Mapping extends Component {
                 active == 'inline' &&
                 Object.keys(data.inlines).map(id => {
                   return data.inlines[id].map(i => {
-                    const width = 100;
-                    const height = 20;
+                    const width = 106;
+                    const height = 30;
                     const point = i.point.split(',');
                     const x = point[0]/2;
                     const y = point[1]/2;
@@ -538,7 +538,7 @@ class Mapping extends Component {
                           x={lx}
                           y={ly}
                           dx="6"
-                          dy="14"
+                          dy="20"
                           fontSize="12"
                           fill="black"
                           fontWeight="bold"
@@ -552,7 +552,7 @@ class Mapping extends Component {
                             x={lx}
                             y={ly}
                             dx="22"
-                            dy="14"
+                            dy="20"
                             fontSize="12"
                             fill="black"
                             text-anchor="middle"
@@ -564,9 +564,9 @@ class Mapping extends Component {
                           <text
                             x={lx}
                             y={ly}
-                            dx="56"
-                            dy="14"
-                            fontSize="12"
+                            dx="52"
+                            dy="20"
+                            fontSize="8"
                             fill="black"
                             text-anchor="middle"
                           >

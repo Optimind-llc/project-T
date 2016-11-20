@@ -83,6 +83,7 @@ class PageType extends Model
             })
             ->groupBy('pages.id')
             ->with([
+                'parts',
                 'failurePositions' => function ($q) {
                     $q->select(['id', 'point', 'type', 'page_id', 'part_id', 'failure_id']);
                 },
@@ -102,8 +103,8 @@ class PageType extends Model
             ]);
 
         if ($start_at) {
-            $pages->where('pages.created_at', '>=', $start_at)
-                ->where('pages.created_at', '<=', $end_at);
+            $pages->where('pages.updated_at', '>=', $start_at)
+                ->where('pages.updated_at', '<=', $end_at);
         }
         
         return $pages->get();

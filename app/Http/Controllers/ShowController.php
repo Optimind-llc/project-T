@@ -339,11 +339,18 @@ class ShowController extends Controller
                         'side' => $i->side,
                         'sort' => $i->sort,
                         'face' => $i->face,
-                        'status' => $i->pivot->status
+                        'status' => $i->pivot->status,
+                        'partId' => $page->parts->first()->id
                     ];
                 }));
             }, collect([]))
             ->groupBy('id')
+            ->values()
+            ->map(function($i) {
+                return $i->groupBy('partId')->map(function($p) {
+                    return $p->first();
+                })->values();
+            })
             ->values(),
             'pages' => $pages->count()
         ];
@@ -484,17 +491,21 @@ class ShowController extends Controller
                 'figure' => function($q) {
                     $q->select(['id']);
                 },
-                'figure.holes' => function($q) use ($partTypeId, $page_ids, $start_at, $end_at) {
+                'figure.holes' => function($q) use ($partTypeId, $page_ids, $itorG_name, $start_at, $end_at) {
                     $q->where('part_type_id', $partTypeId)
                         ->leftJoin('hole_page as hp', 'holes.id', '=', 'hp.hole_id')
-                        ->join('pages', function ($join) use ($page_ids, $start_at, $end_at){
+                        ->join('pages', function ($join) use ($page_ids){
                             $join = $join->on('pages.id', '=', 'hp.page_id');
                             if ($page_ids) {
                                 $join->whereIn('pages.id', $page_ids);
                             }
+                        })
+                        ->join('inspection_families as if', function ($join) use ($itorG_name,  $start_at, $end_at){
+                            $join = $join->on('if.id', '=', 'pages.family_id')
+                                ->whereIn('inspector_group', $itorG_name);
                             if ($start_at) {
-                                $join->where('pages.created_at', '>=', $start_at)
-                                    ->where('pages.created_at', '<=', $end_at);
+                                $join->where('if.updated_at', '>=', $start_at)
+                                    ->where('if.updated_at', '<=', $end_at);
                             }
                         })
                         ->leftJoin('hole_page_hole_modification as hphm', function ($join) {

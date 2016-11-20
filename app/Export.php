@@ -75,7 +75,7 @@ class Export
             'updatedBy' => $merged_page['updatedBy'],
             'createdAt' => $merged_page['createdAt'],
             'updatedAt' => $merged_page['updatedAt'],
-            'status' => $merged_page['status'],
+            'status' => $merged_page['status'] == 1 ? 0 : 1,
             'failures' => array_count_values($merged_page['failures']->map(function($f) {
                 return $f->failure_id;
             })
