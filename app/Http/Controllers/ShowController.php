@@ -735,7 +735,7 @@ class ShowController extends Controller
         if ($inspection_group->inspection->en == 'ana') {
             $h = PartType::find($partTypeId)->holes()->orderBy('label')->get();
         }
-        $i = 
+        // $i = 
 
         return ['data' => [
             'count' => $count,
