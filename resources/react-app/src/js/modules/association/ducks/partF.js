@@ -36,7 +36,7 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 }
-export function getPartFData(date, tyoku) {
+export function getPartFData(start, end, partTypeId, panelId) {
   return {
     [CALL_API]: {
       types: [
@@ -44,9 +44,9 @@ export function getPartFData(date, tyoku) {
         REDUEST_PartF_DATA_SUCCESS,
         REDUEST_PartF_DATA_FAIL
       ],
-      endpoint: `/show/partFamily/${date}/${tyoku}`,
-      method: 'GET',
-      body: null
+      endpoint: '/show/partFamily',
+      method: 'POST',
+      body: { partTypeId, panelId, start, end }
     }
   };
 }

@@ -345,7 +345,7 @@ console.log(table);
           </div>
         </div>
         <div className="btn-wrap">
-          <button onClick={() => downloadCsv(table)}>aaa</button>
+          <button onClick={() => downloadCsv(table)}>CSV出力</button>
         </div>
         <div className="result-wrap bg-white">
         

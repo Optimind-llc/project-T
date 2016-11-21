@@ -1,6 +1,6 @@
 #association {
   padding: 4px 4px 0 4px;
-  min-width: 1100px;
+  min-width: 1110px;
 
   .border-left {
     border-left: 1px solid #4A4A4A;
@@ -31,11 +31,11 @@
       display: flex;
       flex-flow: row nowrap;
       flex-grow: 1;
-      flex-basis: 160px;
+      flex-basis: 120px;
 
       > div {
         flex-grow: 1;
-        flex-basis: 100px;
+        flex-basis: 80px;
       }
       > p {
         margin: 0 8px 0 0;
@@ -52,7 +52,7 @@
 
       > div {
         flex-grow: 1;
-        flex-basis: 220px;
+        flex-basis: 200px;
       }
       > p {
         margin: 0 8px 0 0;
@@ -62,7 +62,7 @@
     }
 
     .term-wrap {
-      flex-basis: 490px;
+      flex-basis: 340px;
       flex-grow: 1;
       display: flex;
       flex-flow: row nowrap;
@@ -86,7 +86,7 @@
     }
 
     .panel-id-wrap {
-      flex-basis: 260px;
+      flex-basis: 220px;
       flex-grow: 1;
       display: flex;
       flex-flow: row nowrap;
@@ -98,15 +98,15 @@
       }
 
       input {
-        flex-basis: 140px;
+        flex-basis: 30px;
       }
     }
 
 
     button {
       height: 36px;
-      width: 60px;
-      margin-left: 10px;
+      width: 50px;
+      margin-left: 4px;
       font-size: 16px;
     }
   }
@@ -145,6 +145,9 @@
           }
           tr.content {
             background-color: #FFF;
+            td {
+              cursor: pointer;
+            }
           }
       }
   }
@@ -166,6 +169,50 @@
     top: 200px;
     left: 500px;
     border-radius: 4px;
+
+    .panel-btn {
+      cursor: pointer;
+        display: inline-block;
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #4A4A4A;
+
+      .panel-btn-close {
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 14px;
+          height: 2px;
+          margin: -1px 0 0 -7px;
+          background: transparent;
+
+        &:before, &:after {
+            display: block;
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 14px;
+            height: 2px;
+            margin-left: -7px;
+            margin-top: -1px;
+            background: #FFF;
+        }
+
+        &:before {
+          transform: rotate(-45deg);
+        }
+
+        &:after {
+          transform: rotate(45deg);
+        }
+      }
+    }
 
     p {
       text-align: center;

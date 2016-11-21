@@ -735,6 +735,7 @@ class ShowController extends Controller
         if ($inspection_group->inspection->en == 'ana') {
             $h = PartType::find($partTypeId)->holes()->orderBy('label')->get();
         }
+        $i = 
 
         return ['data' => [
             'count' => $count,
@@ -802,20 +803,21 @@ class ShowController extends Controller
         return ['data' => $modificationTypes];
     }
 
-    public function partFamily($date, $tyoku)
+    public function partFamily(Request $request)
     {
-        $date_obj = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
-        if ($tyoku == 1) {
-            $start_at = $date_obj->copy()->addHours(6);
-            $end_at = $date_obj->copy()->addHours(18);
-        }
-        else {
-            $start_at = $date_obj->copy()->addHours(18);
-            $end_at = $date_obj->copy()->addHours(30);            
-        }
+        $partTypeId = $request->partTypeId;
+        $panelId = $request->panelId;
+        $start = Carbon::createFromFormat('Y-m-d H:i:s', $request->start.' 02:00:00');
+        $end = Carbon::createFromFormat('Y-m-d H:i:s', $request->end.' 02:00:00')->addDay(1);
 
-        $parts = PartFamily::where('created_at', '>=', $start_at)
-            ->where('created_at', '<', $end_at)
+        $parts = PartFamily::where('created_at', '>=', $start)
+            ->where('created_at', '<', $end)
+            ->whereHas('parts', function ($query) use ($partTypeId, $panelId) {
+                if ($partTypeId && $panelId) {
+                    $query->where('part_type_id', '=', $partTypeId)
+                        ->where('panel_id', 'like', $panelId.'%');
+                }
+            })
             ->with([
                 'parts',
                 'parts.partType'

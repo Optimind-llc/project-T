@@ -27,14 +27,16 @@ class Association extends Component {
       endDate: moment(),
       processId: null,
       itionGId: null,
+      modal: false
     };
   }
 
   serch() {
     const { actions: {getPartFData} } = this.props;
-    const { date, tyoku } = this.state;
+    const { startDate, endDate, partTId, panelId } = this.state;
 
-    getPartFData(date.format('YYYY-MM-DD'), tyoku.value);
+    const partTypeId = partTId == null ? null : partTId.value;
+    getPartFData(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'), partTypeId, panelId);
   }
 
   render() {
@@ -97,7 +99,7 @@ class Association extends Component {
               />
             </div>
             <div className="term-wrap">
-              <p>期間：</p>
+              <p>登録日</p>
                 <RangeCalendar
                   defaultValue={startDate}
                   setState={startDate => this.setState({
@@ -150,30 +152,20 @@ class Association extends Component {
                 <td>67177 47050 000</td>
                 <td>67178 47010 000</td>
               </tr>
-              <tr className="content">
-                <td>{1}</td>
-                <td>B0000001</td>
-                <td>B0000001</td>
-                <td>B0000001</td>
-                <td>B0000001</td>
-                <td>B0000001</td>
-                <td>B0000001</td>
-                <td>B0000001</td>
-              </tr>
               {
                 PartFData.data && PartFData.data.length != 0 &&
                 PartFData.data.map((f, i)=> 
                   {
                     return(
-                      <tr>
+                      <tr className="content">
                         <td>{i+1}</td>
-                        <td>{f.parts['67007'][0].panelId}</td>
-                        <td>{f.parts['67149'][0].panelId}</td>
-                        <td>{f.parts['67119'][0].panelId}</td>
-                        <td>{f.parts['67175'][0].panelId}</td>
-                        <td>{f.parts['67176'][0].panelId}</td>
-                        <td>{f.parts['67177'][0].panelId}</td>
-                        <td>{f.parts['67178'][0].panelId}</td>
+                        <td onClick={() => this.setState({modal: true})}>{f.parts['67007'][0].panelId}</td>
+                        <td onClick={() => this.setState({modal: true})}>{f.parts['67149'][0].panelId}</td>
+                        <td onClick={() => this.setState({modal: true})}>{f.parts['67119'][0].panelId}</td>
+                        <td onClick={() => this.setState({modal: true})}>{f.parts['67175'][0].panelId}</td>
+                        <td onClick={() => this.setState({modal: true})}>{f.parts['67176'][0].panelId}</td>
+                        <td onClick={() => this.setState({modal: true})}>{f.parts['67177'][0].panelId}</td>
+                        <td onClick={() => this.setState({modal: true})}>{f.parts['67178'][0].panelId}</td>
                       </tr>
                     )
                   }              
@@ -184,7 +176,47 @@ class Association extends Component {
               }
             </tbody>
           </table>
-
+          {
+            this.state.modal &&
+            <div>
+              <div className="modal">
+              </div>
+              <div className="jump-wrap">
+                <div className="panel-btn" onClick={() => this.setState({modal: false})}>
+                  <span className="panel-btn-close"></span>
+                </div>
+                <p>工程と検査を選択してください</p>
+                <div className="jump">
+                  <div className="process-wrap">
+                    <p>工程*</p>
+                    <Select
+                      name="工程"
+                      styles={{height: 36}}
+                      placeholder={'工程を選択'}
+                      disabled={partTId == null}
+                      clearable={false}
+                      Searchable={true}
+                      value={null}
+                      options={null}
+                    />
+                  </div>
+                  <div className="inspection-wrap">
+                    <p>検査*</p>
+                    <Select
+                      name="検査"
+                      styles={{height: 36}}
+                      placeholder={'先に工程を選択'}
+                      disabled={processId == null}
+                      clearable={false}
+                      Searchable={true}
+                      value={null}
+                      options={null}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
         </div>
       </div>
     );

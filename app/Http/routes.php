@@ -121,7 +121,7 @@ Route::get('show/pageType/{vehicle}/{process}/{inspection}/{division}/{line?}', 
 Route::get('show/inspectionGroup', 'ShowController@inspectionGroup');
 Route::get('show/allInspectionGroupNow', 'ShowController@allInspectionGroupNow');
 
-Route::get('show/partFamily/{date}/{tyoku}', 'ShowController@partFamily');
+Route::post('show/partFamily', 'ShowController@partFamily');
 Route::get('show/test', 'ShowController@test');
 
 

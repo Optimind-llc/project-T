@@ -87,7 +87,15 @@ class PartResult
                 return $hm->m_id;
             })
             ->toArray()),
-            'inlines' => $merged_page['inlines']
+            'inlines' => $merged_page['inlines']->map(function($i) {
+                return collect([
+                    'id' => $i->id,
+                    'sort' => $i->sort,
+                    'max' => $i->max_tolerance,
+                    'min' => $i->min_tolerance,
+                    'status' => $i->status
+                ]);
+            })->keyBy('id')
         ]);
 
         return $this;

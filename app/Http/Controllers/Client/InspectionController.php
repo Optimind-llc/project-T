@@ -256,20 +256,22 @@ class InspectionController extends Controller
             // Create failure
             if (array_key_exists('failures', $page) && count($page['failures']) !== 0) {
                 foreach ($page['failures'] as $f) {
-                    $new_fp = new FailurePosition;
-                    $new_fp->page_id = $newPage->id;
-                    $new_fp->failure_id = $f['id'];
-                    $new_fp->part_id = $getPartIdfromArea($f);
-                    $new_fp->point = $matuken($f);
-                    $new_fp->save();
+                    if ($getPartIdfromArea($f)) {
+                        $new_fp = new FailurePosition;
+                        $new_fp->page_id = $newPage->id;
+                        $new_fp->failure_id = $f['id'];
+                        $new_fp->part_id = $getPartIdfromArea($f);
+                        $new_fp->point = $matuken($f);
+                        $new_fp->save();
 
-                    if (array_key_exists('commentId', $f)) {
-                        DB::table('modification_failure_position')->insert([
-                            'page_id' => $newPage->id,
-                            'fp_id' => $new_fp->id,
-                            'm_id' => $f['commentId'],
-                            'comment' => array_key_exists('comment', $f) ? $f['comment'] : ''
-                        ]);
+                        if (array_key_exists('commentId', $f)) {
+                            DB::table('modification_failure_position')->insert([
+                                'page_id' => $newPage->id,
+                                'fp_id' => $new_fp->id,
+                                'm_id' => $f['commentId'],
+                                'comment' => array_key_exists('comment', $f) ? $f['comment'] : ''
+                            ]);
+                        }
                     }
                 }
             }
