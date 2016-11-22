@@ -11,32 +11,32 @@ export const parts = [
 export const processes = {
   1: [
     {label: '成形工程ライン１', value: 1},
-    {label: '成形工程ライン２', value: 2, disabled: true},
+    {label: '成形工程ライン２', value: 2, disabled: false},
     {label: '穴あけ工程', value: 3}
   ],
   2: [
     {label: '成形工程ライン１', value: 4},
-    {label: '成形工程ライン２', value: 5, disabled: true},
+    {label: '成形工程ライン２', value: 5, disabled: false},
     {label: '穴あけ工程', value: 6}
   ],
   3: [
     {label: '成形工程ライン１', value: 4},
-    {label: '成形工程ライン２', value: 5, disabled: true},
+    {label: '成形工程ライン２', value: 5, disabled: false},
     {label: '穴あけ工程', value: 6}
   ],
   4: [
     {label: '成形工程ライン１', value: 4},
-    {label: '成形工程ライン２', value: 5, disabled: true},
+    {label: '成形工程ライン２', value: 5, disabled: false},
     {label: '穴あけ工程', value: 6}
   ],
   5: [
     {label: '成形工程ライン１', value: 4},
-    {label: '成形工程ライン２', value: 5, disabled: true},
+    {label: '成形工程ライン２', value: 5, disabled: false},
     {label: '穴あけ工程', value: 6}
   ],
   6: [
     {label: '成形工程ライン１', value: 4},
-    {label: '成形工程ライン２', value: 5, disabled: true},
+    {label: '成形工程ライン２', value: 5, disabled: false},
     {label: '穴あけ工程', value: 6}
   ],
   7: [
@@ -50,7 +50,7 @@ export const inspections = {
     {label: '精度検査', value: 3}
   ],
   2: [
-    {label: '外観検査', value: 2, disabled: true},
+    {label: '外観検査', value: 2, disabled: false},
     {label: '精度検査', value: 0, disabled: true}
   ],
   3: [
@@ -62,7 +62,7 @@ export const inspections = {
     {label: '精度検査', value: 7, disabled: true}
   ],
   5: [
-    {label: '外観検査', value: 6, disabled: true},
+    {label: '外観検査', value: 6, disabled: false},
     {label: '精度検査', value: 0, disabled: true}
   ],
   6: [

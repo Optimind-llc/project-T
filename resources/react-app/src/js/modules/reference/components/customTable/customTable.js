@@ -15,7 +15,7 @@ class CustomTable extends Component {
   }
 
   render() {
-    const { data, failures, holes, modifications, hModifications } = this.props;
+    const { data, failures, holes, modifications, hModifications, inlines } = this.props;
     const { sort } = this.state;
 
     data.sort((a,b) => {
@@ -134,6 +134,9 @@ class CustomTable extends Component {
             }{
               modifications.length > 0 &&
               <th colSpan={modifications.length}>不良手直</th>
+            }{
+              inlines.length > 0 &&
+              <th colSpan={inlines.length}>精度検査</th>
             }
             <th rowSpan="2">コメント</th>
             <th rowSpan="2">検査日</th>
@@ -192,6 +195,19 @@ class CustomTable extends Component {
                 {`${m.label}.${m.name}`}
               </th>
             )
+          }{
+            inlines.length > 0 &&
+            inlines.map(i =>
+              <th
+                className={`clickable ${(sort.key == 'inlines' && sort.id == i.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                onClick={() => {
+                  if(sort.key == 'inlines') this.setState({sort: { key: 'inlines', asc: !sort.asc, id: i.id }});
+                  else this.setState({sort: { key: 'inlines', asc: true, id: i.id }});
+                }}
+              >
+                {`${i.sort}`}
+              </th>
+            )
           }
           </tr>
         </thead>
@@ -244,6 +260,18 @@ class CustomTable extends Component {
                     sum =  d.modifications[m.id];
                   }
                   return (<td>{sum}</td>);
+                })
+              }{
+                inlines.length > 0 &&
+                inlines.map(i => {
+                  let status = '○';
+                  if (d.inlines[i.id]) {
+                    let target = d.inlines[i.id];
+                    if ( target.status > target.max || target.status < target.min ) {
+                      status = '×';
+                    }
+                  }
+                  return (<td>{status}</td>);
                 })
               }
               <td>{d.comment ? d.comment.slice(0,5)+'...' : ''}</td>

@@ -73,6 +73,12 @@ class Reference extends Component {
           header.push(m.name);
         })
       }
+      if (SerchedData.data.i.length > 0) {
+        SerchedData.data.i.forEach(i => {
+          header.push(String(i.sort));
+        })
+      }
+
       header.push('コメント');
       header.push('検査日');
       header.push('更新日');
@@ -114,7 +120,16 @@ class Reference extends Component {
           })
         }
 
-        result.push(p.comment);
+        if (SerchedData.data.i.length > 0) {
+          SerchedData.data.i.forEach(i => {
+            let value = p.inlines[i.id];
+            let status = '○';
+            if ( value.status > value.max || value.status < value.min ) {status = '×';}
+            result.push(status);
+          })
+        }
+
+        result.push(p.comment ? p.comment : '');
         result.push(p.createdAt);
         result.push(p.updatedAt);
 
@@ -327,7 +342,6 @@ console.log(table);
                 actions.panelIdSerch(partTId.value, itionGId.value, panelId);
               }
               else if (narrowedBy == 'advanced') {
-                console.log(judgement);
                 const format = 'YYYY/MM/DD';
                 const body = {
                   'tyoku': itorG.value == 'both' ? ['白直', '黄直', '黒直', '不明'] : [itorG.label],
@@ -357,6 +371,7 @@ console.log(table);
               holes={SerchedData.data.h}
               modifications={SerchedData.data.m}
               hModifications={SerchedData.data.hm}
+              inlines={SerchedData.data.i}
             />
           }
         </div>

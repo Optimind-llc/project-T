@@ -67,9 +67,13 @@ class PageType extends Model
     public function pagesWithRelated($itorG_name, $start_at, $end_at, $panel_id)
     {
         $pages = $this->pages()
-            ->join('inspection_families as f', function ($join) use ($itorG_name) {
-                $join->on('pages.family_id', '=', 'f.id')
+            ->join('inspection_families as f', function ($join) use ($itorG_name, $start_at, $end_at, $panel_id) {
+                $join = $join->on('pages.family_id', '=', 'f.id')
                     ->whereIn('f.inspector_group', $itorG_name);
+                if ($start_at && !$panel_id) {
+                    $join->where('f.updated_at', '>=', $start_at)
+                        ->where('f.updated_at', '<=', $end_at);
+                }
             })
             ->select('pages.*', 'f.inspector_group')
             ->join('part_page as pp', function ($join) use ($itorG_name) {
@@ -101,11 +105,6 @@ class PageType extends Model
                 'comments.failurePosition',
                 'inlines'
             ]);
-
-        if ($start_at) {
-            $pages->where('pages.updated_at', '>=', $start_at)
-                ->where('pages.updated_at', '<=', $end_at);
-        }
         
         return $pages->get();
     }

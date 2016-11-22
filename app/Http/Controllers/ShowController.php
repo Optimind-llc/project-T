@@ -735,7 +735,10 @@ class ShowController extends Controller
         if ($inspection_group->inspection->en == 'ana') {
             $h = PartType::find($partTypeId)->holes()->orderBy('label')->get();
         }
-        // $i = 
+        $i = [];
+        if ($itionGId == 3 || $itionGId == 9) {
+            $i = PartType::find($partTypeId)->inlines;
+        }
 
         return ['data' => [
             'count' => $count,
@@ -743,6 +746,7 @@ class ShowController extends Controller
             'm' => $m,
             'h' => $h,
             'hm' => $hm,
+            'i' => $i,
             'parts' => $data
         ]];
     }
@@ -805,36 +809,43 @@ class ShowController extends Controller
 
     public function partFamily(Request $request)
     {
-        $partTypeId = $request->partTypeId;
-        $panelId = $request->panelId;
+        $partTypeId = $request->part_type_id;
+        $panelId = $request->panel_id;
         $start = Carbon::createFromFormat('Y-m-d H:i:s', $request->start.' 02:00:00');
         $end = Carbon::createFromFormat('Y-m-d H:i:s', $request->end.' 02:00:00')->addDay(1);
 
-        $parts = PartFamily::where('created_at', '>=', $start)
-            ->where('created_at', '<', $end)
-            ->whereHas('parts', function ($query) use ($partTypeId, $panelId) {
-                if ($partTypeId && $panelId) {
-                    $query->where('part_type_id', '=', $partTypeId)
+        $PartFamilis = PartFamily::where('part_families.created_at', '>=', $start)
+            ->where('part_families.created_at', '<', $end)
+            ->join('parts', function ($join) use ($partTypeId, $panelId) {
+                if ($partTypeId !== null && $panelId !== null) {
+                    $join->on('part_families.id', '=', 'parts.family_id')
+                        ->where('part_type_id', '=', $partTypeId)
                         ->where('panel_id', 'like', $panelId.'%');
                 }
+                else {
+                    $join->on('part_families.id', '=', 'parts.family_id');
+                }
             })
-            ->with([
-                'parts',
-                'parts.partType'
-            ])
             ->get()
-            ->map(function($f) {
-                return [
-                    'parts' => $f->parts->map(function($p) {
-                        return [
-                            'panelId' => $p->panel_id,
-                            'pn' => $p->partType->pn
-                        ];
-                    })->groupBy('pn')
-                ];
-            });
+            ->map(function($pf) {
+                return $pf->family_id;
+            })
+            ->toArray();
 
-        return ['data' => $parts];
+        $data = PartFamily::whereIn('id', $PartFamilis)->with([
+            'parts.partType'
+        ])->get()->map(function($f) {
+            return [
+                'parts' => $f->parts->map(function($p) {
+                    return [
+                        'panelId' => $p->panel_id,
+                        'pn' => $p->partType->pn
+                    ];
+                })->groupBy('pn')
+            ];
+        });
+
+        return ['data' => $data];
     }
 
     public function test()

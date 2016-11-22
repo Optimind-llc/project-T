@@ -140,6 +140,46 @@ class ReportController extends Controller
                 ])
                 ->get();
         }
+        elseif ($itionGId == 16 || $itionGId == 10 || $itionGId == 11 || $itionGId == 12 || $itionGId == 14) {
+            $parts = Part::where('parts.created_at', '<', $end)
+                ->join('part_page as pp', function($join) {
+                    $join->on('pp.part_id', '=', 'parts.id');
+                })
+                ->join('pages as pg', function($join) {
+                    $join->on('pg.id', '=', 'pp.page_id');
+                })
+                ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
+                    $join->on('if.id', '=', 'pg.family_id')
+                        ->where('if.updated_at', '>=', $start)
+                        ->where('if.updated_at', '<', $end)
+                        ->where('if.inspection_group_id', '=', $itionGId)
+                        ->whereIn('if.inspector_group', $itorG);
+                })
+                ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'pg.family_id', 'if.comment', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at'])
+                ->with([
+                    'failurePositions' => function($q) use ($itionGId, $itorG) {
+                        $q->join('pages as pg', 'pg.id', '=', 'failure_positions.page_id')
+                            ->join('inspection_families as if', function($join) use ($itionGId, $itorG) {
+                                $join->on('if.id', '=', 'pg.family_id')
+                                    ->where('inspection_group_id', '=', $itionGId)
+                                    ->whereIn('inspector_group', $itorG);
+                            })
+                            ->select(['failure_positions.id','page_id', 'part_id', 'failure_id']);
+                    },
+                    'pages' => function($q) use ($start, $end, $itionGId, $itorG) {
+                        $q->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
+                            $join->on('if.id', '=', 'pages.family_id')
+                                ->where('if.updated_at', '>=', $start)
+                                ->where('if.updated_at', '<', $end)
+                                ->where('if.inspection_group_id', '=', $itionGId)
+                                ->whereIn('if.inspector_group', $itorG);
+                        })->select(['pages.*']);
+                    },
+                    'pages.comments',
+                    'partType'
+                ])
+                ->get();
+        }
 
         if ($parts->count() == 0) {
             $tcpdf = new TCPDF;
@@ -199,6 +239,26 @@ class ReportController extends Controller
             case 15:
                 $tcpdf = $report->forAnaGaikan($parts);
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_h_gaikan_inner';
+                break;
+            case 16:
+                $tcpdf = $report->forJointing($parts);
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_j_kanicf_assy';
+                break;
+            case 10:
+                $tcpdf = $report->forJointing($parts);
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_j_shisui_assy';
+                break;
+            case 11:
+                $tcpdf = $report->forJointing($parts);
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_j_shiage_assy';
+                break;
+            case 12:
+                $tcpdf = $report->forJointing($parts);
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_j_kensa_assy';
+                break;
+            case 14:
+                $tcpdf = $report->forJointing($parts);
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_j_tenaoshi_assy';
                 break;
         }
 

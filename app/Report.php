@@ -954,8 +954,8 @@ class Report
         foreach ($timeChunksSum as $key => $sum) {
             $tcpdf->Text($A3['x0'], $A3['y2']+$n*$th, $key);
             $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th, '×');
-            $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th+3, '○');
-            $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th+6, '△');
+            $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th+3, '△');
+            $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th+6, '○');
 
 
             if (count($sum['h']) != 0) {
@@ -970,7 +970,7 @@ class Report
                 }   
             }
 
-            if (count($sum['f']) != 0) {
+            if (count($sum['h']) != 0) {
                 foreach ($failureTypes as $i => $f) {
                     if (!array_key_exists($f['id'], $sum['f'])) {
                         $f_sum = 0;
@@ -1045,7 +1045,7 @@ class Report
                     $sum1 = $part_types[$part_obj->id]->filter(function($p) {
                         return $p->status == 1;
                     })->count();
-                    $sum0 = $part_type->count() - $sum1;
+                    $sum0 = $part_types[$part_obj->id]->count() - $sum1;
 
                     $tcpdf->MultiCell($dL, $hhj, $part_obj->short_name.'：'.$part_obj->name, 1, 'C', 0, 1, $A4['x0']+($n*$dL), $A4['y1'], true, 0, false, true, 0, 'M');
                     $tcpdf->MultiCell($dhj1, $hhj, '○', 1, 'C', 0, 1, $A4['x0']+($n*$dL), $A4['y1']+$hhj);
@@ -1337,15 +1337,14 @@ class Report
             foreach ($timeChunksSum as $key => $sum) {
                 $tcpdf->Text($A3['x0'], $A3['y2']+$n*$th, $key);
                 $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th, '×');
-                $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th+3, '○');
-                $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th+6, '△');
-
+                $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th+3, '△');
+                $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th+6, '○');
 
                 if (count($sum['h']) != 0) {
                     foreach ($all_holes as $col => $hole) {
                         $sum0 = $sum['h'][$hole->id]->has(0) ? $sum['h'][$hole->id][0] : 0;
-                        $sum1 = $sum['h'][$hole->id]->has(1) ? $sum['h'][$hole->id][1] : 0;
                         $sum2 = $sum['h'][$hole->id]->has(2) ? $sum['h'][$hole->id][2] : 0;
+                        $sum1 = $sum['h'][$hole->id]->has(1) ? $sum['h'][$hole->id][1] : 0;
 
                         $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th, $sum0);
                         $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th+3, $sum2);
@@ -1353,7 +1352,7 @@ class Report
                     }   
                 }
 
-                if (count($sum['f']) != 0) {
+                if (count($sum['h']) != 0) {
                     foreach ($failureTypes as $i => $f) {
                         if (!array_key_exists($f['id'], $sum['f'])) {
                             $f_sum = 0;
@@ -1590,6 +1589,285 @@ class Report
 
     public function forJointing($parts)
     {
-        return true;
+        $tcpdf = $this->createTCPDF();
+
+        $failureTypes = $this->failureTypes;
+        $modificationTypes = $this->modificationTypes;
+
+        $formated_parts = $parts->map(function($part) {
+            $exc = explode(',', $part->created_by);
+            $inspectedBy = count($exc) > 1 ? $exc[1] : $exc[0];
+
+            if ($part->updated_by) {
+                $exu = explode(',', $part->updated_by);
+                $inspectedBy = count($exu) > 1 ? $exu[1] : $exu[0];
+            }
+
+            $comment = '';
+            if ($part->comment) {
+                $comment = mb_substr($part->comment, 0, 4, 'UTF-8').'..';
+            }
+
+            return [
+                'name' => $part->partType->name,
+                'pn' => $part->partType->name,
+                'panelId' => $part->panel_id,
+                'status' => $part->status,
+                'inspectedBy' => $inspectedBy,
+                'time' => $part->updated_at,
+                'comment' => $comment,
+                'failures' => $part->failurePositions->map(function($fp) {
+                    return $fp->failure_id;
+                }),
+                'modifications' => $part->pages->first()->comments->map(function($m) {
+                    return $m->m_id;
+                })
+            ];
+        });
+
+        /*
+         * Render A4
+         */
+        $A4 = config('report.A4');
+        $d = [8, 18, 20, 38];
+        $th = 5;
+        $dj = 7;
+        $dhj = 36;
+        $dhj1 = 5;
+        $dhj2 = $dhj/2 - $dhj1;
+        $hhj = 4;
+
+        foreach ($formated_parts->chunk(100) as $p => $parts100) {
+            $tcpdf->AddPage('P', 'A4');
+
+            // Render page header
+            $this->renderA4Header($tcpdf);
+
+            if ($p == 0) {
+                $tcpdf->SetFont('kozgopromedium', '', 8);
+
+                $partName = $formated_parts->first()['name'];
+                $partPn = $formated_parts->first()['pn'];
+
+                $sum1 = $formated_parts->filter(function($p) {
+                    return $p['status'] == 1;
+                })->count();
+                $sum0 = $formated_parts->count() - $sum1;
+
+                $tcpdf->MultiCell($dhj, $hhj, $partName, 1, 'C', 0, 1, $A4['x0'], $A4['y1']);
+                $tcpdf->MultiCell($dhj1, $hhj, '○', 1, 'C', 0, 1, $A4['x0'], $A4['y1']+$hhj);
+                $tcpdf->MultiCell($dhj2, $hhj, $sum1, 1, 'C', 0, 1, $A4['x0']+$dhj1, $A4['y1']+$hhj);
+                $tcpdf->MultiCell($dhj1, $hhj, '×', 1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2, $A4['y1']+$hhj);
+                $tcpdf->MultiCell($dhj2, $hhj, $sum0, 1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2+$dhj1, $A4['y1']+$hhj);
+            }
+
+            foreach ($parts100->values()->chunk(50) as $col => $parts50) {
+                $tcpdf->SetFont('kozgopromedium', '', 8);
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x1'], $A4['y2'], 'No.');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y2'], 'パネルID');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y2'], '検査者');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y2'], '出荷判定');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '時間');
+
+                foreach ($parts50->values() as $row => $part) {
+                    $panelId = $part['panelId'];
+                    $inspectedBy = $part['inspectedBy'];
+                    $status = $part['status'] == 1 ? '○' : '×';
+                    $time = $part['time']->format('H:i');
+
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x1'], $A4['y3']+$row*$th, $p*100+$col*50+$row+1);
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y3']+$row*$th, $panelId);
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y3']+$row*$th, $inspectedBy);
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y3']+$row*$th, $status);
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y3']+$row*$th, $time);
+                }
+            }
+
+            $tcpdf->Line(106, 28, 106, 286);
+            $tcpdf->Text(103, 287, 'page '.($p+1));
+        }
+
+        /*
+         * Render A3
+         */
+        $A3 = config('report.A3');
+        $d = [6, 18, 20, 16];
+        $d_comment = 20;
+        $d_date = 8;
+        $margin = 10;
+
+        $fn = count($failureTypes);
+        $mn = count($modificationTypes);
+        $fmd = ($A3['xmax'] - $A3['x0']*2 - array_sum($d) - $d_comment - $d_date - $margin)/($fn+$mn);
+
+        foreach ($formated_parts->chunk(40) as $page => $parts40) {
+            $tcpdf->AddPage('L', 'A3');
+
+            // Render page header
+            $this->renderA3Header($tcpdf);
+
+            $tcpdf->SetFont('kozgopromedium', '', 7);
+            $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y1_ana'], 'No.');
+            $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y1_ana'], 'パネルID');
+            $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,2)), $A3['y1_ana'], '検査者');
+            $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y1_ana'], '出荷判定');
+
+            foreach ($failureTypes as $fi => $ft) {
+                $f_name = mb_substr($ft['name'], 0, 4, 'UTF-8');
+                $tcpdf->StartTransform();
+                $tcpdf->Rotate(0, $A3['x0']+array_sum($d)+($fi*$fmd)+1, $A3['y1_ana']+1);
+                $tcpdf->Text($A3['x0']+array_sum($d)+($fi*$fmd), $A3['y1_ana'], $f_name);
+                $tcpdf->StopTransform();
+            }
+
+            foreach ($modificationTypes as $mi => $mt) {
+                $m_name = mb_substr($mt['name'], 0, 4, 'UTF-8');
+                $tcpdf->StartTransform();
+                $tcpdf->Rotate(0, $A3['x0']+array_sum($d)+$margin+$fmd*($fn+$mi)+1, $A3['y1_ana']+1);
+                $tcpdf->Text($A3['x0']+array_sum($d)+$margin+$fmd*($fn+$mi), $A3['y1_ana'], $m_name);
+                $tcpdf->StopTransform();
+            }
+
+            $tcpdf->Text($A3['x0']+array_sum($d)+$fmd*($fn+$mn)+$margin, $A3['y1_ana'], 'コメント');
+            $tcpdf->Text($A3['x0']+array_sum($d)+$fmd*($fn+$mn)+$margin+$d_comment, $A3['y1_ana'], '登録時間');
+
+            foreach ($parts40->values() as $row => $part) {
+                $panelId = $part['panelId'];
+                $inspectedBy = $part['inspectedBy'];
+                $status = $part['status'] == 1 ? '○' : '×';
+                $time = $part['time']->format('H:i');
+
+                $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y2']+($row)*$A3['th'], $row+($page*40)+1);
+                $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y2']+($row)*$A3['th'], $panelId);
+                $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,2)), $A3['y2']+($row)*$A3['th'], $inspectedBy);
+                $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y2']+($row)*$A3['th'], $status);
+
+                foreach ($failureTypes as $fi => $ft) {
+                    $sum = $part['failures']->filter(function($f) use ($ft) {
+                        return $f == $ft['id'];
+                    })->count();
+
+                    $tcpdf->Text($A3['x0']+array_sum($d)+$fmd*$fi, $A3['y2']+($row)*$A3['th'], $sum);
+                }
+
+                foreach ($modificationTypes as $mi => $mt) {
+                    $sum = $part['modifications']->filter(function($m) use ($mt) {
+                        return $m == $mt['id'];
+                    })->count();
+
+                    $tcpdf->Text($A3['x0']+array_sum($d)+$margin+$fmd*($fn+$mi), $A3['y2']+($row)*$A3['th'], $sum);
+                }
+
+                $tcpdf->Text($A3['x0']+array_sum($d)+$margin+$fmd*($fn+$mi)+$margin, $A3['y2']+($row)*$A3['th'], $part['comment']);
+                $tcpdf->Text($A3['x0']+array_sum($d)+$margin+$fmd*($fn+$mi)+$margin+$d_comment, $A3['y2']+($row)*$A3['th'], $time);
+            }
+
+            $tcpdf->Line($A3['x0']+array_sum($d)+$fmd*$fn+$margin/2, 26, $A3['x0']+array_sum($d)+$fmd*$fn+$margin/2, 286, array('dash' => '2'));
+            $tcpdf->Text(210, 286, 'page '.($page+1));
+        }
+
+        /*
+         * Render A3 Aggregation
+         */
+        $timeChunks = config('report.timeChunks');
+        $base = $timeChunks[0]['start'];
+
+        // Divide families to time Chunk
+        $timeChunkedParts = [];
+        foreach ($formated_parts as $formated_part) {
+            $time = $formated_part['time']
+                ->subHours($base['H'])
+                ->subMinutes($base['i']);
+
+            $minutes = $time->hour*60 + $time->minute;
+
+            foreach ($timeChunks as $tc) {
+                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']) - 1;
+                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']) - 1;
+
+                if (!array_key_exists($tc['label'], $timeChunkedParts)) {
+                    $timeChunkedParts[$tc['label']] = [];
+                }
+
+                if ($minutes >= $min && $minutes < $max) {
+                    $timeChunkedParts[$tc['label']][] = collect([
+                        'f' => $formated_part['failures'],
+                        'm' => $formated_part['modifications']
+                    ]);
+                }
+            }
+        }
+
+        $timeChunksSum = collect($timeChunkedParts)->map(function($chunk) {
+            $collected = collect($chunk);
+
+            $result = [];
+            if (collect($chunk)->count() > 0) {
+                $result['f'] = array_count_values($collected->pluck('f')->flatten()->toArray());
+                $result['m'] = array_count_values($collected->pluck('m')->flatten()->toArray());
+            }
+
+            return collect($result);
+        });
+
+        $fmd = ($A3['xmax'] - $A3['x0']*2  - 24 - $margin)/($fn+$mn);
+
+        $tcpdf->AddPage('L', 'A3');
+        // Render page header
+        $this->renderA3Header($tcpdf);
+
+        // Render table header
+        $tcpdf->SetFont('kozgopromedium', '', 7);
+
+        foreach ($failureTypes as $fi => $ft) {
+            $tcpdf->StartTransform();
+            $tcpdf->Rotate(0, $A3['x0']+24+($fmd*$fi)+1, $A3['y1_ana']+1);
+            $tcpdf->Text($A3['x0']+24+($fmd*$fi), $A3['y1_ana'], $ft['name']);
+            $tcpdf->StopTransform();
+        }
+
+        foreach ($modificationTypes as $mi => $mt) {
+            $tcpdf->StartTransform();
+            $tcpdf->Rotate(0, $A3['x0']+24+$margin+$fmd*($fn+$mi)+1, $A3['y1_ana']+1);
+            $tcpdf->Text($A3['x0']+24+$margin+$fmd*($fn+$mi), $A3['y1_ana'], $mt['name']);
+            $tcpdf->StopTransform();
+        }
+
+        $tcpdf->Line($A3['x0']+24+$fmd*$fn+$margin/2, 26, $A3['x0']+24+$fmd*$fn+$margin/2, 286);
+
+        // Render table body
+        $n = 0;
+        foreach ($timeChunksSum as $key => $sum) {
+            $tcpdf->Text($A3['x0'], $A3['y2']+$n*$th, $key);
+
+            if ($sum->has('f')) {
+                foreach ($failureTypes as $fi => $ft) {
+                    if (!array_key_exists($ft['id'], $sum['f'])) {
+                        $f_sum = 0;
+                    }
+                    else {
+                        $f_sum = $sum['f'][$ft['id']];
+                    }
+                    $tcpdf->Text($A3['x0']+24+($fi*$fmd), $A3['y2']+$n*$th, $f_sum);
+                }   
+            }
+
+            if ($sum->has('f')) {
+                foreach ($modificationTypes as $mi => $mt) {
+                    if (!array_key_exists($mt['id'], $sum['m'])) {
+                        $m_sum = 0;
+                    }
+                    else {
+                        $m_sum = $sum['m'][$mt['id']];
+                    }
+
+                    $tcpdf->Text($A3['x0']+24+$margin+$fmd*($fn+$mi), $A3['y2']+$n*$th, $m_sum);
+                }
+            }
+
+            $n = $n+1;
+        }
+
+        return $tcpdf;
     }
 }

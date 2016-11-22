@@ -350,7 +350,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.5,
                 'min_tolerance' => -1.3,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -364,7 +364,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 0.8,
                 'min_tolerance' => -2.2,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -378,7 +378,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 0.8,
                 'min_tolerance' => -2.2,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -392,7 +392,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 0.8,
                 'min_tolerance' => -1.8,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -406,7 +406,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 0.8,
                 'min_tolerance' => -1.8,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -420,7 +420,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1,
                 'min_tolerance' => -1,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -434,7 +434,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.8,
                 'min_tolerance' => -2.8,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -448,7 +448,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1,
                 'min_tolerance' => -2.8,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -462,7 +462,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.8,
                 'min_tolerance' => -2.8,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -476,7 +476,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.3,
                 'min_tolerance' => -1.2,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -490,7 +490,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.3,
                 'min_tolerance' => -1.2,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -504,7 +504,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1,
                 'min_tolerance' => -2.8,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -518,7 +518,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.8,
                 'min_tolerance' => -2.8,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -532,7 +532,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1,
                 'min_tolerance' => -1,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -546,7 +546,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.8,
                 'min_tolerance' => -2.8,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -560,7 +560,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.8,
                 'min_tolerance' => -0.8,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -574,7 +574,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.8,
                 'min_tolerance' => -0.8,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -588,7 +588,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.8,
                 'min_tolerance' => -1,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -602,7 +602,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.8,
                 'min_tolerance' => -1,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -616,7 +616,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.6,
                 'min_tolerance' => -2.3,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -630,7 +630,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 2.8,
                 'min_tolerance' => -1.2,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -644,7 +644,7 @@ class InlineTableSeeder extends Seeder
                 'calibration'   => null,
                 'max_tolerance' => 1.8,
                 'min_tolerance' => -2.8,
-                'part_type_id'  => 1,
+                'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,
                 'updated_at'    => $now

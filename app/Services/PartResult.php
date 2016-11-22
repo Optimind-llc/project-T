@@ -93,7 +93,7 @@ class PartResult
                     'sort' => $i->sort,
                     'max' => $i->max_tolerance,
                     'min' => $i->min_tolerance,
-                    'status' => $i->status
+                    'status' => $i->pivot->status
                 ]);
             })->keyBy('id')
         ]);

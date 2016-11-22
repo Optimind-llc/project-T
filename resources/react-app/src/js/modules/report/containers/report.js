@@ -165,7 +165,7 @@ console.log(this.state)
               <div>
                 <p>ライン２</p>
                 <div
-                  className="disable"
+                  className=""
                   onClick={() => this.setState({
                     modal: true,
                     path: `/manager/report/2/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
@@ -174,7 +174,7 @@ console.log(this.state)
                   <p>インナー</p>
                 </div>
                 <div
-                  className="disable"
+                  className=""
                   onClick={() => this.setState({
                     modal: true,
                     path: `/manager/report/6/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
@@ -188,8 +188,7 @@ console.log(this.state)
                 <div
                   onClick={() => this.setState({
                     modal: true,
-                    // path: `/manager/report/3/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
-                    path: `/manager/pdf/report/3/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                    path: `/manager/report/3/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   })}
                 >
                   <p>インナー</p>
@@ -249,7 +248,7 @@ console.log(this.state)
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/16/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/16/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -260,7 +259,7 @@ console.log(this.state)
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/10/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/10/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -271,7 +270,7 @@ console.log(this.state)
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/11/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/11/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -282,7 +281,7 @@ console.log(this.state)
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/12/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/12/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>
@@ -293,7 +292,7 @@ console.log(this.state)
               <div
                 onClick={() => this.setState({
                   modal: true,
-                  path: `/manager/pdf/report/14/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  path: `/manager/report/14/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                 })}
               >
                 <p>インナーASSY</p>

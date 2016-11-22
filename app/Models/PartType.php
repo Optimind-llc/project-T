@@ -53,4 +53,13 @@ class PartType extends Model
             'id'
         );
     }
+
+    public function inlines()
+    {
+        return $this->hasMany(
+            'App\Models\Inline',
+            'part_type_id',
+            'id'
+        );
+    }
 }
