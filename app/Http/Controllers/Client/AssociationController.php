@@ -20,9 +20,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class AssociationController extends Controller
 {
-    /*
-     * Get page types from vehicle_code, process_en, inspection_en, division_en, line
-     */
     public function saveAssociation(Request $request)
     {
         $association = $request->association;
@@ -33,7 +30,6 @@ class AssociationController extends Controller
         $association['67007'] = $association['67149'];
 
         $parts = [];
-
     	foreach ($association as $pn => $panel_id) {
             $part_type = PartType::where('pn', $pn)->first();
     		$newPart = $part_type->parts()
@@ -44,7 +40,11 @@ class AssociationController extends Controller
 	        	$family = $newPart->family;
 
 	        	if ($family instanceof PartFamily) {
-	        		throw new StoreResourceFailedException('This part(pn = '.$pn.', panel_id = '.$panel_id.') already be associated others ');
+                    return response()->json([
+                        'message' => 'Already be associated others',
+                        'pn' => $pn,
+                        'panelId' => $panel_id
+                    ], 200);
 	        	}
 	        }
             else {
@@ -65,6 +65,112 @@ class AssociationController extends Controller
             $newFamily->parts()->save($part);
         }
 
-        return "ok";
+        return 'excellent';
+    }
+
+    public function getFamily(Request $request)
+    {
+        $validator = app('validator')->make(
+            $request->all(),
+            [
+                'partTypeId' => ['required', 'alpha_num'],
+                'panelId' => ['required', 'alpha_num']
+            ]
+        );
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Validation error', $validator->errors());
+        }
+
+        $part = Part::where('part_type_id', '=', $request->partTypeId)
+            ->where('panel_id', '=', $request->panelId)
+            ->first();
+
+        if (is_null($part)) {
+            return response()->json([
+                'message' => 'Not be associated',
+                'panelId' => $request->panelId
+            ], 200);
+        }
+
+        $family = $part->family()
+            ->with(['parts.partType'])
+            ->first();
+
+        return [
+            'familyId' => $family->id,
+            'parts' => $family->parts->map(function($p) {
+                return [
+                    'vehicle' => $p->partType->vehicle_num,
+                    'name' => $p->partType->name,
+                    'pn' => $p->partType->pn,
+                    'pn2' => $p->partType->pn2,
+                    'panelId' => $p->panel_id
+                ];
+            })
+        ];
+    }
+
+
+    public function updateFamily(Request $request)
+    {
+        $validator = app('validator')->make(
+            $request->all(),
+            [
+                'familyId' => ['required', 'alpha_num'],
+                'parts' => ['required']
+            ]
+        );
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Validation error', $validator->errors());
+        }
+
+        $familyId = $request->familyId;
+
+        DB::beginTransaction();
+        foreach ($request->parts as $key => $part) {
+            $part_obj = Part::where('part_type_id', '=', $part['partTypeId'])
+                ->where('panel_id', '=', $part['panelId'])
+                ->first();
+
+            if (is_null($part_obj)) {
+                DB::rollBack();
+                return response()->json([
+                    'message' => 'Not be inspected',
+                    'partTypeId' => $part['partTypeId'],
+                    'panelId' => $part['panelId']
+                ], 200);
+            }
+
+            $part_obj_family_id = $part_obj->family_id;
+            if (!is_null($part_obj_family_id) && $part_obj_family_id != $familyId) {
+                DB::rollBack();
+                return response()->json([
+                    'message' => 'Already be associated others',
+                    'partTypeId' => $part['partTypeId'],
+                    'panelId' => $part['panelId']
+                ], 200);
+            }
+
+            $toBeReleasedParts = Part::where('part_type_id', '=', $part['partTypeId'])
+                ->where('family_id', '=', $familyId)
+                ->get();
+
+            if ($toBeReleasedParts->count() > 0) {
+                foreach ($toBeReleasedParts as $toBeReleasedPart) {
+                    if ($toBeReleasedPart->panel_id != $part['panelId']) {
+                        $toBeReleasedPart->family_id = null;
+                        $toBeReleasedPart->save();
+                    }
+                }
+            }
+
+            $part_obj->family_id = $familyId;
+            $part_obj->save();
+        }
+        DB::commit();
+
+        return 'excellent';
     }
 }
