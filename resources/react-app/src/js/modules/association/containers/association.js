@@ -125,33 +125,35 @@ class Association extends Component {
         </div>
         <div className="result bg-white">
           <table>
+            <thead>
+              <tr>
+                <th colSpan={1} rowSpan={3}>No.</th>
+                <th colSpan={1} rowSpan={3}>登録日</th>
+                <th colSpan={1}>インナー</th>
+                <th colSpan={5}>アウター</th>
+                <th colSpan={1}>ASSY</th>
+                <th colSpan={1} rowSpan={3}>機能</th>
+              </tr>
+              <tr>
+                <th>バックドアインナー</th>
+                <th>アッパー</th>
+                <th>サイドアッパーRH</th>
+                <th>サイドアッパーLH</th>
+                <th>サイドロアRH</th>
+                <th>サイドロアLH</th>
+                <th>バックドアインナASSY</th>
+              </tr>
+              <tr>
+                <th>67149 47060 000</th>
+                <th>67119 47060 000</th>
+                <th>67175 47060 000</th>
+                <th>67176 47060 000</th>
+                <th>67177 47050 000</th>
+                <th>67178 47010 000</th>
+                <th>67007 47120 000</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr>
-                <td colSpan={1} rowSpan={3}>No.</td>
-                <td colSpan={1} rowSpan={3}>登録日</td>
-                <td colSpan={1}>インナー</td>
-                <td colSpan={5}>アウター</td>
-                <td colSpan={1}>ASSY</td>
-                <td colSpan={1} rowSpan={3}>機能</td>
-              </tr>
-              <tr>
-                <td>バックドアインナー</td>
-                <td>アッパー</td>
-                <td>サイドアッパーRH</td>
-                <td>サイドアッパーLH</td>
-                <td>サイドロアRH</td>
-                <td>サイドロアLH</td>
-                <td>バックドアインナASSY</td>
-              </tr>
-              <tr>
-                <td>67149 47060 000</td>
-                <td>67119 47060 000</td>
-                <td>67175 47060 000</td>
-                <td>67176 47060 000</td>
-                <td>67177 47050 000</td>
-                <td>67178 47010 000</td>
-                <td>67007 47120 000</td>
-              </tr>
               {
                 PartFData.data && PartFData.data.length != 0 &&
                 PartFData.data.map((f, i)=> 

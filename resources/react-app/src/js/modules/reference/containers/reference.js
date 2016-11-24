@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
-import { parts, processes, inspections } from '../../../utils/Processes';
+import { vehicles, parts, processes, inspections, inspectionGroups } from '../../../utils/Processes';
 import { downloadCsv } from '../../../utils/Export';
 // Actions
 import { push } from 'react-router-redux';
@@ -26,10 +26,10 @@ class Reference extends Component {
     super(props, context);
 
     this.state = {
-      vehicle: {value: '680A', label: '680A'},
+      vehicle: { label: '680A', value: '680A' },
       partTId: null,
       processId: null,
-      itionGId: null,
+      inspectionId: null,
       itorG: {label: '全直', value: 'both'},
       judgement: {label: '両方', value: 'both'},
       RequiredF: [],
@@ -45,7 +45,7 @@ class Reference extends Component {
   render() {
     const { SerchedData, FailureData, ModificationData, actions } = this.props;
     const {
-      vehicle, partTId, processId, itionGId,
+      vehicle, partTId, processId, inspectionId,
       itorG, judgement, RequiredF, RequiredM, RequiredHM,
       narrowedBy, startDate, endDate, panelId
     } = this.state;
@@ -139,7 +139,40 @@ class Reference extends Component {
       table = table.concat(rows);
     };
 
-console.log(table);
+    const filteredProcess = inspectionGroups.filter(ig =>
+      ig.vehicle == vehicle.value &&
+      (partTId ? (ig.part == partTId.value) : false) &&
+      !ig.disabled
+    ).map(ig =>
+      ig.p
+    ).filter((x, i, self) =>
+      self.indexOf(x) === i
+    );
+
+    const filteredInspection = inspectionGroups.filter(ig =>
+      ig.vehicle == vehicle.value &&
+      (partTId ? (ig.part == partTId.value) : false) &&
+      (processId ? (ig.p == processId.value) : false) &&
+      !ig.disabled
+    ).map(ig =>
+      ig.i
+    ).filter((x, i, self) =>
+      self.indexOf(x) === i
+    );
+
+    const filteredInspectionGroup = inspectionGroups.filter(ig =>
+      ig.vehicle == vehicle.value &&
+      (partTId ? (ig.part == partTId.value) : false) &&
+      (processId ? (ig.p == processId.value) : false) &&
+      (inspectionId ? (ig.i == inspectionId.value) : false) &&
+      !ig.disabled
+    );
+
+    let inspectionGroupId = 0;
+    if (filteredInspectionGroup.length > 0) {
+      inspectionGroupId = filteredInspectionGroup[0].iG;
+    }
+
     return (
       <div id="referenceWrap">
         <div className="serch-wrap bg-white">
@@ -154,10 +187,7 @@ console.log(table);
                   clearable={false}
                   Searchable={true}
                   value={this.state.vehicle}
-                  options={[
-                    {label: '680A', value: '680A'},
-                    {label: '950A', value: '950A', disabled:true}
-                  ]}
+                  options={vehicles}
                   onChange={value => this.setState({vehicle: value})}
                 />
               </div>
@@ -173,11 +203,7 @@ console.log(table);
                   scrollMenuIntoView={false}
                   value={this.state.partTId}
                   options={parts}
-                  onChange={value => this.setState({
-                    partTId: value,
-                    processId: null,
-                    itionGId: null
-                  })}
+                  onChange={value => this.setState({partTId: value})}
                 />
               </div>
               <div>
@@ -190,7 +216,7 @@ console.log(table);
                   clearable={false}
                   Searchable={true}
                   value={processId}
-                  options={partTId ? processes[partTId.value] : null}
+                  options={processes.filter(p => filteredProcess.indexOf(p.value) >= 0)}
                   onChange={value => this.setState({processId: value})}
                 />
               </div>
@@ -203,12 +229,14 @@ console.log(table);
                   disabled={processId == null}
                   clearable={false}
                   Searchable={true}
-                  value={itionGId}
-                  options={processId ? inspections[processId.value] : null}
+                  value={inspectionId}
+                  options={inspections.filter(i => filteredInspection.indexOf(i.value) >= 0)}
                   onChange={value => {
-                    actions.getFailures(value.value);
-                    actions.getModifications(value.value);
-                    this.setState({itionGId: value});
+                    if (inspectionGroupId != 0) {
+                      actions.getFailures(inspectionGroupId);
+                      actions.getModifications(inspectionGroupId);
+                    }
+                    this.setState({inspectionId: value});
                   }}
                 />
               </div>
@@ -336,22 +364,24 @@ console.log(table);
             </div>
           </div>
           <div
-            className={`serch-btn ${partTId && itionGId && itorG && 'active'}`}
+            className={`serch-btn ${partTId && inspectionId && itorG && inspectionGroupId != 0 && 'active'}`}
             onClick={() => {
-              if (narrowedBy == 'panelId') {
-                actions.panelIdSerch(partTId.value, itionGId.value, panelId);
-              }
-              else if (narrowedBy == 'advanced') {
-                const format = 'YYYY/MM/DD';
-                const body = {
-                  'tyoku': itorG.value == 'both' ? ['白直', '黄直', '黒直', '不明'] : [itorG.label],
-                  'judgement': judgement.value == 'both' ? [1, 0] : [judgement.value],
-                  'start': startDate.format(format),
-                  'end': endDate.format(format),
-                  'f': RequiredF.map(rf => rf.value),
-                  'm': RequiredM.map(rm => rm.value)
-                };
-                actions.advancedSerch(partTId.value, itionGId.value, body);
+              if (inspectionGroupId != 0) {
+                if (narrowedBy == 'panelId') {
+                  actions.panelIdSerch(partTId.value, inspectionGroupId, panelId);
+                }
+                else if (narrowedBy == 'advanced') {
+                  const format = 'YYYY/MM/DD';
+                  const body = {
+                    'tyoku': itorG.value == 'both' ? ['白直', '黄直', '黒直', '不明'] : [itorG.label],
+                    'judgement': judgement.value == 'both' ? [1, 0] : [judgement.value],
+                    'start': startDate.format(format),
+                    'end': endDate.format(format),
+                    'f': RequiredF.map(rf => rf.value),
+                    'm': RequiredM.map(rm => rm.value)
+                  };
+                  actions.advancedSerch(partTId.value, inspectionGroupId, body);
+                }
               }
             }}
           >
@@ -373,6 +403,9 @@ console.log(table);
               hModifications={SerchedData.data.hm}
               inlines={SerchedData.data.i}
             />
+          }{
+            inspectionGroupId == 0 &&　inspectionId != null &&
+            <p>検索条件が間違っています</p>
           }
         </div>
       </div>

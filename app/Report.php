@@ -173,7 +173,12 @@ class Report
                         return $p->status == 1 && $p->pages->first()->pivot->status == 1;
                     })->count();
 
-                    $sum0 = $part_types[$part_obj->id]->count() - $sum1;
+                    $sum0 = $part_types[$part_obj->id]->filter(function($p) {
+                        if ($p->pages->count() == 0) {
+                            return $p->status == 0;
+                        }
+                        return $p->status == 0 && $p->pages->first()->pivot->status == 0;
+                    })->count();
 
                     $tcpdf->MultiCell($dhj, $hhj, $part_obj->short_name.'：'.$part_obj->name, 1, 'C', 0, 1, $A4['x0']+($n*$dhj), $A4['y1']);
                     $tcpdf->MultiCell($dhj1, $hhj, '○', 1, 'C', 0, 1, $A4['x0']+($n*$dhj), $A4['y1']+$hhj);
@@ -206,7 +211,11 @@ class Report
 
                     foreach ($parts_obj as $n => $part_obj) {
                         $part = $parts[$part_obj->id];
-                        $status = $part['status'] == 1 ? '○' : '×';
+                        switch ($part['status']) {
+                            case 0: $status = '×'; break;
+                            case 1: $status = '○'; break;
+                            default: $status = ''; break;
+                        }
 
                         $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1']+($n*$dj), $A4['y3']+($row)*$th, $status);
                     }
@@ -287,7 +296,11 @@ class Report
 
                 foreach ($parts_obj as $n => $part_obj) {
                     $part = $parts[$part_obj->id];
-                    $status = $part['gStatus'] == 1 ? '○' : '×';
+                    switch ($part['gStatus']) {
+                        case 0: $status = '×'; break;
+                        case 1: $status = '○'; break;
+                        default: $status = ''; break;
+                    }
 
                     $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($n*$dj_gaikan), $A3['y2']+($row)*$A3['th'], $status);
                 }
@@ -305,7 +318,6 @@ class Report
 
                 foreach ($parts_obj as $n => $part_obj) {
                     $part = $parts[$part_obj->id];
-                    $status = $part['gStatus'] == 1 ? '○' : '×';
 
                     $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$n*($dj_gaikan-1), $A3['y2']+($row)*$A3['th'], is_null($part['comment']) ? '' : '有');
                 }
