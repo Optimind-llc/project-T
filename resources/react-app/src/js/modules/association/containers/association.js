@@ -44,12 +44,14 @@ class Association extends Component {
     const { actions: {getPartFData} } = this.props;
     const { startDate, endDate, partTId, panelId } = this.state;
 
+    const start = startDate == null ? null : startDate.format('YYYY-MM-DD-HH');
+    const end = endDate == null ? null : endDate.format('YYYY-MM-DD-HH');
     const partTypeId = partTId == null ? null : partTId.value;
-    getPartFData(startDate.format('YYYY-MM-DD-HH'), endDate.format('YYYY-MM-DD-HH'), partTypeId, panelId);
+    getPartFData(start, end, partTypeId, panelId);
   }
 
   render() {
-    const { PartFData } = this.props;
+    const { PartFData, UpdatePartFData } = this.props;
     const { vehicle, partTId, startDate, endDate, panelId, processId, itionGId, editting } = this.state;
 
     return (
@@ -132,6 +134,13 @@ class Association extends Component {
           </button>
         </div>
         <div className="result bg-white">
+          {
+            UpdatePartFData.message == 'Already be associated others' &&
+            <p>{`${UpdatePartFData.panelId} の更新に失敗しました　すでに他の部品に使用されています。`}</p>
+          }{
+            UpdatePartFData.message == 'Not be inspected' &&
+            <p>{`${UpdatePartFData.panelId} の更新に失敗しました　まだ検査されていない部品です。`}</p>
+          }
           <table>
             <thead>
               <tr>
@@ -145,19 +154,19 @@ class Association extends Component {
               <tr>
                 <th>バックドアインナー</th>
                 <th>アッパー</th>
-                <th>サイドアッパーRH</th>
                 <th>サイドアッパーLH</th>
-                <th>サイドロアRH</th>
+                <th>サイドアッパーRH</th>
                 <th>サイドロアLH</th>
+                <th>サイドロアRH</th>
                 <th>バックドアインナASSY</th>
               </tr>
               <tr>
                 <th>67149 47060 000</th>
                 <th>67119 47060 000</th>
-                <th>67175 47060 000</th>
                 <th>67176 47060 000</th>
-                <th>67177 47050 000</th>
+                <th>67175 47060 000</th>
                 <th>67178 47010 000</th>
+                <th>67177 47050 000</th>
                 <th>67007 47120 000</th>
               </tr>
             </thead>
@@ -170,23 +179,23 @@ class Association extends Component {
                       <tr className="content">
                         <td>{i+1}</td>
                         <td>{f.associatedAt}</td>
-                        <td onClick={() => this.setState({modal: true})}>{f.parts['67007'][0].panelId}</td>
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67149'][0].panelId}</td>
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67119'][0].panelId}</td>
-                        <td onClick={() => this.setState({modal: true})}>{f.parts['67175'][0].panelId}</td>
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67176'][0].panelId}</td>
-                        <td onClick={() => this.setState({modal: true})}>{f.parts['67177'][0].panelId}</td>
+                        <td onClick={() => this.setState({modal: true})}>{f.parts['67175'][0].panelId}</td>
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67178'][0].panelId}</td>
+                        <td onClick={() => this.setState({modal: true})}>{f.parts['67177'][0].panelId}</td>
+                        <td onClick={() => this.setState({modal: true})}>{f.parts['67007'][0].panelId}</td>
                         <td>
                           <button onClick={() => this.setState({
                             editModal: true,
                             editting_f: f.familyId,
                             editting_1: f.parts[67149][0].panelId,
                             editting_2: f.parts[67119][0].panelId,
-                            editting_3: f.parts[67175][0].panelId,
                             editting_4: f.parts[67176][0].panelId,
-                            editting_5: f.parts[67177][0].panelId,
-                            editting_6: f.parts[67178][0].panelId
+                            editting_3: f.parts[67175][0].panelId,
+                            editting_6: f.parts[67178][0].panelId,
+                            editting_5: f.parts[67177][0].panelId
                           })}>編集</button>
                         </td>
                       </tr>
@@ -266,14 +275,6 @@ class Association extends Component {
                       />
                     </div>
                     <div className="input">
-                      <p className="label">サイドアッパーRH 67175</p>
-                      <input
-                        type="text"
-                        value={this.state.editting_3}
-                        onChange={(e) => this.setState({editting_3: e.target.value})}
-                      />
-                    </div>
-                    <div className="input">
                       <p className="label">サイドアッパーLH 67176</p>
                       <input
                         type="text"
@@ -282,11 +283,11 @@ class Association extends Component {
                       />
                     </div>
                     <div className="input">
-                      <p className="label">サイドロアRH 67177</p>
+                      <p className="label">サイドアッパーRH 67175</p>
                       <input
                         type="text"
-                        value={this.state.editting_5}
-                        onChange={(e) => this.setState({editting_5: e.target.value})}
+                        value={this.state.editting_3}
+                        onChange={(e) => this.setState({editting_3: e.target.value})}
                       />
                     </div>
                     <div className="input">
@@ -295,6 +296,14 @@ class Association extends Component {
                         type="text"
                         value={this.state.editting_6}
                         onChange={(e) => this.setState({editting_6: e.target.value})}
+                      />
+                    </div>
+                    <div className="input">
+                      <p className="label">サイドロアRH 67177</p>
+                      <input
+                        type="text"
+                        value={this.state.editting_5}
+                        onChange={(e) => this.setState({editting_5: e.target.value})}
                       />
                     </div>
                   </div>
@@ -346,6 +355,7 @@ Association.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     PartFData: state.PartFData,
+    UpdatePartFData: state.UpdatePartFData
   };
 }
 

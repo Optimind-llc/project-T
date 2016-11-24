@@ -1495,7 +1495,7 @@ class Report
             // Render table body
             foreach ($parts40->values() as $row => $part) {
                 $status = $part['status'] == 1 ? 'OK' : 'NG';
-                $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y2']+$th*$row, $page*40+1);
+                $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y2']+$th*$row, $page*40+$row+1);
                 $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y2']+$th*$row, $part['panelId']);
                 $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,2)), $A3['y2']+$th*$row, $status);
 

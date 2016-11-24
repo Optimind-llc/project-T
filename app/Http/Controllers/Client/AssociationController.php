@@ -154,12 +154,10 @@ class AssociationController extends Controller
                 ->first();
 
             if (is_null($part_obj)) {
-                DB::rollBack();
-                return response()->json([
-                    'message' => 'Not be inspected',
-                    'partTypeId' => $part['partTypeId'],
-                    'panelId' => $part['panelId']
-                ], 200);
+                $part_obj = new Part;
+                $part_obj->panel_id = $part['panelId'];
+                $part_obj->part_type_id = $part['partTypeId'];
+                $part_obj->save();
             }
 
             $part_obj_family_id = $part_obj->family_id;

@@ -83,7 +83,6 @@ class Result
                             'holePageId' => $hp->id,
                             'status' => $hp->status,
                             'holeId' => $hp->hole_id,
-                            'hLabel' => $hp->hole->label,
                             'mLabel' => $mLabel
                         ]);
                     }),

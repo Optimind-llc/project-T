@@ -6,7 +6,9 @@ export const UPDATE_PartF_DATA_SUCCESS = 'UPDATE_PartF_DATA_SUCCESS';
 export const UPDATE_PartF_DATA_FAIL = 'UPDATE_PartF_DATA_FAIL';
 
 const initialState = {
-  data: null,
+  message: null,
+  partTypeId: null,
+  panelId: null,
   isFetching: false,
   didInvalidate: false
 };
@@ -21,7 +23,9 @@ export default function reducer(state = initialState, action) {
 
     case UPDATE_PartF_DATA_SUCCESS:
       return Object.assign({}, state, {
-        data: action.payload.data,
+        message: action.payload.message,
+        partTypeId: action.payload.partTypeId,
+        panelId: action.payload.panelId,
         isFetching: false,
         didInvalidate: false
       });

@@ -821,8 +821,16 @@ class ShowController extends Controller
     {
         $partTypeId = $request->part_type_id;
         $panelId = $request->panel_id;
-        $start = Carbon::createFromFormat('Y-m-d-H i:s', $request->start.' 00:00');
-        $end = Carbon::createFromFormat('Y-m-d-H i:s', $request->end.' 00:00');
+        if ($request->start) {
+            $start = Carbon::createFromFormat('Y-m-d-H i:s', $request->start.' 00:00');
+        } else {
+            $start = Carbon::createFromFormat('Y-m-d-H i:s', '2000-01-01-00 00:00');
+        }
+        if ($request->end) {
+            $end = Carbon::createFromFormat('Y-m-d-H i:s', $request->end.' 00:00');
+        } else {
+            $end = Carbon::now();
+        }
 
         $PartFamilis = PartFamily::where('part_families.created_at', '>=', $start)
             ->where('part_families.created_at', '<', $end)
