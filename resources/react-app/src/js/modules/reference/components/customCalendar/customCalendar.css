@@ -6,10 +6,10 @@
   display: none;
 }*/
 
-.rc-calendar-time-picker-panel .rc-time-picker-panel-select {
+#referenceWrap .rc-calendar-time-picker-panel .rc-time-picker-panel-select {
 	width: 126px;
 }
 
-.rc-time-picker-panel-select:nth-child(3) {
+#referenceWrap .rc-time-picker-panel-select:nth-child(3) {
 	display: none;
 }

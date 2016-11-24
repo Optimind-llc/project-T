@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
-import { parts, processes, inspections } from '../../../utils/Processes';
+import { vehicles, parts, processes, inspections, inspectionGroups } from '../../../utils/Processes';
 // Actions
 import { push } from 'react-router-redux';
 import { vehicleActions } from '../ducks/vehicle';
@@ -26,10 +26,10 @@ class Dashboard extends Component {
     const { PageTData, actions } = props;
 
     this.state = {
-      vehicle: {value: '680A', label: '680A'},
+      vehicle: { label: '680A', value: '680A' },
       partTId: null,
       processId: null,
-      itionGId: null,
+      inspectionId: null,
       itorG: null,
       narrowedBy: 'realtime',
       startDate: moment(),
@@ -65,11 +65,27 @@ class Dashboard extends Component {
 
     clearInterval(state.intervalId);
 
+    const filteredInspectionGroup = inspectionGroups.filter(ig =>
+      ig.vehicle == state.vehicle.value &&
+      (state.partTId ? (ig.part == state.partTId.value) : false) &&
+      (state.processId ? (ig.p == state.processId.value) : false) &&
+      (state.inspectionId ? (ig.i == state.inspectionId.value) : false) &&
+      !ig.disabled
+    );
+
+    let inspectionGroupId = 0;
+    if (filteredInspectionGroup.length > 0) {
+      inspectionGroupId = filteredInspectionGroup[0].iG;
+    }
+
+    console.log(inspectionGroupId);
+
     switch (state.narrowedBy) {
       case 'realtime':
         start = end = panelId = null;
+
         const intervalId = setInterval(
-          () => getPageData(state.partTId.value, state.itionGId.value, state.itorG.value, null, null, null),
+          () => getPageData(state.partTId.value, inspectionGroupId, state.itorG.value, null, null, null),
           state.interval
         );
         this.setState({intervalId});
@@ -92,19 +108,40 @@ class Dashboard extends Component {
       time
     };
 
-    if (state.itionGId.value == 4 || state.itionGId.value == 8) name = 'hole';
-    else if (state.itionGId.value == 3 || state.itionGId.value == 9) name = 'inline';
-    else if (state.itionGId.value == 11 || state.itionGId.value == 14) name = 'comment';
+    if (inspectionGroupId == 4 || inspectionGroupId == 8) name = 'hole';
+    else if (inspectionGroupId == 3 || inspectionGroupId == 9) name = 'inline';
+    else if (inspectionGroupId == 11 || inspectionGroupId == 14) name = 'comment';
     else name = 'failure';
     this.setState({ defaultActive: { name, time }});
 
-    getPageData(state.partTId.value, state.itionGId.value, state.itorG.value, start, end, panelId);
+    getPageData(state.partTId.value, inspectionGroupId, state.itorG.value, start, end, panelId);
   }
 
   render() {
-    const { vehicle, partTId, processId, itionGId, itorG, narrowedBy, startDate, endDate, panelId, mapping, defaultActive } = this.state;
+    const { vehicle, partTId, processId, inspectionId, itorG, narrowedBy, startDate, endDate, panelId, mapping, defaultActive } = this.state;
     const { VehicleData, ItorGData, PageData, actions } = this.props;
     const format = 'YYYY-MM-DD';
+
+    const filteredProcess = inspectionGroups.filter(ig =>
+      ig.vehicle == vehicle.value &&
+      (partTId ? (ig.part == partTId.value) : false) &&
+      !ig.disabled
+    ).map(ig =>
+      ig.p
+    ).filter((x, i, self) =>
+      self.indexOf(x) === i
+    );
+
+    const filteredInspection = inspectionGroups.filter(ig =>
+      ig.vehicle == vehicle.value &&
+      (partTId ? (ig.part == partTId.value) : false) &&
+      (processId ? (ig.p == processId.value) : false) &&
+      !ig.disabled
+    ).map(ig =>
+      ig.i
+    ).filter((x, i, self) =>
+      self.indexOf(x) === i
+    );
 
     return (
       <div id="dashboardWrap">
@@ -120,10 +157,7 @@ class Dashboard extends Component {
                   clearable={false}
                   Searchable={true}
                   value={this.state.vehicle}
-                  options={[
-                    {label: '680A', value: '680A'},
-                    {label: '950A', value: '950A', disabled:true}
-                  ]}
+                  options={vehicles}
                   onChange={value => this.setState({vehicle: value})}
                 />
               </div>
@@ -138,19 +172,9 @@ class Dashboard extends Component {
                   Searchable={false}
                   scrollMenuIntoView={false}
                   value={this.state.partTId}
-                  options={[
-                    {label: 'バックドアインナー', value: 1},
-                    {label: 'アッパー', value: 2},
-                    {label: 'サイドアッパーRH', value: 3},
-                    {label: 'サイドアッパーLH', value: 4},
-                    {label: 'サイドロアRH', value: 5},
-                    {label: 'サイドロアLH', value: 6},
-                    {label: 'バックドアインナーASSY', value: 7}
-                  ]}
+                  options={parts}
                   onChange={value => this.setState({
-                    partTId: value,
-                    processId: null,
-                    itionGId: null
+                    partTId: value
                   })}
                 />
               </div>
@@ -164,7 +188,7 @@ class Dashboard extends Component {
                   clearable={false}
                   Searchable={true}
                   value={processId}
-                  options={partTId ? processes[partTId.value] : null}
+                  options={processes.filter(p => filteredProcess.indexOf(p.value) >= 0)}
                   onChange={value => this.setState({processId: value})}
                 />
               </div>
@@ -177,9 +201,9 @@ class Dashboard extends Component {
                   disabled={processId == null}
                   clearable={false}
                   Searchable={true}
-                  value={itionGId}
-                  options={processId ? inspections[processId.value] : null}
-                  onChange={value => this.setState({itionGId: value})}
+                  value={inspectionId}
+                  options={inspections.filter(i => filteredInspection.indexOf(i.value) >= 0)}
+                  onChange={value => this.setState({inspectionId: value})}
                 />
               </div>
               <div>
@@ -242,7 +266,7 @@ class Dashboard extends Component {
             </div>
           </div>
           <div
-            className={`mapping-btn ${partTId && itionGId && itorG && 'active'}`}
+            className={`mapping-btn ${partTId && inspectionId && itorG && 'active'}`}
             onClick={() => this.showMapping()}
           >
             <p>表示</p>

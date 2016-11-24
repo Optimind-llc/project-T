@@ -127,9 +127,19 @@ class AssociationController extends Controller
         }
 
         $familyId = $request->familyId;
+        $parts = collect($request->parts);
+
+        $innerPanelId = $parts->first(function ($key, $value) {
+            return $value['partTypeId'] === 1;
+        })['panelId'];
+
+        $parts->push([
+            'partTypeId' => 7,
+            'panelId' => $innerPanelId
+        ]);
 
         DB::beginTransaction();
-        foreach ($request->parts as $key => $part) {
+        foreach ($parts as $key => $part) {
             $part_obj = Part::where('part_type_id', '=', $part['partTypeId'])
                 ->where('panel_id', '=', $part['panelId'])
                 ->first();

@@ -635,7 +635,13 @@ class Mapping extends Component {
         {
           !isFetching && data.pages == 0 && !this.props.realtime &&
           <div className="cover">
-            <p>見つかりませんでした</p>
+            <p>検査結果が見つかりませんでした</p>
+          </div>
+        }
+        {
+          !isFetching && data.pages == 'notFound' &&
+          <div className="cover">
+            <p>検索条件が間違っています</p>
           </div>
         }
       </div>

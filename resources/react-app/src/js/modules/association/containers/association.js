@@ -27,7 +27,8 @@ class Association extends Component {
       endDate: moment(),
       processId: null,
       itionGId: null,
-      modal: false
+      modal: false,
+      editModal: false
     };
   }
 
@@ -36,7 +37,7 @@ class Association extends Component {
     const { startDate, endDate, partTId, panelId } = this.state;
 
     const partTypeId = partTId == null ? null : partTId.value;
-    getPartFData(startDate.format('YYYY-MM-DD'), endDate.format('YYYY-MM-DD'), partTypeId, panelId);
+    getPartFData(startDate.format('YYYY-MM-DD-HH'), endDate.format('YYYY-MM-DD-HH'), partTypeId, panelId);
   }
 
   render() {
@@ -45,7 +46,7 @@ class Association extends Component {
 
     return (
       <div id="association">
-        <div className="bg-white">
+        <div className="serch-wrap-wrap bg-white">
           <div className="serch-wrap">
             <div className="vehicle-wrap">
               <p>車種*</p>
@@ -114,43 +115,42 @@ class Association extends Component {
                   })}
                 />
             </div>
-            <div>
-              <button
-                onClick={() => this.serch()}
-              >
-                検索
-              </button>
-            </div>
           </div>
+          <button
+            className="serch-btn"
+            onClick={() => this.serch()}
+          >
+            この条件で検索
+          </button>
         </div>
         <div className="result bg-white">
           <table>
             <tbody>
               <tr>
-                <td colSpan={1}>No.</td>
-                <td colSpan={1} >ASSY</td>
-                <td colSpan={1} >インナー</td>
-                <td colSpan={5} >アウター</td>
+                <td colSpan={1} rowSpan={3}>No.</td>
+                <td colSpan={1} rowSpan={3}>登録日</td>
+                <td colSpan={1}>インナー</td>
+                <td colSpan={5}>アウター</td>
+                <td colSpan={1}>ASSY</td>
+                <td colSpan={1} rowSpan={3}>機能</td>
               </tr>
               <tr>
-                <td>部品名</td>
-                <td>バックドアインナASSY</td>
                 <td>バックドアインナー</td>
                 <td>アッパー</td>
                 <td>サイドアッパーRH</td>
                 <td>サイドアッパーLH</td>
                 <td>サイドロアRH</td>
                 <td>サイドロアLH</td>
+                <td>バックドアインナASSY</td>
               </tr>
               <tr>
-                <td>品番</td>
-                <td>67007 47120 000</td>
                 <td>67149 47060 000</td>
                 <td>67119 47060 000</td>
                 <td>67175 47060 000</td>
                 <td>67176 47060 000</td>
                 <td>67177 47050 000</td>
                 <td>67178 47010 000</td>
+                <td>67007 47120 000</td>
               </tr>
               {
                 PartFData.data && PartFData.data.length != 0 &&
@@ -159,6 +159,7 @@ class Association extends Component {
                     return(
                       <tr className="content">
                         <td>{i+1}</td>
+                        <td>{f.associatedAt}</td>
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67007'][0].panelId}</td>
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67149'][0].panelId}</td>
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67119'][0].panelId}</td>
@@ -166,13 +167,18 @@ class Association extends Component {
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67176'][0].panelId}</td>
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67177'][0].panelId}</td>
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67178'][0].panelId}</td>
+                        <td onClick={() => this.setState({editModal: true})}>
+                          <button>編集</button>
+                        </td>
                       </tr>
                     )
                   }              
                 )
               }{
                 PartFData.data && PartFData.data.length == 0 &&
-                <td colspan="8">結果なし</td>
+                <tr className="content">
+                  <td colSpan="10">結果なし</td>
+                </tr>
               }
             </tbody>
           </table>
@@ -212,6 +218,46 @@ class Association extends Component {
                       value={null}
                       options={null}
                     />
+                  </div>
+                </div>
+              </div>
+            </div>
+          }{
+            this.state.editModal &&
+            <div>
+              <div className="modal">
+              </div>
+              <div className="edit-wrap">
+                <div className="edit">
+                  <div className="input-wrap">
+                    <div className="input">
+                      <p className="label">バックドアインナー 67149</p>
+                      <input></input>
+                    </div>
+                    <div className="input">
+                      <p className="label">アッパー 67119</p>
+                      <input></input>
+                    </div>
+                    <div className="input">
+                      <p className="label">サイドアッパーRH 67175</p>
+                      <input></input>
+                    </div>
+                    <div className="input">
+                      <p className="label">サイドアッパーLH 67176</p>
+                      <input></input>
+                    </div>
+                    <div className="input">
+                      <p className="label">サイドロアRH 67177</p>
+                      <input></input>
+                    </div>
+                    <div className="input">
+                      <p className="label">サイドロアLH 67178</p>
+                      <input></input>
+                    </div>
+                  </div>
+                  <div className="btn-wrap">
+                    <button onClick={() => this.setState({editModal: false})}>保存</button>
+                    <button onClick={() => this.setState({editModal: false})}>キャンセル</button>
                   </div>
                 </div>
               </div>

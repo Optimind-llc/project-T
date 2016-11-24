@@ -441,7 +441,17 @@ class ShowController extends Controller
             });
 
         if ($page_types->count() == 0) {
-           throw new NotFoundHttpException('検索条件が不正です');
+            return [
+                'data' => [
+                'pages' => 'notFound',
+                    'failures' => [],
+                    'failureTypes' => [],
+                    'commentTypes' => [],
+                    'holePoints' => [],
+                    'holeModificationTypes' => [],
+                    'inlines' => []
+                ]
+            ];
         }
 
         // Get Failure list
@@ -811,8 +821,8 @@ class ShowController extends Controller
     {
         $partTypeId = $request->part_type_id;
         $panelId = $request->panel_id;
-        $start = Carbon::createFromFormat('Y-m-d H:i:s', $request->start.' 02:00:00');
-        $end = Carbon::createFromFormat('Y-m-d H:i:s', $request->end.' 02:00:00')->addDay(1);
+        $start = Carbon::createFromFormat('Y-m-d-H i:s', $request->start.' 00:00');
+        $end = Carbon::createFromFormat('Y-m-d-H i:s', $request->end.' 00:00');
 
         $PartFamilis = PartFamily::where('part_families.created_at', '>=', $start)
             ->where('part_families.created_at', '<', $end)
@@ -836,6 +846,7 @@ class ShowController extends Controller
             'parts.partType'
         ])->get()->map(function($f) {
             return [
+                'associatedAt' => $f->updated_at->format('Y-m-d H:i:s'),
                 'parts' => $f->parts->map(function($p) {
                     return [
                         'panelId' => $p->panel_id,

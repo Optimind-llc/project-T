@@ -7,9 +7,16 @@
 }*/
 
 .rc-calendar-time-picker-panel .rc-time-picker-panel-select {
-	width: 126px;
+	width: 252px;
 }
 
+.rc-time-picker-panel-select:nth-child(2) {
+	display: none;
+}
 .rc-time-picker-panel-select:nth-child(3) {
+	display: none;
+}
+
+.rc-calendar-footer .rc-calendar-footer-btn .rc-calendar-today-btn {
 	display: none;
 }
