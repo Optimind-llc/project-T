@@ -90,7 +90,7 @@ class AssociationController extends Controller
 
         if (is_null($part)) {
             return response()->json([
-                'message' => 'Not be associated',
+                'message' => 'Not be inspected',
                 'panelId' => $request->panelId
             ], 200);
         }
@@ -98,6 +98,13 @@ class AssociationController extends Controller
         $family = $part->family()
             ->with(['parts.partType'])
             ->first();
+
+        if (is_null($family)) {
+            return response()->json([
+                'message' => 'Not be associated',
+                'panelId' => $request->panelId
+            ], 200);
+        }
 
         return [
             'message' => 'success',
