@@ -65,7 +65,9 @@ class AssociationController extends Controller
             $newFamily->parts()->save($part);
         }
 
-        return 'excellent';
+        return [
+            'message' => 'success'
+        ];
     }
 
     public function getFamily(Request $request)
@@ -98,6 +100,7 @@ class AssociationController extends Controller
             ->first();
 
         return [
+            'message' => 'success',
             'familyId' => $family->id,
             'parts' => $family->parts->map(function($p) {
                 return [
@@ -181,6 +184,8 @@ class AssociationController extends Controller
         }
         DB::commit();
 
-        return 'excellent';
+        return [
+            'message' => 'success'
+        ];
     }
 }
