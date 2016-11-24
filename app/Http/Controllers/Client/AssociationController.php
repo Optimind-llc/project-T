@@ -121,13 +121,12 @@ class AssociationController extends Controller
         ];
     }
 
-
     public function updateFamily(Request $request)
     {
         $validator = app('validator')->make(
             $request->all(),
             [
-                'familyId' => ['required', 'alpha_num'],
+                'id' => ['required', 'alpha_num'],
                 'parts' => ['required']
             ]
         );
@@ -136,7 +135,7 @@ class AssociationController extends Controller
             throw new StoreResourceFailedException('Validation error', $validator->errors());
         }
 
-        $familyId = $request->familyId;
+        $familyId = $request->id;
         $parts = collect($request->parts);
 
         $innerPanelId = $parts->first(function ($key, $value) {

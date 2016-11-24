@@ -846,6 +846,7 @@ class ShowController extends Controller
             'parts.partType'
         ])->get()->map(function($f) {
             return [
+                'familyId' => $f->id,
                 'associatedAt' => $f->updated_at->format('Y-m-d H:i:s'),
                 'parts' => $f->parts->map(function($p) {
                     return [

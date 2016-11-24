@@ -14,6 +14,7 @@ import ModificationData from '../modules/reference/ducks/modification';
 import VeItorGProcData from '../modules/report/ducks/report';
 import ItionGData from '../modules/report/ducks/inspectionGroup';
 import PartFData from '../modules/association/ducks/partF';
+import UpdatePartFData from '../modules/association/ducks/updatePartF';
 
 const rootReducer = combineReducers(Object.assign({
   alert,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers(Object.assign({
   VeItorGProcData,
   ItionGData,
   PartFData,
+  UpdatePartFData,
   routing: routerReducer
 }));
 

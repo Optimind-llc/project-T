@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { parts, processes, inspections } from '../../../utils/Processes';
 // Actions
 import { partFActions } from '../ducks/partF';
+import { updatePartFActions } from '../ducks/updatePartF';
 // Material-ui Components
 import { Paper, Dialog, RaisedButton, FlatButton } from 'material-ui';
 import { grey50, indigo500 } from 'material-ui/styles/colors';
@@ -28,7 +29,14 @@ class Association extends Component {
       processId: null,
       itionGId: null,
       modal: false,
-      editModal: false
+      editModal: false,
+      editting_f: 0,
+      editting_1: 0,
+      editting_2: 0,
+      editting_3: 0,
+      editting_4: 0,
+      editting_5: 0,
+      editting_6: 0
     };
   }
 
@@ -42,7 +50,7 @@ class Association extends Component {
 
   render() {
     const { PartFData } = this.props;
-    const { vehicle, partTId, startDate, endDate, panelId, processId, itionGId } = this.state;
+    const { vehicle, partTId, startDate, endDate, panelId, processId, itionGId, editting } = this.state;
 
     return (
       <div id="association">
@@ -169,8 +177,17 @@ class Association extends Component {
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67176'][0].panelId}</td>
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67177'][0].panelId}</td>
                         <td onClick={() => this.setState({modal: true})}>{f.parts['67178'][0].panelId}</td>
-                        <td onClick={() => this.setState({editModal: true})}>
-                          <button>編集</button>
+                        <td>
+                          <button onClick={() => this.setState({
+                            editModal: true,
+                            editting_f: f.familyId,
+                            editting_1: f.parts[67149][0].panelId,
+                            editting_2: f.parts[67119][0].panelId,
+                            editting_3: f.parts[67175][0].panelId,
+                            editting_4: f.parts[67176][0].panelId,
+                            editting_5: f.parts[67177][0].panelId,
+                            editting_6: f.parts[67178][0].panelId
+                          })}>編集</button>
                         </td>
                       </tr>
                     )
@@ -234,31 +251,82 @@ class Association extends Component {
                   <div className="input-wrap">
                     <div className="input">
                       <p className="label">バックドアインナー 67149</p>
-                      <input></input>
+                      <input
+                        type="text"
+                        value={this.state.editting_1}
+                        onChange={(e) => this.setState({editting_1: e.target.value})}
+                      />
                     </div>
                     <div className="input">
                       <p className="label">アッパー 67119</p>
-                      <input></input>
+                      <input
+                        type="text"
+                        value={this.state.editting_2}
+                        onChange={(e) => this.setState({editting_2: e.target.value})}
+                      />
                     </div>
                     <div className="input">
                       <p className="label">サイドアッパーRH 67175</p>
-                      <input></input>
+                      <input
+                        type="text"
+                        value={this.state.editting_3}
+                        onChange={(e) => this.setState({editting_3: e.target.value})}
+                      />
                     </div>
                     <div className="input">
                       <p className="label">サイドアッパーLH 67176</p>
-                      <input></input>
+                      <input
+                        type="text"
+                        value={this.state.editting_4}
+                        onChange={(e) => this.setState({editting_4: e.target.value})}
+                      />
                     </div>
                     <div className="input">
                       <p className="label">サイドロアRH 67177</p>
-                      <input></input>
+                      <input
+                        type="text"
+                        value={this.state.editting_5}
+                        onChange={(e) => this.setState({editting_5: e.target.value})}
+                      />
                     </div>
                     <div className="input">
                       <p className="label">サイドロアLH 67178</p>
-                      <input></input>
+                      <input
+                        type="text"
+                        value={this.state.editting_6}
+                        onChange={(e) => this.setState({editting_6: e.target.value})}
+                      />
                     </div>
                   </div>
                   <div className="btn-wrap">
-                    <button onClick={() => this.setState({editModal: false})}>保存</button>
+                    <button onClick={() => {
+                      this.setState({editModal: false})
+                      this.props.actions.updatePartFamily({
+                        "id": this.state.editting_f,
+                        "parts": [
+                          {
+                            "partTypeId": 1,
+                            "panelId": this.state.editting_1
+                          },{
+                            "partTypeId": 2,
+                            "panelId": this.state.editting_2
+                          },{
+                            "partTypeId": 3,
+                            "panelId": this.state.editting_3
+                          },{
+                            "partTypeId": 4,
+                            "panelId": this.state.editting_4
+                          },{
+                            "partTypeId": 5,
+                            "panelId": this.state.editting_5
+                          },{
+                            "partTypeId": 6,
+                            "panelId": this.state.editting_6
+                          }
+                        ]
+                      })
+                    }
+                  }>保存</button>
                     <button onClick={() => this.setState({editModal: false})}>キャンセル</button>
                   </div>
                 </div>
@@ -282,7 +350,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({}, partFActions);
+  const actions = Object.assign({}, partFActions ,updatePartFActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };
