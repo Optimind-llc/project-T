@@ -27,6 +27,34 @@ class AssociationController extends Controller
             throw new StoreResourceFailedException('JSON in Request body should contain association key');
         }
 
+        // Check
+        $associated = [];
+        foreach ($association as $pn => $panelId) {
+            $partTypeId = PartType::where('pn', $pn)->first()->id;
+            $part_obj = Part::where('part_type_id', '=', $partTypeId)
+                ->where('panel_id', '=', $panelId)
+                ->first();
+
+            if (!is_null($part_obj)) {
+                $part_obj_family_id = $part_obj->family_id;
+                if (!is_null($part_obj_family_id)) {
+                    $associated[] = [
+                        'pn' => $part_obj->partType->pn,
+                        'name' => $part_obj->partType->name,
+                        'partTypeId' => $part_obj->part_type_id,
+                        'panelId' => $part_obj->panel_id
+                    ];
+                }
+            }
+        }
+
+        if (count($associated) > 0) {
+            return response()->json([
+                'message' => 'Already be associated others',
+                'parts' => $associated
+            ], 200);
+        }
+
         $association['67007'] = $association['67149'];
 
         $parts = [];
@@ -42,8 +70,12 @@ class AssociationController extends Controller
 	        	if ($family instanceof PartFamily) {
                     return response()->json([
                         'message' => 'Already be associated others',
-                        'pn' => $pn,
-                        'panelId' => $panel_id
+                        'parts' => [
+                            'pn' => $newPart->partType->pn,
+                            'name' => $newPart->partType->name,
+                            'partTypeId' => $newPart->part_type_id,
+                            'panelId' => $newPart->panel_id
+                        ]
                     ], 200);
 	        	}
 	        }
@@ -147,6 +179,33 @@ class AssociationController extends Controller
             'panelId' => $innerPanelId
         ]);
 
+        // Check
+        $associated = [];
+        foreach ($parts as $key => $part) {
+            $part_obj = Part::where('part_type_id', '=', $part['partTypeId'])
+                ->where('panel_id', '=', $part['panelId'])
+                ->first();
+
+            if (!is_null($part_obj)) {
+                $part_obj_family_id = $part_obj->family_id;
+                if (!is_null($part_obj_family_id) && $part_obj_family_id != $familyId) {
+                    $associated[] = [
+                        'pn' => $part_obj->partType->pn,
+                        'name' => $part_obj->partType->name,
+                        'partTypeId' => $part_obj->part_type_id,
+                        'panelId' => $part_obj->panel_id
+                    ];
+                }
+            }
+        }
+
+        if (count($associated) > 0) {
+            return response()->json([
+                'message' => 'Already be associated others',
+                'parts' => $associated
+            ], 200);
+        }
+
         DB::beginTransaction();
         foreach ($parts as $key => $part) {
             $part_obj = Part::where('part_type_id', '=', $part['partTypeId'])
@@ -165,8 +224,12 @@ class AssociationController extends Controller
                 DB::rollBack();
                 return response()->json([
                     'message' => 'Already be associated others',
-                    'partTypeId' => $part['partTypeId'],
-                    'panelId' => $part['panelId']
+                    'parts' => [
+                        'pn' => $part_obj->partType->pn,
+                        'name' => $part_obj->partType->name,
+                        'partTypeId' => $part['partTypeId'],
+                        'panelId' => $part['panelId']
+                    ]
                 ], 200);
             }
 

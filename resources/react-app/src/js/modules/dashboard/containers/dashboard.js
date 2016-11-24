@@ -110,7 +110,7 @@ class Dashboard extends Component {
 
     if (inspectionGroupId == 4 || inspectionGroupId == 8) name = 'hole';
     else if (inspectionGroupId == 3 || inspectionGroupId == 9) name = 'inline';
-    else if (inspectionGroupId == 11 || inspectionGroupId == 14) name = 'comment';
+    else if (inspectionGroupId == 16 || inspectionGroupId == 10 || inspectionGroupId == 11 || inspectionGroupId == 12 || inspectionGroupId == 14) name = 'comment';
     else name = 'failure';
     this.setState({ defaultActive: { name, time }});
 

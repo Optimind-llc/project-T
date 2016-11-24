@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
 import { vehicles, parts, processes, inspections, inspectionGroups } from '../../../utils/Processes';
-import { downloadCsv } from '../../../utils/Export';
+import { downloadCsv, handleDownload } from '../../../utils/Export';
 // Actions
 import { push } from 'react-router-redux';
 import { serchActions } from '../ducks/serch';
@@ -389,7 +389,10 @@ class Reference extends Component {
           </div>
         </div>
         <div className="btn-wrap">
-          <button onClick={() => downloadCsv(table)}>CSV出力</button>
+          <button onClick={() => {
+            // downloadCsv(table);
+            handleDownload(table);
+          }}>CSV出力</button>
         </div>
         <div className="result-wrap bg-white">
           {

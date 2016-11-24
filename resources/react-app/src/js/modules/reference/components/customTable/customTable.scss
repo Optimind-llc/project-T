@@ -25,14 +25,14 @@
 	    padding: 4px 8px;
 	    background: #258;
 	    font-weight: bold;
-	    border-left: 1px solid #258;
+	    border-left: 1px solid #FFF;
 	    border-top: 1px solid #258;
 	    border-bottom: 1px solid #CCC;
 	    line-height: 120%;
 	    text-align: center;
 
-	    &:last-child {
-	      border-right:1px solid #258;
+	    &:first-child {
+	      border-left: none;
 	    }
 	  }
 

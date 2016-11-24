@@ -129,6 +129,13 @@ class Report
                     $status = ($gStatus == 1 && $iStatus == 1) ? 1 : 0;
                 }
 
+                if ($part->comment) {
+                    $comment = mb_substr($part->comment, 0, 4, 'UTF-8').'..';
+                }
+                else {
+                    $comment = '';
+                }
+
                 return [
                     'panelId' => $part->panel_id,
                     'iStatus' => $iStatus,
@@ -136,7 +143,7 @@ class Report
                     'status' => $status,
                     'inspectedBy' => $inspectedBy,
                     'time' => $part->updated_at,
-                    'comment' => $part->comment,
+                    'comment' => $comment,
                     'failures' => $part->failurePositions->map(function($fp) {
                         return $fp->failure_id;
                     }),
@@ -318,8 +325,12 @@ class Report
 
                 foreach ($parts_obj as $n => $part_obj) {
                     $part = $parts[$part_obj->id];
-
-                    $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$n*($dj_gaikan-1), $A3['y2']+($row)*$A3['th'], is_null($part['comment']) ? '' : '有');
+                    if ($parts_obj->count() > 1) {
+                        $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$n*($dj_gaikan-1), $A3['y2']+($row)*$A3['th'], is_null($part['comment']) ? '' : '有');
+                    }
+                    else {
+                        $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$n*($dj_gaikan-1), $A3['y2']+($row)*$A3['th'], is_null($part['comment']) ? '' : $part['comment']);                   
+                    }
                 }
 
                 $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$d_comment, $A3['y2']+($row)*$A3['th'], $time);
@@ -450,6 +461,13 @@ class Report
                     $status = ($gStatus == 1 && $iStatus == 1) ? 1 : 0;
                 }
 
+                if ($part->comment) {
+                    $comment = mb_substr($part->comment, 0, 4, 'UTF-8').'..';
+                }
+                else {
+                    $comment = '';
+                }
+
                 return [
                     'panelId' => $part->panel_id,
                     'iStatus' => $iStatus,
@@ -457,7 +475,7 @@ class Report
                     'status' => $status,
                     'inspectedBy' => $inspectedBy,
                     'time' => $part->updated_at,
-                    'comment' => mb_substr($part->comment, 0, 4, 'UTF-8').'..',
+                    'comment' => $comment,
                     'failures' => $part->failurePositions->map(function($fp) {
                         return $fp->failure_id;
                     }),
@@ -1054,17 +1072,19 @@ class Report
                 $n = 0;
                 // foreach ($part_types as $id => $part_type) {
                 foreach ($parts_obj as $id => $part_obj) {
-                    $sum1 = $part_types[$part_obj->id]->filter(function($p) {
-                        return $p->status == 1;
-                    })->count();
-                    $sum0 = $part_types[$part_obj->id]->count() - $sum1;
+                    if (array_key_exists($part_obj->id, $part_types)) {
+                        $sum1 = $part_types[$part_obj->id]->filter(function($p) {
+                            return $p->status == 1;
+                        })->count();
+                        $sum0 = $part_types[$part_obj->id]->count() - $sum1;
 
-                    $tcpdf->MultiCell($dL, $hhj, $part_obj->short_name.'：'.$part_obj->name, 1, 'C', 0, 1, $A4['x0']+($n*$dL), $A4['y1'], true, 0, false, true, 0, 'M');
-                    $tcpdf->MultiCell($dhj1, $hhj, '○', 1, 'C', 0, 1, $A4['x0']+($n*$dL), $A4['y1']+$hhj);
-                    $tcpdf->MultiCell($dhj2, $hhj, $sum1, 1, 'C', 0, 1, $A4['x0']+($n*$dL)+$dhj1, $A4['y1']+$hhj);
-                    $tcpdf->MultiCell($dhj1, $hhj, '×', 1, 'C', 0, 1, $A4['x0']+($n*$dL)+$dhj1+$dhj2, $A4['y1']+$hhj);
-                    $tcpdf->MultiCell($dhj2, $hhj, $sum0, 1, 'C', 0, 1, $A4['x0']+($n*$dL)+$dhj1+$dhj2+$dhj1, $A4['y1']+$hhj);
-                    $n +=1;
+                        $tcpdf->MultiCell($dL, $hhj, $part_obj->short_name.'：'.$part_obj->name, 1, 'C', 0, 1, $A4['x0']+($n*$dL), $A4['y1'], true, 0, false, true, 0, 'M');
+                        $tcpdf->MultiCell($dhj1, $hhj, '○', 1, 'C', 0, 1, $A4['x0']+($n*$dL), $A4['y1']+$hhj);
+                        $tcpdf->MultiCell($dhj2, $hhj, $sum1, 1, 'C', 0, 1, $A4['x0']+($n*$dL)+$dhj1, $A4['y1']+$hhj);
+                        $tcpdf->MultiCell($dhj1, $hhj, '×', 1, 'C', 0, 1, $A4['x0']+($n*$dL)+$dhj1+$dhj2, $A4['y1']+$hhj);
+                        $tcpdf->MultiCell($dhj2, $hhj, $sum0, 1, 'C', 0, 1, $A4['x0']+($n*$dL)+$dhj1+$dhj2+$dhj1, $A4['y1']+$hhj);
+                        $n +=1;
+                    }
                 }
             }
 
@@ -1106,7 +1126,7 @@ class Report
         $margin = 4;
         $d_comment = 14;
         $d_date = 10;
-        $fd = 8;
+        $fd = 12;
 
         foreach ($parts_obj as $id => $part_obj) {
             $formated_part_type = $part_types[$part_obj->id]->map(function($part) {
@@ -1170,14 +1190,14 @@ class Report
 
                 foreach ($all_holes as $col => $hole) {
                     $tcpdf->StartTransform();
-                    $tcpdf->Rotate(90, $A3['x0']+array_sum(array_slice($d,0,4))+($col*$d_hole)+1, $A3['y1_ana']+1);
+                    $tcpdf->Rotate(0, $A3['x0']+array_sum(array_slice($d,0,4))+($col*$d_hole)+1, $A3['y1_ana']+1);
                     $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($col*$d_hole), $A3['y1_ana'], $hole->label);
                     $tcpdf->StopTransform();
                 }
 
                 foreach ($failureTypes as $i => $f) {
                     $tcpdf->StartTransform();
-                    $tcpdf->Rotate(90, $A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin+($fd*$i)+1, $A3['y1_ana']+1);
+                    $tcpdf->Rotate(0, $A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin+($fd*$i)+1, $A3['y1_ana']+1);
                     $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin+($fd*$i), $A3['y1_ana'], $f['name']);
                     $tcpdf->StopTransform();
                 }
@@ -1270,7 +1290,7 @@ class Report
                 ->get();
             $hn = $all_holes->count();
             $th = 12;
-            $fd = 8;
+            $fd = 18;
             $d_hole_max = 16;
             $d_hole = ($A3['xmax'] - $A3['x0']*2 - 24 - $fd*$fn - $margin)/$hn;
 
@@ -1333,13 +1353,13 @@ class Report
             $tcpdf->SetFont('kozgopromedium', '', 8);
             foreach ($all_holes as $col => $hole) {
                 $tcpdf->StartTransform();
-                $tcpdf->Rotate(90, $A3['x0']+24+($col*$d_hole)+1, $A3['y1_ana']+3+1);
+                $tcpdf->Rotate(0, $A3['x0']+24+($col*$d_hole)+1, $A3['y1_ana']+3+1);
                 $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y1_ana']+3, $hole->label);
                 $tcpdf->StopTransform();
             }
             foreach ($failureTypes as $i => $f) {
                 $tcpdf->StartTransform();
-                $tcpdf->Rotate(90, $A3['x0']+24+($d_hole*$hn)+$margin+($fd*$i)+1, $A3['y1_ana']+3+1);
+                $tcpdf->Rotate(0, $A3['x0']+24+($d_hole*$hn)+$margin+($fd*$i)+1, $A3['y1_ana']+3+1);
                 $tcpdf->Text($A3['x0']+24+($d_hole*$hn)+$margin+($fd*$i), $A3['y1_ana']+3, $f['name']);
                 $tcpdf->StopTransform();
             }

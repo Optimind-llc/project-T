@@ -101,6 +101,7 @@ class DummyInspectionsSeeder extends Seeder
             'inspector' => $tyoku.','.$group['inspectorGroups']['Y'][0]['name'],
             'pages' => $group['pages']->filter(function($p){
                     return $p['id'] != 14;
+                    // return !($p['id'] == 14 || $p['id'] == 13);
                 })
                 ->map($createPage)
                 ->toArray(),

@@ -179,13 +179,13 @@ class Association extends Component {
                       <tr className="content">
                         <td>{i+1}</td>
                         <td>{f.associatedAt}</td>
-                        <td onClick={() => this.setState({modal: true})}>{f.parts['67149'][0].panelId}</td>
-                        <td onClick={() => this.setState({modal: true})}>{f.parts['67119'][0].panelId}</td>
-                        <td onClick={() => this.setState({modal: true})}>{f.parts['67176'][0].panelId}</td>
-                        <td onClick={() => this.setState({modal: true})}>{f.parts['67175'][0].panelId}</td>
-                        <td onClick={() => this.setState({modal: true})}>{f.parts['67178'][0].panelId}</td>
-                        <td onClick={() => this.setState({modal: true})}>{f.parts['67177'][0].panelId}</td>
-                        <td onClick={() => this.setState({modal: true})}>{f.parts['67007'][0].panelId}</td>
+                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67149'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67119'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67176'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67175'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67178'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67177'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67007'][0].panelId}</p></td>
                         <td>
                           <button onClick={() => this.setState({
                             editModal: true,
@@ -259,7 +259,7 @@ class Association extends Component {
                 <div className="edit">
                   <div className="input-wrap">
                     <div className="input">
-                      <p className="label">バックドアインナー 67149</p>
+                      <p className="label">バックドアインナー<br/>67149</p>
                       <input
                         type="text"
                         value={this.state.editting_1}
@@ -267,7 +267,7 @@ class Association extends Component {
                       />
                     </div>
                     <div className="input">
-                      <p className="label">アッパー 67119</p>
+                      <p className="label">アッパー<br/>67119</p>
                       <input
                         type="text"
                         value={this.state.editting_2}
@@ -275,7 +275,7 @@ class Association extends Component {
                       />
                     </div>
                     <div className="input">
-                      <p className="label">サイドアッパーLH 67176</p>
+                      <p className="label">サイドアッパーLH<br/>67176</p>
                       <input
                         type="text"
                         value={this.state.editting_4}
@@ -283,7 +283,7 @@ class Association extends Component {
                       />
                     </div>
                     <div className="input">
-                      <p className="label">サイドアッパーRH 67175</p>
+                      <p className="label">サイドアッパーRH<br/>67175</p>
                       <input
                         type="text"
                         value={this.state.editting_3}
@@ -291,7 +291,7 @@ class Association extends Component {
                       />
                     </div>
                     <div className="input">
-                      <p className="label">サイドロアLH 67178</p>
+                      <p className="label">サイドロアLH<br/>67178</p>
                       <input
                         type="text"
                         value={this.state.editting_6}
@@ -299,7 +299,7 @@ class Association extends Component {
                       />
                     </div>
                     <div className="input">
-                      <p className="label">サイドロアRH 67177</p>
+                      <p className="label">サイドロアRH<br/>67177</p>
                       <input
                         type="text"
                         value={this.state.editting_5}
