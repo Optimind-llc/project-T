@@ -15,7 +15,7 @@ class CustomTable extends Component {
   }
 
   render() {
-    const { data, failures, holes, modifications, hModifications, inlines } = this.props;
+    const { count, data, failures, holes, modifications, hModifications, inlines } = this.props;
     const { sort } = this.state;
 
     data.sort((a,b) => {
@@ -66,227 +66,244 @@ class CustomTable extends Component {
     });
 
     return (
-      <table>
-        <thead>
-          <tr>
-            <th rowSpan="2">No.</th>
-            <th rowSpan="2">車種</th>
-            <th rowSpan="2">品番</th>
-            <th rowSpan="2">品名</th>
-            <th
-              rowSpan="2"
-              className={`clickable ${sort.key == 'panelId' ? sort.asc ? 'asc' : 'desc' : ''}`}
-              onClick={() => {
-                if(sort.key == 'panelId') this.setState({sort: { key: 'panelId', asc: !sort.asc, id: 0 }});
-                else this.setState({sort: { key: 'panelId', asc: true, id: 0 }});
-              }}
-            >
-              パネルID</th>
-            <th
-              rowSpan="2"
-              className={`clickable ${sort.key == 'tyoku' ? sort.asc ? 'asc' : 'desc' : ''}`}
-              onClick={() => {
-                if(sort.key == 'tyoku') this.setState({sort: { key: 'tyoku', asc: !sort.asc, id: 0 }});
-                else this.setState({sort: { key: 'tyoku', asc: true, id: 0 }});
-              }}
-            >
-              直
-            </th>
-            <th
-              rowSpan="2"
-              className={`clickable ${sort.key == 'createdBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
-              onClick={() => {
-                if(sort.key == 'createdBy') this.setState({sort: { key: 'createdBy', asc: !sort.asc, id: 0 }});
-                else this.setState({sort: { key: 'createdBy', asc: true, id: 0 }});
-              }}
-            >
-              検査者
-            </th>
-            <th
-              rowSpan="2"
-              className={`clickable ${sort.key == 'updatedBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
-              onClick={() => {
-                if(sort.key == 'updatedBy') this.setState({sort: { key: 'updatedBy', asc: !sort.asc, id: 0 }});
-                else this.setState({sort: { key: 'updatedBy', asc: true, id: 0 }});
-              }}
-            >
-              更新者
-            </th>
-            <th
-              rowSpan="2"
-              className={`clickable ${sort.key == 'status' ? sort.asc ? 'asc' : 'desc' : ''}`}
-              onClick={() => {
-                if(sort.key == 'status') this.setState({sort: { key: 'status', asc: !sort.asc, id: 0 }});
-                else this.setState({sort: { key: 'status', asc: true, id: 0 }});
-              }}
-            >
-              判定
-            </th>
-            {
-              holes.length > 0 &&
-              <th colSpan={holes.length}>穴</th>
-            }{
-              hModifications.length > 0 &&
-              <th colSpan={hModifications.length}>穴手直</th>
-            }{
-              failures.length > 0 &&
-              <th colSpan={failures.length}>外観不良</th>
-            }{
-              modifications.length > 0 &&
-              <th colSpan={modifications.length}>不良手直</th>
-            }{
-              inlines.length > 0 &&
-              <th colSpan={inlines.length}>精度検査</th>
-            }
-            <th rowSpan="2">コメント</th>
-            <th rowSpan="2">検査日</th>
-            <th rowSpan="2">最終更新日</th>
-          </tr>
-          <tr>
-          {
-            holes.length > 0 &&
-            holes.map(h =>
-              <th
-                className={`clickable ${(sort.key == 'holes' && sort.id == h.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
-                onClick={() => {
-                  if(sort.key == 'holes') this.setState({sort: { key: 'holes', asc: !sort.asc, id: h.id }});
-                  else this.setState({sort: { key: 'holes', asc: true, id: h.id }});
-                }}
-              >
-                {`${h.label}`}
-              </th>
-            )
-          }{
-            hModifications.length > 0 &&
-            hModifications.map(hm =>
-              <th
-                className={`clickable ${(sort.key == 'hModifications' && sort.id == hm.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
-                onClick={() => {
-                  if(sort.key == 'hModifications') this.setState({sort: { key: 'hModifications', asc: !sort.asc, id: hm.id }});
-                  else this.setState({sort: { key: 'hModifications', asc: true, id: hm.id }});
-                }}
-              >
-                {`${hm.label}.${hm.name}`}
-              </th>
-            )
-          }{
-            failures.length > 0 &&
-            failures.map(f =>
-              <th
-                className={`clickable ${(sort.key == 'failures' && sort.id == f.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
-                onClick={() => {
-                  if(sort.key == 'failures') this.setState({sort: { key: 'failures', asc: !sort.asc, id: f.id }});
-                  else this.setState({sort: { key: 'failures', asc: true, id: f.id }});
-                }}
-              >
-                {`${f.label}.${f.name}`}
-              </th>
-            )
-          }{
-            modifications.length > 0 &&
-            modifications.map(m =>
-              <th
-                className={`clickable ${(sort.key == 'modifications' && sort.id == m.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
-                onClick={() => {
-                  if(sort.key == 'modifications') this.setState({sort: { key: 'modifications', asc: !sort.asc, id: m.id }});
-                  else this.setState({sort: { key: 'modifications', asc: true, id: m.id }});
-                }}
-              >
-                {`${m.label}.${m.name}`}
-              </th>
-            )
-          }{
-            inlines.length > 0 &&
-            inlines.map(i =>
-              <th
-                className={`clickable ${(sort.key == 'inlines' && sort.id == i.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
-                onClick={() => {
-                  if(sort.key == 'inlines') this.setState({sort: { key: 'inlines', asc: !sort.asc, id: i.id }});
-                  else this.setState({sort: { key: 'inlines', asc: true, id: i.id }});
-                }}
-              >
-                {`${i.sort}`}
-              </th>
-            )
-          }
-          </tr>
-        </thead>
-        <tbody>
+      <div>
         {
-          data.map((d,i) =>
+          count < 1000 &&
+          <p className="result-count">{`${count}件中 ${count}件表示`}</p>
+        }{
+          count >= 1000 &&
+          <p className="result-count">{`${count}件中 1000件表示`}</p>
+        }
+        <table className="reference-result">
+          <thead>
             <tr>
-              <td>{i+1}</td>
-              <td>{d.vehicle}</td>
-              <td>{d.pn}</td>
-              <td>{d.name}</td>
-              <td>{d.panelId}</td>
-              <td>{d.tyoku}</td>
-              <td>{d.createdBy}</td>
-              <td>{d.updatedBy}</td>
-              <td>{d.status == 1 ? '○' : '×'}</td>
+              <th rowSpan="2">No.</th>
+              <th rowSpan="2">車種</th>
+              <th rowSpan="2">品番</th>
+              <th rowSpan="2">品名</th>
+              <th
+                rowSpan="2"
+                className={`clickable ${sort.key == 'panelId' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                onClick={() => {
+                  if(sort.key == 'panelId') this.setState({sort: { key: 'panelId', asc: !sort.asc, id: 0 }});
+                  else this.setState({sort: { key: 'panelId', asc: true, id: 0 }});
+                }}
+              >
+                パネルID</th>
+              <th
+                rowSpan="2"
+                className={`clickable ${sort.key == 'tyoku' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                onClick={() => {
+                  if(sort.key == 'tyoku') this.setState({sort: { key: 'tyoku', asc: !sort.asc, id: 0 }});
+                  else this.setState({sort: { key: 'tyoku', asc: true, id: 0 }});
+                }}
+              >
+                直
+              </th>
+              <th
+                rowSpan="2"
+                className={`clickable ${sort.key == 'createdBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                onClick={() => {
+                  if(sort.key == 'createdBy') this.setState({sort: { key: 'createdBy', asc: !sort.asc, id: 0 }});
+                  else this.setState({sort: { key: 'createdBy', asc: true, id: 0 }});
+                }}
+              >
+                検査者
+              </th>
+              <th
+                rowSpan="2"
+                className={`clickable ${sort.key == 'updatedBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                onClick={() => {
+                  if(sort.key == 'updatedBy') this.setState({sort: { key: 'updatedBy', asc: !sort.asc, id: 0 }});
+                  else this.setState({sort: { key: 'updatedBy', asc: true, id: 0 }});
+                }}
+              >
+                更新者
+              </th>
+              <th
+                rowSpan="2"
+                className={`clickable ${sort.key == 'status' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                onClick={() => {
+                  if(sort.key == 'status') this.setState({sort: { key: 'status', asc: !sort.asc, id: 0 }});
+                  else this.setState({sort: { key: 'status', asc: true, id: 0 }});
+                }}
+              >
+                判定
+              </th>
               {
                 holes.length > 0 &&
-                d.holes.map(h => {
-                  let status;
-                  if (h.status == 0) {status = '×';}
-                  else if (h.status == 2) {status = '△';}
-                  else if (h.status == 1) {status = '○';}
-
-                  return (<td>{status}</td>);
-                })
+                <th colSpan={holes.length}>穴</th>
               }{
                 hModifications.length > 0 &&
-                hModifications.map(hm => {
-                  let sum = 0;
-                  if (d.hModifications[hm.id]) {
-                    sum =  d.hModifications[hm.id];
-                  }
-                  return (<td>{sum}</td>);
-                })
+                <th colSpan={hModifications.length}>穴手直</th>
               }{
                 failures.length > 0 &&
-                failures.map(f => {
-                  let sum = 0;
-                  if (d.failures[f.id]) {
-                    sum =  d.failures[f.id];
-                  }
-                  return (<td>{sum}</td>);
-                })
+                <th colSpan={failures.length}>外観不良</th>
               }{
                 modifications.length > 0 &&
-                modifications.map(m => {
-                  let sum = 0;
-                  if (d.modifications[m.id]) {
-                    sum =  d.modifications[m.id];
-                  }
-                  return (<td>{sum}</td>);
-                })
+                <th colSpan={modifications.length}>不良手直</th>
               }{
                 inlines.length > 0 &&
-                inlines.map(i => {
-                  let status = '○';
-                  if (d.inlines[i.id]) {
-                    let target = d.inlines[i.id];
-                    if ( target.status > target.max || target.status < target.min ) {
-                      status = '×';
-                    }
-                  }
-                  return (<td>{status}</td>);
-                })
+                <th colSpan={inlines.length}>精度検査</th>
               }
-              <td>{d.comment ? d.comment.slice(0,5)+'...' : ''}</td>
-              <td>{d.createdAt}</td>
-              <td>{d.updatedAt}</td>
+              <th rowSpan="2">コメント</th>
+              <th rowSpan="2">検査日</th>
+              <th rowSpan="2">最終更新日</th>
             </tr>
-          )
-        }
-        </tbody>
-      </table>
+            <tr>
+            {
+              holes.length > 0 &&
+              holes.map(h =>
+                <th
+                  className={`clickable ${(sort.key == 'holes' && sort.id == h.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'holes') this.setState({sort: { key: 'holes', asc: !sort.asc, id: h.id }});
+                    else this.setState({sort: { key: 'holes', asc: true, id: h.id }});
+                  }}
+                >
+                  {`${h.label}`}
+                </th>
+              )
+            }{
+              hModifications.length > 0 &&
+              hModifications.map(hm =>
+                <th
+                  className={`clickable ${(sort.key == 'hModifications' && sort.id == hm.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'hModifications') this.setState({sort: { key: 'hModifications', asc: !sort.asc, id: hm.id }});
+                    else this.setState({sort: { key: 'hModifications', asc: true, id: hm.id }});
+                  }}
+                >
+                  {`${hm.label}.${hm.name}`}
+                </th>
+              )
+            }{
+              failures.length > 0 &&
+              failures.map(f =>
+                <th
+                  className={`clickable ${(sort.key == 'failures' && sort.id == f.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'failures') this.setState({sort: { key: 'failures', asc: !sort.asc, id: f.id }});
+                    else this.setState({sort: { key: 'failures', asc: true, id: f.id }});
+                  }}
+                >
+                  {`${f.label}.${f.name}`}
+                </th>
+              )
+            }{
+              modifications.length > 0 &&
+              modifications.map(m =>
+                <th
+                  className={`clickable ${(sort.key == 'modifications' && sort.id == m.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'modifications') this.setState({sort: { key: 'modifications', asc: !sort.asc, id: m.id }});
+                    else this.setState({sort: { key: 'modifications', asc: true, id: m.id }});
+                  }}
+                >
+                  {`${m.label}.${m.name}`}
+                </th>
+              )
+            }{
+              inlines.length > 0 &&
+              inlines.map(i =>
+                <th
+                  className={`clickable ${(sort.key == 'inlines' && sort.id == i.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'inlines') this.setState({sort: { key: 'inlines', asc: !sort.asc, id: i.id }});
+                    else this.setState({sort: { key: 'inlines', asc: true, id: i.id }});
+                  }}
+                >
+                  {`${i.sort}`}
+                </th>
+              )
+            }
+            </tr>
+          </thead>
+          <tbody>
+          {
+            data.map((d,i) =>
+              <tr>
+                <td>{i+1}</td>
+                <td>{d.vehicle}</td>
+                <td>{d.pn}</td>
+                <td>{d.name}</td>
+                <td>{d.panelId}</td>
+                <td>{d.tyoku}</td>
+                <td>{d.createdBy}</td>
+                <td>{d.updatedBy}</td>
+                <td>{d.status == 1 ? '○' : '×'}</td>
+                {
+                  holes.length > 0 &&
+                  d.holes.map(h => {
+                    let status;
+                    if (h.status == 0) {status = '×';}
+                    else if (h.status == 2) {status = '△';}
+                    else if (h.status == 1) {status = '○';}
+
+                    return (<td>{status}</td>);
+                  })
+                }{
+                  hModifications.length > 0 &&
+                  hModifications.map(hm => {
+                    let sum = 0;
+                    if (d.hModifications[hm.id]) {
+                      sum =  d.hModifications[hm.id];
+                    }
+                    return (<td>{sum}</td>);
+                  })
+                }{
+                  failures.length > 0 &&
+                  failures.map(f => {
+                    let sum = 0;
+                    if (d.failures[f.id]) {
+                      sum =  d.failures[f.id];
+                    }
+                    return (<td>{sum}</td>);
+                  })
+                }{
+                  modifications.length > 0 &&
+                  modifications.map(m => {
+                    let sum = 0;
+                    if (d.modifications[m.id]) {
+                      sum =  d.modifications[m.id];
+                    }
+                    return (<td>{sum}</td>);
+                  })
+                }{
+                  inlines.length > 0 &&
+                  inlines.map(i => {
+                    let status = '○';
+                    if (d.inlines[i.id]) {
+                      let target = d.inlines[i.id];
+                      if ( target.status > target.max || target.status < target.min ) {
+                        status = '×';
+                      }
+                    }
+                    return (<td>{status}</td>);
+                  })
+                }
+                <td>{d.comment ? d.comment.slice(0,5)+'...' : ''}</td>
+                <td>{d.createdAt}</td>
+                <td>{d.updatedAt}</td>
+              </tr>
+            )
+          }{
+            count == 0 &&
+            <tr>
+                <td colSpan={12+holes.length+hModifications.length+failures.length+modifications.length+inlines.length}>
+                  検索結果なし
+                </td>
+            </tr>
+          }
+          </tbody>
+        </table>
+      </div>
     );
   }
 };
 
 CustomTable.propTypes = {
+  count: PropTypes.object,
   data: PropTypes.object,
   failures: PropTypes.array,
   holes: PropTypes.array,

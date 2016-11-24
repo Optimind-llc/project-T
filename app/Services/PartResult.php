@@ -26,28 +26,34 @@ class PartResult
     {
         $part = $this->result;
 
-        $merged_page = $part->pages->reduce(function($carry, $page) {
-            $carry->put('tyoku', $page->inspector_group);
-            $createdBy = explode(',', $page->created_by);
-            $carry->put('createdBy', array_key_exists(1, $createdBy) ? $createdBy[1] : $createdBy[0]);
-            $carry->put('updatedBy', $page->updated_by ? explode(',', $page->updated_by)[1] : '');
-            $carry->put('failures', $page->failurePositions->merge($carry->has('failures') ? $carry['failures'] : []));
-            $carry->put('modifications', $page->comments->merge($carry->has('modifications') ? $carry['modifications'] : []));
-            $carry->put('hModifications', $page->comments->merge($carry->has('hModifications') ? $carry['hModifications'] : []));
-            $carry->put('holes', $page->holePages->merge($carry->has('holes') ? $carry['holes'] : []));
-            $carry->put('inlines', $page->inlines);
-            $carry->put('createdAt', $page->created_at->format('Y/m/d H:i:s'));
-            $carry->put('updatedAt', $page->updated_at->format('Y/m/d H:i:s'));
-            $carry->put('status', $page->pivot->status);
-            if (!is_null($page->comment)) {
-                $carry->put('comment', $page->comment);
-            }
-            if (!is_null($page->pivot->comment)) {
-                $carry->put('comment', $page->pivot->comment);
-            }
+        if ($part->pages->count() > 0) {
+            $merged_page = $part->pages->reduce(function($carry, $page) {
+                $carry->put('tyoku', $page->inspector_group);
+                $createdBy = explode(',', $page->created_by);
+                $carry->put('createdBy', array_key_exists(1, $createdBy) ? $createdBy[1] : $createdBy[0]);
+                $carry->put('updatedBy', $page->updated_by ? explode(',', $page->updated_by)[1] : '');
+                $carry->put('failures', $page->failurePositions->merge($carry->has('failures') ? $carry['failures'] : []));
+                $carry->put('modifications', $page->comments->merge($carry->has('modifications') ? $carry['modifications'] : []));
+                $carry->put('hModifications', $page->comments->merge($carry->has('hModifications') ? $carry['hModifications'] : []));
+                $carry->put('holes', $page->holePages->merge($carry->has('holes') ? $carry['holes'] : []));
+                $carry->put('inlines', $page->inlines);
+                $carry->put('createdAt', $page->created_at->format('Y/m/d H:i:s'));
+                $carry->put('updatedAt', $page->updated_at->format('Y/m/d H:i:s'));
+                $carry->put('status', $page->pivot->status);
+                if (!is_null($page->comment)) {
+                    $carry->put('comment', $page->comment);
+                }
+                if (!is_null($page->pivot->comment)) {
+                    $carry->put('comment', $page->pivot->comment);
+                }
 
-            return $carry;
-        }, collect([]));
+                return $carry;
+            }, collect([]));
+        }
+        else {
+            $this->result = null;
+            return $this;
+        }
 
         $this->result = collect([
             'vehicle' => $part->partType->vehicle_num,

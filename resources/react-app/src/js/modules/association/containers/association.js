@@ -309,7 +309,7 @@ class Association extends Component {
                   </div>
                   <div className="btn-wrap">
                     <button onClick={() => {
-                      this.setState({editModal: false})
+                      this.setState({editModal: false});
                       this.props.actions.updatePartFamily({
                         "id": this.state.editting_f,
                         "parts": [
@@ -333,10 +333,11 @@ class Association extends Component {
                             "panelId": this.state.editting_6
                           }
                         ]
-                      })
-                    }
-                  }>保存</button>
-                    <button onClick={() => this.setState({editModal: false})}>キャンセル</button>
+                      });
+                    }}>
+                      保存
+                    </button>
+                    <button onClick={() => this.setState({editModal: false})}>終了</button>
                   </div>
                 </div>
               </div>

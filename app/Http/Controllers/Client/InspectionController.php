@@ -206,7 +206,8 @@ class InspectionController extends Controller
                 ->map(function($part) {
                     return [
                         'id' => $part->id,
-                        'type_id' => $part->part_type_id
+                        'type_id' => $part->part_type_id,
+                        'status' => $part->pivot->status
                     ];
                 });
 
@@ -245,7 +246,7 @@ class InspectionController extends Controller
                     }
 
                     $filtered = $newParts->filter(function ($part) use ($part_type_id) {
-                        return $part['type_id'] == $part_type_id;
+                        return $part['type_id'] == $part_type_id && $part['status'] < 2;
                     });
 
                    return $filtered->first()['id'];

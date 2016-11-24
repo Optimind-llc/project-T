@@ -112,7 +112,8 @@
     height: 36px;
     width: 138px;
     margin: 10px auto 0;
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 34px;
   }
 
   .result {
@@ -326,8 +327,10 @@
       padding: 10px;
 
       input {
+        box-sizing: border-box;
         width: 100%;
         height: 36px;
+        padding: 1px 10px;
         border-radius: 4px;
         border: 1px solid #4A4A4A;
       }
@@ -343,6 +346,8 @@
         margin: 0 10px;
         width: 120px;
         height: 36px;
+        font-size: 14px;
+        line-height: 34px;
       }
     }
   }

@@ -52,7 +52,7 @@ class Reference extends Component {
 
     let table = [];
     if (SerchedData.data != null && !SerchedData.isFetching) {
-      let header = ['No.','車種','品番','品名','パネルID','直','検査者','更新者','判定'];
+      let header = ['車種','品番','品名','パネルID','直','検査者','更新者','判定'];
       if (SerchedData.data.h.length > 0) {
         SerchedData.data.h.forEach(h => {
           header.push(String(h.label));
@@ -87,7 +87,7 @@ class Reference extends Component {
 
       let rows = SerchedData.data.parts.map((p,i) => {
         let status = p.status == 1 ? '○' : '×';
-        let result = [String(i), p.vehicle, String(p.pn), p.name, p.panelId, p.tyoku, p.createdBy, p.updatedBy, status];
+        let result = [p.vehicle, String(p.pn), p.name, p.panelId, p.tyoku, p.createdBy, p.updatedBy, status];
 
         if (SerchedData.data.h.length > 0) {
           SerchedData.data.h.forEach(h => {
@@ -392,10 +392,13 @@ class Reference extends Component {
           <button onClick={() => downloadCsv(table)}>CSV出力</button>
         </div>
         <div className="result-wrap bg-white">
-        
           {
+            SerchedData.isFetching &&
+            <p>検索中...</p>
+          }{
             SerchedData.data != null && !SerchedData.isFetching &&
             <CustomTable
+              count={SerchedData.data.count}
               data={SerchedData.data.parts}
               failures={SerchedData.data.f}
               holes={SerchedData.data.h}

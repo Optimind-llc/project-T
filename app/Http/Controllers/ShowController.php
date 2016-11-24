@@ -611,16 +611,6 @@ class ShowController extends Controller
     {
         $part = Part::where('panel_id', $panelId)->where('part_type_id', $partTypeId)->first();
 
-        if (!$part instanceof Part) {
-            return ['data' => [
-                'count' => 0,
-                'parts' => []
-            ]];
-        }
-
-        $detail = new PartResult($part->id, $partTypeId, $itionGId);
-        $formated = $detail->setDetails()->formatForRerefence()->get();
-
         $inspection_group = InspectionGroup::find($itionGId);
         $f = $inspection_group->sortedFailures();
         $m = $inspection_group->sortedModifications();
@@ -629,6 +619,37 @@ class ShowController extends Controller
         if ($inspection_group->inspection->en == 'ana') {
             $h = PartType::find($partTypeId)->holes()->orderBy('label')->get();
         }
+        $i = [];
+        if ($itionGId == 3 || $itionGId == 9) {
+            $i = PartType::find($partTypeId)->inlines;
+        }
+
+        if (!$part instanceof Part) {
+            return ['data' => [
+                'count' => 0,
+                'f' => $f,
+                'm' => $m,
+                'h' => $h,
+                'hm' => $m,
+                'i' => $i,
+                'parts' => []
+            ]];
+        }
+
+        $detail = new PartResult($part->id, $partTypeId, $itionGId);
+        $formated = $detail->setDetails()->formatForRerefence()->get();
+
+        if (!$formated) {
+            return ['data' => [
+                'count' => 0,
+                'f' => $f,
+                'm' => $m,
+                'h' => $h,
+                'hm' => $m,
+                'i' => $i,
+                'parts' => []
+            ]];
+        }
 
         return ['data' => [
             'count' => 1,
@@ -636,6 +657,7 @@ class ShowController extends Controller
             'm' => $m,
             'h' => $h,
             'hm' => $m,
+            'i' => $i,
             'parts' => [$formated]
         ]];
     }
