@@ -184,7 +184,7 @@ class Report
                         if ($p->pages->count() == 0) {
                             return $p->status == 0;
                         }
-                        return $p->status == 0 && $p->pages->first()->pivot->status == 0;
+                        return $p->status == 0 || $p->pages->first()->pivot->status == 0;
                     })->count();
 
                     $tcpdf->MultiCell($dhj, $hhj, $part_obj->short_name.'：'.$part_obj->name, 1, 'C', 0, 1, $A4['x0']+($n*$dhj), $A4['y1']);
@@ -901,7 +901,11 @@ class Report
                     $tcpdf->Text($A3['x0']+array_sum($d)+($d_hole*$hn)+$margin+($fd*$i), $A3['y2']+$row*$A3['th'], $sum);
                 }
 
-                $comment = mb_substr($part['comment'], 0, 4, 'UTF-8').'..';
+                $comment = '';
+                if ($part['comment']) {
+                    $comment = mb_substr($part['comment'], 0, 4, 'UTF-8').'..';
+                }
+
                 $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin+($fd*$fn), $A3['y2']+($row)*$A3['th'], $comment);
                 $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin+($fd*$fn)+$d_comment, $A3['y2']+($row)*$A3['th'], $part['time']->format('H:i'));
             }
@@ -1241,7 +1245,11 @@ class Report
                         $tcpdf->Text($A3['x0']+array_sum($d)+($d_hole*$hn)+$margin+($fd*$i), $A3['y2']+$row*$A3['th'], $sum);
                     }
 
-                    $comment = mb_substr($part['comment'], 0, 4, 'UTF-8').'..';
+                    $comment = '';
+                    if ($part['comment']) {
+                        $comment = mb_substr($part['comment'], 0, 4, 'UTF-8').'..';
+                    }
+
                     $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin+($fd*$fn), $A3['y2']+($row)*$A3['th'], $comment);
                     $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin+($fd*$fn)+$d_comment, $A3['y2']+($row)*$A3['th'], $part['time']->format('H:i'));
                 }

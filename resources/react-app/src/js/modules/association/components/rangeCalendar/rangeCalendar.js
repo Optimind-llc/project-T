@@ -12,8 +12,8 @@ class RangeCalendar extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      format: 'YYYY年MM月DD日 HH時',
-      showTime: true,
+      format: 'YYYY年MM月DD日',
+      showTime: false,
       showDateInput: true,
       disabled: props.disabled,
       value: props.defaultValue,
@@ -94,7 +94,7 @@ class RangeCalendar extends Component {
                     border: '1px solid #ccc',
                     padding: '0 10px',
                     margin: 0,
-                    width: 160,
+                    width: 130,
                     height: 36,
                     borderRadius: 4,
                     color: state.disabled ? '#BBB' : '#000',

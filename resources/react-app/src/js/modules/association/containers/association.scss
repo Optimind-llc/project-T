@@ -2,6 +2,22 @@
   padding: 4px 4px 0 4px;
   min-width: 1110px;
 
+  .Select-menu-outer {
+    // Unfortunately, having both border-radius and allows scrolling using overflow defined on the same
+    // element forces the browser to repaint on scroll.  However, if these definitions are split into an
+    // outer and an inner element, the browser is able to optimize the scrolling behavior and does not
+    // have to repaint on scroll.
+    max-height: 600px !important;
+  }
+  .Select-menu {
+    max-height: (600px - 2px);
+    overflow-y: auto;
+  }
+
+  .Select-clear {
+      font-size: 14px;
+  }
+
   .border-left {
     border-left: 1px solid #4A4A4A;
   }
@@ -66,7 +82,7 @@
     }
 
     .term-wrap {
-      flex-basis: 390px;
+      flex-basis: 490px;
       flex-grow: 1;
       display: flex;
       flex-flow: row nowrap;
@@ -81,7 +97,7 @@
       }
 
       div {
-        flex-basis: 60px;
+        flex-basis: 80px;
       }
 
       input {
@@ -90,7 +106,7 @@
     }
 
     .panel-id-wrap {
-      flex-basis: 220px;
+      flex-basis: 174px;
       flex-grow: 1;
       display: flex;
       flex-flow: row nowrap;
@@ -321,6 +337,19 @@
 
     p {
       text-align: center;
+    }
+
+    p.validation_msg {
+      font-size: 10px;
+      color: red;
+    }
+
+    .message-wrap {
+      margin: 6px 40px;
+      p {
+        text-align: left;
+        margin: 2px;
+      }
     }
 
     .input-wrap {

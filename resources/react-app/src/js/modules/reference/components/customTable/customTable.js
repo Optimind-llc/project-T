@@ -174,7 +174,7 @@ class CustomTable extends Component {
                     else this.setState({sort: { key: 'hModifications', asc: true, id: hm.id }});
                   }}
                 >
-                  {`${hm.label}.${hm.name}`}
+                  {`${hm.name}`}
                 </th>
               )
             }{
@@ -187,7 +187,7 @@ class CustomTable extends Component {
                     else this.setState({sort: { key: 'failures', asc: true, id: f.id }});
                   }}
                 >
-                  {`${f.label}.${f.name}`}
+                  {`${f.name}`}
                 </th>
               )
             }{

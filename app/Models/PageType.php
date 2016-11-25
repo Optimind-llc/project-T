@@ -64,46 +64,40 @@ class PageType extends Model
         );
     }
 
-    public function pagesWithRelated($itorG_name, $start_at, $end_at, $panel_id)
+    public function pagesWithRelated($itorG_name, $start_at, $end_at)
     {
         $pages = $this->pages()
-            ->join('inspection_families as f', function ($join) use ($itorG_name, $start_at, $end_at, $panel_id) {
-                $join = $join->on('pages.family_id', '=', 'f.id')
-                    ->whereIn('f.inspector_group', $itorG_name);
-                if ($start_at && !$panel_id) {
-                    $join->where('f.updated_at', '>=', $start_at)
-                        ->where('f.updated_at', '<=', $end_at);
-                }
+            ->join('inspection_families as f', function($join) use ($itorG_name, $start_at, $end_at) {
+                $join->on('pages.family_id', '=', 'f.id')
+                    ->whereIn('f.inspector_group', $itorG_name)
+                    ->where('f.updated_at', '>=', $start_at)
+                    ->where('f.updated_at', '<=', $end_at);
             })
             ->select('pages.*', 'f.inspector_group')
-            ->join('part_page as pp', function ($join) use ($itorG_name) {
+            ->join('part_page as pp', function($join) use ($itorG_name) {
                 $join->on('pp.page_id', '=', 'pages.id');
             })
-            ->join('parts', function ($join) use ($itorG_name, $panel_id) {
-                $aaa = $join->on('pp.part_id', '=', 'parts.id');
-                if ($panel_id) {
-                    $aaa->where('parts.panel_id', '=', $panel_id);
-                }
+            ->join('parts', function($join) {
+                $join->on('pp.part_id', '=', 'parts.id');
             })
             ->groupBy('pages.id')
             ->with([
-                'parts',
-                'failurePositions' => function ($q) {
+                'failurePositions' => function($q) {
                     $q->select(['id', 'point', 'type', 'page_id', 'part_id', 'failure_id']);
                 },
-                'failurePositions.failure' => function ($q) {
+                'failurePositions.failure' => function($q) {
                     $q->select(['id', 'name', 'label']);
                 },
-                'failurePositions.part' => function ($q) {
+                'failurePositions.part' => function($q) {
                     $q->select(['id', 'panel_id', 'part_type_id']);
-                },
-                'failurePositions.part.partType' => function ($q) {
-                    $q->select(['id', 'name', 'pn']);
-                },
-                'comments',
-                'comments.modification',
-                'comments.failurePosition',
-                'inlines'
+                }
+                // 'failurePositions.part.partType' => function($q) {
+                //     $q->select(['id', 'name', 'pn']);
+                // }
+                // 'comments',
+                // 'comments.modification',
+                // 'comments.failurePosition',
+                // 'inlines'
             ]);
         
         return $pages->get();

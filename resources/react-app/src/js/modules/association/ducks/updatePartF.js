@@ -4,12 +4,11 @@ import { CALL_API } from '../../../middleware/fetchMiddleware';
 export const UPDATE_PartF_DATA = 'UPDATE_PartF_DATA';
 export const UPDATE_PartF_DATA_SUCCESS = 'UPDATE_PartF_DATA_SUCCESS';
 export const UPDATE_PartF_DATA_FAIL = 'UPDATE_PartF_DATA_FAIL';
+export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
 
 const initialState = {
   message: null,
-  partTypeId: null,
-  panelId: null,
-  isFetching: false,
+  parts: [],
   didInvalidate: false
 };
 
@@ -24,8 +23,7 @@ export default function reducer(state = initialState, action) {
     case UPDATE_PartF_DATA_SUCCESS:
       return Object.assign({}, state, {
         message: action.payload.message,
-        partTypeId: action.payload.partTypeId,
-        panelId: action.payload.panelId,
+        parts: action.payload.parts,
         isFetching: false,
         didInvalidate: false
       });
@@ -36,10 +34,16 @@ export default function reducer(state = initialState, action) {
         didInvalidate: true
       });
 
+    case CLEAR_MESSAGE:
+      return Object.assign({}, state, {
+        message: null
+      });
+
     default:
       return state;
   }
 }
+
 export function updatePartFamily(body) {
   return {
     [CALL_API]: {
@@ -55,6 +59,15 @@ export function updatePartFamily(body) {
   };
 }
 
+export function clearMessage() {
+  console.log('aaaaaaa')
+  return {
+    type: CLEAR_MESSAGE
+  }
+}
+
+
 export const updatePartFActions = {
   updatePartFamily,
+  clearMessage
 };

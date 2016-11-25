@@ -19,6 +19,7 @@
 |
 */
 
+define('WP_MEMORY_LIMIT', '1024M');
 require __DIR__.'/../bootstrap/autoload.php';
 
 /*

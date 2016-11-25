@@ -17,6 +17,7 @@ use App\Models\PageType;
 use App\Models\PartType;
 use App\Models\Client\PartFamily;
 use App\Models\Client\Part;
+use App\Models\Client\Page;
 
 // Exceptions
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -358,6 +359,8 @@ class ShowController extends Controller
 
     public function page2($partTypeId, $itionGId, $itorG, Request $request)
     {
+        ini_set('memory_limit','-1');
+
         $validator = app('validator')->make(
             $request->all(),
             [
@@ -430,7 +433,7 @@ class ShowController extends Controller
             case 'both': $itorG_name = ['白直', '黄直', '不明']; break;
         }
 
-        $page_types = PartType::find($partTypeId)
+        $page_type_ids = PartType::find($partTypeId)
             ->pageTypes()
             ->with('figure')
             ->where('group_id', $itionGId)
@@ -438,12 +441,16 @@ class ShowController extends Controller
             ->get()
             ->filter(function($pt) {
                 return $pt->id != 14;
-            });
+            })
+            ->map(function($pt) {
+                return $pt->id;
+            })
+            ->toArray();
 
-        if ($page_types->count() == 0) {
+        if (count($page_type_ids) == 0) {
             return [
                 'data' => [
-                'pages' => 'notFound',
+                    'pages' => 'notFound',
                     'failures' => [],
                     'failureTypes' => [],
                     'commentTypes' => [],
@@ -454,157 +461,31 @@ class ShowController extends Controller
             ];
         }
 
-        // Get Failure list
-        $failureTypes = $this->failures($itionGId)['data'];
+        $inspectionGroup = InspectionGroup::find($itionGId);
 
-        // Get Failure Modifications list
-        $modificationTypes = $this->modifications($itionGId)['data'];
+        $failureTypes = $inspectionGroup->sortedFailures();
+        $modificationTypes = $inspectionGroup->sortedModifications();
+        $holeModificationTypes = $inspectionGroup->sortedHoleModifications();
 
-        // Get Hole Modifications list
-        $holeModificationTypes = InspectionGroup::find($itionGId)->inspection->hModifications->map(function($hm) {
-            return [
-                'id' => $hm->id,
-                'label' => $hm->label,
-                'name' => $hm->name,
-                'type' => $hm->pivot->type,
-                'sort' => $hm->pivot->sort
-            ];
-        })->toArray();
-
-        foreach( $holeModificationTypes as $key => $row ) {
-            $hm_type_array[$key] = $row['type'];
-            $hm_label_array[$key] = $row['label'];
-            $hm_sort_array[$key] = $row['sort'];
-        }
-
-        if (count($holeModificationTypes) !== 0 ) {
-            array_multisort($hm_type_array, $hm_sort_array, $hm_label_array, $holeModificationTypes);
-        }
-
-        $page_ids = null;
-        if (isset($request->panelId)) {
-            $page_ids = Part::where('panel_id', $request->panelId)
-                ->where('part_type_id', $partTypeId)
-                ->first()
-                ->pages()
-                ->get(['id'])
-                ->map(function($p) {
-                    return $p->id;
-                })
-                ->toArray();
-        }
-
-        $holePoints = InspectionGroup::find($itionGId)
-            ->pageTypes()
-            ->select(['figure_id', 'number'])
+        $pages = Page::whereIn('page_type_id', $page_type_ids)
             ->with([
-                'figure' => function($q) {
-                    $q->select(['id']);
+                'parts',
+                'failurePositions' => function($q) {
+                    $q->select(['id', 'point', 'part_id', 'failure_id']);
                 },
-                'figure.holes' => function($q) use ($partTypeId, $page_ids, $itorG_name, $start_at, $end_at) {
-                    $q->where('part_type_id', $partTypeId)
-                        ->leftJoin('hole_page as hp', 'holes.id', '=', 'hp.hole_id')
-                        ->join('pages', function ($join) use ($page_ids){
-                            $join = $join->on('pages.id', '=', 'hp.page_id');
-                            if ($page_ids) {
-                                $join->whereIn('pages.id', $page_ids);
-                            }
-                        })
-                        ->join('inspection_families as if', function ($join) use ($itorG_name,  $start_at, $end_at){
-                            $join = $join->on('if.id', '=', 'pages.family_id')
-                                ->whereIn('inspector_group', $itorG_name);
-                            if ($start_at) {
-                                $join->where('if.updated_at', '>=', $start_at)
-                                    ->where('if.updated_at', '<=', $end_at);
-                            }
-                        })
-                        ->leftJoin('hole_page_hole_modification as hphm', function ($join) {
-                            $join = $join->on('hp.id', '=', 'hphm.hp_id');
-                        })
-                        ->select(DB::raw(
-                            'holes.id, holes.point, holes.label, holes.direction, figure_id, COUNT(hp.status) as sum, SUM(hp.status = 0) as s0, SUM(hp.status = 1) as s1, SUM(hp.status = 2) as s2, SUM(hphm.hm_id IS NOT NULL) as s3'
-                        ))
-                        ->groupBy('holes.id');
+                'comments' => function($q) {
+                    $q->select(['id', 'page_id', 'fp_id', 'm_id']);
                 },
-                'figure.holes.holePages' => function($q) {
-                    $q->select(['hole_page.id', 'hole_id', 'page_id']);
+                'comments.failurePosition' => function($q) {
+                    $q->select(['id', 'point', 'part_id']);
                 },
-                'figure.holes.holePages.holeModification' => function($q) {
-                    $q->select(['hole_modifications.id', 'name', 'label']);
-                }
+                'holePages',
+                // 'inlines'
             ])
             ->get()
-            ->reduce(function($array, $pt) use($page_ids) {
-                $holes = $pt->figure->holes->map(function($h) use($pt, $page_ids) {
-                    return [
-                        'id' => $h->id,
-                        'label' => $h->label,
-                        'point' => $h->point,
-                        'direction' => $h->direction,
-                        's1' => $h->s1,
-                        's2' => $h->s2,
-                        's0' => $h->s0,
-                        's3' => $h->s3,
-                        'sum' => $h->sum,
-                        'modi' => $h->hm_id,
-                        'pageNum' => $pt->number,
-                        'holes' => $h->holePages->map(function($hp) use ($page_ids) {
-                            if ($hp->holeModification->count() == 0) {
-                                return 0;
-                            }
-
-                            if ($page_ids) {
-                                if (in_array($hp->page_id, $page_ids)) {
-                                    return $hp->holeModification[0]->id;
-                                }
-                                return 0;
-                            }
-
-                            return $hp->holeModification[0]->id;
-                        }),
-                    ];
-                })
-                ->sortBy('label')
-                ->toArray();
-                return array_merge($array, $holes);
-            }, []);
-
-        if ($page_types->count() > 1) {
-            $pageTypes = $page_types->map(function($pt) use($partTypeId, $itionGId, $itorG_name, $start_at, $end_at, $panel_id) {
-                $pages = $pt->pagesWithRelated($itorG_name, $start_at, $end_at, $panel_id);
-                $data = $this->formatPage($pages, $partTypeId);
-                $data['path'] = '/img/figures/'.$pt->figure->path;
-                $data['pageNum'] = $pt->number;
-                return $data;
-            })
-            ->toArray();
-
-            return [
-                'data' => [
-                    'pageTypes' => $pageTypes,
-                    'failureTypes' => $failureTypes,
-                    'commentTypes' => $modificationTypes,
-                    'holePoints' => $holePoints,
-                    'holeModificationTypes' => $holeModificationTypes,
-                    'path' => []
-                ]
-            ];
-        }
-
-        $page_type = $page_types->first();
-
-        $pages = $page_type->pagesWithRelated($itorG_name, $start_at, $end_at, $panel_id);
-        $data = $this->formatPage($pages, $partTypeId);
-        $data['path'] = '/img/figures/'.$page_type->figure->path;
-        $data['pageNum'] = $page_type->number;
-        $data['failureTypes'] = $failureTypes;
-        $data['commentTypes'] = $modificationTypes;
-        $data['holePoints'] = $holePoints;
-        $data['holeModificationTypes'] = $holeModificationTypes;
-
-        return [
-            'data' => $data
-        ];
+            ->groupBy('page_type_id');
+        
+        return ['data' => $pages];
     }
 
     public function panelIdSerch($partTypeId, $itionGId, $panelId)
@@ -849,13 +730,13 @@ class ShowController extends Controller
             $start = Carbon::createFromFormat('Y-m-d-H i:s', '2000-01-01-00 00:00');
         }
         if ($request->end) {
-            $end = Carbon::createFromFormat('Y-m-d-H i:s', $request->end.' 00:00');
+            $end = Carbon::createFromFormat('Y-m-d-H i:s', $request->end.' 00:00')->addHours(1);
         } else {
             $end = Carbon::now();
         }
 
-        $PartFamilis = PartFamily::where('part_families.created_at', '>=', $start)
-            ->where('part_families.created_at', '<', $end)
+        $PartFamilis = PartFamily::where('part_families.updated_at', '>=', $start)
+            ->where('part_families.updated_at', '<', $end)
             ->join('parts', function ($join) use ($partTypeId, $panelId) {
                 if ($partTypeId !== null && $panelId !== null) {
                     $join->on('part_families.id', '=', 'parts.family_id')
@@ -874,7 +755,10 @@ class ShowController extends Controller
 
         $data = PartFamily::whereIn('id', $PartFamilis)->with([
             'parts.partType'
-        ])->get()->map(function($f) {
+        ])
+        ->orderBy('part_families.updated_at')
+        ->get()
+        ->map(function($f) {
             return [
                 'familyId' => $f->id,
                 'associatedAt' => $f->updated_at->format('Y-m-d H:i:s'),

@@ -167,7 +167,7 @@ class DummyInspectionsSeeder extends Seeder
         //穴あけ：検査：インナー
         $group = $controller->inspection(4);
 
-        for ($id = 1; $id <= 20; $id++) {
+        for ($id = 1; $id <= 3000; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        

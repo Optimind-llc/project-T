@@ -202,7 +202,9 @@ class AssociationController extends Controller
         if (count($associated) > 0) {
             return response()->json([
                 'message' => 'Already be associated others',
-                'parts' => $associated
+                'parts' => collect($associated)->filter(function($p) {
+                    return $p['partTypeId'] != 7;
+                })
             ], 200);
         }
 
@@ -250,6 +252,10 @@ class AssociationController extends Controller
             $part_obj->save();
         }
         DB::commit();
+
+        $family = PartFamily::find($familyId);
+        $family->updated_at = Carbon::now();
+        $family->save();
 
         return [
             'message' => 'success'

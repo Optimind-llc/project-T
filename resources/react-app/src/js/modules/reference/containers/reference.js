@@ -42,6 +42,25 @@ class Reference extends Component {
     }
   }
 
+  getInspectionGroup() {
+    const { vehicle, partTId, processId, inspectionId } = this.state;
+
+    const filteredInspectionGroup = inspectionGroups.filter(ig =>
+      ig.vehicle == vehicle.value &&
+      (partTId ? (ig.part == partTId.value) : false) &&
+      (processId ? (ig.p == processId.value) : false) &&
+      (inspectionId ? (ig.i == inspectionId.value) : false) &&
+      !ig.disabled
+    );
+
+    let inspectionGroupId = 0;
+    if (filteredInspectionGroup.length > 0) {
+      inspectionGroupId = filteredInspectionGroup[0].iG;
+    }
+
+    return inspectionGroupId;
+  }
+
   render() {
     const { SerchedData, FailureData, ModificationData, actions } = this.props;
     const {
@@ -183,7 +202,7 @@ class Reference extends Component {
                 <Select
                   name="車種"
                   placeholder="車種を選択"
-                  styles={{height: 36}}
+                  styles={{height: 30}}
                   clearable={false}
                   Searchable={true}
                   value={this.state.vehicle}
@@ -195,7 +214,7 @@ class Reference extends Component {
                 <p>部品*</p>
                 <Select
                   name="部品"
-                  styles={{height: 36}}
+                  styles={{height: 30}}
                   placeholder={vehicle == null ? '先に車種を選択' :'部品を選択'}
                   disabled={vehicle == null}
                   clearable={false}
@@ -210,7 +229,7 @@ class Reference extends Component {
                 <p>工程*</p>
                 <Select
                   name="工程"
-                  styles={{height: 36}}
+                  styles={{height: 30}}
                   placeholder={partTId == null ? '先に部品を選択' :'工程を選択'}
                   disabled={partTId == null}
                   clearable={false}
@@ -224,7 +243,7 @@ class Reference extends Component {
                 <p>検査*</p>
                 <Select
                   name="検査"
-                  styles={{height: 36}}
+                  styles={{height: 30}}
                   placeholder={processId == null ? '先に工程を選択' :'検査を選択'}
                   disabled={processId == null}
                   clearable={false}
@@ -232,11 +251,14 @@ class Reference extends Component {
                   value={inspectionId}
                   options={inspections.filter(i => filteredInspection.indexOf(i.value) >= 0)}
                   onChange={value => {
-                    if (inspectionGroupId != 0) {
-                      actions.getFailures(inspectionGroupId);
-                      actions.getModifications(inspectionGroupId);
-                    }
-                    this.setState({inspectionId: value});
+                    this.setState({inspectionId: value}, () => {
+                      const id = this.getInspectionGroup();
+                      console.log(id)
+                      if (id != 0) {
+                        actions.getFailures(id);
+                        actions.getModifications(id);
+                      }
+                    });
                   }}
                 />
               </div>
@@ -390,7 +412,6 @@ class Reference extends Component {
         </div>
         <div className="btn-wrap">
           <button onClick={() => {
-            // downloadCsv(table);
             handleDownload(table);
           }}>CSV出力</button>
         </div>

@@ -25,7 +25,9 @@ class Association extends Component {
       partTId: null,
       panelId: '',
       startDate: moment(),
+      startHour: null,
       endDate: moment(),
+      endHour: null,
       processId: null,
       itionGId: null,
       modal: false,
@@ -42,10 +44,26 @@ class Association extends Component {
 
   serch() {
     const { actions: {getPartFData} } = this.props;
-    const { startDate, endDate, partTId, panelId } = this.state;
+    const { startDate, startHour, endDate, endHour, partTId, panelId } = this.state;
 
-    const start = startDate == null ? null : startDate.format('YYYY-MM-DD-HH');
-    const end = endDate == null ? null : endDate.format('YYYY-MM-DD-HH');
+    let start;
+    if (startHour == null) {
+      start = startDate == null ? null : `${startDate.format('YYYY-MM-DD')}-00`;
+    }
+    else {
+      start = startDate == null ? null : `${startDate.format('YYYY-MM-DD')}-${startHour.value}`;
+    }
+
+
+    let end;
+    if (endHour == null) {
+      end = endDate == null ? null : `${endDate.format('YYYY-MM-DD')}-23`;
+    }
+    else {
+      end = endDate == null ? null : `${endDate.format('YYYY-MM-DD')}-${endHour.value}`;
+    }
+
+console.log(start, end);
     const partTypeId = partTId == null ? null : partTId.value;
     getPartFData(start, end, partTypeId, panelId);
   }
@@ -59,7 +77,7 @@ class Association extends Component {
         <div className="serch-wrap-wrap bg-white">
           <div className="serch-wrap">
             <div className="vehicle-wrap">
-              <p>車種*</p>
+              <p>車種</p>
               <Select
                 name="車種"
                 placeholder="車種を選択"
@@ -102,7 +120,7 @@ class Association extends Component {
               />
             </div>
             <div className="panel-id-wrap">
-              <p>パネルID</p>
+              <p>ID</p>
               <input
                 type="text"
                 value={panelId}
@@ -110,11 +128,50 @@ class Association extends Component {
               />
             </div>
             <div className="term-wrap">
-              <p>登録日</p>
+              <p>時間</p>
                 <RangeCalendar
                   defaultValue={startDate}
                   setState={startDate => this.setState({
                     startDate: startDate
+                  })}
+                />
+                <Select
+                  name="部品"
+                  styles={{height: 36}}
+                  placeholder={'終日'}
+                  disabled={false}
+                  clearable={true}
+                  Searchable={false}
+                  scrollMenuIntoView={false}
+                  value={this.state.startHour}
+                  options={[
+                    {label: '0時', value: 0},
+                    {label: '1時', value: 1},
+                    {label: '2時', value: 2},
+                    {label: '3時', value: 3},
+                    {label: '4時', value: 4},
+                    {label: '5時', value: 5},
+                    {label: '6時', value: 6},
+                    {label: '7時', value: 7},
+                    {label: '8時', value: 8},
+                    {label: '9時', value: 9},
+                    {label: '10時', value: 10},
+                    {label: '11時', value: 11},
+                    {label: '12時', value: 12},
+                    {label: '13時', value: 13},
+                    {label: '14時', value: 14},
+                    {label: '15時', value: 15},
+                    {label: '16時', value: 16},
+                    {label: '17時', value: 17},
+                    {label: '18時', value: 18},
+                    {label: '19時', value: 19},
+                    {label: '20時', value: 20},
+                    {label: '21時', value: 21},
+                    {label: '22時', value: 22},
+                    {label: '23時', value: 23}
+                  ]}
+                  onChange={value => this.setState({
+                    startHour: value
                   })}
                 />
                 <p>〜</p>
@@ -122,6 +179,45 @@ class Association extends Component {
                   defaultValue={endDate}
                   setState={endDate => this.setState({
                     endDate: endDate
+                  })}
+                />
+                <Select
+                  name="部品"
+                  styles={{height: 36}}
+                  placeholder={'終日'}
+                  disabled={false}
+                  clearable={true}
+                  Searchable={false}
+                  scrollMenuIntoView={false}
+                  value={this.state.endHour}
+                  options={[
+                    {label: '0時', value: 0},
+                    {label: '1時', value: 1},
+                    {label: '2時', value: 2},
+                    {label: '3時', value: 3},
+                    {label: '4時', value: 4},
+                    {label: '5時', value: 5},
+                    {label: '6時', value: 6},
+                    {label: '7時', value: 7},
+                    {label: '8時', value: 8},
+                    {label: '9時', value: 9},
+                    {label: '10時', value: 10},
+                    {label: '11時', value: 11},
+                    {label: '12時', value: 12},
+                    {label: '13時', value: 13},
+                    {label: '14時', value: 14},
+                    {label: '15時', value: 15},
+                    {label: '16時', value: 16},
+                    {label: '17時', value: 17},
+                    {label: '18時', value: 18},
+                    {label: '19時', value: 19},
+                    {label: '20時', value: 20},
+                    {label: '21時', value: 21},
+                    {label: '22時', value: 22},
+                    {label: '23時', value: 23}
+                  ]}
+                  onChange={value => this.setState({
+                    endHour: value
                   })}
                 />
             </div>
@@ -134,18 +230,11 @@ class Association extends Component {
           </button>
         </div>
         <div className="result bg-white">
-          {
-            UpdatePartFData.message == 'Already be associated others' &&
-            <p>{`${UpdatePartFData.panelId} の更新に失敗しました　すでに他の部品に使用されています。`}</p>
-          }{
-            UpdatePartFData.message == 'Not be inspected' &&
-            <p>{`${UpdatePartFData.panelId} の更新に失敗しました　まだ検査されていない部品です。`}</p>
-          }
           <table>
             <thead>
               <tr>
                 <th colSpan={1} rowSpan={3}>No.</th>
-                <th colSpan={1} rowSpan={3}>登録日</th>
+                <th colSpan={1} rowSpan={3}>更新日</th>
                 <th colSpan={1}>インナー</th>
                 <th colSpan={5}>アウター</th>
                 <th colSpan={1}>ASSY</th>
@@ -257,6 +346,17 @@ class Association extends Component {
               </div>
               <div className="edit-wrap">
                 <div className="edit">
+                  <div className="message-wrap">
+                  {
+                    UpdatePartFData.message == 'Already be associated others' &&
+                    UpdatePartFData.parts.map(p =>
+                      <p>{`${p.pn} : ${p.name} : ${p.panelId} の更新に失敗しました　すでに他の部品に使用されています。`}</p>
+                    )
+                  }{
+                    UpdatePartFData.message == 'success' &&
+                    <p>更新しました</p>
+                  }
+                  </div>
                   <div className="input-wrap">
                     <div className="input">
                       <p className="label">バックドアインナー<br/>67149</p>
@@ -265,6 +365,10 @@ class Association extends Component {
                         value={this.state.editting_1}
                         onChange={(e) => this.setState({editting_1: e.target.value})}
                       />
+                      {
+                        this.state.editting_1.length != 8 &&
+                        <p className="validation_msg">8桁で入力してください</p>
+                      }
                     </div>
                     <div className="input">
                       <p className="label">アッパー<br/>67119</p>
@@ -273,6 +377,10 @@ class Association extends Component {
                         value={this.state.editting_2}
                         onChange={(e) => this.setState({editting_2: e.target.value})}
                       />
+                      {
+                        this.state.editting_2.length != 8 &&
+                        <p className="validation_msg">8桁で入力してください</p>
+                      }
                     </div>
                     <div className="input">
                       <p className="label">サイドアッパーLH<br/>67176</p>
@@ -281,6 +389,10 @@ class Association extends Component {
                         value={this.state.editting_4}
                         onChange={(e) => this.setState({editting_4: e.target.value})}
                       />
+                      {
+                        this.state.editting_4.length != 8 &&
+                        <p className="validation_msg">8桁で入力してください</p>
+                      }
                     </div>
                     <div className="input">
                       <p className="label">サイドアッパーRH<br/>67175</p>
@@ -289,6 +401,10 @@ class Association extends Component {
                         value={this.state.editting_3}
                         onChange={(e) => this.setState({editting_3: e.target.value})}
                       />
+                      {
+                        this.state.editting_3.length != 8 &&
+                        <p className="validation_msg">8桁で入力してください</p>
+                      }
                     </div>
                     <div className="input">
                       <p className="label">サイドロアLH<br/>67178</p>
@@ -297,6 +413,10 @@ class Association extends Component {
                         value={this.state.editting_6}
                         onChange={(e) => this.setState({editting_6: e.target.value})}
                       />
+                      {
+                        this.state.editting_6.length != 8 &&
+                        <p className="validation_msg">8桁で入力してください</p>
+                      }
                     </div>
                     <div className="input">
                       <p className="label">サイドロアRH<br/>67177</p>
@@ -305,11 +425,15 @@ class Association extends Component {
                         value={this.state.editting_5}
                         onChange={(e) => this.setState({editting_5: e.target.value})}
                       />
+                      {
+                        this.state.editting_5.length != 8 &&
+                        <p className="validation_msg">8桁で入力してください</p>
+                      }
                     </div>
                   </div>
                   <div className="btn-wrap">
                     <button onClick={() => {
-                      this.setState({editModal: false});
+                      // this.setState({editModal: false});
                       this.props.actions.updatePartFamily({
                         "id": this.state.editting_f,
                         "parts": [
@@ -337,7 +461,11 @@ class Association extends Component {
                     }}>
                       保存
                     </button>
-                    <button onClick={() => this.setState({editModal: false})}>終了</button>
+                    <button onClick={() => {
+                      this.serch()
+                      this.props.actions.clearMessage();
+                      this.setState({editModal: false});
+                    }}>終了</button>
                   </div>
                 </div>
               </div>
