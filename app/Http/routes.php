@@ -61,6 +61,9 @@ Route::get('manager/mapping', 'Manager\ReferenceController@index');
 Route::get('manager/mapping/{pageType}/{itorG}', 'Manager\ReferenceController@index');
 Route::get('manager/report', 'Manager\ReferenceController@index');
 Route::get('manager/association', 'Manager\ReferenceController@index');
+Route::get('manager/inspector', 'Manager\ReferenceController@index');
+Route::get('manager/failure', 'Manager\ReferenceController@index');
+Route::get('manager/hole', 'Manager\ReferenceController@index');
 
 // Old Report PDF method
 Route::get('manager/pdf/report/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@report');

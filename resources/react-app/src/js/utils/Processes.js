@@ -35,7 +35,7 @@ export const inspectionGroups = [
   { vehicle: '680A', part: 1, p: 'm001', i: 'gaikan', iG: 1,  disabled: false },
   { vehicle: '680A', part: 1, p: 'm001', i: 'inline', iG: 3,  disabled: false },
   { vehicle: '680A', part: 1, p: 'm002', i: 'gaikan', iG: 2,  disabled: false },
-  { vehicle: '680A', part: 1, p: 'm002', i: 'inline', iG: 0,  disabled: false },
+  { vehicle: '680A', part: 1, p: 'm002', i: 'inline', iG: 19,  disabled: false },
   { vehicle: '680A', part: 1, p: 'h',    i: 'gaikan', iG: 15, disabled: false },
   { vehicle: '680A', part: 1, p: 'h',    i: 'ana',    iG: 4,  disabled: false },
 

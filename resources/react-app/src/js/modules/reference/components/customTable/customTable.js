@@ -283,8 +283,8 @@ class CustomTable extends Component {
                   })
                 }
                 <td>{d.comment ? d.comment.slice(0,5)+'...' : ''}</td>
-                <td>{d.createdAt}</td>
-                <td>{d.updatedAt}</td>
+                <td>{d.inspectedAt ? d.inspectedAt : d.createdAt}</td>
+                <td>{d.inspectedAt ? d.inspectedAt : d.updatedAt}</td>
               </tr>
             )
           }{

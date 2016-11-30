@@ -1,16 +1,42 @@
 <?php
 
-use Carbon\Carbon as Carbon;
-use Illuminate\Database\Seeder;
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use App\Http\Controllers\Client\InspectionController;
 use Illuminate\Http\Request;
 use Database\Seeding\DummyRequest;
+// Models
+use App\Models\PartType;
 
-/**
- * Class DivisionTableSeeder
- */
-class DummyInspectionsSeeder extends Seeder
+class InsertDummyData extends Command
 {
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'insertDummyData';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'insert dummy data';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     protected function createData($group, $id, $history, $hole_history)
     {
         /***** HARD CODE *****/
@@ -92,7 +118,7 @@ class DummyInspectionsSeeder extends Seeder
             ];
         };
 
-        $tyokus = ['黄直', '白直'];
+        $tyokus = ['黄直', '白直', '黒直'];
         $tyoku = $tyokus[array_rand($tyokus)];
 
         return [
@@ -101,29 +127,37 @@ class DummyInspectionsSeeder extends Seeder
             'status' => 1,
             'comment' => ($group['id'] == 5 || $group['id'] == 6 || $group['id'] == 8) ? null : 'インナーのコメント',
             'inspector' => $tyoku.','.$group['inspectorGroups']['Y'][0]['name'],
-            'pages' => $group['pages']->filter(function($p){
-                    return $p['id'] != 14;
-                    // return !($p['id'] == 14 || $p['id'] == 13);
-                })
-                ->map($createPage)
-                ->toArray(),
-            'photos' => [
-                'example1.jpg',
-                'example2.jpg',
-                'example3.jpg',
-                'example4.jpg'
-            ]
+            'pages' => $group['pages']->filter(function($p) {
+                switch (rand(0, 6)) {
+                    case 0: $result = $p['id'] != 14; break;
+                    case 1: $result = ($p['id'] != 14 && $p['id'] != 13); break;
+                    case 2: $result = ($p['id'] != 14 && $p['id'] != 27); break;
+                    case 3: $result = ($p['id'] != 14 && $p['id'] != 28); break;
+                    case 4: $result = ($p['id'] != 14 && $p['id'] != 13 && $p['id'] != 27); break;
+                    case 5: $result = ($p['id'] != 14 && $p['id'] != 13 && $p['id'] != 28); break;
+                    case 6: $result = ($p['id'] != 14 && $p['id'] != 27 && $p['id'] != 28); break;
+                }
+
+                return $result;
+            })
+            ->map($createPage)
+            ->toArray()
         ];
     }
 
-    public function run()
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
     {
         $request = new DummyRequest;
         $controller = new InspectionController;
 
         // //成型：検査：ライン１：インナー
         // $group = $controller->inspection(1);
-        // for ($id = 1; $id <= 20; $id++) {
+        // for ($id = 1; $id <= 100; $id++) {
         //     $data = $this->createData($group['group'], $id ,[] ,[]);
         //     // var_dump(json_encode($data));
         //     $request->setFamily($data);
@@ -132,8 +166,7 @@ class DummyInspectionsSeeder extends Seeder
 
         // //成型：検査：ライン２：インナー
         // $group = $controller->inspection(2);
-
-        // for ($id = 21; $id <= 40; $id++) {
+        // for ($id = 101; $id <= 200; $id++) {
         //     $data = $this->createData($group['group'], $id ,[] ,[]);
         //     $request->setFamily($data);
         //     $controller->saveInspection($request);        
@@ -141,8 +174,7 @@ class DummyInspectionsSeeder extends Seeder
 
         // //成型：検査：ライン１：アウター
         // $group = $controller->inspection(5);
-
-        // for ($id = 1; $id <= 20; $id++) {
+        // for ($id = 1; $id <= 100; $id++) {
         //     $data = $this->createData($group['group'], $id ,[] ,[]);
         //     $request->setFamily($data);
         //     $controller->saveInspection($request);        
@@ -150,8 +182,7 @@ class DummyInspectionsSeeder extends Seeder
 
         // //成型：検査：ライン２：アウター
         // $group = $controller->inspection(6);
-
-        // for ($id = 21; $id <= 40; $id++) {
+        // for ($id = 101; $id <= 200; $id++) {
         //     $data = $this->createData($group['group'], $id ,[] ,[]);
         //     $request->setFamily($data);
         //     $controller->saveInspection($request);        
@@ -159,8 +190,7 @@ class DummyInspectionsSeeder extends Seeder
 
         //穴あけ：外観検査：インナー
         $group = $controller->inspection(15);
-
-        for ($id = 21; $id <= 30; $id++) {
+        for ($id = 1; $id <= 200; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -168,25 +198,22 @@ class DummyInspectionsSeeder extends Seeder
 
         //穴あけ：検査：インナー
         $group = $controller->inspection(4);
-
-        for ($id = 21; $id <= 30; $id++) {
+        for ($id = 1; $id <= 200; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
         }
 
-        // //穴あけ：検査：アウター
-        // $group = $controller->inspection(8);
-
-        // for ($id = 1; $id <= 10; $id++) {
-        //     $data = $this->createData($group['group'], $id ,[] ,[]);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        //穴あけ：検査：アウター
+        $group = $controller->inspection(8);
+        for ($id = 1; $id <= 200; $id++) {
+            $data = $this->createData($group['group'], $id ,[] ,[]);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
         // //接着：簡易CF：インナASSY
         // $group = $controller->inspection(16);
-
         // for ($id = 1; $id <= 10; $id++) {
         //     $data = $this->createData($group['group'], $id, [] ,[]);
 
@@ -196,7 +223,6 @@ class DummyInspectionsSeeder extends Seeder
 
         // //接着：止水：インナASSY
         // $group = $controller->inspection(10);
-
         // for ($id = 1; $id <= 8; $id++) {
         //     $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16]);
         //     $history = [];
@@ -215,7 +241,6 @@ class DummyInspectionsSeeder extends Seeder
 
         // // 接着：仕上：インナASSY
         // $group = $controller->inspection(11);
-
         // for ($id = 1; $id <= 6; $id++) {
         //     $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10]);
         //     $history = [];
@@ -234,7 +259,6 @@ class DummyInspectionsSeeder extends Seeder
 
         // //接着：検査：インナASSY
         // $group = $controller->inspection(12);
-
         // for ($id = 1; $id <= 4; $id++) {
         //     $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10, 11]);
         //     $history = [];
@@ -253,7 +277,6 @@ class DummyInspectionsSeeder extends Seeder
 
         // //接着：手直し：インナASSY
         // $group = $controller->inspection(14);
-
         // for ($id = 1; $id <= 2; $id++) {
         //     $request->set(7, 'B'.str_pad($id, 7, 0, STR_PAD_LEFT), [16, 10, 11, 12]);
         //     $history = [];
@@ -269,5 +292,7 @@ class DummyInspectionsSeeder extends Seeder
         //     $request->setFamily($data);
         //     $controller->saveInspection($request);
         // }
+
+        $this->info('ok');
     }
 }

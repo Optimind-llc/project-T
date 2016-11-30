@@ -13,8 +13,16 @@ import ModificationData from '../modules/reference/ducks/modification';
 
 import VeItorGProcData from '../modules/report/ducks/report';
 import ItionGData from '../modules/report/ducks/inspectionGroup';
+
 import PartFData from '../modules/association/ducks/partF';
 import UpdatePartFData from '../modules/association/ducks/updatePartF';
+
+import InspectorData from '../modules/inspector/ducks/inspector';
+
+import AllFailureData from '../modules/failure/ducks/failure';
+
+import AllHoleData from '../modules/hole/ducks/hole';
+
 
 const rootReducer = combineReducers(Object.assign({
   alert,
@@ -29,6 +37,9 @@ const rootReducer = combineReducers(Object.assign({
   ItionGData,
   PartFData,
   UpdatePartFData,
+  InspectorData,
+  AllFailureData,
+  AllHoleData,
   routing: routerReducer
 }));
 

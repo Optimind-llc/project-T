@@ -119,21 +119,21 @@ class PartTypeTableSeeder extends Seeder
         }
 
         $data = [
-            //成型：検査：ライン１：インナ
+            //成型：外観検査：ライン１：インナー
             [
                 'page_type_id' => 1,
                 'part_type_id' => 1,
                 'area'         => '0/0/1740/1030',
                 'figure_id'    => 13
             ],
-            //成型：検査：ライン２：インナ
+            //成型：外観検査：ライン２：インナー
             [
                 'page_type_id' => 2,
                 'part_type_id' => 1,
                 'area'         => '0/0/1740/1030',
                 'figure_id'    => 13
             ],
-            //成型：インライン精度検査：インナ
+            //成型：精度検査：ライン１：インナー
             [
                 'page_type_id' => 3,
                 'part_type_id' => 1,
@@ -378,6 +378,14 @@ class PartTypeTableSeeder extends Seeder
                 'part_type_id' => 5,
                 'area'         => '870/0/1740/900',
                 'figure_id'    => 28
+            ],
+            // 12/03追加
+            //成型：精度検査：ライン２：インナー
+            [
+                'page_type_id' => 32,
+                'part_type_id' => 1,
+                'area'         => '0/0/1740/1030',
+                'figure_id'    => 14
             ],
 
         ];

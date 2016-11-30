@@ -294,49 +294,6 @@ Dashboard.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  let data;
-  if (state.PageData.data && typeof(state.PageData.data.pageTypes) !== 'undefined') {
-    let aaa = state.PageData.data.pageTypes.reduce((pre, pt) =>{
-      const f = pt.failures.map(f => {
-        const point = f.point.split(',');
-        let x = point[0]/2;
-        let y = point[1]/2;
-
-        switch (pt.pageNum) {
-          case 2: x = x + 1740/2; break;
-          case 3: y = y + 1030/2; break;
-          case 4: x = x + 1740/2; y = y + 1030/2; break;
-        }
-
-        return {
-          id: f.id,
-          point: `${x},${y}`,
-          label: f.label,
-          type: f.type,
-          choku: f.choku
-        }
-      });
-
-      return {
-        failures: pre.failures.concat(f),
-        pages: pre.pages+pt.pages,
-        path: pre.path.concat([pt.path])
-      }
-    }, {
-      failures: [],
-      pages: 0,
-      path: []
-    })
-
-    state.PageData.data.commentTypes = [];
-    state.PageData.data.comments = [];
-    state.PageData.data.holePoints = state.PageData.data.holePoints;
-    state.PageData.data.failures = aaa.failures;
-    state.PageData.data.pages = aaa.pages;
-    state.PageData.data.path = aaa.path;
-    state.PageData.data.inlines = [];
-  }
-
   return {
     VehicleData: state.VehicleData,
     ItorGData: state.ItorGData,

@@ -82,7 +82,7 @@ class Report extends Component {
 
   render() {
     const { VeItorGProcData, ItionGData } = this.props;
-console.log(this.state)
+
     return (
       <div id="reportWrap">
         {VeItorGProcData.data !== null &&
@@ -144,14 +144,14 @@ console.log(this.state)
             this.state.process == 'molding' &&
             <div className="bg-white process-flex">
               <div>
-                <p>ライン１</p>
+                <p>外観検査</p>
                 <div
                   onClick={() => this.setState({
                     modal: true,
                     path: `/manager/report/1/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   })}
                 >
-                  <p>インナー</p>
+                  <p>インナー ライン①</p>
                 </div>
                 <div
                   onClick={() => this.setState({
@@ -159,28 +159,23 @@ console.log(this.state)
                     path: `/manager/report/5/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   })}
                 >
-                  <p>アウター</p>
+                  <p>アウター ライン①</p>
                 </div>
-              </div>
-              <div>
-                <p>ライン２</p>
                 <div
-                  className=""
                   onClick={() => this.setState({
                     modal: true,
                     path: `/manager/report/2/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   })}
                 >
-                  <p>インナー</p>
+                  <p>インナー ライン②</p>
                 </div>
                 <div
-                  className=""
                   onClick={() => this.setState({
                     modal: true,
                     path: `/manager/report/6/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   })}
                 >
-                  <p>アウター</p>
+                  <p>アウター ライン②</p>
                 </div>
               </div>
               <div>
@@ -191,7 +186,15 @@ console.log(this.state)
                     path: `/manager/report/3/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
                   })}
                 >
-                  <p>インナー</p>
+                  <p>インナー ライン①</p>
+                </div>
+                <div
+                  onClick={() => this.setState({
+                    modal: true,
+                    path: `/manager/report/19/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                  })}
+                >
+                  <p>インナー ライン②</p>
                 </div>
               </div>
             </div>

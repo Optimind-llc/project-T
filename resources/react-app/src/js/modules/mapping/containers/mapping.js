@@ -33,13 +33,13 @@ class Mapping extends Component {
   }
 
   formatHole(hole) {
-    const point = hole.point.split(',');
+    const point = hole.p.split(',');
     const x = point[0]/2;
     const y = point[1]/2;
     let lx = x;
     let ly = y;
 
-    switch (hole.direction) {
+    switch (hole.d) {
       case 'left':   lx = lx-22; break;
       case 'right':  lx = lx+22; break;
       case 'top':    ly = ly-22; break;
@@ -65,14 +65,14 @@ class Mapping extends Component {
                     onClick={() => {
                       let newFilter;
                       if ( fFilter.length !== 0) newFilter = [];
-                      else newFilter = data.failureTypes.map(ft => ft.id);
+                      else newFilter = data.ft.map(ft => ft.id);
                       this.setState({ fFilter: newFilter });
                     }}
                   >
                     <span>{fFilter.length === 0 && <p>{'✔'}︎</p>}</span>
                     <span>不良区分</span>
                   </li>
-                  {data.failureTypes.map(ft =>{
+                  {data.ft.map(ft =>{
                     const index = fFilter.indexOf(ft.id);
                     return (
                       <li
@@ -96,7 +96,7 @@ class Mapping extends Component {
                   <ul className="parts">
                     <li>計</li>
                     {
-                      data.failureTypes.map(ft => 
+                      data.ft.map(ft => 
                         <li>
                           {data.failures == undefined ? 0 : data.failures.filter(f => f.label == ft.label).length}
                         </li>
@@ -115,7 +115,7 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li>{'穴'}</li>
-                  {data.holePoints.map(h => <li>{h.label}</li>)}
+                  {data.holes.map(h => <li>{h.label}</li>)}
                 </ul>
               </div>
               <div>
@@ -126,7 +126,7 @@ class Mapping extends Component {
                     <span>{holeStatus == 's0' && <p>{'✔'}︎</p>}</span>
                     {'×'}
                   </li>
-                  {data.holePoints.map(h => {
+                  {data.holes.map(h => {
                     let percentage = 0;
                     if (h.sum !== 0 && h.s0 != 0) percentage = Math.round(1000*h.s0/h.sum)/10;
                     return (
@@ -143,7 +143,7 @@ class Mapping extends Component {
                     <span>{holeStatus == 's2' && <p>{'✔'}︎</p>}</span>
                     {'△'}
                   </li>
-                  {data.holePoints.map(h => {
+                  {data.holes.map(h => {
                     let percentage = 0;
                     if (h.sum !== 0 && h.s2 != 0) percentage = Math.round(1000*h.s2/h.sum)/10;
                     return (
@@ -160,7 +160,7 @@ class Mapping extends Component {
                     <span>{holeStatus == 's1' && <p>{'✔'}︎</p>}</span>
                     {'○'}
                   </li>
-                  {data.holePoints.map(h => {
+                  {data.holes.map(h => {
                     let percentage = 0;
                     if (h.sum !== 0 && h.s1 != 0) percentage = Math.round(1000*h.s1/h.sum)/10;
                     return (
@@ -177,7 +177,7 @@ class Mapping extends Component {
                     {/*<span>{holeStatus == 's3' && <p>{'✔'}︎</p>}</span>*/}
                     {'手直'}
                   </li>
-                  {data.holePoints.map(h => {
+                  {data.holes.map(h => {
                     let percentage = 0;
                     if (h.sum !== 0 && h.s3 != 0) percentage = Math.round(1000*h.s3/h.sum)/10;
                     return (
@@ -199,14 +199,14 @@ class Mapping extends Component {
                     onClick={() => {
                       let newFilter;
                       if ( cFilter.length !== 0) newFilter = [];
-                      else newFilter = data.commentTypes.map(ft => ft.id);
+                      else newFilter = data.mt.map(ft => ft.id);
                       this.setState({ cFilter: newFilter });
                     }}
                   >
                     <span>{cFilter.length === 0 &&<p>{'✔'}︎</p>}</span>
                     <span>手直し区分</span>
                   </li>
-                  {data.commentTypes.map(ct =>{
+                  {data.mt.map(ct =>{
                     const index = cFilter.indexOf(ct.id);
                     return (
                       <li
@@ -230,7 +230,7 @@ class Mapping extends Component {
                   <ul className="parts">
                     <li>計</li>
                     {
-                      data.commentTypes.map(ct => 
+                      data.mt.map(ct => 
                         <li>
                           {data.comments == undefined ? 0 : data.comments.filter(c => c.id == ct.id).length}
                         </li>
@@ -249,11 +249,11 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li>{'穴'}</li>
-                  {data.holePoints.map(h => <li>{h.label}</li>)}
+                  {data.holes.map(h => <li>{h.label}</li>)}
                 </ul>
               </div>
               {
-                data.holeModificationTypes.map(hm => {
+                data.hmt.map(hm => {
                   return (
                     <div>
                       <ul>
@@ -263,7 +263,7 @@ class Mapping extends Component {
                           <span>{hModification == hm.id && <p>{'✔'}︎</p>}</span>
                           {hm.name}
                         </li>
-                        {data.holePoints.map(h => {
+                        {data.holes.map(h => {
                           let percentage = null;
                           const sum = h.holes.filter(hmId => hmId !== 0).length;
                           const modified = h.holes.filter(hmId => hmId == hm.id).length;
@@ -287,7 +287,7 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li>{'精度検査'}</li>
-                  {data.inlines.map(i => 
+                  {data.i.map(i => 
                     <li>{i[0].sort}</li>
                   )}
                 </ul>
@@ -299,7 +299,7 @@ class Mapping extends Component {
                   >
                     {'×'}
                   </li>
-                  {data.inlines.map(is => {
+                  {data.i.map(is => {
                     let percentage = 0;
                     const sum = is.length;
                     const sum0 = is.filter(i => i.max < i.status || i.min > i.status ).length;
@@ -317,7 +317,7 @@ class Mapping extends Component {
                   >
                     {'○'}
                   </li>
-                  {data.inlines.map(is => {
+                  {data.i.map(is => {
                     let percentage = 0;
                     const sum = is.length;
                     const sum1 = is.filter(i => i.max > i.status && i.min < i.status ).length;
@@ -368,70 +368,54 @@ class Mapping extends Component {
           }
           <div className="figure-wrap">
             <div className="figure">
-              {
-                Array.isArray(data.path) ?
-                data.path.map(path =>
-                  <img src={path} className="quarter"/>
-                ):
-                <img src={data.path}/>
-              }
+            {
+              data.pageTypes.length == 1 ? 
+              <img src={`/img/figures/${data.pageTypes[0].path}`}/> :
+              data.pageTypes.map(pt =>
+                <img src={`/img/figures/${pt.path}`} className="quarter"/>
+              )
+            }
             </div>
             <svg>
               {
                 active == 'failure' &&
                 data.failures.filter(f => fFilter.indexOf(f.id) == -1).map(f => {
-                  const point = f.point.split(',');
+                  const point = f.p.split(',');
                   const x = point[0]/2;
                   const y = point[1]/2;
-                  if (Array.isArray(data.path)) {
-                    if (f.choku == '白直') {
+                  switch (f.c) {
+                    case '白直':
+                      console.log(f)
                       return (
                         <g>
                           <circle cx={x} cy={y} r={5} fill="red" />
                         </g>
                       );
-                    } else if (f.choku == '黄直'){
+                      break;
+                    case '黄直':
                       return (
                         <g>
                           <circle cx={x} cy={y} r={5} fill="#C6B700" />
                         </g>
                       );
-                    } else if (f.choku == '黒直'){
+                      break;
+                    case '黒直':
                       return (
                         <g>
                           <circle cx={x} cy={y} r={5} fill="blue" />
                         </g>
                       );
-                    }
-                  }
-                  else {
-                    if (f.choku == '白直') {
-                      return (
-                        <g>
-                          <circle cx={x} cy={y} r={6} fill="red" />
-                        </g>
-                      );
-                    } else if (f.choku == '黄直') {
-                      return (
-                        <g>
-                          <circle cx={x} cy={y} r={6} fill="#C6B700" />
-                        </g>
-                      );
-                    } else if (f.choku == '黒直'){
-                      return (
-                        <g>
-                          <circle cx={x} cy={y} r={6} fill="blue" />
-                        </g>
-                      );
-                    }
+                      break;
                   }
                 })
               }{
                 active == 'hole' &&
-                data.holePoints.map(hole => {
+                data.holes.map(hole => {
                   const h = this.formatHole(hole);
-                  if(Array.isArray(data.path)) {
-                    switch (h.pageNum) {
+
+                  if(data.pageTypes.length > 1) {
+                    const number = data.pageTypes.find(pt => pt.id == hole.pg).n;
+                    switch (number) {
                       case 1: h.x = (h.x)/2; h.lx = (h.lx)/2; h.y = (h.y)/2; h.ly = (h.ly)/2; break;
                       case 2: h.x = (h.x + 1740/2)/2; h.y = (h.y)/2; h.lx = (h.lx + 1740/2)/2; h.ly = (h.ly)/2; break;
                       case 3: h.x = (h.x)/2; h.y = (h.y + 1030/2)/2; h.lx = (h.lx)/2; h.ly = (h.ly + 1030/2)/2; break;
@@ -483,7 +467,7 @@ class Mapping extends Component {
                 })
               }{
                 active == 'hModification' &&
-                data.holePoints.filter(h => h.holes.reduce((a,b) => a+b) !== 0).map(hole => {
+                data.holes.filter(h => h.holes.reduce((a,b) => a+b) !== 0).map(hole => {
                   const h = this.formatHole(hole);
                   if(Array.isArray(data.path)) {
                     switch (h.pageNum) {
@@ -518,8 +502,8 @@ class Mapping extends Component {
                 })
               }{
                 active == 'inline' &&
-                Object.keys(data.inlines).map(id => {
-                  return data.inlines[id].map(i => {
+                Object.keys(data.i).map(id => {
+                  return data.i[id].map(i => {
                     const width = 106;
                     const height = 30;
                     const point = i.point.split(',');
@@ -583,7 +567,7 @@ class Mapping extends Component {
           <div className="control-panel">
             <div className="control-tab">
               {
-                data.holePoints.length !== 0 &&
+                data.holes.length !== 0 &&
                 <button
                   className={active == 'hole' ? '' : 'disable'}
                   onClick={() => this.setState({ active: 'hole'})}
@@ -591,7 +575,7 @@ class Mapping extends Component {
                   穴検査
                 </button>
               }{
-                data.commentTypes.length !== 0 &&
+                data.mt.length !== 0 &&
                 <button
                   className={active == 'comment' ? '' : 'disable'}
                   onClick={() => this.setState({ active: 'comment'})}
@@ -599,7 +583,7 @@ class Mapping extends Component {
                   手直し
                 </button>
               }{
-                data.holeModificationTypes.length !== 0 &&
+                data.hmt.length !== 0 &&
                 <button
                   className={active == 'hModification' ? '' : 'disable'}
                   onClick={() => this.setState({ active: 'hModification'})}
@@ -607,7 +591,7 @@ class Mapping extends Component {
                   手直し
                 </button>
               }{
-                data.inlines.length == 0 &&
+                data.i.length == 0 &&
                 <button
                   className={active == 'failure' ? '' : 'disable'}
                   onClick={() => this.setState({ active: 'failure'})}
@@ -615,7 +599,7 @@ class Mapping extends Component {
                   外観検査
                 </button>
               }{
-                data.inlines.length !== 0 &&
+                data.i.length !== 0 &&
                 <button
                   className={active == 'inline' ? '' : 'disable'}
                   onClick={() => this.setState({ active: 'inline'})}

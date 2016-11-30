@@ -12,13 +12,17 @@ use App\Models\Vehicle;
 use App\Models\Process;
 use App\Models\Inspection;
 use App\Models\InspectionGroup;
+use App\Models\Inspector;
 use App\Models\InspectorGroup;
 use App\Models\PageType;
 use App\Models\PartType;
+use App\Models\Failure;
+use App\Models\Hole;
 use App\Models\Client\PartFamily;
 use App\Models\Client\Part;
 use App\Models\Client\Page;
-
+use App\Models\Client\FailurePosition;
+use App\Models\Client\HolePage;
 // Exceptions
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Dingo\Api\Exception\StoreResourceFailedException;
@@ -138,6 +142,97 @@ class ShowController extends Controller
         return $vehicles;
     }
 
+    protected function inspectorData($option)
+    {
+        switch ($option) {
+            case 'all':
+                $inspectors = Inspector::with(['groups'])
+                    ->get(['group_code', 'name'])
+                    ->map(function($i) {
+                        return [
+                            'name' => $i->name,
+                            'chokuName' => $i->groups->name,
+                            'chokuCode' => $i->groups->code
+                        ];
+                    });
+                break;
+
+            case 'withInspectors':
+                $inspectors = Inspector::with([
+                    'inspectors' => function($q) {
+                        $query->select(['id', 'name', 'pn']);
+                    }])
+                    ->select(['code', 'name'])
+                    ->get();
+                break;
+
+            default:
+                throw new NotFoundHttpException('Invalid parameter');
+                break;
+        }
+
+        return $inspectors;
+    }
+
+    protected function failureData($option)
+    {
+        switch ($option) {
+            case 'all':
+                $inspectors = Failure::with(['inspections'])
+                    ->get()
+                    ->map(function($f) {
+                        return [
+                            'name' => $f->name,
+                            'label' => $f->label,
+                            'inspections' => $f->inspections
+                        ];
+                    });
+                break;
+
+            case 'withInspectors':
+                $inspectors = Inspector::with([
+                    'inspectors' => function($q) {
+                        $query->select(['id', 'name', 'pn']);
+                    }])
+                    ->select(['code', 'name'])
+                    ->get();
+                break;
+
+            default:
+                throw new NotFoundHttpException('Invalid parameter');
+                break;
+        }
+
+        return $inspectors;
+    }
+
+    protected function holeData($option)
+    {
+        switch ($option) {
+            case 'all':
+                $holes = Hole::with(['figure'])
+                    ->get()
+                    ->map(function($h) {
+                        return [
+                            'label' => $h->label,
+                            'point' => $h->point,
+                            'color' => $h->color,
+                            'shape' => $h->shape,
+                            'border' => $h->border,
+                            'direction' => $h->direction,
+                            'figure' => $h->figure->path
+                        ];
+                    });
+                break;
+
+            default:
+                throw new NotFoundHttpException('Invalid parameter');
+                break;
+        }
+
+        return $holes;
+    }
+
     public function tableData(Request $request)
     {
         $data = [];
@@ -150,6 +245,15 @@ class ShowController extends Controller
 
         if ($request->inspectorG)
             $data['inspectorG'] = $this->inspectorGData($request->inspectorG);
+
+        if ($request->inspector)
+            $data['inspector'] = $this->inspectorData($request->inspector);
+
+        if ($request->failure)
+            $data['failure'] = $this->failureData($request->failure);
+
+        if ($request->hole)
+            $data['hole'] = $this->holeData($request->hole);
 
         return ['data' => $data];
     }
@@ -265,9 +369,6 @@ class ShowController extends Controller
         return ['data' => $processes];
     }
 
-    /*
-     * Get page types from vehicle_code, process_en, inspection_en, division_en, line
-     */
     public function pageType($vehicle, $process, $inspection, $division, $line = null)
     {
         $page_types = $this->findInspectionGroup($vehicle, $process, $inspection, $division, $line)
@@ -359,14 +460,11 @@ class ShowController extends Controller
 
     public function page2($partTypeId, $itionGId, $itorG, Request $request)
     {
-        ini_set('memory_limit','-1');
-
         $validator = app('validator')->make(
             $request->all(),
             [
                 'start' => ['alpha_dash'],
-                'end' => ['alpha_dash'],
-                'panelId' => ['alpha_dash']
+                'end' => ['alpha_dash']
             ]
         );
 
@@ -375,35 +473,12 @@ class ShowController extends Controller
         }
 
         $now = Carbon::now();
-        $panel_id = $request->panelId;
-
-        //Checke Panel ID isset
-        if (isset($request->panelId)) {
-            $searched_part = Part::where('panel_id', $request->panelId)
-                ->where('part_type_id', $partTypeId)
-                ->get();
-            
-            if ($searched_part->count() === 0) {
-               return [
-                    'data' => [
-                        'pages' => 0,
-                        'failureTypes' => [],
-                        'failures' => [],
-                        'holePoints' => [],
-                        'commentTypes' => [],
-                        'comments' => [],
-                        'holeModificationTypes' => [],
-                        'inlines' => []
-                    ]
-               ];
-            }
-        }
 
         if (isset($request->start) && isset($request->end)) {
             $start_at = Carbon::createFromFormat('Y-m-d-H-i-s', $request->start.'-00-00-00')->addHours(2);
             $end_at = Carbon::createFromFormat('Y-m-d-H-i-s', $request->end.'-00-00-00')->addHours(26);
         }
-        elseif (!isset($request->panelId)) {
+        else {
             $today = Carbon::today();
             $t2_end_at = $today->copy()->addHours(1);
             $t1_start_at = $today->copy()->addHours(6);
@@ -422,44 +497,111 @@ class ShowController extends Controller
 
             $end_at = $now;
         }
-        elseif (isset($request->panelId)) {
-            $start_at = false;
-            $end_at = false;
-        }
 
         switch ($request->itorG) {
-            case 'W': $itorG_name = ['白直', '不明']; break;
-            case 'Y': $itorG_name = ['黄直', '不明']; break;
-            case 'both': $itorG_name = ['白直', '黄直', '不明']; break;
+            case 'W': $tyoku = ['白直', '不明']; break;
+            case 'Y': $tyoku = ['黄直', '不明']; break;
+            case 'B': $tyoku = ['黒直', '不明']; break;
+            case 'both': $tyoku = ['白直', '黄直', '黒直', '不明']; break;
         }
 
-        $page_type_ids = PartType::find($partTypeId)
-            ->pageTypes()
-            ->with('figure')
-            ->where('group_id', $itionGId)
-            ->orderBy('number')
-            ->get()
+        $page_types = PageType::where('group_id', '=', $itionGId)
+            ->with(['figure'])
+            ->get(['id', 'number', 'figure_id'])
             ->filter(function($pt) {
                 return $pt->id != 14;
-            })
-            ->map(function($pt) {
-                return $pt->id;
-            })
-            ->toArray();
+            });
 
-        if (count($page_type_ids) == 0) {
+        $page_type_ids = $page_types->map(function($pt) {
+            return $pt->id;
+        })
+        ->toArray();
+
+        $page_ids = Page::join('inspection_families as if', function($join) use ($itionGId, $tyoku, $start_at, $end_at) {
+            $join->on('pages.family_id', '=', 'if.id')
+                ->whereIn('if.inspector_group', $tyoku)
+                ->where('if.inspection_group_id', '=', $itionGId)
+                ->where('if.updated_at', '>=', $start_at)
+                ->where('if.updated_at', '<', $end_at);
+        })
+        ->select('pages.id', 'pages.page_type_id')
+        ->get()
+        ->filter(function($p) {
+            return $p->page_type_id != 14;
+        })
+        ->map(function($p) {
+            return $p->id;
+        })
+        ->toArray();
+
+        if (count($page_ids) == 0) {
             return [
                 'data' => [
-                    'pages' => 'notFound',
+                    'count' => 0,
+                    'page_types' => [],
                     'failures' => [],
-                    'failureTypes' => [],
-                    'commentTypes' => [],
-                    'holePoints' => [],
-                    'holeModificationTypes' => [],
-                    'inlines' => []
+                    'holes' => [],
+                    'ft' => [],
+                    'mt' => [],
+                    'hmt' => [],
+                    'i' => []
                 ]
             ];
         }
+
+
+        $failures = FailurePosition::whereIn('page_id', $page_ids)
+            ->with([
+                'part' => function($q) {
+                    $q->select(['id', 'part_type_id']);
+                },
+                'page' => function($q) {
+                    $q->select(['id', 'family_id']);
+                },
+                'page.family' => function($q) {
+                    $q->select(['id', 'inspector_group']);
+                }
+            ])
+            ->get(['id', 'point', 'page_id', 'part_id', 'failure_id'])
+            ->map(function($fp) {
+                return [
+                    'id' => $fp->failure_id,
+                    'p' => $fp->point,
+                    'pg' => $fp->page->id,
+                    'c' => $fp->page->family->inspector_group,
+                    'pt' => $fp->part->part_type_id
+                ];
+            });
+
+        $holes = Hole::where('part_type_id', '=', $partTypeId)
+            ->join('figures as f', function($join) {
+                $join->on('f.id', '=', 'holes.figure_id');
+            })
+            ->join('page_types as pt', function($join) use ($page_type_ids) {
+                $join->on('pt.figure_id', '=', 'f.id')->whereIn('pt.id', $page_type_ids);
+            })
+            ->select(['holes.*', 'pt.id as page_type_id'])
+            ->with([
+                'holePages' => function($q) use ($page_ids) {
+                    $q->whereIn('page_id', $page_ids)->select(['id', 'hole_id', 'page_id', 'status']);
+                },
+                'holePages.holeModification' => function($q){
+                    $q->select(['hole_page_hole_modification.id', 'hp_id']);
+                }
+            ])
+            ->get(['id', 'point', 'part_type_id', 'figure_id'])
+            ->map(function($h) {
+                return [
+                    'id' => $h->id,
+                    'p' => $h->point,
+                    'd' => $h->direction,
+                    's' => $h->holePages->map(function($hp) {
+                        return $hp->holeModification->count() > 0 ? 3 : $hp->status;
+                    }),
+                    'pg' => $h->page_type_id
+                ];
+            });
+
 
         $inspectionGroup = InspectionGroup::find($itionGId);
 
@@ -467,25 +609,24 @@ class ShowController extends Controller
         $modificationTypes = $inspectionGroup->sortedModifications();
         $holeModificationTypes = $inspectionGroup->sortedHoleModifications();
 
-        $pages = Page::whereIn('page_type_id', $page_type_ids)
-            ->with([
-                'parts',
-                'failurePositions' => function($q) {
-                    $q->select(['id', 'point', 'part_id', 'failure_id']);
-                },
-                'comments' => function($q) {
-                    $q->select(['id', 'page_id', 'fp_id', 'm_id']);
-                },
-                'comments.failurePosition' => function($q) {
-                    $q->select(['id', 'point', 'part_id']);
-                },
-                'holePages',
-                // 'inlines'
-            ])
-            ->get()
-            ->groupBy('page_type_id');
-        
-        return ['data' => $pages];
+        return [
+            'data' => [
+                'count' => count($page_ids),
+                'pageTypes' => $page_types->map(function($p) {
+                    return [
+                        'id' => $p->id,
+                        'n' => $p->number,
+                        'path' => $p->figure->path
+                    ];
+                }),
+                'failures' => $failures,
+                'holes' => $holes,
+                'ft' => $failureTypes,
+                'mt' => $modificationTypes,
+                'hmt' => $holeModificationTypes,
+                'i' => []
+            ]
+        ];
     }
 
     public function panelIdSerch($partTypeId, $itionGId, $panelId)
@@ -581,6 +722,9 @@ class ShowController extends Controller
                 $join->on('if.id', '=', 'pg.family_id')
                     ->where('if.updated_at', '>=', $start)
                     ->where('if.updated_at', '<', $end)
+                    ->whereNull('if.inspected_at')
+                    ->orWhere('if.inspected_at', '>=', $start)
+                    ->orWhere('if.inspected_at', '>=', $start)
                     ->whereIn('if.inspector_group', $tyoku)
                     ->where('inspection_group_id', '=', $itionGId);
             })
@@ -649,7 +793,7 @@ class ShowController extends Controller
             $h = PartType::find($partTypeId)->holes()->orderBy('label')->get();
         }
         $i = [];
-        if ($itionGId == 3 || $itionGId == 9) {
+        if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
             $i = PartType::find($partTypeId)->inlines;
         }
 

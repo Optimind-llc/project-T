@@ -149,8 +149,8 @@ class Reference extends Component {
         }
 
         result.push(p.comment ? p.comment : '');
-        result.push(p.createdAt);
-        result.push(p.updatedAt);
+        result.push(p.inspectedAt ? p.inspectedAt : p.createdAt);
+        result.push(p.inspectedAt ? p.inspectedAt : p.updatedAt);
 
         return result;
       });

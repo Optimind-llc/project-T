@@ -154,12 +154,16 @@ class InspectionController extends Controller
             }
         }
 
+        $now = Carbon::now();
+
         $newFamily = new InspectionFamily;
         $newFamily->inspection_group_id = $groupId;
         $newFamily->status = $family['status'];
         $newFamily->comment = array_key_exists('comment', $family) ? $family['comment'] : null;
         $newFamily->inspector_group = $family['inspectorGroup'];
         $newFamily->created_by = $family['inspector'];
+        $newFamily->created_at = $now;
+        $newFamily->updated_at = $now;
         $newFamily->save();
 
         foreach ($family['pages'] as $key => $page) {

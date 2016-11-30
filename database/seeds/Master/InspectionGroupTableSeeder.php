@@ -45,7 +45,7 @@ class InspectionGroupTableSeeder extends Seeder
             ],[
                 'division_en'   => 'inner',
                 'vehicle_num'   => '680A',
-                'line'          => null,
+                'line'          => '1',
                 'inspection_id' => 2,
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -160,6 +160,15 @@ class InspectionGroupTableSeeder extends Seeder
                 'vehicle_num'   => '680A',
                 'line'          => null,
                 'inspection_id' => 12,
+                'created_at'    => $now,
+                'updated_at'    => $now
+            ],
+            //(追加) 成型：制度検査：インナー：ライン２
+            [
+                'division_en'   => 'inner',
+                'vehicle_num'   => '680A',
+                'line'          => '2',
+                'inspection_id' => 2,
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],

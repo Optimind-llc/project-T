@@ -28,12 +28,12 @@ class App extends Component {
       { en: 'reference', name: '検査結果検索', disable: false },
       { en: 'report', name: '直レポート印刷', disable: false },
       { en: 'association', name: 'パネルID検索', disable: false },
-      { en: 'master', name: '担当者マスタメンテ', disable: true },
+      { en: 'inspector', name: '担当者マスタメンテ', disable: false },
       { en: 'master', name: '品番マスタメンテ', disable: true },
-      { en: 'master', name: '穴あけ加工ポイント登録', disable: true },
-      { en: 'master', name: '不良区分マスタメンテ', disable: true },
+      { en: 'hole', name: '穴あけ加工ポイント登録', disable: true },
+      { en: 'failure', name: '不良区分マスタメンテ', disable: true },
       { en: 'master', name: '手直し区分マスタメンテ', disable: true }
-    ]
+    ];
 
     const nameList = [
       '検査工程　不良マッピングシステム',

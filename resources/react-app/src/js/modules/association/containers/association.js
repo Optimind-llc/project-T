@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
 import { parts, processes, inspections } from '../../../utils/Processes';
+import { handleDownload } from '../../../utils/Export';
 // Actions
 import { partFActions } from '../ducks/partF';
 import { updatePartFActions } from '../ducks/updatePartF';
@@ -63,7 +64,6 @@ class Association extends Component {
       end = endDate == null ? null : `${endDate.format('YYYY-MM-DD')}-${endHour.value}`;
     }
 
-console.log(start, end);
     const partTypeId = partTId == null ? null : partTId.value;
     getPartFData(start, end, partTypeId, panelId);
   }
@@ -71,6 +71,22 @@ console.log(start, end);
   render() {
     const { PartFData, UpdatePartFData } = this.props;
     const { vehicle, partTId, startDate, endDate, panelId, processId, itionGId, editting } = this.state;
+
+    let table = [];
+    if (PartFData.data != null && !PartFData.isFetching) {
+      let header = ['更新日','バックドアインナー','アッパー','サイドアッパーLH','サイドアッパーRH','サイドロアLH','サイドロアRH'];
+      table.push(header);
+
+      table = table.concat(PartFData.data.map(pf => [
+        pf.associatedAt,
+        pf.parts['67149'][0].panelId,
+        pf.parts['67119'][0].panelId,
+        pf.parts['67176'][0].panelId,
+        pf.parts['67175'][0].panelId,
+        pf.parts['67178'][0].panelId,
+        pf.parts['67177'][0].panelId
+      ]));
+    };
 
     return (
       <div id="association">
@@ -229,6 +245,9 @@ console.log(start, end);
             この条件で検索
           </button>
         </div>
+        <button onClick={() => {
+          handleDownload(table);
+        }}>CSV出力</button>
         <div className="result bg-white">
           <table>
             <thead>

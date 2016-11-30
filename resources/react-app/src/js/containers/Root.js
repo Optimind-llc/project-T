@@ -11,6 +11,9 @@ import Mapping from '../modules/mapping/containers/mapping';
 import Reference from '../modules/reference/containers/reference';
 import Report from '../modules/report/containers/report';
 import Association from '../modules/association/containers/association';
+import Inspector from '../modules/inspector/containers/inspector';
+import Failure from '../modules/failure/containers/failure';
+import Hole from '../modules/hole/containers/hole';
 
 class Root extends Component {
   render() {
@@ -24,6 +27,9 @@ class Root extends Component {
             <Route name="検査結果照会" path="reference" component={Reference}/>
             <Route name="直レポート印刷" path="report" component={Report}/>
             <Route name="小部品ID紐付" path="association" component={Association}/>
+            <Route name="担当者マスタメンテ" path="inspector" component={Inspector}/>
+            <Route name="不良区分マスタメンテ" path="failure" component={Failure}/>
+            <Route name="穴あけ加工ポイント登録" path="hole" component={Hole}/>
           </Route>
         </Router>
         {/*<DevTools/>*/}

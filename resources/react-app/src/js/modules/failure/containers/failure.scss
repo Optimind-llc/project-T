@@ -1,0 +1,232 @@
+#inspector {
+  padding: 4px 4px 0 4px;
+  min-width: 1110px;
+
+  .header {
+    p {
+      margin: 4px;
+      font-size: 18px;
+    }
+  }
+
+  .body {
+    margin-top: 10px;
+
+    button.create-btn {
+      float: right;
+      margin: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-spacing: 0;
+      border-collapse: collapse;
+      white-space: nowrap;
+      font-size: 12px;
+
+      .clickable {
+        cursor: pointer;
+
+        &:after {
+          content: "";
+        }
+        &.asc:after {
+          content: "↑";
+        }
+        &.desc:after {
+          content: "↓";
+        }
+      }
+
+      th {
+        color: #fff;
+        padding: 4px 8px;
+        background: #258;
+        font-weight: bold;
+        border-left: 1px solid #FFF;
+        border-top: 1px solid #258;
+        border-bottom: 1px solid #CCC;
+        line-height: 120%;
+        text-align: center;
+
+        &:first-child {
+          border-left: none;
+        }
+      }
+
+      tr {
+        background: #fff;
+
+        td {
+          padding: 4px 8px;
+          border-bottom: 1px solid #84b2e0;
+          border-left: 1px solid #84b2e0;
+          text-align: center;
+
+          &:last-child {
+            border-right: 1px solid #84b2e0;
+            box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+          }
+
+          p {
+            cursor: pointer;
+            margin: 0;
+          }
+
+          button {
+            margin: 0 4px;
+          }
+        }
+
+        &:nth-child(2n+1) {
+          background: #f1f6fc;
+        }
+        &:last-child td {
+          box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+        }
+        &:hover {
+          background: #bbd4ee;
+        }
+      }
+    }
+
+    .modal {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .panel-btn {
+      cursor: pointer;
+        display: inline-block;
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #4A4A4A;
+
+      .panel-btn-close {
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 14px;
+          height: 2px;
+          margin: -1px 0 0 -7px;
+          background: transparent;
+
+        &:before, &:after {
+            display: block;
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 14px;
+            height: 2px;
+            margin-left: -7px;
+            margin-top: -1px;
+            background: #FFF;
+        }
+
+        &:before {
+          transform: rotate(-45deg);
+        }
+
+        &:after {
+          transform: rotate(45deg);
+        }
+      }
+    }
+
+    .edit-wrap {
+      width: 700px;
+      z-index: 10000;
+      background-color: white;
+      position: fixed;
+      top: 100px;
+      left: 330px;
+      padding: 10px;
+      border-radius: 4px;
+
+      p.title {
+        text-align: center;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .edit {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        padding: 10px;
+
+        > div {
+          margin: 0 4px;
+
+          &:nth-child(1) {
+            margin-left: 0;
+          }
+
+          &:nth-last-of-type(1) {
+            margin-right: 0;
+          }
+        }
+
+        .process-wrap {
+          display: flex;
+          flex-flow: row nowrap;
+          flex-grow: 1;
+          flex-basis: 200px;
+
+          > div {
+            flex-grow: 1;
+            flex-basis: 150px;
+          }
+          > p {
+            margin: 0 8px 0 0;
+            padding: 0;
+            line-height: 36px;
+          }
+        }
+
+        .inspection-wrap {
+          display: flex;
+          flex-flow: row nowrap;
+          flex-grow: 1;
+          flex-basis: 200px;
+
+          > div {
+            flex-grow: 1;
+            flex-basis: 150px;
+          }
+          > p {
+            margin: 0 8px 0 0;
+            padding: 0;
+            line-height: 36px;
+          }
+        }
+      }
+
+      .btn-wrap {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        padding: 10px;
+
+        button {
+          margin: 0 10px;
+          width: 120px;
+          height: 36px;
+          font-size: 14px;
+          line-height: 34px;
+        }
+      }
+
+    }
+  }
+}

@@ -28,7 +28,7 @@ class PageTypeTableSeeder extends Seeder
         }
 
         $data = [
-            //成型：検査：ライン１ インナ
+            //成型：外観検査：ライン１ インナー
             [
                 'number'     => 1,
                 'group_id'   => 1,
@@ -37,7 +37,7 @@ class PageTypeTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],
-            //成型：検査：ライン２ インナ
+            //成型：外観検査：ライン２ インナー
             [
                 'number'     => 1,
                 'group_id'   => 2,
@@ -46,7 +46,7 @@ class PageTypeTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],
-            //成型：インライン精度検査 インナ
+            //成型：精度検査：ライン１ インナー
             [
                 'number'     => 1,
                 'group_id'   => 3,
@@ -296,6 +296,16 @@ class PageTypeTableSeeder extends Seeder
                 'group_id'   => 18,
                 'figure_id'  => 14,
                 'pdf_id'     => 13,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            // 12/03追加
+            //成型：精度検査：ライン２ インナー
+            [
+                'number'     => 1,
+                'group_id'   => 19,
+                'figure_id'  => 11,
+                'pdf_id'     => null,
                 'created_at' => $now,
                 'updated_at' => $now
             ],

@@ -43,7 +43,7 @@ class InspectorGroupTableSeeder extends Seeder
             ],[
                 'name'       => '黒直',
                 'code'       => 'B',
-                'status'     => 0,
+                'status'     => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ]

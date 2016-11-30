@@ -20,6 +20,7 @@ class Report
     protected $serch_date;
     protected $tyoku;
     protected $now;
+    protected $triple;
 
     protected $failureTypes;
     protected $modificationTypes;
@@ -40,6 +41,14 @@ class Report
         $this->serch_date = $d->format('Y/m/d');
         $this->tyoku = $t;
         $this->now = Carbon::now();
+
+        $switchingDate = Carbon::createFromFormat('Y-m-d H:i:s', '2016-12-5 00:00:00');
+        if ($d->gte($switchingDate)) {
+            $this->triple = true;
+        }
+        else {
+            $this->triple = false;
+        }
     }
 
     public function setFailureTypes($failureTypes)
@@ -133,7 +142,12 @@ class Report
                     $comment = mb_substr($part->comment, 0, 4, 'UTF-8').'..';
                 }
                 else {
-                    $comment = '';
+                    if ($part->pp_comment) {
+                        $comment = mb_substr($part->pp_comment, 0, 4, 'UTF-8').'..';
+                    }
+                    else {
+                        $comment = '';
+                    }
                 }
 
                 return [
@@ -326,10 +340,11 @@ class Report
                 foreach ($parts_obj as $n => $part_obj) {
                     $part = $parts[$part_obj->id];
                     if ($parts_obj->count() > 1) {
-                        $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$n*($dj_gaikan-1), $A3['y2']+($row)*$A3['th'], is_null($part['comment']) ? '' : '有');
+                        $comment = ($part['comment'] == '') ? '' : '有';
+                        $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$n*($dj_gaikan-1), $A3['y2']+($row)*$A3['th'], $comment);
                     }
                     else {
-                        $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$n*($dj_gaikan-1), $A3['y2']+($row)*$A3['th'], is_null($part['comment']) ? '' : $part['comment']);                   
+                        $tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$n*($dj_gaikan-1), $A3['y2']+($row)*$A3['th'], $part['comment']);                   
                     }
                 }
 
@@ -342,7 +357,12 @@ class Report
         /*
          * Render A3 Aggregation
          */
-        $timeChunks = config('report.timeChunks');
+        if ($this->triple) {
+            $timeChunks = config('report.timeChunks2');
+        } else {
+            $timeChunks = config('report.timeChunks');
+        }
+
         $base = $timeChunks[0]['start'];
 
         // Divide families to time Chunk
@@ -633,7 +653,12 @@ class Report
         /*
          * Render A3 Aggregation
          */
-        $timeChunks = config('report.timeChunks');
+        if ($this->triple) {
+            $timeChunks = config('report.timeChunks2');
+        } else {
+            $timeChunks = config('report.timeChunks');
+        }
+
         $base = $timeChunks[0]['start'];
 
         // Divide families to time Chunk
@@ -916,7 +941,12 @@ class Report
         /*
          * Render A3 Aggregation
          */
-        $timeChunks = config('report.timeChunks');
+        if ($this->triple) {
+            $timeChunks = config('report.timeChunks2');
+        } else {
+            $timeChunks = config('report.timeChunks');
+        }
+
         $base = $timeChunks[0]['start'];
 
         $timeChunkedParts = [];
@@ -959,7 +989,7 @@ class Report
             return collect($result);
         });
 
-        $th = 12;
+        $th = 10.8;
         $fd = 4;
         $d_hole_max = 16;
         $d_hole = ($A3['xmax'] - $A3['x0']*2 - 24 - $fd*$fn - $margin)/$hn;
@@ -969,7 +999,7 @@ class Report
         $this->renderA3Header($tcpdf);
 
         // Render table header
-        $tcpdf->SetFont('kozgopromedium', '', 8);
+        $tcpdf->SetFont('kozgopromedium', '', 6);
         foreach ($all_holes as $col => $hole) {
             $tcpdf->StartTransform();
             $tcpdf->Rotate(90, $A3['x0']+24+($col*$d_hole)+1, $A3['y1_ana']+3+1);
@@ -1001,10 +1031,8 @@ class Report
                     $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th, $sum0);
                     $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th+3, $sum2);
                     $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th+6, $sum1);
-                }   
-            }
+                }
 
-            if (count($sum['h']) != 0) {
                 foreach ($failureTypes as $i => $f) {
                     if (!array_key_exists($f['id'], $sum['f'])) {
                         $f_sum = 0;
@@ -1014,6 +1042,17 @@ class Report
                     }
 
                     $tcpdf->Text($A3['x0']+24+($d_hole*$hn)+$margin+($i*$fd), $A3['y2']+$n*$th, $f_sum);
+                }
+            }
+            else {
+                foreach ($all_holes as $col => $hole) {
+                    $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th, 0);
+                    $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th+3, 0);
+                    $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th+6, 0);
+                }
+
+                foreach ($failureTypes as $i => $f) {
+                    $tcpdf->Text($A3['x0']+24+($d_hole*$hn)+$margin+($i*$fd), $A3['y2']+$n*$th, 0);
                 }
             }
 
@@ -1297,7 +1336,7 @@ class Report
                 ->orderBy('label')
                 ->get();
             $hn = $all_holes->count();
-            $th = 12;
+            $th = 10.8;
             $fd = 18;
             $d_hole_max = 16;
             $d_hole = ($A3['xmax'] - $A3['x0']*2 - 24 - $fd*$fn - $margin)/$hn;
@@ -1309,7 +1348,12 @@ class Report
             /*
              * Render A3 Aggregation
              */
-            $timeChunks = config('report.timeChunks');
+            if ($this->triple) {
+                $timeChunks = config('report.timeChunks2');
+            } else {
+                $timeChunks = config('report.timeChunks');
+            }
+
             $base = $timeChunks[0]['start'];
 
             $timeChunkedParts = [];
@@ -1358,17 +1402,17 @@ class Report
             $tcpdf->Text($A3['x0']+$A3['header']['part'], $A3['y0'], $part_obj->name);
 
             // Render table header
-            $tcpdf->SetFont('kozgopromedium', '', 8);
+            $tcpdf->SetFont('kozgopromedium', '', 6);
             foreach ($all_holes as $col => $hole) {
                 $tcpdf->StartTransform();
-                $tcpdf->Rotate(0, $A3['x0']+24+($col*$d_hole)+1, $A3['y1_ana']+3+1);
-                $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y1_ana']+3, $hole->label);
+                $tcpdf->Rotate(0, $A3['x0']+24+($col*$d_hole)+1, $A3['y1_ana']+1);
+                $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y1_ana'], $hole->label);
                 $tcpdf->StopTransform();
             }
             foreach ($failureTypes as $i => $f) {
                 $tcpdf->StartTransform();
-                $tcpdf->Rotate(0, $A3['x0']+24+($d_hole*$hn)+$margin+($fd*$i)+1, $A3['y1_ana']+3+1);
-                $tcpdf->Text($A3['x0']+24+($d_hole*$hn)+$margin+($fd*$i), $A3['y1_ana']+3, $f['name']);
+                $tcpdf->Rotate(0, $A3['x0']+24+($d_hole*$hn)+$margin+($fd*$i)+1, $A3['y1_ana']+1);
+                $tcpdf->Text($A3['x0']+24+($d_hole*$hn)+$margin+($fd*$i), $A3['y1_ana'], $f['name']);
                 $tcpdf->StopTransform();
             }
 
@@ -1389,10 +1433,8 @@ class Report
                         $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th, $sum0);
                         $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th+3, $sum2);
                         $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th+6, $sum1);
-                    }   
-                }
+                    }
 
-                if (count($sum['h']) != 0) {
                     foreach ($failureTypes as $i => $f) {
                         if (!array_key_exists($f['id'], $sum['f'])) {
                             $f_sum = 0;
@@ -1403,6 +1445,21 @@ class Report
 
                         $tcpdf->Text($A3['x0']+24+($d_hole*$hn)+$margin+($i*$fd), $A3['y2']+$n*$th, $f_sum);
                     }
+                }
+                else {
+                    foreach ($all_holes as $col => $hole) {
+                        $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th, 0);
+                        $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th+3, 0);
+                        $tcpdf->Text($A3['x0']+24+($col*$d_hole), $A3['y2']+$n*$th+6, 0);
+                    }
+
+                    foreach ($failureTypes as $i => $f) {
+                        $tcpdf->Text($A3['x0']+24+($d_hole*$hn)+$margin+($i*$fd), $A3['y2']+$n*$th, 0);
+                    }
+                }
+
+                if (count($sum['h']) != 0) {
+
                 }
 
                 $n = $n+1;
@@ -1545,10 +1602,16 @@ class Report
         /*
          * Render A3 Aggregation
          */
+        if ($this->triple) {
+            $timeChunks = config('report.timeChunks2');
+        } else {
+            $timeChunks = config('report.timeChunks');
+        }
+
+        $base = $timeChunks[0]['start'];
+
         $th = 8;
         $di = ($A3['xmax'] - ($A3['x0']+$A3['x1']))/$in;
-        $timeChunks = config('report.timeChunks');
-        $base = $timeChunks[0]['start'];
 
         // Divide families to time Chunk
         $timeChunkedParts = [];
@@ -1809,7 +1872,12 @@ class Report
         /*
          * Render A3 Aggregation
          */
-        $timeChunks = config('report.timeChunks');
+        if ($this->triple) {
+            $timeChunks = config('report.timeChunks2');
+        } else {
+            $timeChunks = config('report.timeChunks');
+        }
+
         $base = $timeChunks[0]['start'];
 
         // Divide families to time Chunk

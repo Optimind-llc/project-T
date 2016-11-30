@@ -28,11 +28,11 @@ class ReportController extends Controller
     public function report($itionGId, $date, $itorG)
     {
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
-        $start = $date->addHours(2);
+        $start = $date->addHours(6)->addMinutes(30);
         $end = $date->copy()->addDay(1);
         $itorG = [InspectorGroup::find($itorG)->name];
 
-        if ($itionGId == 3 || $itionGId == 9) {
+        if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
             $parts = Part::join('part_page as pp', 'pp.part_id', '=', 'parts.id')
                 ->join('pages as pg', 'pg.id', '=', 'pp.page_id')
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId) {
@@ -67,7 +67,7 @@ class ReportController extends Controller
                         ->where('if.inspection_group_id', '=', $itionGId)
                         ->whereIn('if.inspector_group', $itorG);
                 })
-                ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'pg.family_id', 'if.comment', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at'])
+                ->select(['parts.*', 'pp.status', 'pp.comment as pp_comment', 'pg.page_type_id', 'pg.family_id', 'if.comment', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at'])
                 ->with([
                     'failurePositions' => function($q) use ($itionGId, $itorG) {
                         $q->join('pages as pg', 'pg.id', '=', 'failure_positions.page_id')
@@ -206,15 +206,19 @@ class ReportController extends Controller
         switch ($itionGId) {
             case 1:
                 $tcpdf = $report->forGaikan($parts);
-                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m001_inner';
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m001_gaikan_inner';
                 break;
             case 2: 
                 $tcpdf = $report->forGaikan($parts);
-                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m002_inner';
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m002_gaikan_inner';
                 break;
             case 3:
                 $tcpdf = $report->forInline($parts);
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m001_inline_inner';
+                break;
+            case 19:
+                $tcpdf = $report->forInline($parts);
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_m002_inline_inner';
                 break;
             case 5:
                 $tcpdf = $report->forGaikan($parts);

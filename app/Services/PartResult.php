@@ -37,8 +37,9 @@ class PartResult
                 $carry->put('hModifications', $page->comments->merge($carry->has('hModifications') ? $carry['hModifications'] : []));
                 $carry->put('holes', $page->holePages->merge($carry->has('holes') ? $carry['holes'] : []));
                 $carry->put('inlines', $page->inlines);
-                $carry->put('createdAt', $page->created_at->format('Y/m/d H:i:s'));
-                $carry->put('updatedAt', $page->updated_at->format('Y/m/d H:i:s'));
+                $carry->put('createdAt', $page->created_at->format('Y-m-d H:i:s'));
+                $carry->put('updatedAt', $page->updated_at->format('Y-m-d H:i:s'));
+                $carry->put('inspectedAt', $page->inspected_at);
                 $carry->put('status', $page->pivot->status);
                 if (!is_null($page->comment)) {
                     $carry->put('comment', $page->comment);
@@ -65,6 +66,7 @@ class PartResult
             'updatedBy' => $merged_page['updatedBy'],
             'createdAt' => $merged_page['createdAt'],
             'updatedAt' => $merged_page['updatedAt'],
+            'inspectedAt' => $merged_page['inspectedAt'],
             'status' => $merged_page['status'],
             'comment' => $merged_page->has('comment') ? $merged_page['comment'] : null,
             'failures' => array_count_values($merged_page['failures']->map(function($f) {
@@ -121,7 +123,7 @@ class PartResult
                         ->where('if.inspection_group_id', '=', $itionGId);
                 })
                 ->orderBy('if.inspected_at')
-                ->select(['pages.*', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.status', 'if.comment']);
+                ->select(['pages.*', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at', 'if.status', 'if.comment']);
             },
             'pages.failurePositions' => function ($q) use($partId) {
                 $q->where('part_id', '=', $partId)

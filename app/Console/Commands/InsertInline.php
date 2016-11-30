@@ -56,7 +56,6 @@ class InsertInline extends Command
             return 0;
         }
 
-
         foreach ($file as $key => $raw) {
             if ($key == 0) {
                 /*
@@ -78,7 +77,8 @@ class InsertInline extends Command
                     /*
                      * If inspected part is inner
                      */
-                    if ($part_type_pn == '67149' && $filepath['process'] == 'M') {
+                    if ($part_type_pn == '67149' && $filepath['process'] == 'M' && $filepath['line'] == '001') {
+                        $this->info($filepath['line']);
                         $part_type_id = PartType::where('pn', $part_type_pn)
                             ->first()
                             ->id;
@@ -110,6 +110,231 @@ class InsertInline extends Command
                         $newPage = new Page;
                         $newPage->table = null;
                         $newPage->page_type_id = 3;
+                        $newPage->family_id = $newFamily->id;
+                        $newPage->save();
+
+                        // Attach parts status to page
+                        $newPage->parts()->attach($newPart->id, ['status' => $status]);
+
+                        $data = [
+                            [
+                                'status'       => $raw[6],
+                                'inline_id'    => 1,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[7],
+                                'inline_id'    => 2,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[8],
+                                'inline_id'    => 4,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[9],
+                                'inline_id'    => 6,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[10],
+                                'inline_id'    => 8,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[11],
+                                'inline_id'    => 14,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[12],
+                                'inline_id'    => 9,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[13],
+                                'inline_id'    => 7,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[14],
+                                'inline_id'    => 5,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[15],
+                                'inline_id'    => 3,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[16],
+                                'inline_id'    => 10,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[17],
+                                'inline_id'    => 11,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[18],
+                                'inline_id'    => 19,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[19],
+                                'inline_id'    => 20,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[20],
+                                'inline_id'    => 12,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[21],
+                                'inline_id'    => 15,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[22],
+                                'inline_id'    => 17,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[23],
+                                'inline_id'    => 13,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[24],
+                                'inline_id'    => 18,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[25],
+                                'inline_id'    => 16,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[26],
+                                'inline_id'    => 21,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ],[
+                                'status'       => $raw[27],
+                                'inline_id'    => 22,
+                                'page_id'      => $newPage->id,
+                                'part_id'      => $newPart->id,
+                                'inspected_at' => $inspected_at,
+                                'created_at'   => $now,
+                                'updated_at'   => $now
+                            ]
+                        ];
+
+                        DB::table('inline_page')->insert($data);
+                    }
+
+                    /*
+                     * If inspected part is inner
+                     */
+                    if ($part_type_pn == '67149' && $filepath['process'] == 'M' && $filepath['line'] == '002') {
+                        $this->info($filepath['line']);
+                        $part_type_id = PartType::where('pn', $part_type_pn)
+                            ->first()
+                            ->id;
+
+                        $panel_id = $raw[3].$raw[4];
+                        $newPart = Part::where('panel_id', $panel_id)
+                            ->where('part_type_id', $part_type_id)
+                            ->first();
+
+                        if (!$newPart instanceof Part) {
+                            $newPart = new Part;
+                            $newPart->panel_id = $panel_id;
+                            $newPart->part_type_id = $part_type_id;
+                            $newPart->save();
+                        }
+
+                        $status = $raw[5] == 'OK' ? 1 : 0;
+
+                        // Create new Family, inspection_group_id = 3
+                        $newFamily = new InspectionFamily;
+                        $newFamily->inspection_group_id = 19;
+                        $newFamily->inspector_group = '不明';
+                        $newFamily->created_by = '精度検査';
+                        $newFamily->inspected_at = $inspected_at;
+                        $newFamily->status = $status;
+                        $newFamily->save();
+
+                        // Create new page, page_type_id = 3
+                        $newPage = new Page;
+                        $newPage->table = null;
+                        $newPage->page_type_id = 32;
                         $newPage->family_id = $newFamily->id;
                         $newPage->save();
 
