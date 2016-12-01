@@ -284,7 +284,7 @@ class Reference extends Component {
                         options={[
                           {label: '黄直', value: 'Y'},
                           {label: '白直', value: 'W'},
-                          {label: '黒直', value: 'B', disabled: true},
+                          {label: '黒直', value: 'B'},
                           {label: '全直', value: 'both'}
                         ]}
                         onChange={value => this.setState({itorG: value})}
@@ -395,7 +395,7 @@ class Reference extends Component {
                 else if (narrowedBy == 'advanced') {
                   const format = 'YYYY/MM/DD';
                   const body = {
-                    'tyoku': itorG.value == 'both' ? ['白直', '黄直', '黒直', '不明'] : [itorG.label],
+                    'tyoku': itorG.value == 'both' ? ['白直', '黄直', '黒直'] : [itorG.label],
                     'judgement': judgement.value == 'both' ? [1, 0] : [judgement.value],
                     'start': startDate.format(format),
                     'end': endDate.format(format),

@@ -45,7 +45,7 @@ export function getFailures() {
         REDUEST_FAILURES_DATA_SUCCESS,
         REDUEST_FAILURES_DATA_FAIL
       ],
-      endpoint: 'show?failure=all',
+      endpoint: 'maintenance/failures',
       method: 'GET',
       body: null
     }

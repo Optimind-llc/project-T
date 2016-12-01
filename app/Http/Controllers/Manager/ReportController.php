@@ -88,6 +88,7 @@ class ReportController extends Controller
                             ->select(['pages.*', 'if.inspected_at', 'i.en']);
                     }
                 ])
+                ->orderBy('if.updated_at')
                 ->get();
         }
         elseif ($itionGId == 4 || $itionGId == 8) {
@@ -138,6 +139,7 @@ class ReportController extends Controller
                         $q->select(['hole_modifications.id', 'name']);
                     }
                 ])
+                ->orderBy('if.updated_at')
                 ->get();
         }
         elseif ($itionGId == 16 || $itionGId == 10 || $itionGId == 11 || $itionGId == 12 || $itionGId == 14) {
@@ -178,6 +180,7 @@ class ReportController extends Controller
                     'pages.comments',
                     'partType'
                 ])
+                ->orderBy('if.updated_at')
                 ->get();
         }
 

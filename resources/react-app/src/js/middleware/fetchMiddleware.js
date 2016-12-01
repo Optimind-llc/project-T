@@ -25,6 +25,8 @@ export default store => next => action => {
   }
 
   function actionWith(data) {
+    console.log('通過', data.payload, action.payload, Object.assign({}, action.payload, data.payload))
+
     return {
       type: data.type,
       payload: Object.assign({}, action.payload, data.payload),
@@ -69,15 +71,20 @@ export default store => next => action => {
       }
     },
     error => {
-      next(actionWith({
+
+      let nextAction = actionWith({
         type: failureType,
         payload: {
-          status: typeof error.status === 'number' ? error.status : 'danger',
+          status: typeof error.status === 'string' ? error.status : 'danger',
           message: typeof error.message === 'string' ? error.message : 'unexpected'
         },
         meta: { timestamp },
         error: true,
-      }));
+      });
+
+      console.log('nextAction', nextAction);
+
+      next(nextAction);
 
       if (
         typeof action.meta !== 'undefined' &&

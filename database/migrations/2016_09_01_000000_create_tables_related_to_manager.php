@@ -106,7 +106,9 @@ class CreateTablesRelatedToManager extends Migration
         Schema::create('inspectors', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 16)->unique();
+            $table->string('yomi', 16);
             $table->string('code', 16)->unique();
+            $table->tinyInteger('status')->default(1);
             $table->string('group_code');
             $table->timestamps();
 

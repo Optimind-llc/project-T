@@ -155,22 +155,22 @@ class InsertDummyData extends Command
         $request = new DummyRequest;
         $controller = new InspectionController;
 
-        // //成型：検査：ライン１：インナー
-        // $group = $controller->inspection(1);
-        // for ($id = 1; $id <= 100; $id++) {
-        //     $data = $this->createData($group['group'], $id ,[] ,[]);
-        //     // var_dump(json_encode($data));
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        //成型：検査：ライン１：インナー
+        $group = $controller->inspection(1);
+        for ($id = 1; $id <= 1; $id++) {
+            $data = $this->createData($group['group'], $id ,[] ,[]);
+            // var_dump(json_encode($data));
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
-        // //成型：検査：ライン２：インナー
-        // $group = $controller->inspection(2);
-        // for ($id = 101; $id <= 200; $id++) {
-        //     $data = $this->createData($group['group'], $id ,[] ,[]);
-        //     $request->setFamily($data);
-        //     $controller->saveInspection($request);        
-        // }
+        //成型：検査：ライン２：インナー
+        $group = $controller->inspection(2);
+        for ($id = 1; $id <= 1; $id++) {
+            $data = $this->createData($group['group'], $id ,[] ,[]);
+            $request->setFamily($data);
+            $controller->saveInspection($request);        
+        }
 
         // //成型：検査：ライン１：アウター
         // $group = $controller->inspection(5);
@@ -188,29 +188,29 @@ class InsertDummyData extends Command
         //     $controller->saveInspection($request);        
         // }
 
-        //穴あけ：外観検査：インナー
-        $group = $controller->inspection(15);
-        for ($id = 1; $id <= 200; $id++) {
-            $data = $this->createData($group['group'], $id ,[] ,[]);
-            $request->setFamily($data);
-            $controller->saveInspection($request);        
-        }
+        // //穴あけ：外観検査：インナー
+        // $group = $controller->inspection(15);
+        // for ($id = 1; $id <= 200; $id++) {
+        //     $data = $this->createData($group['group'], $id ,[] ,[]);
+        //     $request->setFamily($data);
+        //     $controller->saveInspection($request);        
+        // }
 
-        //穴あけ：検査：インナー
-        $group = $controller->inspection(4);
-        for ($id = 1; $id <= 200; $id++) {
-            $data = $this->createData($group['group'], $id ,[] ,[]);
-            $request->setFamily($data);
-            $controller->saveInspection($request);        
-        }
+        // //穴あけ：検査：インナー
+        // $group = $controller->inspection(4);
+        // for ($id = 1; $id <= 200; $id++) {
+        //     $data = $this->createData($group['group'], $id ,[] ,[]);
+        //     $request->setFamily($data);
+        //     $controller->saveInspection($request);        
+        // }
 
-        //穴あけ：検査：アウター
-        $group = $controller->inspection(8);
-        for ($id = 1; $id <= 200; $id++) {
-            $data = $this->createData($group['group'], $id ,[] ,[]);
-            $request->setFamily($data);
-            $controller->saveInspection($request);        
-        }
+        // //穴あけ：検査：アウター
+        // $group = $controller->inspection(8);
+        // for ($id = 1; $id <= 200; $id++) {
+        //     $data = $this->createData($group['group'], $id ,[] ,[]);
+        //     $request->setFamily($data);
+        //     $controller->saveInspection($request);        
+        // }
 
         // //接着：簡易CF：インナASSY
         // $group = $controller->inspection(16);

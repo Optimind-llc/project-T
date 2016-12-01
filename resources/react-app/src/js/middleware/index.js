@@ -6,8 +6,8 @@ import alertMiddleware from './alertMiddleware';
 
 const Middlewares = [
   fetchMiddleware,
-  errorMiddleware,
-  alertMiddleware,
+  // errorMiddleware,
+  // alertMiddleware,
   thunk,
   promise
 ]

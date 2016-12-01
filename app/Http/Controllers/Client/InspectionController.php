@@ -125,6 +125,8 @@ class InspectionController extends Controller
         $family = $request->family;
         $groupId = $family['groupId'];
 
+        $inspectionGroup = InspectionGroup::find($groupId)->toArray();
+
         //Duplicate detection
         foreach ($family['pages'] as $page) {
             $page_type_id = $page['pageId'];
@@ -135,20 +137,30 @@ class InspectionController extends Controller
                     ->first();
 
                 if ($newPart instanceof Part) {
-                    $newPage = Page::where('page_type_id', $page['pageId'])
-                        ->whereHas('parts', function($q) use ($newPart) {
-                            $q->where('id', $newPart->id);
-                        })
-                        ->first();
+                    $inspectedPages = $newPart->pages()
+                        ->with(['family.groups'])
+                        ->get();
 
-                    if ($newPage instanceof Page) {
-                        return \Response::json([
-                            'message' => $part['panelId'].' already be inspected in ather page(page_id = '.$newPage->id.').',
-                            'pageId' => $newPage->id,
-                            'panelId' => $part['panelId'],
-                            'pn' => $newPart->partType->pn
-                        ], 400);
-                        throw new JsonException($part['panelId'].' already be inspected in ather page(page_id = '.$newPage->id.').');
+                    if ($inspectedPages) {
+                        $inspections = $inspectedPages->map(function($i) {
+                            return [
+                                'division' => $i->family->groups->division_en,
+                                'id' => $i->family->groups->inspection_id
+                            ];
+                        })
+                        ->filter(function ($i) use ($inspectionGroup) {
+                            return $i['division'] == $inspectionGroup['division_en'] && $i['id'] == $inspectionGroup['inspection_id'];
+                        });
+
+                        var_dump($inspections);
+
+                        if ($inspections->count() > 0) {
+                            return \Response::json([
+                                'message' => $part['panelId'].' already be inspected',
+                                'panelId' => $part['panelId'],
+                                'pn' => $newPart->partType->pn
+                            ], 400);
+                        }
                     }
                 }
             }

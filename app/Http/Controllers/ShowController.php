@@ -705,8 +705,9 @@ class ShowController extends Controller
 
         $judgement = $request->judgement;
         $tyoku = $request->tyoku;
-        $start = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 02:00:00');
-        $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 02:00:00')->addDay(1);
+        array_push($tyoku, '不明');
+        $start = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 06:30:00');
+        $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 06:30:00')->addDay(1);
         $f = $request->f;
         $m = $request->m;
 
@@ -720,13 +721,18 @@ class ShowController extends Controller
             })
             ->join('inspection_families as if', function($join) use ($itionGId, $start, $end, $tyoku) {
                 $join->on('if.id', '=', 'pg.family_id')
-                    ->where('if.updated_at', '>=', $start)
-                    ->where('if.updated_at', '<', $end)
-                    ->whereNull('if.inspected_at')
-                    ->orWhere('if.inspected_at', '>=', $start)
-                    ->orWhere('if.inspected_at', '>=', $start)
                     ->whereIn('if.inspector_group', $tyoku)
-                    ->where('inspection_group_id', '=', $itionGId);
+                    ->where('inspection_group_id', '=', $itionGId)
+                    ->where(function($q) use ($start, $end) {
+                        $q->whereNotNull('if.inspected_at')->orWhere(function($q) use ($start, $end) {
+                            $q->where('if.updated_at', '>=', $start)->where('if.updated_at', '<', $end);
+                        });
+                    })
+                    ->where(function($q) use ($start, $end) {
+                        $q->whereNull('if.inspected_at')->orWhere(function($q) use ($start, $end) {
+                            $q->where('if.inspected_at', '>=', $start)->where('if.inspected_at', '<', $end);
+                        });
+                    });
             })
             ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at'])
             ->orderBy('if.inspected_at', 'if.created_at')

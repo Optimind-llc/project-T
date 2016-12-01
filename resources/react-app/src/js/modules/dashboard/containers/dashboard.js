@@ -78,8 +78,6 @@ class Dashboard extends Component {
       inspectionGroupId = filteredInspectionGroup[0].iG;
     }
 
-    console.log(inspectionGroupId);
-
     switch (state.narrowedBy) {
       case 'realtime':
         start = end = panelId = null;

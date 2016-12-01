@@ -267,7 +267,7 @@ class Report
             // Render page header
             $this->renderA3Header($tcpdf);
 
-            $tcpdf->SetFont('kozgopromedium', '', 8);
+            $tcpdf->SetFont('kozgopromedium', '', 7);
             $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y1'], 'No.');
             $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y1'], 'パネルID');
             $tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,2)), $A3['y1'], '検査者');
@@ -375,8 +375,8 @@ class Report
             $minutes = $time->hour*60 + $time->minute;
 
             foreach ($timeChunks as $tc) {
-                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']) - 1;
-                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']) - 1;
+                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
+                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']);
 
                 if (!array_key_exists($tc['label'], $timeChunkedFamilies)) {
                     $timeChunkedFamilies[$tc['label']] = [];
@@ -671,8 +671,8 @@ class Report
             $minutes = $time->hour*60 + $time->minute;
 
             foreach ($timeChunks as $tc) {
-                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']) - 1;
-                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']) - 1;
+                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
+                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']);
 
                 if (!array_key_exists($tc['label'], $timeChunkedFamilies)) {
                     $timeChunkedFamilies[$tc['label']] = [];
@@ -958,8 +958,8 @@ class Report
             $minutes = $time->hour*60 + $time->minute;
 
             foreach ($timeChunks as $tc) {
-                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']) - 1;
-                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']) - 1;
+                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
+                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']);
 
                 if (!array_key_exists($tc['label'], $timeChunkedParts)) {
                     $timeChunkedParts[$tc['label']] = [];
@@ -1365,8 +1365,8 @@ class Report
                 $minutes = $time->hour*60 + $time->minute;
 
                 foreach ($timeChunks as $tc) {
-                    $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']) - 1;
-                    $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']) - 1;
+                    $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
+                    $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']);
 
                     if (!array_key_exists($tc['label'], $timeChunkedParts)) {
                         $timeChunkedParts[$tc['label']] = [];
@@ -1620,8 +1620,8 @@ class Report
             $minutes = $time->hour*60 + $time->minute;
 
             foreach ($timeChunks as $tc) {
-                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']) - 1;
-                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']) - 1;
+                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
+                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']);
 
                 if (!array_key_exists($tc['label'], $timeChunkedParts)) {
                     $timeChunkedParts[$tc['label']] = [];
@@ -1890,8 +1890,8 @@ class Report
             $minutes = $time->hour*60 + $time->minute;
 
             foreach ($timeChunks as $tc) {
-                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']) - 1;
-                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']) - 1;
+                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
+                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']);
 
                 if (!array_key_exists($tc['label'], $timeChunkedParts)) {
                     $timeChunkedParts[$tc['label']] = [];

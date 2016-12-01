@@ -65,10 +65,8 @@ Route::get('manager/inspector', 'Manager\ReferenceController@index');
 Route::get('manager/failure', 'Manager\ReferenceController@index');
 Route::get('manager/hole', 'Manager\ReferenceController@index');
 
-// Old Report PDF method
-Route::get('manager/pdf/report/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@report');
 
-// New Report PDF method
+
 Route::get('manager/report/{itionGId}/{date}/{itorG}', 'Manager\ReportController@report')
   ->where([
     'itionGId' => '[0-9]+'
@@ -130,11 +128,14 @@ Route::post('show/partFamily', 'ShowController@partFamily');
 Route::get('show/test', 'ShowController@test');
 
 
+/*
+ * For Maintenance
+ */
+Route::post('maintenance/inspector', 'Manager\MaintenanceController@inspector');
+Route::post('maintenance/inspector/update', 'Manager\MaintenanceController@updateInspector');
 
 
-
-
-
+Route::get('maintenance/failure', 'Manager\MaintenanceController@failure');
 
 
 

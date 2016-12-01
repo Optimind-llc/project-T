@@ -145,7 +145,7 @@ class InspectionGroup extends Model
     {
         $group = $this->with([
             'inspectors' => function($q) {
-                $q->select(['id', 'name', 'group_code']);
+                $q->where('status', '=', 1)->select(['id', 'name', 'group_code']);
             },
             'inspection' => function($q) {
                 $q->select(['id']);
