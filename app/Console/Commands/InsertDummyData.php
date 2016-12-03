@@ -55,7 +55,7 @@ class InsertDummyData extends Command
 
         $createFailures = function($failures) use ($img) {
             $F = [];
-            for ($i=0; $i<10; $i++) {
+            for ($i=0; $i<2; $i++) {
                 $x = rand($img['margin'], $img['x'] - $img['margin']);
                 $y = rand($img['margin'], $img['y'] - $img['margin']);
 
@@ -70,10 +70,17 @@ class InsertDummyData extends Command
         };
 
         $createHole = function($hole) {
-            return [
+            $holeStatus = rand(0, 2);
+            $holeData = [
                 'id' => $hole['id'],
-                'status' => rand(0, 2)
+                'status' => $holeStatus,
             ];
+
+            if ($holeStatus == 2) {
+                $holeData['holeModificationId'] = rand(1, 3);
+            }
+                            
+            return $holeData;
         };
 
         $createComments = function($comments, $history) {

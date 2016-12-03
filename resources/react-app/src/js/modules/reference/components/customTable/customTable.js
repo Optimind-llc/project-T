@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Table } from 'reactable';
+import moment from 'moment';
 import './customTable.scss';
 
 class CustomTable extends Component {
@@ -53,6 +54,10 @@ class CustomTable extends Component {
       else if (sort.key == 'holes') {
         aaa = a[sort.key].find(h => h.id == [sort.id]).status;
         bbb = b[sort.key].find(h => h.id == [sort.id]).status;
+      }
+      else if (sort.key == 'createdAt' || sort.key == 'updatedAt') {
+        aaa = moment(a[sort.key], 'YYYY-MM-DD HH:mm:ss 11:08:40').unix();
+        bbb = moment(b[sort.key], 'YYYY-MM-DD HH:mm:ss 11:08:40').unix();
       }
 
       if (sort.asc) {
@@ -147,8 +152,26 @@ class CustomTable extends Component {
                 <th colSpan={inlines.length}>精度検査</th>
               }
               <th rowSpan="2">コメント</th>
-              <th rowSpan="2">検査日</th>
-              <th rowSpan="2">最終更新日</th>
+              <th
+                rowSpan="2"
+                className={`clickable ${sort.key == 'createdAt' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                onClick={() => {
+                  if(sort.key == 'createdAt') this.setState({sort: { key: 'createdAt', asc: !sort.asc, id: 0 }});
+                  else this.setState({sort: { key: 'createdAt', asc: true, id: 0 }});
+                }}
+              >
+                検査日
+              </th>
+              <th
+                rowSpan="2"
+                className={`clickable ${sort.key == 'updatedAt' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                onClick={() => {
+                  if(sort.key == 'updatedAt') this.setState({sort: { key: 'updatedAt', asc: !sort.asc, id: 0 }});
+                  else this.setState({sort: { key: 'updatedAt', asc: true, id: 0 }});
+                }}
+              >
+                最終更新日
+              </th>
             </tr>
             <tr>
             {
@@ -234,11 +257,11 @@ class CustomTable extends Component {
                 <td>{d.status == 1 ? '○' : '×'}</td>
                 {
                   holes.length > 0 &&
-                  d.holes.map(h => {
+                  holes.map(h => {
                     let status;
-                    if (h.status == 0) {status = '×';}
-                    else if (h.status == 2) {status = '△';}
-                    else if (h.status == 1) {status = '○';}
+                    if (d.holes.find(ch => ch.id == h.id).status == 0) {status = '×';}
+                    else if (d.holes.find(ch => ch.id == h.id).status == 2) {status = '△';}
+                    else if (d.holes.find(ch => ch.id == h.id).status == 1) {status = '○';}
 
                     return (<td>{status}</td>);
                   })

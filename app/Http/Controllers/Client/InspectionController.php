@@ -152,8 +152,6 @@ class InspectionController extends Controller
                             return $i['division'] == $inspectionGroup['division_en'] && $i['id'] == $inspectionGroup['inspection_id'];
                         });
 
-                        var_dump($inspections);
-
                         if ($inspections->count() > 0) {
                             return \Response::json([
                                 'message' => $part['panelId'].' already be inspected',

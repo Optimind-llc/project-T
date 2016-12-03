@@ -769,7 +769,7 @@ class InsertInline extends Command
         // $dirPath = config('path.inline');
 
         $dirPath = config('path.'.env('SERVER').'.inline');
-        // $dirPath = 'D:'.DIRECTORY_SEPARATOR.'FailureMapping'.DIRECTORY_SEPARATOR.'InLine';
+        $backupPath = config('path.'.env('SERVER').'.backup');
 
         $files = scandir($dirPath);
 
@@ -780,6 +780,7 @@ class InsertInline extends Command
 
             if (is_file($filePath) && $extension == 'csv') {
                 $lists[] = [
+                    'name' => $file,
                     'path' => $filePath,
                     'process' => substr($file, 0, 1),
                     'line' => substr($file, 1, 3)
@@ -795,7 +796,12 @@ class InsertInline extends Command
 
         $results = [];
         foreach ($lists as $list) {
-            $results[] = $this->insertFile($list);
+            if ($list['line'] === '011') {
+                rename($list['path'], $backupPath.DIRECTORY_SEPARATOR.$list['name']);
+            }
+            else {
+                $results[] = $this->insertFile($list);
+            }
         }
 
         $results_sum = array_sum($results);

@@ -77,12 +77,11 @@ Route::get('manager/report/{itionGId}/{date}/{itorG}', 'Manager\ReportController
 
 Route::get('manager/pdf/checkReport/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@checkReport');
 
-Route::get('show/page2/{partTypeId}/{itionGId}/{itorG}', 'ShowController@page2')
-  ->where([
-    'partTypeId' => '[0-9]+',
-    'itionGId' => '[0-9]+',
-    'itorG' => '[a-zA-Z]+'
-  ]);
+
+Route::get('show/mapping/panelId/{partTypeId}/{itionGId}/{itorG}/{panelId}', 'ShowController@panelIdMapping');
+Route::get('show/mapping/advanced/{partTypeId}/{itionGId}/{itorG}', 'ShowController@advancedMapping');
+
+
 
 Route::get('show/panelIdSerch/{partTypeId}/{itionGId}/{panelId}', 'ShowController@panelIdSerch')
   ->where([
@@ -132,7 +131,10 @@ Route::get('show/test', 'ShowController@test');
  * For Maintenance
  */
 Route::post('maintenance/inspector', 'Manager\MaintenanceController@inspector');
+Route::post('maintenance/inspector/create', 'Manager\MaintenanceController@createInspector');
 Route::post('maintenance/inspector/update', 'Manager\MaintenanceController@updateInspector');
+Route::post('maintenance/inspector/{id}/activate', 'Manager\MaintenanceController@activateInspector');
+Route::post('maintenance/inspector/{id}/deactivate', 'Manager\MaintenanceController@deactivateInspector');
 
 
 Route::get('maintenance/failure', 'Manager\MaintenanceController@failure');

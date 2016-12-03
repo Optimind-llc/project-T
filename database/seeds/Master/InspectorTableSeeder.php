@@ -141,8 +141,8 @@ class InspectorTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '永元 保隆',
-                'yomi'       => 'スエナガ',
+                'name'       => '八木 恵司',
+                'yomi'       => 'ヤギ',
                 'code'       => '0016',
                 'group_code' => 'Y',
                 'created_at' => $now,
@@ -297,8 +297,8 @@ class InspectorTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '八木 恵司',
-                'yomi'       => 'ヤギ',
+                'name'       => '永元 保隆',
+                'yomi'       => 'ナガモト',
                 'code'       => '0038',
                 'group_code' => 'B',
                 'created_at' => $now,
@@ -780,7 +780,6 @@ class InspectorTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],
-
         ];
 
         DB::table($table_name)->insert($data);
@@ -1921,6 +1920,22 @@ class InspectorTableSeeder extends Seeder
                 'inspection_g_id' => 16,
                 'inspector_id'    => 78,
                 'sort'            => 6
+            ],[
+                'inspection_g_id' => 16,
+                'inspector_id'    => 80,
+                'sort'            => 7
+            ],[
+                'inspection_g_id' => 16,
+                'inspector_id'    => 83,
+                'sort'            => 8
+            ],[
+                'inspection_g_id' => 16,
+                'inspector_id'    => 82,
+                'sort'            => 9
+            ],[
+                'inspection_g_id' => 16,
+                'inspector_id'    => 81,
+                'sort'            => 10
             ],
             //接着_簡易CF_ASSY_黄
             [
@@ -2004,6 +2019,22 @@ class InspectorTableSeeder extends Seeder
                 'inspection_g_id' => 10,
                 'inspector_id'    => 78,
                 'sort'            => 6
+            ],[
+                'inspection_g_id' => 10,
+                'inspector_id'    => 80,
+                'sort'            => 7
+            ],[
+                'inspection_g_id' => 10,
+                'inspector_id'    => 83,
+                'sort'            => 8
+            ],[
+                'inspection_g_id' => 10,
+                'inspector_id'    => 82,
+                'sort'            => 9
+            ],[
+                'inspection_g_id' => 10,
+                'inspector_id'    => 81,
+                'sort'            => 10
             ],
             //接着_止水_ASSY_黄色
             [
@@ -2087,6 +2118,22 @@ class InspectorTableSeeder extends Seeder
                 'inspection_g_id' => 11,
                 'inspector_id'    => 78,
                 'sort'            => 6
+            ],[
+                'inspection_g_id' => 11,
+                'inspector_id'    => 83,
+                'sort'            => 7
+            ],[
+                'inspection_g_id' => 11,
+                'inspector_id'    => 82,
+                'sort'            => 8
+            ],[
+                'inspection_g_id' => 11,
+                'inspector_id'    => 81,
+                'sort'            => 9
+            ],[
+                'inspection_g_id' => 11,
+                'inspector_id'    => 79,
+                'sort'            => 10
             ],
             //接着_仕上_ASSY_黄
             [
@@ -2186,6 +2233,10 @@ class InspectorTableSeeder extends Seeder
                 'inspection_g_id' => 12,
                 'inspector_id'    => 78,
                 'sort'            => 8
+            ],[
+                'inspection_g_id' => 12,
+                'inspector_id'    => 80,
+                'sort'            => 7
             ],
             //接着_検査_ASSY_黄
             [
@@ -2276,6 +2327,22 @@ class InspectorTableSeeder extends Seeder
                 'inspection_g_id' => 14,
                 'inspector_id'    => 78,
                 'sort'            => 4
+            ],[
+                'inspection_g_id' => 14,
+                'inspector_id'    => 83,
+                'sort'            => 5
+            ],[
+                'inspection_g_id' => 14,
+                'inspector_id'    => 75,
+                'sort'            => 6
+            ],[
+                'inspection_g_id' => 14,
+                'inspector_id'    => 76,
+                'sort'            => 7
+            ],[
+                'inspection_g_id' => 14,
+                'inspector_id'    => 80,
+                'sort'            => 8
             ],
             //接着_手直_ASSY_黄
             [

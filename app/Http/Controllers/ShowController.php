@@ -18,11 +18,14 @@ use App\Models\PageType;
 use App\Models\PartType;
 use App\Models\Failure;
 use App\Models\Hole;
+use App\Models\Inline;
 use App\Models\Client\PartFamily;
 use App\Models\Client\Part;
 use App\Models\Client\Page;
 use App\Models\Client\FailurePosition;
 use App\Models\Client\HolePage;
+use App\Models\Client\ModificationFailurePosition;
+use App\Models\Client\HolePageHoleModification;
 // Exceptions
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Dingo\Api\Exception\StoreResourceFailedException;
@@ -400,65 +403,202 @@ class ShowController extends Controller
         return ['data' => $page_types];
     }
 
-    protected function formatPage($pages, $partTypeId)
+    public function panelIdMapping($partTypeId, $itionGId, $itorG, $panelId)
     {
+        switch ($itorG) {
+            case 'W': $tyoku = ['白直', '不明']; break;
+            case 'Y': $tyoku = ['黄直', '不明']; break;
+            case 'B': $tyoku = ['黒直', '不明']; break;
+            case 'both': $tyoku = ['白直', '黄直', '黒直', '不明']; break;
+        }
+
+        $page_types = PageType::where('group_id', '=', $itionGId)
+            ->whereHas('partTypes', function($q) use ($partTypeId){
+                $q->where('part_types.id', '=', $partTypeId);
+            })
+            ->with(['figure'])
+            ->get(['id', 'number', 'figure_id'])
+            ->filter(function($pt) {
+                return $pt->id != 14;
+            })
+            ->values();
+
+        $page_type_ids = $page_types->map(function($pt) {
+            return $pt->id;
+        })
+        ->toArray();
+
+        $page_ids = Page::whereHas('parts', function($q) use ($panelId){
+            $q->where('parts.panel_id', '=', $panelId);
+        })
+        ->with(['family'])
+        ->get()
+        ->filter(function($p) use ($itionGId) {
+            return $p->page_type_id != 14 && $p->family->inspection_group_id == $itionGId;
+        })
+        ->map(function($p) {
+            return $p->id;
+        })
+        ->toArray();
+
+        if (count($page_ids) == 0) {
+            return [
+                'data' => [
+                    'count' => 0,
+                    'page_types' => [],
+                    'failures' => [],
+                    'modifications' => [],
+                    'holes' => [],
+                    'ft' => [],
+                    'mt' => [],
+                    'hmt' => [],
+                    'i' => []
+                ]
+            ];
+        }
+
+        $failures = FailurePosition::whereIn('page_id', $page_ids)
+            ->with([
+                'part' => function($q) {
+                    $q->select(['id', 'parts.part_type_id']);
+                },
+                'page' => function($q) {
+                    $q->select(['id', 'family_id', 'page_type_id']);
+                },
+                'page.family' => function($q) {
+                    $q->select(['id', 'inspector_group']);
+                }
+            ])
+            ->get(['id', 'point', 'page_id', 'part_id', 'failure_id'])
+            ->filter(function($fp) use ($partTypeId) {
+                return $fp->part->part_type_id == $partTypeId;
+            })
+            ->map(function($fp) {
+                return [
+                    'id' => $fp->failure_id,
+                    'p' => $fp->point,
+                    'pg' => $fp->page->page_type_id,
+                    'c' => $fp->page->family->inspector_group,
+                    'pt' => $fp->part->part_type_id
+                ];
+            })
+            ->values();
+
+        $modifications = ModificationFailurePosition::whereIn('page_id', $page_ids)
+            ->with([
+                'failurePosition' => function($q) {
+                    $q->select(['id', 'point']);
+                },
+                'page' => function($q) {
+                    $q->select(['id', 'family_id', 'page_type_id']);
+                },
+                'page.family' => function($q) {
+                    $q->select(['id', 'inspector_group']);
+                }
+            ])
+            ->get()
+            ->map(function($mf) {
+                return [
+                    'id' => $mf->m_id,
+                    'p' => $mf->failurePosition->point,
+                    'c' => $mf->page->family->inspector_group
+                ];
+            });
+
+        $holes = Hole::where('holes.part_type_id', '=', $partTypeId)
+            ->join('figures as f', function($join) {
+                $join->on('f.id', '=', 'holes.figure_id');
+            })
+            ->join('page_types as pt', function($join) use ($page_type_ids) {
+                $join->on('pt.figure_id', '=', 'f.id')->whereIn('pt.id', $page_type_ids);
+            })
+            ->select(['holes.*', 'pt.id as page_type_id'])
+            ->with([
+                'holePages' => function($q) use ($page_ids) {
+                    $q->whereIn('page_id', $page_ids)
+                        // ->where('status', '!=', 1)
+                        ->select(['id', 'hole_id', 'page_id', 'status']);
+                },
+                'holePages.holeModification' => function($q){
+                    $q->select(['hole_page_hole_modification.id', 'hp_id']);
+                }
+            ])
+            ->get(['id', 'point', 'holes.part_type_id', 'figure_id'])
+            ->map(function($h) {
+                return [
+                    'id' => $h->id,
+                    'l' => $h->label,
+                    'p' => $h->point,
+                    'd' => $h->direction,
+                    's' => $h->holePages->map(function($hp) {
+                        if ($hp->holeModification->count() > 0) {
+                            return [
+                                's' => $hp->status,
+                                'hm' => $hp->holeModification[0]->pivot->hm_id
+                            ];                            
+                        }
+
+                        return [
+                            's' => $hp->status,
+                            'hm' => null
+                        ];
+                    }),
+                    'pg' => $h->page_type_id
+                ];
+            });
+
+        $inlines = [];
+        if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
+            $part = Part::where('panel_id', '=', $panelId)
+                ->where('part_type_id', '=', $partTypeId)
+                ->first();
+
+            if ($part) {
+                $inlines = DB::table('inline_page')->where('part_id', '=', $part->id)
+                    ->where('part_id', '=', $part->id)
+                    ->orderBy('inspected_at', 'desc')
+                    ->get();
+
+                $inlines = collect($inlines)->groupBy('inline_id')->map(function($i) {
+                    return [$i->first()->status];
+                });
+            }                
+        }
+
+        $inspectionGroup = InspectionGroup::find($itionGId);
+
+        $failureTypes = $inspectionGroup->sortedFailures();
+        $modificationTypes = $inspectionGroup->sortedModifications();
+        $holeModificationTypes = $inspectionGroup->sortedHoleModifications();
+
+        $inlinesInfo = [];
+        if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
+            $inlinesInfo = Inline::where('part_type_id', '=', $partTypeId)->get();
+        }
+
         return [
-            'failures' => $pages->reduce(function ($carry, $page) use($partTypeId){
-                return $carry->merge($page->failurePositions->map(function($fp) use($page) {
+            'data' => [
+                'count' => count($page_ids),
+                'pageTypes' => $page_types->map(function($p) {
                     return [
-                        'id' => $fp->failure->id,
-                        'label' => $fp->failure->label,
-                        'point' => $fp->point,
-                        'type' => $fp->type,
-                        'part' => $fp->part->partType->id,
-                        'choku' => $page->inspector_group
+                        'id' => $p->id,
+                        'n' => $p->number,
+                        'path' => $p->figure->path
                     ];
-                }));
-            }, collect([]))
-            ->filter(function($fp) use($partTypeId) {
-                return $fp['part'] == $partTypeId;
-            })
-            ->values(),
-            'comments' => $pages->reduce(function ($carry, $page) {
-                return $carry->merge($page->comments->map(function($cf) use($page) {
-                    return [    
-                        'id' => $cf->m_id,
-                        'message' => $cf->modification->name,
-                        'point' => $cf->failurePosition->point,
-                        'choku' => $page->inspector_group
-                    ];
-                }));
-            }, collect([])),
-            'inlines' => $pages->reduce(function ($carry, $page) {
-                return $carry->merge($page->inlines->map(function($i) use($page) {
-                    return [
-                        'id' => $i->id,
-                        'point' => $i->point,
-                        'labelPoint' => $i->label_point,
-                        'max' => $i->max_tolerance,
-                        'min' => $i->min_tolerance,
-                        'position' => $i->position,
-                        'side' => $i->side,
-                        'sort' => $i->sort,
-                        'face' => $i->face,
-                        'status' => $i->pivot->status,
-                        'partId' => $page->parts->first()->id
-                    ];
-                }));
-            }, collect([]))
-            ->groupBy('id')
-            ->values()
-            ->map(function($i) {
-                return $i->groupBy('partId')->map(function($p) {
-                    return $p->first();
-                })->values();
-            })
-            ->values(),
-            'pages' => $pages->count()
+                }),
+                'failures' => $failures,
+                'modifications' => $modifications,
+                'holes' => $holes,
+                'inlines' => $inlines,
+                'ft' => $failureTypes,
+                'mt' => $modificationTypes,
+                'hmt' => $holeModificationTypes,
+                'i' => $inlinesInfo
+            ]
         ];
     }
 
-    public function page2($partTypeId, $itionGId, $itorG, Request $request)
+    public function advancedMapping($partTypeId, $itionGId, $itorG, Request $request)
     {
         $validator = app('validator')->make(
             $request->all(),
@@ -480,22 +620,90 @@ class ShowController extends Controller
         }
         else {
             $today = Carbon::today();
-            $t2_end_at = $today->copy()->addHours(1);
-            $t1_start_at = $today->copy()->addHours(6);
-            $t1_end_at = $today->copy()->addHours(15)->addMinutes(30);
-            $t2_start_at = $today->copy()->addHours(16)->addMinutes(30);
 
-            if ($now->lt($t2_end_at)) {
-                $start_at = $t1_start_at->copy()->subDay();
+            $t3_end_at = $today->copy()->addHours(6)->addMinutes(30);
+            $t1_start_at = $today->copy()->addHours(6)->addMinutes(30);
+            $t1_end_at = $today->copy()->addHours(14)->addMinutes(00);
+            $t2_start_at = $today->copy()->addHours(14)->addMinutes(00);
+            $t2_end_at = $today->copy()->addHours(22)->addMinutes(15);
+            $t3_start_at = $today->copy()->addHours(22)->addMinutes(15);
+
+            if ($now->lt($t3_end_at)) {
+                if ($now->dayOfWeek === 1) {
+                    $start_at = $t2_start_at->copy()->subDays(3);
+                }
+                else {
+                    $start_at = $t2_start_at->copy()->subDay();
+                }
             }
             elseif ($now->lt($t1_end_at)) {
-                $start_at = $t2_start_at->copy()->subDay();
+                $start_at = $t3_start_at->copy();
+            }
+            elseif ($now->lt($t2_end_at)) {
+                $start_at = $t1_start_at->copy();
             }
             else {
-                $start_at = $t1_start_at;
+                if ($now->dayOfWeek === 1) {
+                    $start_at = $t2_start_at->copy()->subDays(3);
+                }
+                else {
+                    $start_at = $t2_start_at->copy()->subDay();
+                }
             }
 
             $end_at = $now;
+
+            // $chokuChunks = [
+            //     'first' => [
+            //         'start' => ['H' => 6, 'i' => 30],
+            //         'end' => ['H' => 14, 'i' => 00],
+            //     ],
+            //     'second' => [
+            //         'start' => ['H' => 14, 'i' => 00],
+            //         'end' => ['H' => 22, 'i' => 15],
+            //     ],
+            //     'third' => [
+            //         'start' => ['H' => 22, 'i' => 15],
+            //         'end' => ['H' => 30, 'i' => 30],
+            //     ]
+            // ];
+
+            // $nowMin = ($now->hour + 6)*60 + ($now->minute + 30);
+
+            // $fMinS = $chokuChunks['first']['start']['H']*60 + $chokuChunks['first']['start']['i'];
+            // $fMinE = $chokuChunks['first']['end']['H']*60 + $chokuChunks['first']['end']['i'];
+
+            // $sMinS = $chokuChunks['second']['start']['H']*60 + $chokuChunks['second']['start']['i'];
+            // $sMinE = $chokuChunks['second']['end']['H']*60 + $chokuChunks['second']['end']['i'];
+
+            // $tMinS = $chokuChunks['third']['start']['H']*60 + $chokuChunks['third']['start']['i'];
+            // $tMinE = $chokuChunks['third']['end']['H']*60 + $chokuChunks['third']['end']['i'];
+
+            // if ($fMinS <= $nowMin && $nowMin < $fMinE) {
+            //     $start_at = 
+            // }
+            // elseif ($sMinS <= $nowMin && $nowMin < $sMinE) {
+
+            // }
+            // elseif ($tMinS <= $nowMin && $nowMin < $tMinE) {
+
+            // }
+            // else {
+            //     $start_at = $t1_start_at;
+            // }
+
+            // if ($now->lt($t2_end_at)) {
+            //     $start_at = $t1_start_at->copy()->subDay();
+            // }
+            // elseif ($now->lt($t1_end_at)) {
+            //     $start_at = $t2_start_at->copy()->subDay();
+            // }
+            // else {
+            //     $start_at = $t1_start_at;
+            // }
+
+            // $start_at = $now->copy()->subHour(8)->subMinutes(15);
+            // $end_at = $now;
         }
 
         switch ($request->itorG) {
@@ -506,11 +714,15 @@ class ShowController extends Controller
         }
 
         $page_types = PageType::where('group_id', '=', $itionGId)
+            ->whereHas('partTypes', function($q) use ($partTypeId){
+                $q->where('part_types.id', '=', $partTypeId);
+            })
             ->with(['figure'])
             ->get(['id', 'number', 'figure_id'])
             ->filter(function($pt) {
                 return $pt->id != 14;
-            });
+            })
+            ->values();
 
         $page_type_ids = $page_types->map(function($pt) {
             return $pt->id;
@@ -523,6 +735,12 @@ class ShowController extends Controller
                 ->where('if.inspection_group_id', '=', $itionGId)
                 ->where('if.updated_at', '>=', $start_at)
                 ->where('if.updated_at', '<', $end_at);
+        })
+        ->join('part_page as pp', function($join) {
+            $join->on('pages.id', '=', 'pp.page_id');
+        })
+        ->join('parts', function($join) use ($partTypeId) {
+            $join->on('parts.id', '=', 'pp.part_id')->where('parts.part_type_id', '=', $partTypeId);
         })
         ->select('pages.id', 'pages.page_type_id')
         ->get()
@@ -537,9 +755,11 @@ class ShowController extends Controller
         if (count($page_ids) == 0) {
             return [
                 'data' => [
+                    'message' => '',
                     'count' => 0,
                     'page_types' => [],
                     'failures' => [],
+                    'modifications' => [],
                     'holes' => [],
                     'ft' => [],
                     'mt' => [],
@@ -549,31 +769,72 @@ class ShowController extends Controller
             ];
         }
 
+        if (count($page_ids) > 5600) {
+            return [
+                'data' => [
+                    'message' => 'over limit',
+                    'count' => count($page_ids),
+                    'page_types' => [],
+                    'failures' => [],
+                    'modifications' => [],
+                    'holes' => [],
+                    'ft' => [],
+                    'mt' => [],
+                    'hmt' => [],
+                    'i' => []
+                ]
+            ];
+        }
 
         $failures = FailurePosition::whereIn('page_id', $page_ids)
             ->with([
                 'part' => function($q) {
-                    $q->select(['id', 'part_type_id']);
+                    $q->select(['id', 'parts.part_type_id']);
                 },
                 'page' => function($q) {
-                    $q->select(['id', 'family_id']);
+                    $q->select(['id', 'family_id', 'pages.page_type_id']);
                 },
                 'page.family' => function($q) {
                     $q->select(['id', 'inspector_group']);
                 }
             ])
             ->get(['id', 'point', 'page_id', 'part_id', 'failure_id'])
+            ->filter(function($fp) use ($partTypeId) {
+                return $fp->part->part_type_id == $partTypeId;
+            })
             ->map(function($fp) {
                 return [
                     'id' => $fp->failure_id,
                     'p' => $fp->point,
-                    'pg' => $fp->page->id,
+                    'pg' => $fp->page->page_type_id,
                     'c' => $fp->page->family->inspector_group,
                     'pt' => $fp->part->part_type_id
                 ];
+            })
+            ->values();
+
+        $modifications = ModificationFailurePosition::whereIn('page_id', $page_ids)
+            ->with([
+                'failurePosition' => function($q) {
+                    $q->select(['id', 'point']);
+                },
+                'page' => function($q) {
+                    $q->select(['id', 'family_id', 'pages.page_type_id']);
+                },
+                'page.family' => function($q) {
+                    $q->select(['id', 'inspector_group']);
+                }
+            ])
+            ->get()
+            ->map(function($mf) {
+                return [
+                    'id' => $mf->m_id,
+                    'p' => $mf->failurePosition->point,
+                    'c' => $mf->page->family->inspector_group
+                ];
             });
 
-        $holes = Hole::where('part_type_id', '=', $partTypeId)
+        $holes = Hole::where('holes.part_type_id', '=', $partTypeId)
             ->join('figures as f', function($join) {
                 $join->on('f.id', '=', 'holes.figure_id');
             })
@@ -583,24 +844,72 @@ class ShowController extends Controller
             ->select(['holes.*', 'pt.id as page_type_id'])
             ->with([
                 'holePages' => function($q) use ($page_ids) {
-                    $q->whereIn('page_id', $page_ids)->select(['id', 'hole_id', 'page_id', 'status']);
+                    $q->whereIn('page_id', $page_ids)
+                        ->where('status', '!=', 1)
+                        ->select(['id', 'hole_id', 'page_id', 'status']);
                 },
                 'holePages.holeModification' => function($q){
                     $q->select(['hole_page_hole_modification.id', 'hp_id']);
                 }
             ])
-            ->get(['id', 'point', 'part_type_id', 'figure_id'])
+            ->get(['id', 'point', 'holes.part_type_id', 'figure_id'])
             ->map(function($h) {
                 return [
                     'id' => $h->id,
+                    'l' => $h->label,
                     'p' => $h->point,
                     'd' => $h->direction,
                     's' => $h->holePages->map(function($hp) {
-                        return $hp->holeModification->count() > 0 ? 3 : $hp->status;
+                        if ($hp->holeModification->count() > 0) {
+                            return [
+                                's' => $hp->status,
+                                'hm' => $hp->holeModification[0]->pivot->hm_id
+                            ];                            
+                        }
+
+                        return [
+                            's' => $hp->status,
+                            'hm' => null
+                        ];
                     }),
                     'pg' => $h->page_type_id
                 ];
             });
+
+        $inlines = [];
+        if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
+            $inlines = Inline::where('part_type_id', '=', $partTypeId)
+                ->join('inline_page as ip', function($join) {
+                    $join->on('ip.inline_id', '=', 'inlines.id');
+                })
+                ->join('pages as pg', function($join) {
+                    $join->on('ip.page_id', '=', 'pg.id');
+                })
+                ->join('inspection_families as if', function($join) use ($start_at, $end_at) {
+                    $join->on('pg.family_id', '=', 'if.id')
+                        ->where('ip.inspected_at', '>', $start_at)
+                        ->where('ip.inspected_at', '<=', $end_at);
+                })
+                ->select(['inlines.id', 'ip.status', 'ip.part_id', 'ip.inspected_at', 'if.inspector_group'])
+                ->orderBy('ip.inspected_at', 'desc')
+                ->get()
+                ->map(function($i) {
+                    return [
+                        'id' => $i->id,
+                        'part_id' => $i->part_id,
+                        'inspected_at' => $i->inspected_at,
+                        'status' => $i->status
+                    ];
+                })
+                ->groupBy('id')
+                ->map(function($i) {
+                    return $i->groupBy('part_id')
+                        ->map(function($i) {
+                            return $i->first()['status'];
+                        })
+                        ->values();
+                });
+        }
 
 
         $inspectionGroup = InspectionGroup::find($itionGId);
@@ -608,6 +917,11 @@ class ShowController extends Controller
         $failureTypes = $inspectionGroup->sortedFailures();
         $modificationTypes = $inspectionGroup->sortedModifications();
         $holeModificationTypes = $inspectionGroup->sortedHoleModifications();
+
+        $inlinesInfo = [];
+        if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
+            $inlinesInfo = Inline::where('part_type_id', '=', $partTypeId)->get();
+        }
 
         return [
             'data' => [
@@ -620,11 +934,13 @@ class ShowController extends Controller
                     ];
                 }),
                 'failures' => $failures,
+                'modifications' => $modifications,
                 'holes' => $holes,
+                'inlines' => $inlines,
                 'ft' => $failureTypes,
                 'mt' => $modificationTypes,
                 'hmt' => $holeModificationTypes,
-                'i' => []
+                'i' => $inlinesInfo
             ]
         ];
     }
@@ -652,7 +968,7 @@ class ShowController extends Controller
                 'f' => $f,
                 'm' => $m,
                 'h' => $h,
-                'hm' => $m,
+                'hm' => $hm,
                 'i' => $i,
                 'parts' => []
             ]];
@@ -660,6 +976,8 @@ class ShowController extends Controller
 
         $detail = new PartResult($part->id, $partTypeId, $itionGId);
         $formated = $detail->setDetails()->formatForRerefence()->get();
+        // $formated = $detail->setDetails()->get();
+        // $formated = $detail->setDetails()->formatForRerefence();
 
         if (!$formated) {
             return ['data' => [
@@ -667,7 +985,7 @@ class ShowController extends Controller
                 'f' => $f,
                 'm' => $m,
                 'h' => $h,
-                'hm' => $m,
+                'hm' => $hm,
                 'i' => $i,
                 'parts' => []
             ]];
@@ -678,7 +996,7 @@ class ShowController extends Controller
             'f' => $f,
             'm' => $m,
             'h' => $h,
-            'hm' => $m,
+            'hm' => $hm,
             'i' => $i,
             'parts' => [$formated]
         ]];
@@ -725,7 +1043,7 @@ class ShowController extends Controller
                     ->where('inspection_group_id', '=', $itionGId)
                     ->where(function($q) use ($start, $end) {
                         $q->whereNotNull('if.inspected_at')->orWhere(function($q) use ($start, $end) {
-                            $q->where('if.updated_at', '>=', $start)->where('if.updated_at', '<', $end);
+                            $q->where('if.created_at', '>=', $start)->where('if.created_at', '<', $end);
                         });
                     })
                     ->where(function($q) use ($start, $end) {
@@ -735,7 +1053,7 @@ class ShowController extends Controller
                     });
             })
             ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at'])
-            ->orderBy('if.inspected_at', 'if.created_at')
+            ->orderBy('if.inspected_at', 'asc', 'if.created_at', 'asc')
             ->groupBy('parts.id')
             ->with([
                 'pages' => function($q) use ($itionGId, $partTypeId, $f, $m) {

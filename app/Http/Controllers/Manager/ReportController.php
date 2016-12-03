@@ -62,8 +62,8 @@ class ReportController extends Controller
                 })
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                     $join->on('if.id', '=', 'pg.family_id')
-                        ->where('if.updated_at', '>=', $start)
-                        ->where('if.updated_at', '<', $end)
+                        ->where('if.created_at', '>=', $start)
+                        ->where('if.created_at', '<', $end)
                         ->where('if.inspection_group_id', '=', $itionGId)
                         ->whereIn('if.inspector_group', $itorG);
                 })
@@ -88,7 +88,7 @@ class ReportController extends Controller
                             ->select(['pages.*', 'if.inspected_at', 'i.en']);
                     }
                 ])
-                ->orderBy('if.updated_at')
+                ->orderBy('if.created_at')
                 ->get();
         }
         elseif ($itionGId == 4 || $itionGId == 8) {
@@ -101,8 +101,8 @@ class ReportController extends Controller
                 })
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                     $join->on('if.id', '=', 'pg.family_id')
-                        ->where('if.updated_at', '>=', $start)
-                        ->where('if.updated_at', '<', $end)
+                        ->where('if.created_at', '>=', $start)
+                        ->where('if.created_at', '<', $end)
                         ->where('if.inspection_group_id', '=', $itionGId)
                         ->whereIn('if.inspector_group', $itorG);
                 })
@@ -120,8 +120,8 @@ class ReportController extends Controller
                     'pages' => function($q) use ($start, $end, $itionGId, $itorG) {
                         $q->join('inspection_families as if', function ($join) use ($start, $end, $itionGId, $itorG) {
                             $join->on('pages.family_id', '=', 'if.id')
-                                ->where('if.updated_at', '>=', $start)
-                                ->where('if.updated_at', '<', $end)
+                                ->where('if.created_at', '>=', $start)
+                                ->where('if.created_at', '<', $end)
                                 ->whereIn('inspector_group', $itorG)
                                 ->where('if.inspection_group_id', '=', $itionGId);
                         })
@@ -139,7 +139,7 @@ class ReportController extends Controller
                         $q->select(['hole_modifications.id', 'name']);
                     }
                 ])
-                ->orderBy('if.updated_at')
+                ->orderBy('if.created_at')
                 ->get();
         }
         elseif ($itionGId == 16 || $itionGId == 10 || $itionGId == 11 || $itionGId == 12 || $itionGId == 14) {
@@ -152,8 +152,8 @@ class ReportController extends Controller
                 })
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                     $join->on('if.id', '=', 'pg.family_id')
-                        ->where('if.updated_at', '>=', $start)
-                        ->where('if.updated_at', '<', $end)
+                        ->where('if.created_at', '>=', $start)
+                        ->where('if.created_at', '<', $end)
                         ->where('if.inspection_group_id', '=', $itionGId)
                         ->whereIn('if.inspector_group', $itorG);
                 })
@@ -171,8 +171,8 @@ class ReportController extends Controller
                     'pages' => function($q) use ($start, $end, $itionGId, $itorG) {
                         $q->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                             $join->on('if.id', '=', 'pages.family_id')
-                                ->where('if.updated_at', '>=', $start)
-                                ->where('if.updated_at', '<', $end)
+                                ->where('if.created_at', '>=', $start)
+                                ->where('if.created_at', '<', $end)
                                 ->where('if.inspection_group_id', '=', $itionGId)
                                 ->whereIn('if.inspector_group', $itorG);
                         })->select(['pages.*']);
@@ -180,7 +180,7 @@ class ReportController extends Controller
                     'pages.comments',
                     'partType'
                 ])
-                ->orderBy('if.updated_at')
+                ->orderBy('if.created_at')
                 ->get();
         }
 

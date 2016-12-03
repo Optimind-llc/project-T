@@ -36,7 +36,8 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 }
-export function getPageData(partT, itionG, itorG, s = null, e = null, panel = null) {
+
+export function panelIdMapping(partT, itionG, itorG, panel) {
   return {
     [CALL_API]: {
       types: [
@@ -44,7 +45,22 @@ export function getPageData(partT, itionG, itorG, s = null, e = null, panel = nu
         REDUEST_Page_DATA_SUCCESS,
         REDUEST_Page_DATA_FAIL
       ],
-      endpoint: `/show/page2/${partT}/${itionG}/${itorG}${(s && e)?`?start=${s}&end=${e}`:''}${panel?`?panelId=${panel}`:''}`,
+      endpoint: `/show/mapping/panelId/${partT}/${itionG}/${itorG}/${panel}`,
+      method: 'GET',
+      body: null
+    }
+  };
+}
+
+export function advancedMapping(partT, itionG, itorG, s = null, e = null) {
+  return {
+    [CALL_API]: {
+      types: [
+        REDUEST_Page_DATA,
+        REDUEST_Page_DATA_SUCCESS,
+        REDUEST_Page_DATA_FAIL
+      ],
+      endpoint: `/show/mapping/advanced/${partT}/${itionG}/${itorG}${(s && e)?`?start=${s}&end=${e}`:''}`,
       method: 'GET',
       body: null
     }
@@ -52,5 +68,6 @@ export function getPageData(partT, itionG, itorG, s = null, e = null, panel = nu
 }
 
 export const pageActions = {
-  getPageData,
+  panelIdMapping,
+  advancedMapping
 };

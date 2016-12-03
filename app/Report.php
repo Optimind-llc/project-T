@@ -42,7 +42,7 @@ class Report
         $this->tyoku = $t;
         $this->now = Carbon::now();
 
-        $switchingDate = Carbon::createFromFormat('Y-m-d H:i:s', '2016-12-5 00:00:00');
+        $switchingDate = Carbon::createFromFormat('Y-m-d H:i:s', '2016-12-3 00:00:00');
         if ($d->gte($switchingDate)) {
             $this->triple = true;
         }
@@ -156,7 +156,8 @@ class Report
                     'gStatus' => $gStatus,
                     'status' => $status,
                     'inspectedBy' => $inspectedBy,
-                    'time' => $part->updated_at,
+                    // 'time' => $part->updated_at,
+                    'time' => $part->created_at,
                     'comment' => $comment,
                     'failures' => $part->failurePositions->map(function($fp) {
                         return $fp->failure_id;
@@ -215,7 +216,7 @@ class Report
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y2'], 'パネルID');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y2'], '検査者');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y2'], '出荷判定');
-                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '時間');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '登録時間');
 
                 foreach ($parts_obj as $n => $part_obj) {
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1']+($n*$dj), $A4['y2']+4, $part_obj->short_name);
@@ -494,7 +495,8 @@ class Report
                     'gStatus' => $gStatus,
                     'status' => $status,
                     'inspectedBy' => $inspectedBy,
-                    'time' => $part->updated_at,
+                    // 'time' => $part->updated_at,
+                    'time' => $part->created_at,
                     'comment' => $comment,
                     'failures' => $part->failurePositions->map(function($fp) {
                         return $fp->failure_id;
@@ -545,7 +547,7 @@ class Report
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y2'], 'パネルID');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y2'], '検査者');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y2'], '出荷判定');
-                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '時間');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '登録時間');
 
                 foreach ($parts_obj as $n => $part_obj) {
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1']+($n*$dj), $A4['y2']+4, $part_obj->short_name);
@@ -766,7 +768,8 @@ class Report
                 'panelId' => $part->first()->panel_id,
                 'status' => $part->first()->status,
                 'inspectedBy' => $inspectedBy,
-                'time' => $part->first()->updated_at,
+                // 'time' => $part->first()->updated_at,
+                'time' => $part->first()->created_at,
                 'comment' => $part->first()->comment,
                 'failures' => $part->first()->failurePositions->map(function($fp) {
                     return $fp->failure_id;
@@ -826,7 +829,7 @@ class Report
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y2'], 'パネルID');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y2'], '検査者');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y2'], '出荷判定');
-                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '検査時間');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '登録時間');
 
                 foreach ($parts50->values() as $row => $part) {
                     $status = $part['status'] == 1 ? '○' : '×';
@@ -1140,7 +1143,7 @@ class Report
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$dL, $A4['y2'], 'パネルID');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$dL, $A4['y2'], '検査者');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$dL, $A4['y2'], '判定');
-                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$dL, $A4['y2'], '時間');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$dL, $A4['y2'], '登録時間');
 
                 // foreach ($chunked_part_type[$p]->values() as $row => $part) {
                 foreach ($chunked_part_types[$part_obj->id][$p]->values() as $row => $part) {
@@ -1150,7 +1153,7 @@ class Report
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$dL, $A4['y3']+($row)*$A4['th'], $part->panel_id);
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$dL, $A4['y3']+($row)*$A4['th'], array_key_exists(1, $createdBy) ? $createdBy[1] : $createdBy[0]);
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$dL, $A4['y3']+($row)*$A4['th'], $part->status == 1 ? '○' : '×');
-                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$dL, $A4['y3']+($row)*$A4['th'], $part->updated_at->format('H:i'));
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$dL, $A4['y3']+($row)*$A4['th'], $part->created_at->format('H:i'));
                 }
 
                 $col += 1;
@@ -1185,7 +1188,8 @@ class Report
                     'panelId' => $part->panel_id,
                     'status' => $part->status,
                     'inspectedBy' => $inspectedBy,
-                    'time' => $part->updated_at,
+                    // 'time' => $part->updated_at,
+                    'time' => $part->created_at,
                     'comment' => $part->comment,
                     'failures' => $part->failurePositions->map(function($fp) {
                         return $fp->failure_id;
@@ -1311,7 +1315,8 @@ class Report
                     'panelId' => $part->panel_id,
                     'status' => $part->status,
                     'inspectedBy' => $inspectedBy,
-                    'time' => $part->updated_at,
+                    // 'time' => $part->updated_at,
+                    'time' => $part->created_at,
                     'comment' => $part->comment,
                     'failures' => $part->failurePositions->map(function($fp) {
                         return $fp->failure_id;
@@ -1530,7 +1535,7 @@ class Report
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x1'], $A4['y2'], 'No.');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y2'], 'パネルID');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y2'], '出荷判定');
-                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '時間');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '登録時間');
 
                 foreach ($parts50->values() as $row => $part) {
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x1'], $A4['y3']+($row)*$th, $p*100+$col*50+$row+1);
@@ -1717,7 +1722,8 @@ class Report
                 'panelId' => $part->panel_id,
                 'status' => $part->status,
                 'inspectedBy' => $inspectedBy,
-                'time' => $part->updated_at,
+                // 'time' => $part->updated_at,
+                'time' => $part->created_at,
                 'comment' => $comment,
                 'failures' => $part->failurePositions->map(function($fp) {
                     return $fp->failure_id;
@@ -1770,7 +1776,7 @@ class Report
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y2'], 'パネルID');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y2'], '検査者');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y2'], '出荷判定');
-                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '時間');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '登録時間');
 
                 foreach ($parts50->values() as $row => $part) {
                     $panelId = $part['panelId'];
@@ -1957,7 +1963,12 @@ class Report
                         $f_sum = $sum['f'][$ft['id']];
                     }
                     $tcpdf->Text($A3['x0']+24+($fi*$fmd), $A3['y2']+$n*$th, $f_sum);
-                }   
+                }
+            }
+            else {
+                foreach ($failureTypes as $fi => $ft) {
+                    $tcpdf->Text($A3['x0']+24+($fi*$fmd), $A3['y2']+$n*$th, 0);
+                }
             }
 
             if ($sum->has('f')) {
@@ -1970,6 +1981,11 @@ class Report
                     }
 
                     $tcpdf->Text($A3['x0']+24+$margin+$fmd*($fn+$mi), $A3['y2']+$n*$th, $m_sum);
+                }
+            }
+            else {
+                foreach ($modificationTypes as $mi => $mt) {
+                    $tcpdf->Text($A3['x0']+24+$margin+$fmd*($fn+$mi), $A3['y2']+$n*$th, 0);
                 }
             }
 

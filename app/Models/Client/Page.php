@@ -94,6 +94,14 @@ class Page extends Model
         ->withPivot('comment', 'id');
     }
 
+    public function hpmps()
+    {
+        return $this->hasMany(
+            'App\Models\Client\HolePageHoleModification',
+            'page_id',
+            'id'
+        );
+    }
 
     public function inlines()
     {

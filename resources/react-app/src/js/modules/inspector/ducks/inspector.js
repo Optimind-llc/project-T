@@ -4,9 +4,22 @@ import { CALL_API } from '../../../middleware/fetchMiddleware';
 export const REDUEST_INSPECTORS_DATA = 'REDUEST_INSPECTORS_DATA';
 export const REDUEST_INSPECTORS_DATA_SUCCESS = 'REDUEST_INSPECTORS_DATA_SUCCESS';
 export const REDUEST_INSPECTORS_DATA_FAIL = 'REDUEST_INSPECTORS_DATA_FAIL';
+
+export const CREATE_INSPECTORS_DATA = 'CREATE_INSPECTORS_DATA';
+export const CREATE_INSPECTORS_DATA_SUCCESS = 'CREATE_INSPECTORS_DATA_SUCCESS';
+export const CREATE_INSPECTORS_DATA_FAIL = 'CREATE_INSPECTORS_DATA_FAIL';
+
 export const UPDATE_INSPECTORS_DATA = 'UPDATE_INSPECTORS_DATA';
 export const UPDATE_INSPECTORS_DATA_SUCCESS = 'UPDATE_INSPECTORS_DATA_SUCCESS';
 export const UPDATE_INSPECTORS_DATA_FAIL = 'UPDATE_INSPECTORS_DATA_FAIL';
+
+export const ACTIVATE_INSPECTORS_DATA = 'ACTIVATE_INSPECTORS_DATA';
+export const ACTIVATE_INSPECTORS_DATA_SUCCESS = 'ACTIVATE_INSPECTORS_DATA_SUCCESS';
+export const ACTIVATE_INSPECTORS_DATA_FAIL = 'ACTIVATE_INSPECTORS_DATA_FAIL';
+
+export const DEACTIVATE_INSPECTORS_DATA = 'DEACTIVATE_INSPECTORS_DATA';
+export const DEACTIVATE_INSPECTORS_DATA_SUCCESS = 'DEACTIVATE_INSPECTORS_DATA_SUCCESS';
+export const DEACTIVATE_INSPECTORS_DATA_FAIL = 'DEACTIVATE_INSPECTORS_DATA_FAIL';
 
 const initialState = {
   data: null,
@@ -40,20 +53,29 @@ export default function reducer(state = initialState, action) {
         message: action.payload.message
       });
 
+    case CREATE_INSPECTORS_DATA:
     case UPDATE_INSPECTORS_DATA:
+    case ACTIVATE_INSPECTORS_DATA:
+    case DEACTIVATE_INSPECTORS_DATA:
       return Object.assign({}, state, {
         updating: true,
         updated: false,
         message: ''
       });
 
+    case CREATE_INSPECTORS_DATA_SUCCESS:
     case UPDATE_INSPECTORS_DATA_SUCCESS:
+    case ACTIVATE_INSPECTORS_DATA_SUCCESS:
+    case DEACTIVATE_INSPECTORS_DATA_SUCCESS:
       return Object.assign({}, state, {
         updating: false,
         updated: true
       });
 
+    case CREATE_INSPECTORS_DATA_FAIL:
     case UPDATE_INSPECTORS_DATA_FAIL:
+    case ACTIVATE_INSPECTORS_DATA_FAIL:
+    case DEACTIVATE_INSPECTORS_DATA_FAIL:
     console.log(action);
       return Object.assign({}, state, {
         updating: false,
@@ -81,6 +103,21 @@ export function getInspectors(yomi, choku, itionG, status) {
   };
 }
 
+export function createInspector(name, yomi, choku, itionG) {
+  return {
+    [CALL_API]: {
+      types: [
+        CREATE_INSPECTORS_DATA,
+        CREATE_INSPECTORS_DATA_SUCCESS,
+        CREATE_INSPECTORS_DATA_FAIL
+      ],
+      endpoint: 'maintenance/inspector/create',
+      method: 'POST',
+      body: {name, yomi, choku, itionG}
+    }
+  };
+}
+
 export function updateInspector(id, name, yomi, choku, itionG) {
   return {
     [CALL_API]: {
@@ -96,7 +133,40 @@ export function updateInspector(id, name, yomi, choku, itionG) {
   };
 }
 
+export function activateInspector(id) {
+  return {
+    [CALL_API]: {
+      types: [
+        ACTIVATE_INSPECTORS_DATA,
+        ACTIVATE_INSPECTORS_DATA_SUCCESS,
+        ACTIVATE_INSPECTORS_DATA_FAIL
+      ],
+      endpoint: `maintenance/inspector/${id}/activate`,
+      method: 'POST',
+      body: null
+    }
+  };
+}
+
+export function deactivateInspector(id) {
+  return {
+    [CALL_API]: {
+      types: [
+        DEACTIVATE_INSPECTORS_DATA,
+        DEACTIVATE_INSPECTORS_DATA_SUCCESS,
+        DEACTIVATE_INSPECTORS_DATA_FAIL
+      ],
+      endpoint: `maintenance/inspector/${id}/deactivate`,
+      method: 'POST',
+      body: null
+    }
+  };
+}
+
 export const inspectorActions = {
   getInspectors,
-  updateInspector
+  createInspector,
+  updateInspector,
+  activateInspector,
+  deactivateInspector
 };

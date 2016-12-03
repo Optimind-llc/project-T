@@ -61,7 +61,7 @@ class Part extends Model
             'inline_page',
             'part_id',
             'inline_id'
-        )->withPivot('status');
+        )->withPivot('status', 'inspected_at');
     }
 
     public function detail()

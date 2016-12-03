@@ -22,7 +22,7 @@ class ModificationFailurePosition extends Model
     public function page()
     {
         return $this->belongsTo(
-            'App\Models\Client\Part',
+            'App\Models\Client\Page',
             'page_id',
             'id'
         );

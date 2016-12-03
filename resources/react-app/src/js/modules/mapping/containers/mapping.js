@@ -15,7 +15,7 @@ class Mapping extends Component {
     this.state = {
       active: props.active.name,
       fFilter: [],
-      holeStatus: 's0',
+      holeStatus: 0,
       hModification: 1,
       cFilter: [],
       inlineStatus: 's1'
@@ -98,7 +98,7 @@ class Mapping extends Component {
                     {
                       data.ft.map(ft => 
                         <li>
-                          {data.failures == undefined ? 0 : data.failures.filter(f => f.label == ft.label).length}
+                          {data.failures ? data.failures.filter(f => f.id == ft.id).length : 0}
                         </li>
                       )
                     }
@@ -115,22 +115,25 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li>{'穴'}</li>
-                  {data.holes.map(h => <li>{h.label}</li>)}
+                  {data.holes.map(h => <li>{h.l}</li>)}
                 </ul>
               </div>
               <div>
                 <ul>
                   <li
-                    onClick={() => this.setState({holeStatus: 's0'})}
+                    onClick={() => this.setState({holeStatus: 0})}
                   >
-                    <span>{holeStatus == 's0' && <p>{'✔'}︎</p>}</span>
+                    <span>{holeStatus === 0 && <p>{'✔'}︎</p>}</span>
                     {'×'}
                   </li>
                   {data.holes.map(h => {
                     let percentage = 0;
-                    if (h.sum !== 0 && h.s0 != 0) percentage = Math.round(1000*h.s0/h.sum)/10;
+                    const sum = data.count/data.pageTypes.length;
+                    const sum0 = h.s.filter(s => s.s == 0).length;
+                    if (sum !== 0) percentage = Math.round(1000*sum0/sum)/10;
+
                     return (
-                      <li>{`${percentage}%`}<span>({h.s0 ? h.s0 : '-'})</span></li>
+                      <li>{`${percentage}%`}<span>({sum !== 0 ? sum0 : '-'})</span></li>
                     )
                   })}
                 </ul>
@@ -138,16 +141,19 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li
-                    onClick={() => this.setState({holeStatus: 's2'})}
+                    onClick={() => this.setState({holeStatus: 2})}
                   >
-                    <span>{holeStatus == 's2' && <p>{'✔'}︎</p>}</span>
+                    <span>{holeStatus === 2 && <p>{'✔'}︎</p>}</span>
                     {'△'}
                   </li>
                   {data.holes.map(h => {
                     let percentage = 0;
-                    if (h.sum !== 0 && h.s2 != 0) percentage = Math.round(1000*h.s2/h.sum)/10;
+                    const sum = data.count/data.pageTypes.length;
+                    const sum2 = h.s.filter(s => s.s == 2).length;
+                    if (sum !== 0) percentage = Math.round(1000*sum2/sum)/10;
+
                     return (
-                      <li>{`${percentage}%`}<span>({h.s2 ? h.s2 : '-'})</span></li>
+                      <li>{`${percentage}%`}<span>({sum !== 0 ? sum2 : '-'})</span></li>
                     )
                   })}
                 </ul>
@@ -155,16 +161,19 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li
-                    onClick={() => this.setState({holeStatus: 's1'})}
+                    onClick={() => this.setState({holeStatus: 1})}
                   >
-                    <span>{holeStatus == 's1' && <p>{'✔'}︎</p>}</span>
+                    <span>{holeStatus === 1 && <p>{'✔'}︎</p>}</span>
                     {'○'}
                   </li>
                   {data.holes.map(h => {
                     let percentage = 0;
-                    if (h.sum !== 0 && h.s1 != 0) percentage = Math.round(1000*h.s1/h.sum)/10;
+                    const sum = data.count/data.pageTypes.length;
+                    const sum02 = h.s.length;
+                    if (sum !== 0) percentage = Math.round(1000*(sum-sum02)/sum)/10;
+
                     return (
-                      <li>{`${percentage}%`}<span>({h.s1 ? h.s1 : '-'})</span></li>
+                      <li>{`${percentage}%`}<span>({sum !== 0 ? (sum-sum02) : '-'})</span></li>
                     )
                   })}
                 </ul>
@@ -172,16 +181,19 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li
-                    onClick={() => this.setState({holeStatus: 's3'})}
+                    onClick={() => this.setState({holeStatus: 3})}
                   >
                     {/*<span>{holeStatus == 's3' && <p>{'✔'}︎</p>}</span>*/}
                     {'手直'}
                   </li>
                   {data.holes.map(h => {
-                    let percentage = 0;
-                    if (h.sum !== 0 && h.s3 != 0) percentage = Math.round(1000*h.s3/h.sum)/10;
+                    // let percentage = 0;
+                    // const sum = h.s.length;
+                    const sumM = h.s.filter(s => s.hm !== null).length;
+                    // if (sum !== 0) percentage = Math.round(1000*sum2/sum)/10;
+
                     return (
-                      <li>{h.s3 ? h.s3 : '-'}</li>
+                      <li>{sumM !== 0 ? sumM : '-'}</li>
                     )
                   })}
                 </ul>
@@ -232,7 +244,7 @@ class Mapping extends Component {
                     {
                       data.mt.map(ct => 
                         <li>
-                          {data.comments == undefined ? 0 : data.comments.filter(c => c.id == ct.id).length}
+                          {data.modifications ? data.modifications.filter(m => m.id == ct.id).length : 0}
                         </li>
                       )
                     }
@@ -249,7 +261,7 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li>{'穴'}</li>
-                  {data.holes.map(h => <li>{h.label}</li>)}
+                  {data.holes.map(h => <li>{h.l}</li>)}
                 </ul>
               </div>
               {
@@ -264,10 +276,11 @@ class Mapping extends Component {
                           {hm.name}
                         </li>
                         {data.holes.map(h => {
-                          let percentage = null;
-                          const sum = h.holes.filter(hmId => hmId !== 0).length;
-                          const modified = h.holes.filter(hmId => hmId == hm.id).length;
+                          let percentage = 0;
+                          const sum = h.s.filter(s => s.hm !== null).length;
+                          const modified = h.s.filter(s => s.hm == hm.id).length;
                           if (h.sum !== 0 && modified != 0) percentage = Math.round(1000*modified/sum)/10;
+
                           return (
                             <li>{modified ? modified : ''}{/*<span>{percentage ? `${percentage}%`: ''}</span>*/}</li>
                           )
@@ -283,12 +296,14 @@ class Mapping extends Component {
       case 'inline':
         return (
           <div className="inline">
+          {
+            data.inlines !== null && !Array.isArray(data.inlines) &&
             <div className="collection">
               <div>
                 <ul>
                   <li>{'精度検査'}</li>
                   {data.i.map(i => 
-                    <li>{i[0].sort}</li>
+                    <li>{i.sort}</li>
                   )}
                 </ul>
               </div>
@@ -299,10 +314,10 @@ class Mapping extends Component {
                   >
                     {'×'}
                   </li>
-                  {data.i.map(is => {
+                  {data.i.map(ii => {
                     let percentage = 0;
-                    const sum = is.length;
-                    const sum0 = is.filter(i => i.max < i.status || i.min > i.status ).length;
+                    const sum = data.inlines[ii.id].length;
+                    const sum0 = data.inlines[ii.id].filter(i => ii.maxTolerance < i || ii.minTolerance > i).length;
                     if (sum !== 0 && sum0 != 0) percentage = Math.round(1000*sum0/sum)/10;
                     return (
                       <li>{`${percentage}%`}<span>({sum0})</span></li>
@@ -317,11 +332,12 @@ class Mapping extends Component {
                   >
                     {'○'}
                   </li>
-                  {data.i.map(is => {
+                  {data.i.map(ii => {
                     let percentage = 0;
-                    const sum = is.length;
-                    const sum1 = is.filter(i => i.max > i.status && i.min < i.status ).length;
+                    const sum = data.inlines[ii.id].length;
+                    const sum1 = data.inlines[ii.id].filter(i => ii.maxTolerance >= i && ii.minTolerance <= i).length;
                     if (sum !== 0 && sum1 != 0) percentage = Math.round(1000*sum1/sum)/10;
+
                     return (
                       <li>{`${percentage}%`}<span>({sum1})</span></li>
                     )
@@ -329,6 +345,7 @@ class Mapping extends Component {
                 </ul>
               </div>
             </div>
+          }
           </div>
         );
     }
@@ -352,6 +369,10 @@ class Mapping extends Component {
                 <div className="circle-yellow"></div>
                 <p>黄直</p>
               </div>
+              <div>
+                <div className="circle-blue"></div>
+                <p>黒直</p>
+              </div>
             </div>
           }{
             active == 'comment' &&
@@ -363,6 +384,10 @@ class Mapping extends Component {
               <div>
                 <div className="rect-yellow"></div>
                 <p>黄直</p>
+              </div>
+              <div>
+                <div className="rect-blue"></div>
+                <p>黒直</p>
               </div>
             </div>
           }
@@ -381,11 +406,21 @@ class Mapping extends Component {
                 active == 'failure' &&
                 data.failures.filter(f => fFilter.indexOf(f.id) == -1).map(f => {
                   const point = f.p.split(',');
-                  const x = point[0]/2;
-                  const y = point[1]/2;
+                  let x = point[0]/2;
+                  let y = point[1]/2;
+
+                  if(data.pageTypes.length > 1) {
+                    const number = data.pageTypes.find(pt => pt.id == f.pg).n;
+                    switch (number) {
+                      case 1: x = x/2;            y = y/2;            break;
+                      case 2: x = (x + 1740/2)/2; y = y/2;            break;
+                      case 3: x = x/2;            y = (y + 1030/2)/2; break;
+                      case 4: x = (x + 1740/2)/2; y = (y + 1030/2)/2; break;
+                    }
+                  }
+
                   switch (f.c) {
                     case '白直':
-                      console.log(f)
                       return (
                         <g>
                           <circle cx={x} cy={y} r={5} fill="red" />
@@ -422,42 +457,50 @@ class Mapping extends Component {
                       case 4: h.x = (h.x + 1740/2)/2; h.y = (h.y + 1030/2)/2; h.lx = (h.lx + 1740/2)/2; h.ly = (h.ly + 1030/2)/2; break;
                     }
                   }
+
+                  const s = h.s.map(s => s.s);
+                  let disable = s.indexOf(holeStatus) === -1;
+                  if (holeStatus === 1) {
+                    disable = s.length === data.count/data.pageTypes.length;
+                  }
+
                   return (
                     <g>
-                      <circle cx={h.x} cy={h.y} r={4} fill={h[holeStatus] == 0 ? 'rgba(255,0,0,0.4)' : 'rgba(255,0,0,1)'} />
+                      <circle cx={h.x} cy={h.y} r={4} fill={disable ? 'rgba(255,0,0,0.4)' : 'rgba(255,0,0,1)'} />
                       <text
                         x={h.lx}
                         y={h.ly}
                         dy="6"
                         fontSize="12"
-                        fill={h[holeStatus] == 0 ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
+                        fill={disable ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
                         textAnchor="middle"
                         fontWeight="bold"
                         >
-                          {h.label}
+                          {h.l}
                         </text>
                     </g>
                   )
                 })
               }{
                 active == 'comment' &&
-                data.comments.filter(c => cFilter.indexOf(c.id) == -1).map(c => {
-                  const point = c.point.split(',');
+                data.modifications.filter(c => cFilter.indexOf(c.id) == -1).map(m => {
+                  const point = m.p.split(',');
                   const x = point[0]/2;
                   const y = point[1]/2;
-                  if (c.choku == '白直') {
+
+                  if (m.c == '白直') {
                     return (
                       <g>
                         <rect x={x-6} y={y-6} width="12" height="12" fill="red"/>
                       </g>
                     ); 
-                  } else if (c.choku == '黄直'){
+                  } else if (m.c == '黄直'){
                     return (
                       <g>
                         <rect x={x-6} y={y-6} width="12" height="12" fill="#C6B700"/>
                       </g>
                     ); 
-                  }else if (c.choku == '黒直'){
+                  }else if (m.c == '黒直'){
                     return (
                       <g>
                         <rect x={x-6} y={y-6} width="12" height="12" fill="blue"/>
@@ -467,35 +510,35 @@ class Mapping extends Component {
                 })
               }{
                 active == 'hModification' &&
-                data.holes.filter(h => h.holes.reduce((a,b) => a+b) !== 0).map(hole => {
+                data.holes.map(hole => {
                   const h = this.formatHole(hole);
-                  if(Array.isArray(data.path)) {
-                    switch (h.pageNum) {
+
+                  if(data.pageTypes.length > 1) {
+                    const number = data.pageTypes.find(pt => pt.id == hole.pg).n;
+                    switch (number) {
                       case 1: h.x = (h.x)/2; h.lx = (h.lx)/2; h.y = (h.y)/2; h.ly = (h.ly)/2; break;
                       case 2: h.x = (h.x + 1740/2)/2; h.y = (h.y)/2; h.lx = (h.lx + 1740/2)/2; h.ly = (h.ly)/2; break;
                       case 3: h.x = (h.x)/2; h.y = (h.y + 1030/2)/2; h.lx = (h.lx)/2; h.ly = (h.ly + 1030/2)/2; break;
                       case 4: h.x = (h.x + 1740/2)/2; h.y = (h.y + 1030/2)/2; h.lx = (h.lx + 1740/2)/2; h.ly = (h.ly + 1030/2)/2; break;
                     }
                   }
-                  
-                  let percentage = 0;
-                  if (h.sum !== 0 && h[holeStatus] != 0) percentage = Math.round(100*h[holeStatus]/h.sum);
 
-                  let includ = h.holes.indexOf(hModification) == -1;
+                  const modificatedHole = h.s.filter(s => s.hm).map(s => s.hm);
+                  const includ = modificatedHole.indexOf(hModification) >= 0;
 
                   return (
                     <g>
-                      <circle cx={h.x} cy={h.y} r={4} fill={includ ? 'rgba(255,0,0,0.4)' : 'rgba(255,0,0,1)'} />
+                      <circle cx={h.x} cy={h.y} r={4} fill={includ ? 'rgba(255,0,0,1)' : 'rgba(255,0,0,0.4)'} />
                       <text
                         x={h.lx}
                         y={h.ly}
                         dy="6"
                         fontSize="12"
-                        fill={includ ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
+                        fill={includ ? 'rgba(0,0,0,1)' : 'rgba(0,0,0,0.3)'}
                         textAnchor="middle"
                         fontWeight="bold"
                         >
-                          {h.label}
+                          {h.l}
                         </text>
                     </g>
                   )
@@ -503,7 +546,7 @@ class Mapping extends Component {
               }{
                 active == 'inline' &&
                 Object.keys(data.i).map(id => {
-                  return data.i[id].map(i => {
+                  return data.i.map(i => {
                     const width = 106;
                     const height = 30;
                     const point = i.point.split(',');
@@ -591,7 +634,7 @@ class Mapping extends Component {
                   手直し
                 </button>
               }{
-                data.i.length == 0 &&
+                data.ft.length !== 0 &&
                 <button
                   className={active == 'failure' ? '' : 'disable'}
                   onClick={() => this.setState({ active: 'failure'})}
@@ -599,7 +642,7 @@ class Mapping extends Component {
                   外観検査
                 </button>
               }{
-                data.i.length !== 0 &&
+                data.i.length !== 0 && data.inlines !== null &&
                 <button
                   className={active == 'inline' ? '' : 'disable'}
                   onClick={() => this.setState({ active: 'inline'})}
@@ -617,15 +660,21 @@ class Mapping extends Component {
           isFetching && <Loading/>
         }
         {
-          !isFetching && data.pages == 0 && !this.props.realtime &&
+          !isFetching && data.count == 0 &&
           <div className="cover">
             <p>検査結果が見つかりませんでした</p>
           </div>
         }
         {
-          !isFetching && data.pages == 'notFound' &&
+          !isFetching && data.message == 'notFound' &&
           <div className="cover">
             <p>検索条件が間違っています</p>
+          </div>
+        }
+        {
+          !isFetching && data.message == 'over limit' &&
+          <div className="cover">
+            <p>検索条件が広すぎます</p>
           </div>
         }
       </div>

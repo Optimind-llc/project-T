@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
+import iconCheck from './check.svg';
 // Actions
 import { inspectorActions } from '../ducks/inspector';
 // Material-ui Components
@@ -12,6 +13,7 @@ import { grey50, indigo500 } from 'material-ui/styles/colors';
 import './inspector.scss';
 // Components
 import Edit from '../components/edit/edit';
+import Create from '../components/create/create';
 
 class Inspector extends Component {
   constructor(props, context) {
@@ -30,7 +32,13 @@ class Inspector extends Component {
       itionG: {label: '全て', value: itionG},
       status: {label: '表示中', value: status},
       editModal: false,
-      editting: null
+      editting: null,
+      createModal: false,
+      sort: {
+        key: 'yomi',
+        asc: false,
+        id: 0
+      }
     };
   }
 
@@ -40,22 +48,72 @@ class Inspector extends Component {
   }
 
   updateInspector(id, name, yomi, choku, itionG) {
-    console.log(id, name, yomi, choku, itionG);
-    const { updateInspector, getInspectors } = this.props.actions;
-
+    const { updateInspector } = this.props.actions;
     updateInspector(id, name, yomi, choku, itionG);
+  }
+
+  createInspector(name, yomi, choku, itionG) {
+    const { createInspector } = this.props.actions;
+    createInspector(name, yomi, choku, itionG);
   }
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.InspectorData.updated && nextProps.InspectorData.updated) {
       this.requestInspector();
-      this.setState({editModal: false});
+      this.setState({
+        editModal: false,
+        createModal: false
+      });
     }
+  }
+
+  sortData(data) {
+    const { sort } = this.state;
+    data.sort((a,b) => {
+      let aaa = 0;
+      let bbb = 0;
+
+      if (sort.key == 'yomi') {
+        aaa = a[sort.key].toLowerCase();
+        bbb = b[sort.key].toLowerCase();
+      }
+      else if (sort.key == 'chokuName') {
+        aaa = a[sort.key].toLowerCase();
+        bbb = b[sort.key].toLowerCase();
+      }
+      else if (sort.key == 'ig') {
+        if (a[sort.key].find(ig => ig.id == sort.id)) {
+          aaa = a[sort.key].find(ig => ig.id == sort.id).sort;
+        }
+        else {
+          aaa = 10000;
+        }
+        if (b[sort.key].find(ig => ig.id == sort.id)) {
+          bbb = b[sort.key].find(ig => ig.id == sort.id).sort;
+        }
+        else {
+          bbb = 10000;
+        }
+      }
+
+      if (sort.asc) {
+        if(aaa < bbb) return 1;
+        else if(aaa > bbb) return -1;
+      } else {
+        if(aaa < bbb) return -1;
+        else if(aaa > bbb) return 1;
+      }
+      return 0;
+    });
+
+    return data;
   }
 
   render() {
     const { InspectorData } = this.props;
-    const { yomi, choku, itionG, status, editModal, editting } = this.state;
+    const { yomi, choku, itionG, status, editModal, editting, createModal, sort } = this.state;
+
+
 
     return (
       <div id="inspector">
@@ -146,18 +204,44 @@ class Inspector extends Component {
           </div>
         </div>
         <div className="body bg-white">
-          <button className="create-btn">新規登録</button>
+          <button
+            className="create-btn"
+            onClick={() => this.setState({createModal: true})}
+          >
+            新規登録
+          </button>
           <table>
             <thead>
               <tr>
                 <th colSpan={1} rowSpan={3}>No.</th>
                 <th colSpan={1} rowSpan={3}>名前</th>
-                <th colSpan={1} rowSpan={3}>ヨミ</th>
-                <th colSpan={1} rowSpan={3}>直</th>
+                <th
+                  colSpan={1}
+                  rowSpan={3}
+                  className={`clickable ${sort.key == 'yomi' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'yomi') this.setState({sort: { key: 'yomi', asc: !sort.asc, id: 0 }});
+                    else this.setState({sort: { key: 'yomi', asc: false, id: 0 }});
+                  }}
+                >
+                  ヨミ
+                </th>
+                <th
+                  colSpan={1}
+                  rowSpan={3}
+                  className={`clickable ${sort.key == 'chokuName' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'chokuName') this.setState({sort: { key: 'chokuName', asc: !sort.asc, id: 0 }});
+                    else this.setState({sort: { key: 'chokuName', asc: false, id: 0 }});
+                  }}
+                >
+                  直
+                </th>
                 <th colSpan={2}>成型工程ライン①</th>
                 <th colSpan={2}>成型工程ライン②</th>
                 <th colSpan={3}>穴あけ工程</th>
                 <th colSpan={5}>接着工程</th>
+                <th colSpan={1} rowSpan={3}>iPad<br/>表示</th>
                 <th colSpan={1} rowSpan={3}>機能</th>
               </tr>
               <tr>
@@ -170,24 +254,132 @@ class Inspector extends Component {
                 <th colSpan={5}>インナーASSY</th>
               </tr>
               <tr>
-                <th colSpan={1}>外観検査</th>
-                <th colSpan={1}>外観検査</th>
-                <th colSpan={1}>外観検査</th>
-                <th colSpan={1}>外観検査</th>
-                <th colSpan={1}>外観検査</th>
-                <th colSpan={1}>穴検査</th>
-                <th colSpan={1}>穴検査</th>
-                <th colSpan={1}>簡易CF</th>
-                <th colSpan={1}>止水</th>
-                <th colSpan={1}>仕上</th>
-                <th colSpan={1}>検査</th>
-                <th colSpan={1}>手直</th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 1) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 1 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 1 }});
+                  }}
+                >
+                  外観検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 5) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 5 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 5 }});
+                  }}
+                >
+                  外観検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 2) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 2 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 2 }});
+                  }}
+                >
+                  外観検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 6) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 6 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 6 }});
+                  }}
+                >
+                  外観検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 15) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 15 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 15 }});
+                  }}
+                >
+                  外観検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 4) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 4 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 4 }});
+                  }}
+                >
+                  穴検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 8) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 8 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 8 }});
+                  }}
+                >
+                  穴検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 16) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 16 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 16 }});
+                  }}
+                >
+                  簡易CF
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 10) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 10 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 10 }});
+                  }}
+                >
+                  止水
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 11) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 11 }});
+                    else this.setState({sort: { key: 'ig', asc: true, id: 11 }});
+                  }}
+                >
+                  仕上
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 12) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 12 }});
+                    else this.setState({sort: { key: 'ig', asc: true, id: 12 }});
+                  }}
+                >
+                  検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 14) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 14 }});
+                    else this.setState({sort: { key: 'ig', asc: true, id: 14 }});
+                  }}
+                >
+                  手直
+                </th>
               </tr>
             </thead>
             <tbody>
             {
               InspectorData.data && InspectorData.data.length != 0 &&
-              InspectorData.data.map((itor, i)=> 
+              this.sortData(InspectorData.data).map((itor, i)=> 
                 {
                   return(
                     <tr className="content" key={i}>
@@ -208,11 +400,21 @@ class Inspector extends Component {
                       <td>{itor.ig.find(ig => ig.id == 12) ? itor.ig.find(ig => ig.id == 12).sort : ''}</td>
                       <td>{itor.ig.find(ig => ig.id == 14) ? itor.ig.find(ig => ig.id == 14).sort : ''}</td>
                       <td>
-                        <button onClick={() => this.setState({
-                          editModal: false
-                        })}>
-                          非表示
-                        </button>
+                      {
+                        itor.status == 1 ?
+                        <img
+                          className="icon-checked"
+                          src={iconCheck}
+                          alt="iconCheck"
+                          onClick={() => this.props.actions.deactivateInspector(itor.id)}
+                        /> :
+                        <div
+                          className="icon-check"
+                          onClick={() => this.props.actions.activateInspector(itor.id)}
+                        ></div>
+                      }
+                      </td>
+                      <td>
                         <button onClick={() => this.setState({
                           editModal: true,
                           editting: itor
@@ -243,6 +445,12 @@ class Inspector extends Component {
               message={InspectorData.message}
               close={() => this.setState({editModal: false})}
               update={(id, name, yomi, choku, itionG) => this.updateInspector(id, name, yomi, choku, itionG)}
+            />
+          }{
+            createModal &&
+            <Create
+              close={() => this.setState({createModal: false})}
+              create={(name, yomi, choku, itionG) => this.createInspector(name, yomi, choku, itionG)}
             />
           }
         </div>

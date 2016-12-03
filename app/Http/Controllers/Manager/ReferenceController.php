@@ -59,7 +59,7 @@ class ReferenceController extends Controller
         }
 
         $date = Carbon::createFromFormat('Y,m,d', '2016,9,30')->today();
-// return $date->addDay();
+
         $inspection_group = InspectionGroup::with(['families'])
             ->where('created_at', '>=', $date)
             ->where('created_at', '<', $date->copy()->addDay(1))

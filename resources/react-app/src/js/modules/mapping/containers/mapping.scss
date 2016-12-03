@@ -41,11 +41,18 @@
 						border-radius: 6px;
 						background-color: #C6B700;
 					}
+					&.circle-blue {
+						border-radius: 6px;
+						background-color: blue;
+					}
 					&.rect-red {
 						background-color: red;
 					}
 					&.rect-yellow {
 						background-color: #C6B700;
+					}
+					&.rect-blue {
+						background-color: blue;
 					}
 				}
 

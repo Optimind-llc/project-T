@@ -13,19 +13,19 @@ class Navigation extends Component {
           <img src={logo} alt="logo"/>
         </div>
         <ul>
-          {
-            links.map((link, i) => 
-              <li key={i}>
-                <Link
-                  className={link.disable ? 'disable' : ''}
-                  activeClassName="active"
-                  to={`/manager/${link.en}`}
-                >
-                  {link.name}
-                </Link>
-              </li>
-            )
-          }
+        {
+          links.map((link, i) => 
+            <li key={i}>
+              <Link
+                className={link.disable ? 'disable' : ''}
+                activeClassName="active"
+                to={`/manager/${link.en}`}
+              >
+                {link.name}
+              </Link>
+            </li>
+          )
+        }
         </ul>
       </div>
     );

@@ -62,13 +62,14 @@ class MaintenanceController extends Controller
             });
         }
 
-        $inspectors = $inspectors->get(['id', 'group_code', 'name', 'yomi'])->map(function($i) {
+        $inspectors = $inspectors->get()->map(function($i) {
             return [
                 'id' => $i->id,
                 'name' => $i->name,
                 'yomi' => $i->yomi,
                 'chokuName' => $i->groups->name,
                 'chokuCode' => $i->groups->code,
+                'status' => $i->status,
                 'ig' => $i->inspectionGroup->map(function($ig) {
                     return [
                         'id' => $ig->id,
@@ -80,6 +81,32 @@ class MaintenanceController extends Controller
 
         return ['data' => $inspectors];
     }
+
+    public function createInspector(Request $request)
+    {
+        $duplicate = Inspector::where('name', $request->name)->get()->count();
+
+        if ($duplicate > 0) {
+            return \Response::json([
+                'status' => 'error',
+                'message' => 'duplicate inspector name'
+            ], 400);
+        }
+
+        $inspector = new Inspector;
+        $inspector->name = $request->name;
+        $inspector->yomi = $request->yomi;
+        $inspector->group_code = $request->choku;
+        $inspector->save();
+
+        foreach ($request->itionG as $ig) {
+            $inspector->inspectionGroup()->attach($ig['id'], ['sort' => $ig['sort']]);
+        }
+
+        return ['message' => 'success'];
+    }
+
+
 
     public function updateInspector(Request $request)
     {
@@ -113,5 +140,30 @@ class MaintenanceController extends Controller
 
         return ['message' => 'nothing to do'];
     }
-    
+
+    public function activateInspector($id)
+    {
+        $inspector = Inspector::find($id);
+
+        if ($inspector instanceof Inspector) {
+            $inspector->status = 1;
+            $inspector->save();
+
+            return ['message' => 'success'];
+        }
+        return ['message' => 'nothing to do'];
+    }
+
+    public function deactivateInspector($id)
+    {
+        $inspector = Inspector::find($id);
+
+        if ($inspector instanceof Inspector) {
+            $inspector->status = 0;
+            $inspector->save();
+
+            return ['message' => 'success'];
+        }
+        return ['message' => 'nothing to do'];
+    }
 }

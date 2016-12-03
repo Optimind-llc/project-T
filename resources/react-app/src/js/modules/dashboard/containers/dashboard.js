@@ -58,7 +58,7 @@ class Dashboard extends Component {
   }
 
   showMapping() {
-    const { getPageData } = this.props.actions;
+    const { panelIdMapping, advancedMapping } = this.props.actions;
     const { state } = this;
     const format = 'YYYY-MM-DD';
     let start, end, panelId;
@@ -83,7 +83,7 @@ class Dashboard extends Component {
         start = end = panelId = null;
 
         const intervalId = setInterval(
-          () => getPageData(state.partTId.value, inspectionGroupId, state.itorG.value, null, null, null),
+          () => advancedMapping(state.partTId.value, inspectionGroupId, state.itorG.value, null, null),
           state.interval
         );
         this.setState({intervalId});
@@ -94,7 +94,7 @@ class Dashboard extends Component {
         panelId = null;
 
         break;
-      case 'panelId': start = end = null;
+      case 'panelId':
         start = end = null;
         panelId = state.panelId;
         break;
@@ -112,7 +112,13 @@ class Dashboard extends Component {
     else name = 'failure';
     this.setState({ defaultActive: { name, time }});
 
-    getPageData(state.partTId.value, inspectionGroupId, state.itorG.value, start, end, panelId);
+    if (state.narrowedBy == 'panelId') {
+      panelIdMapping(state.partTId.value, inspectionGroupId, state.itorG.value, panelId);
+    }
+    else {
+      advancedMapping(state.partTId.value, inspectionGroupId, state.itorG.value, start, end, panelId);
+    }
+
   }
 
   render() {
@@ -216,7 +222,7 @@ class Dashboard extends Component {
                   options={[
                     {label: '黄直', value: 'Y'},
                     {label: '白直', value: 'W'},
-                    {label: '黒直', value: 'B', disabled: true},
+                    {label: '黒直', value: 'B'},
                     {label: '全直', value: 'both'}
                   ]}
                   onChange={value => this.setState({itorG: value})}
@@ -224,7 +230,6 @@ class Dashboard extends Component {
               </div>
             </div>
             <div className="col-2 flex-row">
-              <p>表示方法*</p>
               <div
                 className={narrowedBy === 'realtime' ? 'realtime active' : 'realtime'}
                 onClick={() => this.setState({narrowedBy: 'realtime'})}

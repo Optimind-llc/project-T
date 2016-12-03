@@ -34,7 +34,9 @@ class PartResult
                 $carry->put('updatedBy', $page->updated_by ? explode(',', $page->updated_by)[1] : '');
                 $carry->put('failures', $page->failurePositions->merge($carry->has('failures') ? $carry['failures'] : []));
                 $carry->put('modifications', $page->comments->merge($carry->has('modifications') ? $carry['modifications'] : []));
-                $carry->put('hModifications', $page->comments->merge($carry->has('hModifications') ? $carry['hModifications'] : []));
+                $carry->put('hModifications', $page->hModifications->map(function($p) {
+                    return $p->pivot;
+                })->merge($carry->has('hModifications') ? $carry['hModifications'] : []));
                 $carry->put('holes', $page->holePages->merge($carry->has('holes') ? $carry['holes'] : []));
                 $carry->put('inlines', $page->inlines);
                 $carry->put('createdAt', $page->created_at->format('Y-m-d H:i:s'));
@@ -92,7 +94,7 @@ class PartResult
             })
             ->toArray(),
             'hModifications' => array_count_values($merged_page['hModifications']->map(function($hm) {
-                return $hm->m_id;
+                return $hm->hm_id;
             })
             ->toArray()),
             'inlines' => $merged_page['inlines']->map(function($i) {
