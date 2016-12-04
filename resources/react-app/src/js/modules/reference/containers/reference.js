@@ -10,7 +10,6 @@ import { push } from 'react-router-redux';
 import { serchActions } from '../ducks/serch';
 import { failureActions } from '../ducks/failure';
 import { modificationActions } from '../ducks/modification';
-
 // Material-ui Components
 import { Paper, Dialog, RaisedButton, FlatButton } from 'material-ui';
 import { grey50, indigo500 } from 'material-ui/styles/colors';
@@ -202,11 +201,11 @@ class Reference extends Component {
                 <Select
                   name="車種"
                   placeholder="車種を選択"
-                  styles={{height: 30}}
                   clearable={false}
-                  Searchable={true}
+                  Searchable={false}
                   value={this.state.vehicle}
                   options={vehicles}
+                  open={true}
                   onChange={value => this.setState({vehicle: value})}
                 />
               </div>
@@ -313,6 +312,7 @@ class Reference extends Component {
                         setState={startDate => this.setState({
                           startDate: startDate
                         })}
+                        disabled={narrowedBy == 'advanced' ? false : true}
                       />
                       <p>〜</p>
                       <CustomCalendar
@@ -320,6 +320,7 @@ class Reference extends Component {
                         setState={endDate => this.setState({
                           endDate: endDate
                         })}
+                        disabled={narrowedBy == 'advanced'}
                       />
                     </div>
                   </div>
@@ -354,21 +355,6 @@ class Reference extends Component {
                         }}
                       />
                     </div>
-                    {/*
-                    <div>
-                      <p>穴手直</p>
-                      <Select
-                        name="穴手直"
-                        placeholder="穴手直を選択"
-                        clearable={false}
-                        Searchable={false}
-                        multi={true}
-                        value={RequiredHM}
-                        options={hModifications}
-                        onChange={value => {console.log(value); this.setState({RequiredHM: value});}}
-                      />
-                    </div>
-                    */}
                   </div>
                 </div>
               </div>

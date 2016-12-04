@@ -2,36 +2,10 @@
   padding: 4px 4px 0 4px;
   min-width: 1120px;
 
-  // For react-select
-  .Select-menu-outer {
-    max-height: 600px !important;
-  }
-  .Select-menu {
-    max-height: (600px - 2px);
-    overflow-y: auto;
-  }
-  .Select-control {
-    position: static;    
-  }
-  .Select--multi {
-    .Select-value-label {
-      white-space: nowrap;
-    }
-    .Select-value-icon {
-      padding: 1px 5px 1px;
-      border-right: 1px solid #4A4A4A;
-    }
-    .Select-value {
-      background-color: rgba(0, 0, 0, 0.1);
-      border: 1px solid #4A4A4A;
-      color: #4A4A4A;
-    }
-  }
-
   .serch-wrap {
     padding: 0 0 10px 0;
     .serch-area {
-      padding: 10px;
+      padding: 10px 10px 4px 10px;
 
       .flex-row {
         display: flex;
@@ -64,7 +38,7 @@
           > p {
             margin: 0 8px 0 0;
             padding: 0;
-            line-height: 36px;
+            line-height: 30px;
           }
 
           > div {
@@ -110,6 +84,7 @@
           border: 1px solid #BBB;
           border-radius: 4px;
           color: #BBB;
+          opacity: 0.4;
           p {
             margin: 0;
           }
@@ -118,6 +93,7 @@
             background-color: #4A4A4A;
             cursor: default;
             color: #FFF;
+            opacity: 1;
             p {
               color: #FFF;
             }
@@ -139,7 +115,8 @@
               }
 
               > p {
-                line-height: 36px;
+                line-height: 30px;
+                margin: 0 4px;
               }
               > div {
                 flex-grow: 1;
@@ -151,9 +128,7 @@
             > div:nth-child(1) {
               flex-basis: 110px;
               flex-grow: 1;
-              p {
-                flex-basis: 30px;
-              }
+
               div {
                 flex-basis: 80px;
                 flex-grow: 1;
@@ -162,9 +137,7 @@
             > div:nth-child(2) {
               flex-basis: 120px;
               flex-grow: 1;
-              p {
-                flex-basis: 46px;
-              }
+
               div {
                 flex-basis: 80px;
                 flex-grow: 1;
@@ -172,12 +145,7 @@
             }
             > div:nth-child(3) {
               flex-basis: 460px;
-              p:nth-child(1) {
-                margin: 0 4px 0 0;
-              }
-              p:nth-child(3) {
-                margin: 0 4px;
-              }
+
             }
           }
 
@@ -187,9 +155,7 @@
             > div:nth-child(1) {
               flex-basis: 216px;
               flex-grow: 1;
-              > p {
-                flex-basis: 36px;
-              }
+
               > div {
                 flex-basis: 180px;
                 flex-grow: 1;
@@ -198,9 +164,7 @@
             > div:nth-child(2) {
               flex-basis: 216px;
               flex-grow: 1;
-              > p {
-                flex-basis: 36px;
-              }
+
               > div {
                 flex-basis: 180px;
                 flex-grow: 1;
@@ -209,9 +173,7 @@
             > div:nth-child(3) {
               flex-basis: 236px;
               flex-grow: 1;
-              > p {
-                flex-basis: 56px;
-              }
+
               > div {
                 flex-basis: 180px;
                 flex-grow: 1;
@@ -246,88 +208,6 @@
             border-radius: 4px;
             border: 1px solid rgb(204, 204, 204);            
           }
-
-        }
-      }
-
-      .col-3 {
-        > p {
-          line-height: 50px;
-          margin: 0 8px 0 0;
-        }
-
-        > div {
-          height: 50px;
-          border: 1px solid #BBB;
-          border-radius: 4px;
-          color: #BBB;
-
-          &.active {
-            background-color: #4A4A4A;
-            cursor: default;
-            color: #FFF;
-            p {
-              color: #FFF;
-            }
-          }
-
-          > p {
-            margin: 0;
-            padding: 0;
-            line-height: 36px;
-            color: #BBB;
-          }
-
-          > div {
-            width: 200px;
-          }
-
-          &.realtime {
-            flex-basis: 150px;
-            flex-grow: 1;
-            line-height: 50px;
-            text-align: center;
-          }
-
-          &.term-wrap {
-            flex-basis: 490px;
-            flex-grow: 1;
-            display: flex;
-            flex-flow: row nowrap;
-            padding: 6px 4px 6px 10px;
-            p {
-              margin: 0 8px 0 0;
-              &:nth-child(3) {
-                margin: 0 4px;
-              }
-            }
-
-            div {
-              flex-basis: 60px;
-            }
-
-            input {
-              color: #BBB;
-            }
-          }
-
-          &.panel-id-wrap {
-            flex-basis: 260px;
-            flex-grow: 1;
-            display: flex;
-            flex-flow: row nowrap;
-            padding: 6px 4px 6px 10px;
-
-            p {
-              margin: 0 8px 0 0;
-            }
-
-            input {
-              flex-basis: 140px;
-            }
-
-          }
-
 
         }
       }

@@ -6,7 +6,9 @@ import Root from './js/containers/Root';
 import configureStore from './js/store/configureStore';
 import { SCHOOL_NAME } from './config/env';
 // Styles
+import './assets/scss/normalize.scss';
 import './assets/scss/common.scss';
+import './assets/scss/base.scss';
 
 // baseURLを使うとreact-router-reduxのpushが動かなくなる
 // const browserHistory = useRouterHistory(createBrowserHistory)({
