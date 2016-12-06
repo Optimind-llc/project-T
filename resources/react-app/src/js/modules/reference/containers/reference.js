@@ -320,7 +320,7 @@ class Reference extends Component {
                         setState={endDate => this.setState({
                           endDate: endDate
                         })}
-                        disabled={narrowedBy == 'advanced'}
+                        disabled={narrowedBy == 'advanced' ? false : true}
                       />
                     </div>
                   </div>
@@ -399,7 +399,9 @@ class Reference extends Component {
         <div className="btn-wrap">
           <button onClick={() => {
             handleDownload(table);
-          }}>CSV出力</button>
+          }}>
+            CSV出力
+          </button>
         </div>
         <div className="result-wrap bg-white">
           {

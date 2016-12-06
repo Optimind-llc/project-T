@@ -113,8 +113,6 @@ class Inspector extends Component {
     const { InspectorData } = this.props;
     const { yomi, choku, itionG, status, editModal, editting, createModal, sort } = this.state;
 
-
-
     return (
       <div id="inspector">
         <div className="refine-wrap bg-white">

@@ -1,10 +1,9 @@
 #referenceWrap {
 	table.reference-result {
-	  width: auto;
 	  border-spacing: 0;
 	  border-collapse: collapse;
-	  white-space: nowrap;
 	  font-size: 10px;
+    width: 3000px;
 
 	  .clickable {
 	    cursor: pointer;
@@ -20,47 +19,108 @@
 	    }
 	  }
 
-	  th {
-	    color: #fff;
-	    padding: 4px 8px;
-	    background: #258;
-	    font-weight: bold;
-	    border-left: 1px solid #FFF;
-	    border-top: 1px solid #258;
-	    border-bottom: 1px solid #CCC;
-	    line-height: 120%;
-	    text-align: center;
+    thead {
+      display: block;
 
-	    &:first-child {
-	      border-left: none;
-	    }
-	  }
+      th {
+        color: #fff;
+        padding: 4px 8px;
+        background: #258;
+        font-weight: bold;
+        border-left: 1px solid #EEE;
+        border-top: 1px solid #258;
+        border-bottom: 1px solid #EEE;
+        line-height: 120%;
+        text-align: center;
 
-	  tr {
-	    background: #fff;
+        &:first-child {
+          border-left: 1px solid #84b2e0;
+        }
 
-	    td {
-	      padding: 4px 8px;
-	      border-bottom: 1px solid #84b2e0;
-	      border-left: 1px solid #84b2e0;
-	      text-align: center;
+        &:last-child {
+          border-right: 1px solid #84b2e0;
+        }
+      }
+    }
 
-	      &:last-child {
-	        border-right: 1px solid #84b2e0;
-	        box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
-	      }
-	    }
+    tbody {
+      display: block;
+      max-height: calc(100vh - 64px);
+      overflow-y: scroll;
 
-	    &:nth-child(2n+1) {
-	      background: #f1f6fc;
-	    }
-	    &:last-child td {
-	      box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
-	    }
-	    &:hover {
-	      background: #bbd4ee;
-	    }
-	  }
+      tr {
+        background: #fff;
+
+        td {
+          padding: 4px 8px;
+          border-bottom: 1px solid #84b2e0;
+          border-left: 1px solid #84b2e0;
+          text-align: center;
+
+          &:last-child {
+            border-right: 1px solid #84b2e0;
+            box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+          }
+        }
+
+        &:nth-child(2n+1) {
+          background: #f1f6fc;
+        }
+        &:last-child td {
+          box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+        }
+        &:hover {
+          background: #bbd4ee;
+        }
+      }
+    }
+
+    th, td {
+      box-sizing: border-box;
+
+      &.number {
+        width: 33px;
+      }
+      &.vehicle{
+        width: 41px;
+      }
+      &.pn {
+        width: 45px;
+      }
+      &.name {
+        width: 140px;
+      }
+      &.panelId {
+        width: 68px;
+      }
+      &.tyoku {
+        width: 37px;
+      }
+      &.createdBy {
+        width: 80px;
+      }
+      &.updatedBy {
+        width: 80px;
+      }
+      &.status {
+        width: 47px;
+      }
+      &.failure {
+        width: 87px;
+      }
+      &.comment {
+        width: 77px;
+      }
+      &.createdAt {
+        width: 112px;
+      }
+      &.updatedAt {
+        width: 112px;
+      }
+
+
+    }
+
 	}
 
 	p.result-count {

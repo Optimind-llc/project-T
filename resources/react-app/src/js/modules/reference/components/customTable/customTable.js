@@ -8,15 +8,14 @@ class CustomTable extends Component {
     super(props, context);
     this.state = {
       sort: {
-        key: 'panelId',
-        asc: true,
+        key: 'createdAt',
+        asc: false,
         id: 0
       }
     };
   }
 
-  render() {
-    const { count, data, failures, holes, modifications, hModifications, inlines } = this.props;
+  sortData(data) {
     const { sort } = this.state;
 
     data.sort((a,b) => {
@@ -70,6 +69,13 @@ class CustomTable extends Component {
       return 0;
     });
 
+    return data;
+  }
+
+  render() {
+    const { count, data, failures, holes, modifications, hModifications, inlines } = this.props;
+    const { sort } = this.state;
+
     return (
       <div>
         {
@@ -79,16 +85,17 @@ class CustomTable extends Component {
           count >= 1000 &&
           <p className="result-count">{`${count}件中 1000件表示`}</p>
         }
+        <button>CSVを出力</button>
         <table className="reference-result">
           <thead>
             <tr>
-              <th rowSpan="2">No.</th>
-              <th rowSpan="2">車種</th>
-              <th rowSpan="2">品番</th>
-              <th rowSpan="2">品名</th>
+              <th rowSpan="2" className="number">No.</th>
+              <th rowSpan="2" className="vehicle">車種</th>
+              <th rowSpan="2" className="pn">品番</th>
+              <th rowSpan="2" className="name">品名</th>
               <th
                 rowSpan="2"
-                className={`clickable ${sort.key == 'panelId' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                className={`panelId clickable ${sort.key == 'panelId' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'panelId') this.setState({sort: { key: 'panelId', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'panelId', asc: true, id: 0 }});
@@ -97,7 +104,7 @@ class CustomTable extends Component {
                 パネルID</th>
               <th
                 rowSpan="2"
-                className={`clickable ${sort.key == 'tyoku' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                className={`tyoku clickable ${sort.key == 'tyoku' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'tyoku') this.setState({sort: { key: 'tyoku', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'tyoku', asc: true, id: 0 }});
@@ -107,7 +114,7 @@ class CustomTable extends Component {
               </th>
               <th
                 rowSpan="2"
-                className={`clickable ${sort.key == 'createdBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                className={`createdBy clickable ${sort.key == 'createdBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'createdBy') this.setState({sort: { key: 'createdBy', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'createdBy', asc: true, id: 0 }});
@@ -117,7 +124,7 @@ class CustomTable extends Component {
               </th>
               <th
                 rowSpan="2"
-                className={`clickable ${sort.key == 'updatedBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                className={`updatedBy clickable ${sort.key == 'updatedBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'updatedBy') this.setState({sort: { key: 'updatedBy', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'updatedBy', asc: true, id: 0 }});
@@ -127,7 +134,7 @@ class CustomTable extends Component {
               </th>
               <th
                 rowSpan="2"
-                className={`clickable ${sort.key == 'status' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                className={`status clickable ${sort.key == 'status' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'status') this.setState({sort: { key: 'status', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'status', asc: true, id: 0 }});
@@ -151,10 +158,10 @@ class CustomTable extends Component {
                 inlines.length > 0 &&
                 <th colSpan={inlines.length}>精度検査</th>
               }
-              <th rowSpan="2">コメント</th>
+              <th rowSpan="2" className="comment">コメント</th>
               <th
                 rowSpan="2"
-                className={`clickable ${sort.key == 'createdAt' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                className={`createdAt clickable ${sort.key == 'createdAt' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'createdAt') this.setState({sort: { key: 'createdAt', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'createdAt', asc: true, id: 0 }});
@@ -164,7 +171,7 @@ class CustomTable extends Component {
               </th>
               <th
                 rowSpan="2"
-                className={`clickable ${sort.key == 'updatedAt' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                className={`updatedAt clickable ${sort.key == 'updatedAt' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'updatedAt') this.setState({sort: { key: 'updatedAt', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'updatedAt', asc: true, id: 0 }});
@@ -204,7 +211,7 @@ class CustomTable extends Component {
               failures.length > 0 &&
               failures.map(f =>
                 <th
-                  className={`clickable ${(sort.key == 'failures' && sort.id == f.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  className={`failure clickable ${(sort.key == 'failures' && sort.id == f.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
                   onClick={() => {
                     if(sort.key == 'failures') this.setState({sort: { key: 'failures', asc: !sort.asc, id: f.id }});
                     else this.setState({sort: { key: 'failures', asc: true, id: f.id }});
@@ -244,17 +251,17 @@ class CustomTable extends Component {
           </thead>
           <tbody>
           {
-            data.map((d,i) =>
+            this.sortData(data).map((d,i) =>
               <tr>
-                <td>{i+1}</td>
-                <td>{d.vehicle}</td>
-                <td>{d.pn}</td>
-                <td>{d.name}</td>
-                <td>{d.panelId}</td>
-                <td>{d.tyoku}</td>
-                <td>{d.createdBy}</td>
-                <td>{d.updatedBy}</td>
-                <td>{d.status == 1 ? '○' : '×'}</td>
+                <td className="number">{i+1}</td>
+                <td className="vehicle">{d.vehicle}</td>
+                <td className="pn">{d.pn}</td>
+                <td className="name">{d.name}</td>
+                <td className="panelId">{d.panelId}</td>
+                <td className="tyoku">{d.tyoku}</td>
+                <td className="createdBy">{d.createdBy}</td>
+                <td className="updatedBy">{d.updatedBy}</td>
+                <td className="status">{d.status == 1 ? '○' : '×'}</td>
                 {
                   holes.length > 0 &&
                   holes.map(h => {
@@ -281,7 +288,7 @@ class CustomTable extends Component {
                     if (d.failures[f.id]) {
                       sum =  d.failures[f.id];
                     }
-                    return (<td>{sum}</td>);
+                    return (<td className="failure">{sum}</td>);
                   })
                 }{
                   modifications.length > 0 &&
@@ -305,9 +312,9 @@ class CustomTable extends Component {
                     return (<td>{status}</td>);
                   })
                 }
-                <td>{d.comment ? d.comment.slice(0,5)+'...' : ''}</td>
-                <td>{d.inspectedAt ? d.inspectedAt : d.createdAt}</td>
-                <td>{d.inspectedAt ? d.inspectedAt : d.updatedAt}</td>
+                <td className="comment">{d.comment ? d.comment.slice(0,5)+'...' : ''}</td>
+                <td className="createdAt">{d.inspectedAt ? d.inspectedAt : d.createdAt}</td>
+                <td className="updatedAt">{d.inspectedAt ? d.inspectedAt : d.updatedAt}</td>
               </tr>
             )
           }{

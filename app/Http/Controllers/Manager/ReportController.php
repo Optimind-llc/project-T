@@ -50,7 +50,6 @@ class ReportController extends Controller
                 ->map(function($part) { return $part->first(); })
                 ->sortBy('inspected_at')
                 ->values();
-
         }
         elseif ($itionGId == 1 || $itionGId == 2 || $itionGId == 5 || $itionGId == 6 || $itionGId == 15) {
             $parts = Part::where('parts.created_at', '<', $end)

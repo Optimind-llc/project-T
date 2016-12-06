@@ -43,10 +43,10 @@ class App extends Component {
 
     const styles = {
       container: {
-        height: '100%',
+        minWidth: 1280,
         backgroundColor: 'rgba(231,236,245,1)',
-        paddingBottom: 40,
-        minHeight: 400
+        paddingBottom: 10,
+        minHeight: '100%'
       },
       nav: {
         zIndex: 1000,
@@ -58,7 +58,6 @@ class App extends Component {
       },
       content: {
         paddingLeft: 160, 
-        height: '100%',
       }
     };
 

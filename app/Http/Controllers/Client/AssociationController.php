@@ -24,7 +24,9 @@ class AssociationController extends Controller
     {
         $association = $request->association;
         if (!$association) {
-            throw new StoreResourceFailedException('JSON in Request body should contain association key');
+            return response()->json([
+                'message' => 'JSON in Request body should contain key "association"'
+            ], 400);
         }
 
         // Check
@@ -113,7 +115,9 @@ class AssociationController extends Controller
         );
 
         if ($validator->fails()) {
-            throw new StoreResourceFailedException('Validation error', $validator->errors());
+            return response()->json([
+                'message' => 'Bad structure JSON in Request body'
+            ], 400);
         }
 
         $part = Part::where('part_type_id', '=', $request->partTypeId)
@@ -164,7 +168,9 @@ class AssociationController extends Controller
         );
 
         if ($validator->fails()) {
-            throw new StoreResourceFailedException('Validation error', $validator->errors());
+            return response()->json([
+                'message' => 'JSON in Request body should contain key "association"'
+            ], 400);
         }
 
         $familyId = $request->id;
@@ -181,7 +187,7 @@ class AssociationController extends Controller
 
         // Check
         $associated = [];
-        foreach ($parts as $key => $part) {
+        foreach ($parts as $part) {
             $part_obj = Part::where('part_type_id', '=', $part['partTypeId'])
                 ->where('panel_id', '=', $part['panelId'])
                 ->first();
