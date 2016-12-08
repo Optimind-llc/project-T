@@ -80,7 +80,7 @@ class Association extends Component {
       table = table.concat(PartFData.data.map(pf => [
         pf.associatedAt,
         pf.parts['67149'][0].panelId,
-        pf.parts['67119'][0].panelId,
+        pf.parts['67119'] ? pf.parts['67119'][0].panelId : '',
         pf.parts['67176'][0].panelId,
         pf.parts['67175'][0].panelId,
         pf.parts['67178'][0].panelId,
@@ -288,7 +288,7 @@ class Association extends Component {
                         <td>{i+1}</td>
                         <td>{f.associatedAt}</td>
                         <td><p onClick={() => this.setState({modal: true})}>{f.parts['67149'][0].panelId}</p></td>
-                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67119'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67119'] ? f.parts['67119'][0].panelId : ''}</p></td>
                         <td><p onClick={() => this.setState({modal: true})}>{f.parts['67176'][0].panelId}</p></td>
                         <td><p onClick={() => this.setState({modal: true})}>{f.parts['67175'][0].panelId}</p></td>
                         <td><p onClick={() => this.setState({modal: true})}>{f.parts['67178'][0].panelId}</p></td>
@@ -299,7 +299,7 @@ class Association extends Component {
                             editModal: true,
                             editting_f: f.familyId,
                             editting_1: f.parts[67149][0].panelId,
-                            editting_2: f.parts[67119][0].panelId,
+                            editting_2: f.parts[67119] ? f.parts[67119][0].panelId : '',
                             editting_4: f.parts[67176][0].panelId,
                             editting_3: f.parts[67175][0].panelId,
                             editting_6: f.parts[67178][0].panelId,
@@ -393,11 +393,12 @@ class Association extends Component {
                       <p className="label">アッパー<br/>67119</p>
                       <input
                         type="text"
+                        placeholder="QRコード無し"
                         value={this.state.editting_2}
                         onChange={(e) => this.setState({editting_2: e.target.value})}
                       />
                       {
-                        this.state.editting_2.length != 8 &&
+                        this.state.editting_2.length !== 0 && this.state.editting_2.length != 8 &&
                         <p className="validation_msg">8桁で入力してください</p>
                       }
                     </div>
@@ -451,33 +452,35 @@ class Association extends Component {
                     </div>
                   </div>
                   <div className="btn-wrap">
-                    <button onClick={() => {
-                      // this.setState({editModal: false});
-                      this.props.actions.updatePartFamily({
-                        "id": this.state.editting_f,
-                        "parts": [
-                          {
-                            "partTypeId": 1,
-                            "panelId": this.state.editting_1
-                          },{
-                            "partTypeId": 2,
-                            "panelId": this.state.editting_2
-                          },{
-                            "partTypeId": 3,
-                            "panelId": this.state.editting_3
-                          },{
-                            "partTypeId": 4,
-                            "panelId": this.state.editting_4
-                          },{
-                            "partTypeId": 5,
-                            "panelId": this.state.editting_5
-                          },{
-                            "partTypeId": 6,
-                            "panelId": this.state.editting_6
-                          }
-                        ]
-                      });
-                    }}>
+                    <button
+                      className={(this.state.editting_1.length === 8 && (this.state.editting_2.length === 0 || this.state.editting_2.length === 8) && this.state.editting_3.length === 8 && this.state.editting_4.length === 8 && this.state.editting_5.length === 8 && this.state.editting_6.length === 8) ? '' : 'disabled'}
+                      onClick={() => {
+                        this.props.actions.updatePartFamily({
+                          "id": this.state.editting_f,
+                          "parts": [
+                            {
+                              "partTypeId": 1,
+                              "panelId": this.state.editting_1
+                            },{
+                              "partTypeId": 2,
+                              "panelId": this.state.editting_2
+                            },{
+                              "partTypeId": 3,
+                              "panelId": this.state.editting_3
+                            },{
+                              "partTypeId": 4,
+                              "panelId": this.state.editting_4
+                            },{
+                              "partTypeId": 5,
+                              "panelId": this.state.editting_5
+                            },{
+                              "partTypeId": 6,
+                              "panelId": this.state.editting_6
+                            }
+                          ]
+                        });
+                      }}
+                    >
                       保存
                     </button>
                     <button onClick={() => {

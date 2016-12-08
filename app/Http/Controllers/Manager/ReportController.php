@@ -12,11 +12,10 @@ use App\Report;
 use App\Models\PartType;
 use App\Models\InspectionGroup;
 use App\Models\InspectorGroup;
+use App\Models\Client\Page;
 use App\Models\Client\Part;
+use App\Models\Client\InspectionFamily;
 // Exceptions
-use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Dingo\Api\Exception\StoreResourceFailedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -33,23 +32,48 @@ class ReportController extends Controller
         $itorG = [InspectorGroup::find($itorG)->name];
 
         if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
-            $parts = Part::join('part_page as pp', 'pp.part_id', '=', 'parts.id')
-                ->join('pages as pg', 'pg.id', '=', 'pp.page_id')
-                ->join('inspection_families as if', function($join) use ($start, $end, $itionGId) {
-                    $join->on('if.id', '=', 'pg.family_id')
-                        ->where('if.inspected_at', '>=', $start)
-                        ->where('if.inspected_at', '<', $end)
-                        ->where('inspection_group_id', '=', $itionGId)
-                        ->where('inspector_group', '=', '不明');
-                })
-                ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at'])
-                ->with(['inlines'])
-                ->get()
-                ->sortByDesc('inspected_at')
-                ->groupBy('panel_id')
-                ->map(function($part) { return $part->first(); })
-                ->sortBy('inspected_at')
-                ->values();
+            // $parts = Part::join('part_page as pp', 'pp.part_id', '=', 'parts.id')
+            //     ->join('pages as pg', 'pg.id', '=', 'pp.page_id')
+            //     ->join('inspection_families as if', function($join) use ($start, $end, $itionGId) {
+            //         $join->on('if.id', '=', 'pg.family_id')
+            //             ->where('if.inspected_at', '>=', $start)
+            //             ->where('if.inspected_at', '<', $end)
+            //             ->where('inspection_group_id', '=', $itionGId)
+            //             ->where('inspector_group', '=', '不明');
+            //     })
+            //     ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at'])
+            //     ->with(['inlines'])
+            //     ->get()
+            //     ->sortByDesc('inspected_at')
+            //     ->groupBy('panel_id')
+            //     ->map(function($part) { return $part->first(); })
+            //     ->sortBy('inspected_at')
+            //     ->values();
+
+            $parts = Page::join('inspection_families as if', function($join) use ($itionGId, $start, $end) {
+                $join->on('pages.family_id', '=', 'if.id')
+                    ->whereIn('if.inspector_group', ['不明'])
+                    ->where('if.inspection_group_id', '=', $itionGId)
+                    ->where('if.inspected_at', '>=', $start)
+                    ->where('if.inspected_at', '<', $end);
+            })
+            ->join('part_page as pp', function($join) {
+                $join->on('pages.id', '=', 'pp.page_id');
+            })
+            ->join('parts', function($join) {
+                $join->on('parts.id', '=', 'pp.part_id');
+            })
+            ->orderBy('if.inspected_at', 'desc')
+            ->select('pages.id', 'pages.page_type_id', 'if.inspected_at', 'if.status', 'if.created_at', 'pp.part_id', 'parts.panel_id')
+            ->with(['inlines'])
+            ->get()
+            ->groupBy('part_id')
+            ->map(function($p) {
+                return $p->first();
+            })
+            ->values()
+            ->sortBy('inspected_at');
+
         }
         elseif ($itionGId == 1 || $itionGId == 2 || $itionGId == 5 || $itionGId == 6 || $itionGId == 15) {
             $parts = Part::where('parts.created_at', '<', $end)

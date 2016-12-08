@@ -41,6 +41,14 @@
     overflow-y: auto;
   }
 
+  .Select-clear-zone {
+    width: 14px;
+
+    .Select-clear {
+      font-size: 14px;
+    }
+  }
+
   &.Select--multi {
     .Select-multi-value-wrapper {
       .Select-value-label {
@@ -64,5 +72,3 @@
     }
   }
 }
-
-

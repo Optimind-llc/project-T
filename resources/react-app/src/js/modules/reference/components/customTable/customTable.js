@@ -34,15 +34,7 @@ class CustomTable extends Component {
         aaa = a[sort.key];
         bbb = b[sort.key];
       }
-      else if (sort.key == 'failures') {
-        if (a[sort.key][sort.id]) {
-          aaa = a[sort.key][sort.id];
-        }
-        if (b[sort.key][sort.id]) {
-          bbb = b[sort.key][sort.id];
-        }
-      }
-      else if (sort.key == 'modifications') {
+      else if (sort.key == 'failures' || sort.key == 'modifications' || sort.key == 'hModifications') {
         if (a[sort.key][sort.id]) {
           aaa = a[sort.key][sort.id];
         }
@@ -75,6 +67,42 @@ class CustomTable extends Component {
   render() {
     const { count, data, failures, holes, modifications, hModifications, inlines } = this.props;
     const { sort } = this.state;
+    const colWidth = {
+      number: 36,
+      vehicle: 43,
+      pn: 49,
+      name: 140,
+      panelId: 68,
+      tyoku: 38,
+      createdBy: 80,
+      updatedBy: 80,
+      status: 47,
+      failure: 87,
+      modification: 87,
+      hole: 46,
+      hModification: 87,
+      inline: 50,
+      comment: 77,
+      createdAt: 127,
+      updatedAt: 127
+    };
+
+    let tableWidth = colWidth.number + colWidth.vehicle + colWidth.pn + colWidth.name + colWidth.panelId + colWidth.tyoku + colWidth.createdBy + colWidth.updatedBy + colWidth.status + colWidth.comment + colWidth.createdAt + colWidth.updatedAt + 15;
+    if (failures.length > 0) {
+      tableWidth = tableWidth + colWidth.failure*failures.length;
+    }
+    if (holes.length > 0) {
+      tableWidth = tableWidth + colWidth.hole*holes.length;
+    }
+    if (hModifications.length > 0) {
+      tableWidth = tableWidth + colWidth.failure*hModifications.length;
+    }
+    if (modifications.length > 0) {
+      tableWidth = tableWidth + colWidth.modification*modifications.length;
+    }
+    if (inlines.length > 0) {
+      tableWidth = tableWidth + colWidth.inline*inlines.length;
+    }
 
     return (
       <div>
@@ -85,17 +113,17 @@ class CustomTable extends Component {
           count >= 1000 &&
           <p className="result-count">{`${count}件中 1000件表示`}</p>
         }
-        <button>CSVを出力</button>
-        <table className="reference-result">
+        <table className="reference-result" style={{width: tableWidth,  minWidth: tableWidth}}>
           <thead>
             <tr>
-              <th rowSpan="2" className="number">No.</th>
-              <th rowSpan="2" className="vehicle">車種</th>
-              <th rowSpan="2" className="pn">品番</th>
-              <th rowSpan="2" className="name">品名</th>
+              <th rowSpan="2" style={{width: colWidth.number}}>No.</th>
+              <th rowSpan="2" style={{width: colWidth.vehicle}}>車種</th>
+              <th rowSpan="2" style={{width: colWidth.pn}}>品番</th>
+              <th rowSpan="2" style={{width: colWidth.name}}>品名</th>
               <th
                 rowSpan="2"
-                className={`panelId clickable ${sort.key == 'panelId' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                style={{width: colWidth.panelId}}
+                className={`clickable ${sort.key == 'panelId' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'panelId') this.setState({sort: { key: 'panelId', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'panelId', asc: true, id: 0 }});
@@ -104,7 +132,8 @@ class CustomTable extends Component {
                 パネルID</th>
               <th
                 rowSpan="2"
-                className={`tyoku clickable ${sort.key == 'tyoku' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                style={{width: colWidth.tyoku}}
+                className={`clickable ${sort.key == 'tyoku' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'tyoku') this.setState({sort: { key: 'tyoku', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'tyoku', asc: true, id: 0 }});
@@ -114,7 +143,8 @@ class CustomTable extends Component {
               </th>
               <th
                 rowSpan="2"
-                className={`createdBy clickable ${sort.key == 'createdBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                style={{width: colWidth.createdBy}}
+                className={`clickable ${sort.key == 'createdBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'createdBy') this.setState({sort: { key: 'createdBy', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'createdBy', asc: true, id: 0 }});
@@ -124,7 +154,8 @@ class CustomTable extends Component {
               </th>
               <th
                 rowSpan="2"
-                className={`updatedBy clickable ${sort.key == 'updatedBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                style={{width: colWidth.updatedBy}}
+                className={`clickable ${sort.key == 'updatedBy' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'updatedBy') this.setState({sort: { key: 'updatedBy', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'updatedBy', asc: true, id: 0 }});
@@ -134,7 +165,8 @@ class CustomTable extends Component {
               </th>
               <th
                 rowSpan="2"
-                className={`status clickable ${sort.key == 'status' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                style={{width: colWidth.status}}
+                className={`clickable ${sort.key == 'status' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'status') this.setState({sort: { key: 'status', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'status', asc: true, id: 0 }});
@@ -158,10 +190,11 @@ class CustomTable extends Component {
                 inlines.length > 0 &&
                 <th colSpan={inlines.length}>精度検査</th>
               }
-              <th rowSpan="2" className="comment">コメント</th>
+              <th rowSpan="2" style={{width: colWidth.comment}}>コメント</th>
               <th
                 rowSpan="2"
-                className={`createdAt clickable ${sort.key == 'createdAt' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                style={{width: colWidth.createdAt}}
+                className={`clickable ${sort.key == 'createdAt' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'createdAt') this.setState({sort: { key: 'createdAt', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'createdAt', asc: true, id: 0 }});
@@ -171,7 +204,8 @@ class CustomTable extends Component {
               </th>
               <th
                 rowSpan="2"
-                className={`updatedAt clickable ${sort.key == 'updatedAt' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                style={{width: colWidth.updatedAt}}
+                className={`clickable ${sort.key == 'updatedAt' ? sort.asc ? 'asc' : 'desc' : ''}`}
                 onClick={() => {
                   if(sort.key == 'updatedAt') this.setState({sort: { key: 'updatedAt', asc: !sort.asc, id: 0 }});
                   else this.setState({sort: { key: 'updatedAt', asc: true, id: 0 }});
@@ -185,6 +219,7 @@ class CustomTable extends Component {
               holes.length > 0 &&
               holes.map(h =>
                 <th
+                  style={{width: colWidth.hole}}
                   className={`clickable ${(sort.key == 'holes' && sort.id == h.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
                   onClick={() => {
                     if(sort.key == 'holes') this.setState({sort: { key: 'holes', asc: !sort.asc, id: h.id }});
@@ -198,6 +233,7 @@ class CustomTable extends Component {
               hModifications.length > 0 &&
               hModifications.map(hm =>
                 <th
+                  style={{width: colWidth.hModification}}
                   className={`clickable ${(sort.key == 'hModifications' && sort.id == hm.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
                   onClick={() => {
                     if(sort.key == 'hModifications') this.setState({sort: { key: 'hModifications', asc: !sort.asc, id: hm.id }});
@@ -211,7 +247,8 @@ class CustomTable extends Component {
               failures.length > 0 &&
               failures.map(f =>
                 <th
-                  className={`failure clickable ${(sort.key == 'failures' && sort.id == f.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  style={{width: colWidth.failure}}
+                  className={`clickable ${(sort.key == 'failures' && sort.id == f.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
                   onClick={() => {
                     if(sort.key == 'failures') this.setState({sort: { key: 'failures', asc: !sort.asc, id: f.id }});
                     else this.setState({sort: { key: 'failures', asc: true, id: f.id }});
@@ -224,26 +261,28 @@ class CustomTable extends Component {
               modifications.length > 0 &&
               modifications.map(m =>
                 <th
+                  style={{width: colWidth.modification}}
                   className={`clickable ${(sort.key == 'modifications' && sort.id == m.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
                   onClick={() => {
                     if(sort.key == 'modifications') this.setState({sort: { key: 'modifications', asc: !sort.asc, id: m.id }});
                     else this.setState({sort: { key: 'modifications', asc: true, id: m.id }});
                   }}
                 >
-                  {`${m.label}.${m.name}`}
+                  {`${m.name}`}
                 </th>
               )
             }{
               inlines.length > 0 &&
               inlines.map(i =>
                 <th
+                  style={{width: colWidth.inline}}
                   className={`clickable ${(sort.key == 'inlines' && sort.id == i.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
                   onClick={() => {
                     if(sort.key == 'inlines') this.setState({sort: { key: 'inlines', asc: !sort.asc, id: i.id }});
                     else this.setState({sort: { key: 'inlines', asc: true, id: i.id }});
                   }}
                 >
-                  {`${i.sort}`}
+                  {`P-${i.sort}`}
                 </th>
               )
             }
@@ -253,15 +292,15 @@ class CustomTable extends Component {
           {
             this.sortData(data).map((d,i) =>
               <tr>
-                <td className="number">{i+1}</td>
-                <td className="vehicle">{d.vehicle}</td>
-                <td className="pn">{d.pn}</td>
-                <td className="name">{d.name}</td>
-                <td className="panelId">{d.panelId}</td>
-                <td className="tyoku">{d.tyoku}</td>
-                <td className="createdBy">{d.createdBy}</td>
-                <td className="updatedBy">{d.updatedBy}</td>
-                <td className="status">{d.status == 1 ? '○' : '×'}</td>
+                <td style={{width: colWidth.number}}>{i+1}</td>
+                <td style={{width: colWidth.vehicle}}>{d.vehicle}</td>
+                <td style={{width: colWidth.pn}}>{d.pn}</td>
+                <td style={{width: colWidth.name}}>{d.name}</td>
+                <td style={{width: colWidth.panelId}}>{d.panelId}</td>
+                <td style={{width: colWidth.tyoku}}>{d.tyoku}</td>
+                <td style={{width: colWidth.createdBy}}>{d.createdBy}</td>
+                <td style={{width: colWidth.updatedBy}}>{d.updatedBy}</td>
+                <td style={{width: colWidth.status}}>{d.status == 1 ? '○' : '×'}</td>
                 {
                   holes.length > 0 &&
                   holes.map(h => {
@@ -270,7 +309,7 @@ class CustomTable extends Component {
                     else if (d.holes.find(ch => ch.id == h.id).status == 2) {status = '△';}
                     else if (d.holes.find(ch => ch.id == h.id).status == 1) {status = '○';}
 
-                    return (<td>{status}</td>);
+                    return (<td style={{width: colWidth.hole}}>{status}</td>);
                   })
                 }{
                   hModifications.length > 0 &&
@@ -279,7 +318,7 @@ class CustomTable extends Component {
                     if (d.hModifications[hm.id]) {
                       sum =  d.hModifications[hm.id];
                     }
-                    return (<td>{sum}</td>);
+                    return (<td style={{width: colWidth.hModification}}>{sum}</td>);
                   })
                 }{
                   failures.length > 0 &&
@@ -288,7 +327,7 @@ class CustomTable extends Component {
                     if (d.failures[f.id]) {
                       sum =  d.failures[f.id];
                     }
-                    return (<td className="failure">{sum}</td>);
+                    return (<td style={{width: colWidth.failure}}>{sum}</td>);
                   })
                 }{
                   modifications.length > 0 &&
@@ -297,7 +336,7 @@ class CustomTable extends Component {
                     if (d.modifications[m.id]) {
                       sum =  d.modifications[m.id];
                     }
-                    return (<td>{sum}</td>);
+                    return (<td style={{width: colWidth.modification}}>{sum}</td>);
                   })
                 }{
                   inlines.length > 0 &&
@@ -309,18 +348,18 @@ class CustomTable extends Component {
                         status = '×';
                       }
                     }
-                    return (<td>{status}</td>);
+                    return (<td style={{width: colWidth.inline}}>{status}</td>);
                   })
                 }
-                <td className="comment">{d.comment ? d.comment.slice(0,5)+'...' : ''}</td>
-                <td className="createdAt">{d.inspectedAt ? d.inspectedAt : d.createdAt}</td>
-                <td className="updatedAt">{d.inspectedAt ? d.inspectedAt : d.updatedAt}</td>
+                <td style={{width: colWidth.comment}}>{d.comment ? d.comment.slice(0,5)+'...' : ''}</td>
+                <td style={{width: colWidth.createdAt}}>{d.inspectedAt ? d.inspectedAt : d.createdAt}</td>
+                <td style={{width: colWidth.updatedAt}}>{d.inspectedAt ? d.inspectedAt : d.updatedAt}</td>
               </tr>
             )
           }{
             count == 0 &&
             <tr>
-                <td colSpan={12+holes.length+hModifications.length+failures.length+modifications.length+inlines.length}>
+                <td style={{width: tableWidth, textAlign: 'left'}}>
                   検索結果なし
                 </td>
             </tr>

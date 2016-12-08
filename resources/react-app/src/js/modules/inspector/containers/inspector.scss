@@ -2,32 +2,6 @@
   padding: 4px 4px 0 4px;
   min-width: 1110px;
 
-  // For react-select
-  .Select-menu-outer {
-    max-height: 600px !important;
-  }
-  .Select-menu {
-    max-height: (600px - 2px);
-    overflow-y: auto;
-  }
-  .Select-control {
-    position: static;    
-  }
-  .Select--multi {
-    .Select-value-label {
-      white-space: nowrap;
-    }
-    .Select-value-icon {
-      padding: 1px 5px 1px;
-      border-right: 1px solid #4A4A4A;
-    }
-    .Select-value {
-      background-color: rgba(0, 0, 0, 0.1);
-      border: 1px solid #4A4A4A;
-      color: #4A4A4A;
-    }
-  }
-
   .refine-wrap {
     p {
       margin: 4px;
@@ -56,7 +30,7 @@
         > p {
           margin: 0 4px;
           text-align: center;
-          line-height: 36px;
+          line-height: 30px;
         }
 
         > div {

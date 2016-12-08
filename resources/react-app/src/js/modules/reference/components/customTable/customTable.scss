@@ -77,48 +77,6 @@
 
     th, td {
       box-sizing: border-box;
-
-      &.number {
-        width: 33px;
-      }
-      &.vehicle{
-        width: 41px;
-      }
-      &.pn {
-        width: 45px;
-      }
-      &.name {
-        width: 140px;
-      }
-      &.panelId {
-        width: 68px;
-      }
-      &.tyoku {
-        width: 37px;
-      }
-      &.createdBy {
-        width: 80px;
-      }
-      &.updatedBy {
-        width: 80px;
-      }
-      &.status {
-        width: 47px;
-      }
-      &.failure {
-        width: 87px;
-      }
-      &.comment {
-        width: 77px;
-      }
-      &.createdAt {
-        width: 112px;
-      }
-      &.updatedAt {
-        width: 112px;
-      }
-
-
     }
 
 	}

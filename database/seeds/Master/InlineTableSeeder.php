@@ -531,7 +531,7 @@ class InlineTableSeeder extends Seeder
                 'position'      => '',
                 'calibration'   => null,
                 'max_tolerance' => 1,
-                'min_tolerance' => -1,
+                'min_tolerance' => -0.95,
                 'part_type_id'  => 7,
                 'figure_id'     => 12,
                 'created_at'    => $now,

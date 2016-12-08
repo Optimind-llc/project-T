@@ -135,7 +135,7 @@ class InsertDummyData extends Command
             'comment' => ($group['id'] == 5 || $group['id'] == 6 || $group['id'] == 8) ? null : 'インナーのコメント',
             'inspector' => $tyoku.','.$group['inspectorGroups']['Y'][0]['name'],
             'pages' => $group['pages']->filter(function($p) {
-                switch (rand(0, 6)) {
+                switch (rand(6, 6)) {
                     case 0: $result = $p['id'] != 14; break;
                     case 1: $result = ($p['id'] != 14 && $p['id'] != 13); break;
                     case 2: $result = ($p['id'] != 14 && $p['id'] != 27); break;

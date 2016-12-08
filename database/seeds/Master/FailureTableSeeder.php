@@ -202,6 +202,11 @@ class FailureTableSeeder extends Seeder
                 'label'      => 33,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => '肌不良',
+                'label'      => 34,
+                'created_at' => $now,
+                'updated_at' => $now
             ],
         ];
 
@@ -306,6 +311,11 @@ class FailureTableSeeder extends Seeder
                 'failure_id' => 32,
                 'inspection_id' => 1,
                 'type'       => 1,
+                'sort'       => 1
+            ],[
+                'failure_id' => 35,
+                'inspection_id' => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],
             //穴あけ_検査

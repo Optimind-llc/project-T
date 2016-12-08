@@ -215,48 +215,48 @@ class AssociationController extends Controller
         }
 
         DB::beginTransaction();
+
+        $toBeReleasedParts = Part::where('family_id', '=', $familyId)->get();
+
+        if ($toBeReleasedParts->count() > 0) {
+            foreach ($toBeReleasedParts as $toBeReleasedPart) {
+                $toBeReleasedPart->family_id = null;
+                $toBeReleasedPart->save();
+            }
+        }
+
         foreach ($parts as $key => $part) {
-            $part_obj = Part::where('part_type_id', '=', $part['partTypeId'])
-                ->where('panel_id', '=', $part['panelId'])
-                ->first();
+            if ($part['panelId'] != '') {
+                $part_obj = Part::where('part_type_id', '=', $part['partTypeId'])
+                    ->where('panel_id', '=', $part['panelId'])
+                    ->first();
 
-            if (is_null($part_obj)) {
-                $part_obj = new Part;
-                $part_obj->panel_id = $part['panelId'];
-                $part_obj->part_type_id = $part['partTypeId'];
-                $part_obj->save();
-            }
+                if (is_null($part_obj)) {
+                    $part_obj = new Part;
+                    $part_obj->panel_id = $part['panelId'];
+                    $part_obj->part_type_id = $part['partTypeId'];
+                    $part_obj->save();
+                }
 
-            $part_obj_family_id = $part_obj->family_id;
-            if (!is_null($part_obj_family_id) && $part_obj_family_id != $familyId) {
-                DB::rollBack();
-                return response()->json([
-                    'message' => 'Already be associated others',
-                    'parts' => [
-                        'pn' => $part_obj->partType->pn,
-                        'name' => $part_obj->partType->name,
-                        'partTypeId' => $part['partTypeId'],
-                        'panelId' => $part['panelId']
-                    ]
-                ], 200);
-            }
-
-            $toBeReleasedParts = Part::where('part_type_id', '=', $part['partTypeId'])
-                ->where('family_id', '=', $familyId)
-                ->get();
-
-            if ($toBeReleasedParts->count() > 0) {
-                foreach ($toBeReleasedParts as $toBeReleasedPart) {
-                    if ($toBeReleasedPart->panel_id != $part['panelId']) {
-                        $toBeReleasedPart->family_id = null;
-                        $toBeReleasedPart->save();
-                    }
+                $part_obj_family_id = $part_obj->family_id;
+                if (!is_null($part_obj_family_id) && $part_obj_family_id != $familyId) {
+                    DB::rollBack();
+                    return response()->json([
+                        'message' => 'Already be associated others',
+                        'parts' => [
+                            'pn' => $part_obj->partType->pn,
+                            'name' => $part_obj->partType->name,
+                            'partTypeId' => $part['partTypeId'],
+                            'panelId' => $part['panelId']
+                        ]
+                    ], 200);
                 }
             }
 
             $part_obj->family_id = $familyId;
             $part_obj->save();
         }
+
         DB::commit();
 
         $family = PartFamily::find($familyId);

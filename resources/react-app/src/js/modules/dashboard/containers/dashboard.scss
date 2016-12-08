@@ -2,18 +2,6 @@
   padding: 4px 4px 0 4px;
   min-width: 1120px;
 
-  .Select-menu-outer {
-    // Unfortunately, having both border-radius and allows scrolling using overflow defined on the same
-    // element forces the browser to repaint on scroll.  However, if these definitions are split into an
-    // outer and an inner element, the browser is able to optimize the scrolling behavior and does not
-    // have to repaint on scroll.
-    max-height: 600px !important;
-  }
-  .Select-menu {
-    max-height: (600px - 2px);
-    overflow-y: auto;
-  }
-
   > div.header {
     display: flex;
     flex-flow: row nowrap;
@@ -54,7 +42,7 @@
           > p {
             margin: 0 8px 0 0;
             padding: 0;
-            line-height: 36px;
+            line-height: 30px;
           }
           > div {
             flex-basis: 220px;
@@ -92,12 +80,12 @@
         margin-top: 12px;
 
         > p {
-          line-height: 50px;
+          line-height: 44px;
           margin: 0 8px 0 0;
         }
 
         > div {
-          height: 50px;
+          height: 44px;
           border: 1px solid #BBB;
           border-radius: 4px;
           color: #BBB;
@@ -114,7 +102,7 @@
           > p {
             margin: 0;
             padding: 0;
-            line-height: 36px;
+            line-height: 30px;
             color: #BBB;
           }
 
@@ -125,12 +113,12 @@
           &.realtime {
             flex-basis: 150px;
             flex-grow: 1;
-            line-height: 50px;
+            line-height: 44px;
             text-align: center;
           }
 
           &.term-wrap {
-            flex-basis: 490px;
+            flex-basis: 480px;
             flex-grow: 1;
             display: flex;
             flex-flow: row nowrap;
@@ -164,7 +152,7 @@
             }
 
             input {
-              flex-basis: 140px;
+              width: 190px;
             }
 
           }
@@ -177,7 +165,7 @@
     .mapping-btn {
       flex-basis: 50px;
       flex-grow: 0;
-      height: 98px;
+      height: 86px;
       margin: 10px 10px 10px 0 ;
       border: 1px solid #BBB;
       border-radius: 4px;
@@ -186,7 +174,7 @@
       p {
         margin: 0;
         padding: 0;
-        line-height: 96px;
+        line-height: 84px;
         text-align: center;
       }
 

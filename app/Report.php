@@ -1114,11 +1114,12 @@ class Report
 
             if ($p == 0) {
                 $tcpdf->SetFont('kozgopromedium', '', 8);
+                
 
                 $n = 0;
                 // foreach ($part_types as $id => $part_type) {
                 foreach ($parts_obj as $id => $part_obj) {
-                    if (array_key_exists($part_obj->id, $part_types)) {
+                    if ($part_types[$part_obj->id]) {
                         $sum1 = $part_types[$part_obj->id]->filter(function($p) {
                             return $p->status == 1;
                         })->count();
@@ -1143,7 +1144,7 @@ class Report
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$dL, $A4['y2'], 'パネルID');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$dL, $A4['y2'], '検査者');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$dL, $A4['y2'], '判定');
-                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$dL, $A4['y2'], '登録時間');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$dL, $A4['y2'], '登録');
 
                 // foreach ($chunked_part_type[$p]->values() as $row => $part) {
                 foreach ($chunked_part_types[$part_obj->id][$p]->values() as $row => $part) {

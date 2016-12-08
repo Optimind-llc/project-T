@@ -637,7 +637,7 @@ class ShowController extends Controller
                 }
             }
             elseif ($now->lt($t1_end_at)) {
-                $start_at = $t3_start_at->copy();
+                $start_at = $t3_start_at->copy()->subDay();
             }
             elseif ($now->lt($t2_end_at)) {
                 $start_at = $t1_start_at->copy();
@@ -652,58 +652,6 @@ class ShowController extends Controller
             }
 
             $end_at = $now;
-
-            // $chokuChunks = [
-            //     'first' => [
-            //         'start' => ['H' => 6, 'i' => 30],
-            //         'end' => ['H' => 14, 'i' => 00],
-            //     ],
-            //     'second' => [
-            //         'start' => ['H' => 14, 'i' => 00],
-            //         'end' => ['H' => 22, 'i' => 15],
-            //     ],
-            //     'third' => [
-            //         'start' => ['H' => 22, 'i' => 15],
-            //         'end' => ['H' => 30, 'i' => 30],
-            //     ]
-            // ];
-
-            // $nowMin = ($now->hour + 6)*60 + ($now->minute + 30);
-
-            // $fMinS = $chokuChunks['first']['start']['H']*60 + $chokuChunks['first']['start']['i'];
-            // $fMinE = $chokuChunks['first']['end']['H']*60 + $chokuChunks['first']['end']['i'];
-
-            // $sMinS = $chokuChunks['second']['start']['H']*60 + $chokuChunks['second']['start']['i'];
-            // $sMinE = $chokuChunks['second']['end']['H']*60 + $chokuChunks['second']['end']['i'];
-
-            // $tMinS = $chokuChunks['third']['start']['H']*60 + $chokuChunks['third']['start']['i'];
-            // $tMinE = $chokuChunks['third']['end']['H']*60 + $chokuChunks['third']['end']['i'];
-
-            // if ($fMinS <= $nowMin && $nowMin < $fMinE) {
-            //     $start_at = 
-            // }
-            // elseif ($sMinS <= $nowMin && $nowMin < $sMinE) {
-
-            // }
-            // elseif ($tMinS <= $nowMin && $nowMin < $tMinE) {
-
-            // }
-            // else {
-            //     $start_at = $t1_start_at;
-            // }
-
-            // if ($now->lt($t2_end_at)) {
-            //     $start_at = $t1_start_at->copy()->subDay();
-            // }
-            // elseif ($now->lt($t1_end_at)) {
-            //     $start_at = $t2_start_at->copy()->subDay();
-            // }
-            // else {
-            //     $start_at = $t1_start_at;
-            // }
-
-            // $start_at = $now->copy()->subHour(8)->subMinutes(15);
-            // $end_at = $now;
         }
 
         switch ($request->itorG) {
@@ -1190,8 +1138,9 @@ class ShowController extends Controller
 
     public function partFamily(Request $request)
     {
-        $partTypeId = $request->part_type_id;
-        $panelId = $request->panel_id;
+        $partTypeId = $request->partTypeId;
+        $panelId = $request->panelId;
+
         if ($request->start) {
             $start = Carbon::createFromFormat('Y-m-d-H i:s', $request->start.' 00:00');
         } else {
