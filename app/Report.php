@@ -156,7 +156,6 @@ class Report
                     'gStatus' => $gStatus,
                     'status' => $status,
                     'inspectedBy' => $inspectedBy,
-                    // 'time' => $part->updated_at,
                     'time' => $part->created_at,
                     'comment' => $comment,
                     'failures' => $part->failurePositions->map(function($fp) {
@@ -358,6 +357,8 @@ class Report
         /*
          * Render A3 Aggregation
          */
+        $th = 10;
+
         if ($this->triple) {
             $timeChunks = config('report.timeChunks2');
         } else {
@@ -420,6 +421,12 @@ class Report
             $tcpdf->Rotate(90, $A3['x0']+24+$n*$fdj-1, $A3['y1']+9);
             $tcpdf->Text($A3['x0']+24+$n*$fdj-3, $A3['y1']+9, $part_obj->short_name);
             $tcpdf->StopTransform();
+        }
+
+        if ($this->triple) {
+            $tcpdf->Line($A3['x0'], 100, $A3['xmax'] - $A3['x0'], 100, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 180, $A3['xmax'] - $A3['x0'], 180, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 260, $A3['xmax'] - $A3['x0'], 260, array('dash' => '3,1'));
         }
 
         // Render table body
@@ -495,7 +502,6 @@ class Report
                     'gStatus' => $gStatus,
                     'status' => $status,
                     'inspectedBy' => $inspectedBy,
-                    // 'time' => $part->updated_at,
                     'time' => $part->created_at,
                     'comment' => $comment,
                     'failures' => $part->failurePositions->map(function($fp) {
@@ -655,6 +661,8 @@ class Report
         /*
          * Render A3 Aggregation
          */
+        $th = 10;
+
         if ($this->triple) {
             $timeChunks = config('report.timeChunks2');
         } else {
@@ -717,6 +725,12 @@ class Report
             $tcpdf->Rotate(90, $A3['x0']+24+$n*$fdj-1, $A3['y1']+9);
             $tcpdf->Text($A3['x0']+24+$n*$fdj-3, $A3['y1']+9, $part_obj->short_name);
             $tcpdf->StopTransform();
+        }
+
+        if ($this->triple) {
+            $tcpdf->Line($A3['x0'], 100, $A3['xmax'] - $A3['x0'], 100, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 180, $A3['xmax'] - $A3['x0'], 180, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 260, $A3['xmax'] - $A3['x0'], 260, array('dash' => '3,1'));
         }
 
         // Render table body
@@ -992,7 +1006,7 @@ class Report
             return collect($result);
         });
 
-        $th = 10.8;
+        $th = 10;
         $fd = 4;
         $d_hole_max = 16;
         $d_hole = ($A3['xmax'] - $A3['x0']*2 - 24 - $fd*$fn - $margin)/$hn;
@@ -1000,6 +1014,10 @@ class Report
         $tcpdf->AddPage('L', 'A3');
         // Render page header
         $this->renderA3Header($tcpdf);
+
+        $tcpdf->Line($A3['x0'], 102.3, $A3['xmax'] - $A3['x0'], 102.3, array('dash' => '2'));
+        $tcpdf->Line($A3['x0'], 182.3, $A3['xmax'] - $A3['x0'], 182.3, array('dash' => '2'));
+        $tcpdf->Line($A3['x0'], 262.3, $A3['xmax'] - $A3['x0'], 262.3, array('dash' => '2'));
 
         // Render table header
         $tcpdf->SetFont('kozgopromedium', '', 6);
@@ -1014,6 +1032,12 @@ class Report
             $tcpdf->Rotate(90, $A3['x0']+24+($d_hole*$hn)+$margin+($fd*$i)+1, $A3['y1_ana']+3+1);
             $tcpdf->Text($A3['x0']+24+($d_hole*$hn)+$margin+($fd*$i), $A3['y1_ana']+3, $f['name']);
             $tcpdf->StopTransform();
+        }
+
+        if ($this->triple) {
+            $tcpdf->Line($A3['x0'], 102.3, $A3['xmax'] - $A3['x0'], 102.3, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 182.3, $A3['xmax'] - $A3['x0'], 182.3, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 262.3, $A3['xmax'] - $A3['x0'], 262.3, array('dash' => '3,1'));
         }
 
         // Render table body
@@ -1114,7 +1138,7 @@ class Report
 
             if ($p == 0) {
                 $tcpdf->SetFont('kozgopromedium', '', 8);
-                
+
 
                 $n = 0;
                 // foreach ($part_types as $id => $part_type) {
@@ -1342,7 +1366,7 @@ class Report
                 ->orderBy('label')
                 ->get();
             $hn = $all_holes->count();
-            $th = 10.8;
+            $th = 10;
             $fd = 18;
             $d_hole_max = 16;
             $d_hole = ($A3['xmax'] - $A3['x0']*2 - 24 - $fd*$fn - $margin)/$hn;
@@ -1406,6 +1430,12 @@ class Report
             // Render page header
             $this->renderA3Header($tcpdf);
             $tcpdf->Text($A3['x0']+$A3['header']['part'], $A3['y0'], $part_obj->name);
+
+            if ($this->triple) {
+                $tcpdf->Line($A3['x0'], 102.3, $A3['xmax'] - $A3['x0'], 102.3, array('dash' => '3,1'));
+                $tcpdf->Line($A3['x0'], 182.3, $A3['xmax'] - $A3['x0'], 182.3, array('dash' => '3,1'));
+                $tcpdf->Line($A3['x0'], 262.3, $A3['xmax'] - $A3['x0'], 262.3, array('dash' => '3,1'));
+            }
 
             // Render table header
             $tcpdf->SetFont('kozgopromedium', '', 6);
@@ -1704,6 +1734,7 @@ class Report
             return collect($result);
         });
 
+        $th = 10;
         $fmd = ($A3['xmax'] - $A3['x0']*2  - 24 - $margin)/($fn+$mn);
 
         $tcpdf->AddPage('L', 'A3');
@@ -1728,6 +1759,12 @@ class Report
         }
 
         $tcpdf->Line($A3['x0']+24+$fmd*$fn+$margin/2, 26, $A3['x0']+24+$fmd*$fn+$margin/2, 286);
+
+        if ($this->triple) {
+            $tcpdf->Line($A3['x0'], 100, $A3['xmax'] - $A3['x0'], 100, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 180, $A3['xmax'] - $A3['x0'], 180, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 260, $A3['xmax'] - $A3['x0'], 260, array('dash' => '3,1'));
+        }
 
         // Render table body
         $n = 0;
@@ -1920,7 +1957,7 @@ class Report
 
         $base = $timeChunks[0]['start'];
 
-        $th = 8;
+        $th = 10;
         $di = ($A3['xmax'] - ($A3['x0']+$A3['x1']))/$in;
 
         // Divide families to time Chunk
@@ -1976,6 +2013,12 @@ class Report
 
         foreach ($inlines as $i => $inline) {
             $tcpdf->Text($A3['x1']+$i*$di, $A3['y1'], 'P-'.$inline['sort']);
+        }
+
+        if ($this->triple) {
+            $tcpdf->Line($A3['x0'], 100, $A3['xmax'] - $A3['x0'], 100, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 180, $A3['xmax'] - $A3['x0'], 180, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 260, $A3['xmax'] - $A3['x0'], 260, array('dash' => '3,1'));
         }
 
         // Render table body

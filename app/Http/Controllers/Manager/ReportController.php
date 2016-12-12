@@ -28,28 +28,10 @@ class ReportController extends Controller
     {
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
         $start = $date->addHours(6)->addMinutes(30);
-        $end = $date->copy()->addDay(1);
+        $end = $date->copy()->addDay(1)->addHours(2);
         $itorG = [InspectorGroup::find($itorG)->name];
 
         if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
-            // $parts = Part::join('part_page as pp', 'pp.part_id', '=', 'parts.id')
-            //     ->join('pages as pg', 'pg.id', '=', 'pp.page_id')
-            //     ->join('inspection_families as if', function($join) use ($start, $end, $itionGId) {
-            //         $join->on('if.id', '=', 'pg.family_id')
-            //             ->where('if.inspected_at', '>=', $start)
-            //             ->where('if.inspected_at', '<', $end)
-            //             ->where('inspection_group_id', '=', $itionGId)
-            //             ->where('inspector_group', '=', '不明');
-            //     })
-            //     ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at'])
-            //     ->with(['inlines'])
-            //     ->get()
-            //     ->sortByDesc('inspected_at')
-            //     ->groupBy('panel_id')
-            //     ->map(function($part) { return $part->first(); })
-            //     ->sortBy('inspected_at')
-            //     ->values();
-
             $parts = Page::join('inspection_families as if', function($join) use ($itionGId, $start, $end) {
                 $join->on('pages.family_id', '=', 'if.id')
                     ->whereIn('if.inspector_group', ['不明'])
