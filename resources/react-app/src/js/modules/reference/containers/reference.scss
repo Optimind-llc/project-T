@@ -213,6 +213,11 @@
       }
     }
 
+    button.serch {
+      display: block;
+      margin: 0 auto;
+    }
+
     .serch-btn {
       height: 32px;
       width: 140px;
@@ -240,18 +245,10 @@
     }
   }
 
-  .btn-wrap {
-    margin-top: 10px;
-
-    button {
-      height: 30px;
-      width: 120px;
-    }
-  }
-
   .result-wrap {
+    position: relative;
     margin-top: 10px;
     padding: 4px;
-    overflow: scroll;
+    min-height: 120px;
   }
 }

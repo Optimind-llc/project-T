@@ -65,7 +65,7 @@ class CustomTable extends Component {
   }
 
   render() {
-    const { count, data, failures, holes, modifications, hModifications, inlines } = this.props;
+    const { count, data, failures, holes, modifications, hModifications, inlines, download } = this.props;
     const { sort } = this.state;
     const colWidth = {
       number: 36,
@@ -87,7 +87,7 @@ class CustomTable extends Component {
       updatedAt: 127
     };
 
-    let tableWidth = colWidth.number + colWidth.vehicle + colWidth.pn + colWidth.name + colWidth.panelId + colWidth.tyoku + colWidth.createdBy + colWidth.updatedBy + colWidth.status + colWidth.comment + colWidth.createdAt + colWidth.updatedAt + 15;
+    let tableWidth = colWidth.number + colWidth.vehicle + colWidth.pn + colWidth.name + colWidth.panelId + colWidth.tyoku + colWidth.createdBy + colWidth.updatedBy + colWidth.status + colWidth.comment + colWidth.createdAt + colWidth.updatedAt + 16;
     if (failures.length > 0) {
       tableWidth = tableWidth + colWidth.failure*failures.length;
     }
@@ -105,7 +105,7 @@ class CustomTable extends Component {
     }
 
     return (
-      <div>
+      <div className="table-wrap">
         {
           count < 1000 &&
           <p className="result-count">{`${count}件中 ${count}件表示`}</p>
@@ -113,7 +113,10 @@ class CustomTable extends Component {
           count >= 1000 &&
           <p className="result-count">{`${count}件中 1000件表示`}</p>
         }
-        <table className="reference-result" style={{width: tableWidth,  minWidth: tableWidth}}>
+        <button className="download dark" onClick={() => download()}>
+          <p>CSVをダウンロード</p>
+        </button>
+        <table className="reference-result" style={{width: tableWidth}}>
           <thead>
             <tr>
               <th rowSpan="2" style={{width: colWidth.number}}>No.</th>
@@ -377,7 +380,9 @@ CustomTable.propTypes = {
   failures: PropTypes.array,
   holes: PropTypes.array,
   modifications: PropTypes.array,
-  hModifications: PropTypes.array
+  hModifications: PropTypes.array,
+  inlines: PropTypes.array,
+  download: PropTypes.func
 };
 
 export default CustomTable;

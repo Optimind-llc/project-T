@@ -371,8 +371,8 @@ class Reference extends Component {
               </div>
             </div>
           </div>
-          <div
-            className={`serch-btn ${partTId && inspectionId && itorG && inspectionGroupId != 0 && 'active'}`}
+          <button
+            className={`serch dark ${!(partTId && inspectionId && itorG && inspectionGroupId != 0) && 'disabled'}`}
             onClick={() => {
               if (inspectionGroupId != 0) {
                 if (narrowedBy == 'panelId') {
@@ -394,13 +394,6 @@ class Reference extends Component {
             }}
           >
             <p>この条件で検索</p>
-          </div>
-        </div>
-        <div className="btn-wrap">
-          <button onClick={() => {
-            handleDownload(table);
-          }}>
-            CSV出力
           </button>
         </div>
         <div className="result-wrap bg-white">
@@ -417,6 +410,7 @@ class Reference extends Component {
               modifications={SerchedData.data.m}
               hModifications={SerchedData.data.hm}
               inlines={SerchedData.data.i}
+              download={() => handleDownload(table)}
             />
           }{
             inspectionGroupId == 0 &&　inspectionId != null &&

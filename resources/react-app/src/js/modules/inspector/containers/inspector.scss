@@ -77,6 +77,7 @@
 
   .body {
     margin-top: 10px;
+    padding: 4px;
 
     button.create-btn {
       float: right;
@@ -88,7 +89,7 @@
       border-spacing: 0;
       border-collapse: collapse;
       white-space: nowrap;
-      font-size: 12px;
+      font-size: 11px;
 
       .clickable {
         cursor: pointer;

@@ -239,16 +239,16 @@ class Association extends Component {
             </div>
           </div>
           <button
-            className="serch-btn"
+            className="serch dark"
             onClick={() => this.serch()}
           >
-            この条件で検索
+            <p>この条件で検索</p>
           </button>
         </div>
-        <button onClick={() => {
-          handleDownload(table);
-        }}>CSV出力</button>
         <div className="result bg-white">
+          <button className="download dark" onClick={() => handleDownload(table)}>
+            <p>CSVをダウンロード</p>
+          </button>
           <table>
             <thead>
               <tr>
