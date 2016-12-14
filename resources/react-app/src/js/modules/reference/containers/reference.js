@@ -196,21 +196,8 @@ class Reference extends Component {
         <div className="serch-wrap bg-white">
           <div className="serch-area">
             <div className="flex-row col-1">
-              <div>
-                <p>車種*</p>
-                <Select
-                  name="車種"
-                  placeholder="車種を選択"
-                  clearable={false}
-                  Searchable={false}
-                  value={this.state.vehicle}
-                  options={vehicles}
-                  open={true}
-                  onChange={value => this.setState({vehicle: value})}
-                />
-              </div>
-              <div>
-                <p>部品*</p>
+              <div className="part-wrap">
+                <p>部品</p>
                 <Select
                   name="部品"
                   styles={{height: 30}}
@@ -224,8 +211,8 @@ class Reference extends Component {
                   onChange={value => this.setState({partTId: value})}
                 />
               </div>
-              <div>
-                <p>工程*</p>
+              <div className="process-wrap">
+                <p>工程</p>
                 <Select
                   name="工程"
                   styles={{height: 30}}
@@ -238,8 +225,8 @@ class Reference extends Component {
                   onChange={value => this.setState({processId: value})}
                 />
               </div>
-              <div>
-                <p>検査*</p>
+              <div className="inspection-wrap">
+                <p>検査</p>
                 <Select
                   name="検査"
                   styles={{height: 30}}

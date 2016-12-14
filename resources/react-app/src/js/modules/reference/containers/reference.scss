@@ -1,6 +1,5 @@
 #referenceWrap {
-  padding: 4px;
-  min-width: 1120px;
+  padding: 4px 4px 0 4px;
 
   .serch-wrap {
     padding: 0 0 10px 0;
@@ -34,41 +33,42 @@
           flex-grow: 1;
           display: flex;
           flex-flow: row nowrap;
+          margin: 0 10px;
+
+          &:nth-child(1) {
+            margin-left: 0;
+          }
+
+          &:nth-last-of-type(1) {
+            margin-right: 0;
+          }
 
           > p {
             margin: 0 8px 0 0;
-            padding: 0;
+            width: 30px;
             line-height: 30px;
           }
+        }
+
+        .part-wrap {
+          flex-basis: 300px;
 
           > div {
-            flex-basis: 220px;
-            flex-grow: 1;
+            width: calc(100% - 30px);
           }
+        }
+        .process-wrap {
+          flex-basis: 300px;
 
-          &:nth-child(1) {
-            flex-basis: 160px;
-            > div {
-              flex-basis: 100px;
-            }
+          > div {
+            width: calc(100% - 30px);
           }
-          &:nth-child(3) {
-            flex-basis: 200px;
-            > div {
-              flex-basis: 150px;
-            }
-          }
-          &:nth-child(4) {
-            flex-basis: 200px;
-            > div {
-              flex-basis: 150px;
-            }
-          }
-          &:nth-child(5) {
-            flex-basis: 160px;
-            > div {
-              flex-basis: 100px;
-            }
+        }
+        .inspection-wrap {
+          flex-basis: 300px;
+
+          > div {
+            width: calc(100% - 30px);
           }
         }
       }

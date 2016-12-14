@@ -375,6 +375,9 @@ class Report
                 ->subMinutes($base['i']);
 
             $minutes = $time->hour*60 + $time->minute;
+            if ($time->gte(Carbon::createFromFormat('Y/m/d H:i:s', $this->serch_date.' 00:00:00')->addDay())) {
+                $minutes = $minutes + 60*24;
+            }
 
             foreach ($timeChunks as $tc) {
                 $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
@@ -679,6 +682,9 @@ class Report
                 ->subMinutes($base['i']);
 
             $minutes = $time->hour*60 + $time->minute;
+            if ($time->gte(Carbon::createFromFormat('Y/m/d H:i:s', $this->serch_date.' 00:00:00')->addDay())) {
+                $minutes = $minutes + 60*24;
+            }
 
             foreach ($timeChunks as $tc) {
                 $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
@@ -973,6 +979,9 @@ class Report
                 ->subMinutes($base['i']);
 
             $minutes = $time->hour*60 + $time->minute;
+            if ($time->gte(Carbon::createFromFormat('Y/m/d H:i:s', $this->serch_date.' 00:00:00')->addDay())) {
+                $minutes = $minutes + 60*24;
+            }
 
             foreach ($timeChunks as $tc) {
                 $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
@@ -1393,6 +1402,9 @@ class Report
                     ->subMinutes($base['i']);
 
                 $minutes = $time->hour*60 + $time->minute;
+                if ($time->gte(Carbon::createFromFormat('Y/m/d H:i:s', $this->serch_date.' 00:00:00')->addDay())) {
+                    $minutes = $minutes + 60*24;
+                }
 
                 foreach ($timeChunks as $tc) {
                     $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
@@ -1704,6 +1716,9 @@ class Report
                 ->subMinutes($base['i']);
 
             $minutes = $time->hour*60 + $time->minute;
+            if ($time->gte(Carbon::createFromFormat('Y/m/d H:i:s', $this->serch_date.' 00:00:00')->addDay())) {
+                $minutes = $minutes + 60*24;
+            }
 
             foreach ($timeChunks as $tc) {
                 $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
@@ -1965,6 +1980,9 @@ class Report
         foreach ($formated_parts as $part) {
             $time = $part['time']->subHours($base['H'])->subMinutes($base['i']);
             $minutes = $time->hour*60 + $time->minute;
+            if ($time->gte(Carbon::createFromFormat('Y/m/d H:i:s', $this->serch_date.' 00:00:00')->addDay())) {
+                $minutes = $minutes + 60*24;
+            }
 
             foreach ($timeChunks as $tc) {
                 $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);

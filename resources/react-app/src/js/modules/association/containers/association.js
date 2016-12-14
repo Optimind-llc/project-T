@@ -31,7 +31,7 @@ class Association extends Component {
       endHour: null,
       processId: null,
       itionGId: null,
-      modal: false,
+      mappingModal: false,
       editModal: false,
       editting_f: 0,
       editting_1: 0,
@@ -92,22 +92,6 @@ class Association extends Component {
       <div id="association">
         <div className="serch-wrap-wrap bg-white">
           <div className="serch-wrap">
-            <div className="vehicle-wrap">
-              <p>車種</p>
-              <Select
-                name="車種"
-                placeholder="車種を選択"
-                styles={{height: 36}}
-                clearable={false}
-                Searchable={true}
-                value={this.state.vehicle}
-                options={[
-                  {label: '680A', value: '680A'},
-                  {label: '950A', value: '950A', disabled:true}
-                ]}
-                onChange={value => this.setState({vehicle: value})}
-              />
-            </div>
             <div className="parts-wrap">
               <p>部品</p>
               <Select
@@ -287,24 +271,34 @@ class Association extends Component {
                       <tr className="content">
                         <td>{i+1}</td>
                         <td>{f.associatedAt}</td>
-                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67149'][0].panelId}</p></td>
-                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67119'] ? f.parts['67119'][0].panelId : ''}</p></td>
-                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67176'][0].panelId}</p></td>
-                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67175'][0].panelId}</p></td>
-                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67178'][0].panelId}</p></td>
-                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67177'][0].panelId}</p></td>
-                        <td><p onClick={() => this.setState({modal: true})}>{f.parts['67007'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67149'][0].panelId}</p></td>
                         <td>
-                          <button onClick={() => this.setState({
-                            editModal: true,
-                            editting_f: f.familyId,
-                            editting_1: f.parts[67149][0].panelId,
-                            editting_2: f.parts[67119] ? f.parts[67119][0].panelId : '',
-                            editting_4: f.parts[67176][0].panelId,
-                            editting_3: f.parts[67175][0].panelId,
-                            editting_6: f.parts[67178][0].panelId,
-                            editting_5: f.parts[67177][0].panelId
-                          })}>編集</button>
+                          {
+                            f.parts['67119'] &&
+                            <p onClick={() => this.setState({mappingModal: true})}>{f.parts['67119'][0].panelId}</p>
+                          }
+                        </td>
+                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67176'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67175'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67178'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67177'][0].panelId}</p></td>
+                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67007'][0].panelId}</p></td>
+                        <td>
+                          <button
+                            className="dark edit"
+                            onClick={() => this.setState({
+                              editModal: true,
+                              editting_f: f.familyId,
+                              editting_1: f.parts[67149][0].panelId,
+                              editting_2: f.parts[67119] ? f.parts[67119][0].panelId : '',
+                              editting_4: f.parts[67176][0].panelId,
+                              editting_3: f.parts[67175][0].panelId,
+                              editting_6: f.parts[67178][0].panelId,
+                              editting_5: f.parts[67177][0].panelId
+                            })}
+                          >
+                            <p>編集</p>
+                          </button>
                         </td>
                       </tr>
                     )
@@ -319,42 +313,47 @@ class Association extends Component {
             </tbody>
           </table>
           {
-            this.state.modal &&
+            this.state.mappingModal &&
             <div>
               <div className="modal">
               </div>
-              <div className="jump-wrap">
-                <div className="panel-btn" onClick={() => this.setState({modal: false})}>
+              <div className="mapping-wrap">
+                <div className="panel-btn" onClick={() => this.setState({mappingModal: false})}>
                   <span className="panel-btn-close"></span>
                 </div>
-                <p>工程と検査を選択してください</p>
-                <div className="jump">
-                  <div className="process-wrap">
-                    <p>工程*</p>
-                    <Select
-                      name="工程"
-                      styles={{height: 36}}
-                      placeholder={'工程を選択'}
-                      disabled={partTId == null}
-                      clearable={false}
-                      Searchable={true}
-                      value={null}
-                      options={null}
-                    />
+                {/*
+                  <p>工程と検査を選択してください</p>
+                  <div className="mapping">
+                    <div className="process-wrap">
+                      <p>工程*</p>
+                      <Select
+                        name="工程"
+                        styles={{height: 36}}
+                        placeholder={'工程を選択'}
+                        disabled={partTId == null}
+                        clearable={false}
+                        Searchable={true}
+                        value={null}
+                        options={null}
+                      />
+                    </div>
+                    <div className="inspection-wrap">
+                      <p>検査*</p>
+                      <Select
+                        name="検査"
+                        styles={{height: 36}}
+                        placeholder={'先に工程を選択'}
+                        disabled={processId == null}
+                        clearable={false}
+                        Searchable={true}
+                        value={null}
+                        options={null}
+                      />
+                    </div>
                   </div>
-                  <div className="inspection-wrap">
-                    <p>検査*</p>
-                    <Select
-                      name="検査"
-                      styles={{height: 36}}
-                      placeholder={'先に工程を選択'}
-                      disabled={processId == null}
-                      clearable={false}
-                      Searchable={true}
-                      value={null}
-                      options={null}
-                    />
-                  </div>
+                */}
+                <div>
+                  <p>67149 バックドアインナー パネルID: A0000001</p>
                 </div>
               </div>
             </div>

@@ -152,21 +152,8 @@ class Dashboard extends Component {
         <div className="header bg-white">
           <div className="serch-wrap">
             <div className="col-1 flex-row">
-              <div>
-                <p>車種*</p>
-                <Select
-                  name="車種"
-                  placeholder="車種を選択"
-                  styles={{height: 36}}
-                  clearable={false}
-                  Searchable={true}
-                  value={this.state.vehicle}
-                  options={vehicles}
-                  onChange={value => this.setState({vehicle: value})}
-                />
-              </div>
-              <div>
-                <p>部品*</p>
+              <div className="part">
+                <p>部品</p>
                 <Select
                   name="部品"
                   styles={{height: 36}}
@@ -182,8 +169,8 @@ class Dashboard extends Component {
                   })}
                 />
               </div>
-              <div>
-                <p>工程*</p>
+              <div className="process">
+                <p>工程</p>
                 <Select
                   name="工程"
                   styles={{height: 36}}
@@ -196,8 +183,8 @@ class Dashboard extends Component {
                   onChange={value => this.setState({processId: value})}
                 />
               </div>
-              <div>
-                <p>検査*</p>
+              <div className="inspection">
+                <p>検査</p>
                 <Select
                   name="検査"
                   styles={{height: 36}}
@@ -210,8 +197,8 @@ class Dashboard extends Component {
                   onChange={value => this.setState({inspectionId: value})}
                 />
               </div>
-              <div>
-                <p>直*</p>
+              <div className="choku">
+                <p>直</p>
                 <Select
                   name="直"
                   styles={{height: 36}}
@@ -234,26 +221,26 @@ class Dashboard extends Component {
                 className={narrowedBy === 'realtime' ? 'realtime active' : 'realtime'}
                 onClick={() => this.setState({narrowedBy: 'realtime'})}
               >
-                リアルタイム更新
+                <p>リアルタイム更新</p>
               </div>
               <div
                 className={narrowedBy === 'term' ? 'term-wrap active' : 'term-wrap'}
                 onClick={() => this.setState({narrowedBy: 'term'})}
               >
                 <p>期間：</p>
-                  <RangeCalendar
-                    defaultValue={startDate}
-                    setState={startDate => this.setState({
-                      startDate: startDate
-                    })}
-                  />
-                  <p>〜</p>
-                  <RangeCalendar
-                    defaultValue={endDate}
-                    setState={endDate => this.setState({
-                      endDate: endDate
-                    })}
-                  />
+                <RangeCalendar
+                  defaultValue={startDate}
+                  setState={startDate => this.setState({
+                    startDate: startDate
+                  })}
+                />
+                <p>〜</p>
+                <RangeCalendar
+                  defaultValue={endDate}
+                  setState={endDate => this.setState({
+                    endDate: endDate
+                  })}
+                />
               </div>
               <div
                 className={narrowedBy === 'panelId' ? "panel-id-wrap active" : "panel-id-wrap"}

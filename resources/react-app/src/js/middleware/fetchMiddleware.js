@@ -25,8 +25,6 @@ export default store => next => action => {
   }
 
   function actionWith(data) {
-    console.log('通過', data.payload, action.payload, Object.assign({}, action.payload, data.payload))
-
     return {
       type: data.type,
       payload: Object.assign({}, action.payload, data.payload),
@@ -71,7 +69,6 @@ export default store => next => action => {
       }
     },
     error => {
-
       let nextAction = actionWith({
         type: failureType,
         payload: {
@@ -81,8 +78,6 @@ export default store => next => action => {
         meta: { timestamp },
         error: true,
       });
-
-      console.log('nextAction', nextAction);
 
       next(nextAction);
 

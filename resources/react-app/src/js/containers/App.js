@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // Actions
-import * as InitializeActions from '../actions/initialize';
+import { applicationActions } from '../reducers/application';
 import { push } from 'react-router-redux';
 // Material-ui Components
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -13,7 +13,6 @@ import SocialPublic from 'material-ui/svg-icons/social/public';
 // Components
 import Alert from '../components/alert/alert';
 import Navigation from '../components/navigation/navigation';
-import Breadcrumbs from '../components/breadcrumbs/breadcrumbs';
 
 class App extends Component {
   constructor(props, context) {
@@ -21,17 +20,19 @@ class App extends Component {
   }
 
   render() {
-    const { children, routes, alerts, actions } = this.props;
+    const { children, routes, Application, alerts, actions } = this.props;
 
     const links = [
       { en: 'dashboard', name: 'マッピング', disable: false},
       { en: 'reference', name: '検査結果検索', disable: false },
       { en: 'report', name: '直レポート印刷', disable: false },
-      { en: 'association', name: 'パネルID検索', disable: false },
+      { en: 'association', name: 'パネルID検索', disable: false }
+    ];
+
+    const masterlinks = [
       { en: 'inspector', name: '担当者マスタメンテ', disable: false },
-      { en: 'master', name: '品番マスタメンテ', disable: true },
-      { en: 'hole', name: '穴あけ加工ポイント登録', disable: true },
-      { en: 'failure', name: '不良区分マスタメンテ', disable: true },
+      { en: 'hole', name: '穴あけ加工ポイント登録', disable: false },
+      { en: 'failure', name: '不良区分マスタメンテ', disable: false },
       { en: 'master', name: '手直し区分マスタメンテ', disable: true }
     ];
 
@@ -43,18 +44,10 @@ class App extends Component {
 
     const styles = {
       container: {
-        minWidth: 1280,
+        minWidth: 1350,
         backgroundColor: 'rgba(231,236,245,1)',
-        paddingBottom: 10,
-        minHeight: '100%'
-      },
-      nav: {
-        zIndex: 1000,
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: 160,
         height: '100%',
+        minHeight: 400
       },
       content: {
         paddingLeft: 160, 
@@ -62,22 +55,22 @@ class App extends Component {
     };
 
     return (
-      <MuiThemeProvider>
-        <div style={styles.container}>
-          <Alert alerts={alerts} deleteSideAlerts={actions.deleteSideAlerts} />
-          <Paper
-            zDepth={2}
-            rounded={false}
-            style={styles.nav}
-          >
-            <Navigation links={links}/>
-          </Paper>
-          <div style={styles.content}>
-            {/*<Breadcrumbs nameList={nameList}/>*/}
-            {children}
-          </div>
+      <div style={styles.container}>
+        <Alert alerts={alerts} deleteSideAlerts={actions.deleteSideAlerts} />
+        <Navigation
+          vehicle={Application.vehicle}
+          links={links}
+          masterlinks={masterlinks}
+          logedin={Application.master}
+          pw={'master'}
+          login={() => actions.login()}
+          logout={() => actions.logout()}
+          push={actions.push}
+        />
+        <div style={styles.content}>
+          {children}
         </div>
-      </MuiThemeProvider>
+      </div>
     );
   }
 }
@@ -91,14 +84,15 @@ App.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    routes: ownProps.routes,
+    Application: state.Application,
     alerts: state.alert,
+    routes: ownProps.routes
   };
 }
 
 function mapDispatchToProps(dispatch) {
   const actions = Object.assign(
-    InitializeActions,
+    applicationActions,
     { push: push }
   );
 

@@ -51,6 +51,7 @@ class Alert extends Component {
 
   render() {
     const { alerts } = this.props;
+
     return (
       <div className="alerts-wrap">
       {alerts.length > 0 &&
@@ -79,7 +80,7 @@ class Alert extends Component {
 
 Alert.propTypes = {
   alerts: PropTypes.array.isRequired,
-  deleteSideAlerts: PropTypes.func.isRequired
+  deleteSideAlerts: PropTypes.func
 };
 
 export default Alert;
