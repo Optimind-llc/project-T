@@ -24,6 +24,6 @@ class Failure extends Model
             'failure_inspection',
             'failure_id',
             'inspection_id'
-        );
+        )->withPivot('type', 'sort');
     }
 }

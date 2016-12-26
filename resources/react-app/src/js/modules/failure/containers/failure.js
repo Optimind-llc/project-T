@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
+// Images
+import iconCheck from '../../../../assets/img/icon/check.svg';
 // Actions
 import { failureActions } from '../ducks/failure';
 // Material-ui Components
@@ -11,96 +13,396 @@ import { grey50, indigo500 } from 'material-ui/styles/colors';
 // Styles
 import './failure.scss';
 // Components
-// import RangeCalendar from '../components/rangeCalendar/rangeCalendar';
+import Edit from '../components/edit/edit';
+import Create from '../components/create/create';
 
 class Failure extends Component {
   constructor(props, context) {
     super(props, context);
-    this.props.actions.getFailures();
+
+    let name = '';
+    let inspection = 'all';
+    let status = [1];
+
+    this.props.actions.getFailures(name, inspection, status);
 
     this.state = {
+      name: name,
+      inspection: {label: '全て', value: inspection},
+      status: {label: '表示中', value: status},
       editModal: false,
-      editting_l: null,
-      editting_n: null,
+      editting: null,
+      createModal: false,
+      sort: {
+        key: 'label',
+        asc: false,
+        id: 0
+      }
     };
   }
 
+  requestFailure() {
+    const { getFailures } = this.props.actions;
+    const { name, inspection, status } = this.state;
+
+    getFailures(name, inspection.value, status.value);
+  }
+
+  updateFailure(id, name, label, is) {
+    const { updateFailure } = this.props.actions;
+    updateFailure(id, name, label, is);
+  }
+
+  createFailure(name, label, is) {
+    const { createFailure } = this.props.actions;
+    createFailure(name, label, is);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.maintFailureData.updated && nextProps.maintFailureData.updated) {
+      this.requestFailure();
+      this.setState({
+        editModal: false,
+        createModal: false
+      });
+    }
+  }
+
+  sortData(data) {
+    const { sort } = this.state;
+    data.sort((a,b) => {
+      let aaa = 0;
+      let bbb = 0;
+
+      if (sort.key == 'name') {
+        aaa = a[sort.key].toLowerCase();
+        bbb = b[sort.key].toLowerCase();
+      }
+      else if (sort.key == 'label') {
+        aaa = a[sort.key];
+        bbb = b[sort.key];
+      }
+      else if (sort.key == 'ig') {
+        if (a[sort.key].find(ig => ig.id == sort.id)) {
+          aaa = a[sort.key].find(ig => ig.id == sort.id).sort;
+        }
+        else {
+          aaa = 10000;
+        }
+        if (b[sort.key].find(ig => ig.id == sort.id)) {
+          bbb = b[sort.key].find(ig => ig.id == sort.id).sort;
+        }
+        else {
+          bbb = 10000;
+        }
+      }
+
+      if (sort.asc) {
+        if(aaa < bbb) return 1;
+        else if(aaa > bbb) return -1;
+      } else {
+        if(aaa < bbb) return -1;
+        else if(aaa > bbb) return 1;
+      }
+      return 0;
+    });
+
+    return data;
+  }
+
   render() {
-    const { AllFailureData } = this.props;
-    const { vehicle } = this.state;
+    const { maintFailureData } = this.props;
+    const { name, choku, inspection, status, editModal, editting, createModal, sort } = this.state;
 
     return (
-      <div id="inspector">
-        <div className="header bg-white">
-          <p>不良区分マスタメンテ</p>
+      <div id="failure">
+        <div className="refine-wrap bg-white">
+          <div className="refine">
+            <div className="name">
+              <p>不良名</p>
+              <input
+                type="text"
+                value={this.state.name}
+                onChange={e => this.setState(
+                  {name: e.target.value},
+                  () => this.requestFailure()
+                )}
+              />
+            </div>
+            <div className="inspection">
+              <p>検査</p>
+              <Select
+                name="検査"
+                placeholder="検査を選択"
+                styles={{height: 30}}
+                clearable={false}
+                Searchable={true}
+                value={this.state.inspection}
+                options={[
+                  {label: '全て', value: 'all'},
+                  {label: '成形工程 外観検査', value: 1},
+                  {label: '穴あけ工程 外観検査', value: 10},
+                  {label: '穴あけ工程 穴検査', value: 3},
+                  {label: '接着工程 簡易CF', value: 11},
+                  {label: '接着工程 止水', value: 5},
+                  {label: '接着工程 仕上', value: 6},
+                  {label: '接着工程 検査', value: 7},
+                  {label: '接着工程 手直', value: 9}
+                ]}
+                onChange={value => this.setState(
+                  {inspection: value},
+                  () => this.requestFailure()
+                )}
+              />
+            </div>
+            <div className="status">
+              <p>状態</p>
+              <Select
+                name="状態"
+                placeholder="状態を選択"
+                styles={{height: 30}}
+                clearable={false}
+                Searchable={true}
+                value={this.state.status}
+                options={[
+                  {label: '全て', value: [0,1]},
+                  {label: '非表示中', value: [0]},
+                  {label: '表示中', value: [1]},
+                ]}
+                onChange={value => this.setState(
+                  {status: value},
+                  () => this.requestFailure()
+                )}
+              />
+            </div>
+          </div>
         </div>
         <div className="body bg-white">
-          <button className="create-btn">新規登録</button>
+          <button
+            className="create-btn"
+            onClick={() => this.setState({createModal: true})}
+          >
+            新規登録
+          </button>
           <table>
             <thead>
               <tr>
                 <th colSpan={1} rowSpan={3}>No.</th>
-                <th colSpan={1} rowSpan={3}>番号</th>
-                <th colSpan={1} rowSpan={3}>名前</th>
-                <th colSpan={2}>成型工程</th>
-                <th colSpan={3}>穴あけ工程</th>
+                <th colSpan={1} rowSpan={3}>不良名</th>
+                <th
+                  colSpan={1}
+                  rowSpan={3}
+                  className={`clickable ${sort.key == 'chokuName' ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'chokuName') this.setState({sort: { key: 'chokuName', asc: !sort.asc, id: 0 }});
+                    else this.setState({sort: { key: 'chokuName', asc: false, id: 0 }});
+                  }}
+                >
+                  番号
+                </th>
+                <th colSpan={1}>成形工程</th>
+                <th colSpan={2}>穴あけ工程</th>
                 <th colSpan={5}>接着工程</th>
+                <th colSpan={1} rowSpan={3}>iPad<br/>表示</th>
                 <th colSpan={1} rowSpan={3}>機能</th>
               </tr>
               <tr>
-                <th colSpan={1}>インナー</th>
-                <th colSpan={1}>アウター</th>
-                <th colSpan={2}>インナー</th>
-                <th colSpan={1}>アウター</th>
-                <th colSpan={5}>インナーASSY</th>
-              </tr>
-              <tr>
-                <th colSpan={1}>外観検査</th>
-                <th colSpan={1}>外観検査</th>
-                <th colSpan={1}>外観検査</th>
-                <th colSpan={1}>穴検査</th>
-                <th colSpan={1}>穴検査</th>
-                <th colSpan={1}>簡易CF</th>
-                <th colSpan={1}>止水</th>
-                <th colSpan={1}>仕上</th>
-                <th colSpan={1}>検査</th>
-                <th colSpan={1}>手直</th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 1) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 1 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 1 }});
+                  }}
+                >
+                  外観検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 15) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 15 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 15 }});
+                  }}
+                >
+                  外観検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 4) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 4 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 4 }});
+                  }}
+                >
+                  穴検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 16) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 16 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 16 }});
+                  }}
+                >
+                  簡易CF
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 10) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 10 }});
+                    else this.setState({sort: { key: 'ig', asc: false, id: 10 }});
+                  }}
+                >
+                  止水
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 11) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 11 }});
+                    else this.setState({sort: { key: 'ig', asc: true, id: 11 }});
+                  }}
+                >
+                  仕上
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 12) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 12 }});
+                    else this.setState({sort: { key: 'ig', asc: true, id: 12 }});
+                  }}
+                >
+                  検査
+                </th>
+                <th
+                  colSpan={1}
+                  className={`clickable ${(sort.key == 'ig' && sort.id === 14) ? sort.asc ? 'asc' : 'desc' : ''}`}
+                  onClick={() => {
+                    if(sort.key == 'ig') this.setState({sort: { key: 'ig', asc: !sort.asc, id: 14 }});
+                    else this.setState({sort: { key: 'ig', asc: true, id: 14 }});
+                  }}
+                >
+                  手直
+                </th>
               </tr>
             </thead>
             <tbody>
             {
-              AllFailureData.data && AllFailureData.data.length != 0 &&
-              AllFailureData.data.map((f, i)=> 
+              maintFailureData.data && maintFailureData.data.length != 0 &&
+              this.sortData(maintFailureData.data).map((f, i)=> 
                 {
                   return(
-                    <tr className="content">
+                    <tr className="content" key={i}>
                       <td>{i+1}</td>
-                      <td>{f.label}</td>
                       <td>{f.name}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
+                      <td>{f.label}</td>
                       <td>
-                        <button onClick={() => this.setState({
-                          editModal: true,
-                          editting_l: f.label,
-                          editting_n: f.name,
-                        })}>
-                          非表示
-                        </button>
-                        <button onClick={() => this.setState({
-                          editModal: true,
-                          editting_l: f.label,
-                          editting_n: f.name
-                        })}>
-                          編集
+                      {
+                        f.inspections.find(i => i.id == 1) ?
+                        <div className="failure-status">
+                          <div className={`failure-type ${f.inspections.find(i => i.id == 1).type === 1 ? 'important' : ''}`}>{f.inspections.find(i => i.id == 1).type === 1 ? '重要' : '普通'}</div>
+                          <div className="failure-sort">{`表示順：${f.inspections.find(i => i.id == 1).sort}`}</div>
+                        </div> :
+                        <div></div>
+                      }
+                      </td>
+                      <td>
+                      {
+                        f.inspections.find(i => i.id == 10) ?
+                        <div className="failure-status">
+                          <div className={`failure-type ${f.inspections.find(i => i.id == 10).type === 1 ? 'important' : ''}`}>{f.inspections.find(i => i.id == 10).type === 1 ? '重要' : '普通'}</div>
+                          <div className="failure-sort">{`表示順：${f.inspections.find(i => i.id == 10).sort}`}</div>
+                        </div> :
+                        <div></div>
+                      }
+                      </td>
+                      <td>
+                      {
+                        f.inspections.find(i => i.id == 3) ?
+                        <div className="failure-status">
+                          <div className={`failure-type ${f.inspections.find(i => i.id == 3).type === 1 ? 'important' : ''}`}>{f.inspections.find(i => i.id == 3).type === 1 ? '重要' : '普通'}</div>
+                          <div className="failure-sort">{`表示順：${f.inspections.find(i => i.id == 3).sort}`}</div>
+                        </div> :
+                        <div></div>
+                      }
+                      </td>
+                      <td>
+                      {
+                        f.inspections.find(i => i.id == 11) ?
+                        <div className="failure-status">
+                          <div className={`failure-type ${f.inspections.find(i => i.id == 11).type === 1 ? 'important' : ''}`}>{f.inspections.find(i => i.id == 11).type === 1 ? '重要' : '普通'}</div>
+                          <div className="failure-sort">{`表示順：${f.inspections.find(i => i.id == 11).sort}`}</div>
+                        </div> :
+                        <div></div>
+                      }
+                      </td>
+                      <td>
+                      {
+                        f.inspections.find(i => i.id == 5) ?
+                        <div className="failure-status">
+                          <div className={`failure-type ${f.inspections.find(i => i.id == 5).type === 1 ? 'important' : ''}`}>{f.inspections.find(i => i.id == 5).type === 1 ? '重要' : '普通'}</div>
+                          <div className="failure-sort">{`表示順：${f.inspections.find(i => i.id == 5).sort}`}</div>
+                        </div> :
+                        <div></div>
+                      }
+                      </td>
+                      <td>
+                      {
+                        f.inspections.find(i => i.id == 6) ?
+                        <div className="failure-status">
+                          <div className={`failure-type ${f.inspections.find(i => i.id == 6).type === 1 ? 'important' : ''}`}>{f.inspections.find(i => i.id == 6).type === 1 ? '重要' : '普通'}</div>
+                          <div className="failure-sort">{`表示順：${f.inspections.find(i => i.id == 6).sort}`}</div>
+                        </div> :
+                        <div></div>
+                      }
+                      </td>
+                      <td>
+                      {
+                        f.inspections.find(i => i.id == 7) ?
+                        <div className="failure-status">
+                          <div className={`failure-type ${f.inspections.find(i => i.id == 7).type === 1 ? 'important' : ''}`}>{f.inspections.find(i => i.id == 7).type === 1 ? '重要' : '普通'}</div>
+                          <div className="failure-sort">{`表示順：${f.inspections.find(i => i.id == 7).sort}`}</div>
+                        </div> :
+                        <div></div>
+                      }
+                      </td>
+                      <td>
+                      {
+                        f.inspections.find(i => i.id == 9) ?
+                        <div className="failure-status">
+                          <div className={`failure-type ${f.inspections.find(i => i.id == 9).type === 1 ? 'important' : ''}`}>{f.inspections.find(i => i.id == 9).type === 1 ? '重要' : '普通'}</div>
+                          <div className="failure-sort">{`表示順：${f.inspections.find(i => i.id == 9).sort}`}</div>
+                        </div> :
+                        <div></div>
+                      }
+                      </td>
+                      <td>
+                      {
+                        f.status == 1 ?
+                        <img
+                          className="icon-checked"
+                          src={iconCheck}
+                          alt="iconCheck"
+                          onClick={() => this.props.actions.deactivateFailure(f.id)}
+                        /> :
+                        <div
+                          className="icon-check"
+                          onClick={() => this.props.actions.activateFailure(f.id)}
+                        ></div>
+                      }
+                      </td>
+                      <td>
+                        <button
+                          className="dark edit"
+                          onClick={() => this.setState({
+                            editModal: true,
+                            editting: f
+                          })}
+                        >
+                          <p>編集</p>
                         </button>
                       </td>
                     </tr>
@@ -108,93 +410,31 @@ class Failure extends Component {
                 }              
               )
             }{
-              AllFailureData.data && AllFailureData.data.length == 0 &&
+              maintFailureData.data && maintFailureData.data.length == 0 &&
               <tr className="content">
-                <td colSpan="10">結果なし</td>
+                <td colSpan="17">結果なし</td>
               </tr>
             }
             </tbody>
           </table>
           {
-            this.state.editModal &&
-            <div>
-              <div className="modal">
-              </div>
-              <div className="edit-wrap">
-                <div className="panel-btn" onClick={() => this.setState({editModal: false})}>
-                  <span className="panel-btn-close"></span>
-                </div>
-                <p className="title">不良区分情報編集</p>
-                <div className="edit">
-                  <div className="process-wrap">
-                    <p>番号</p>
-                    <input
-                      type="text"
-                      value={this.state.editting_l}
-                      onChange={(e) => this.setState({editting_l: e.target.value})}
-                    />
-                  </div>
-                  <div className="inspection-wrap">
-                    <p>名前</p>
-                    <input
-                      type="text"
-                      value={this.state.editting_n}
-                      onChange={(e) => this.setState({editting_n: e.target.value})}
-                    />
-                  </div>
-                </div>
-                <table>
-                  <thead>
-                    <tr>
-                      <th colSpan={2}>成型工程</th>
-                      <th colSpan={3}>穴あけ工程</th>
-                      <th colSpan={5}>接着工程</th>
-                    </tr>
-                    <tr>
-                      <th colSpan={1}>インナー</th>
-                      <th colSpan={1}>アウター</th>
-                      <th colSpan={2}>インナー</th>
-                      <th colSpan={1}>アウター</th>
-                      <th colSpan={5}>インナーASSY</th>
-                    </tr>
-                    <tr>
-                      <th colSpan={1}>外観検査</th>
-                      <th colSpan={1}>外観検査</th>
-                      <th colSpan={1}>外観検査</th>
-                      <th colSpan={1}>穴検査</th>
-                      <th colSpan={1}>穴検査</th>
-                      <th colSpan={1}>簡易CF</th>
-                      <th colSpan={1}>止水</th>
-                      <th colSpan={1}>仕上</th>
-                      <th colSpan={1}>検査</th>
-                      <th colSpan={1}>手直</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="content">
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                      <td>{'重要'}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="btn-wrap">
-                  <button>
-                    保存
-                  </button>
-                  <button>
-                    終了
-                  </button>
-                </div>
-              </div>
-            </div>
+            editModal &&
+            <Edit
+              id={editting.id}
+              name={editting.name}
+              label={editting.label}
+              inspections={editting.inspections}
+              message={maintFailureData.message}
+              meta={maintFailureData.meta}
+              close={() => this.setState({editModal: false})}
+              update={(id, name, label, is) => this.updateFailure(id, name, label, is)}
+            />
+          }{
+            createModal &&
+            <Create
+              close={() => this.setState({createModal: false})}
+              create={(name, label, is) => this.createFailure(name, label, is)}
+            />
           }
         </div>
       </div>
@@ -203,12 +443,12 @@ class Failure extends Component {
 }
 
 Failure.propTypes = {
-  AllFailureData: PropTypes.object.isRequired,
+  maintFailureData: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    AllFailureData: state.AllFailureData
+    maintFailureData: state.maintFailureData
   };
 }
 

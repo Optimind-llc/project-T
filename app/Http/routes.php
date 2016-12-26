@@ -42,9 +42,6 @@ Route::post('client/inspection', 'Client\InspectionController@saveInspection');
 // Update inspection data
 Route::post('client/inspection/update', 'Client\InspectionController@updateInspection');
 
-
-
-
 // Print iPad display clone
 Route::post('client/print', 'Client\PrintController@printByTemplate');
 
@@ -52,6 +49,11 @@ Route::post('client/print', 'Client\PrintController@printByTemplate');
 Route::post('client/association', 'Client\AssociationController@saveAssociation');
 Route::post('client/association/family', 'Client\AssociationController@getFamily');
 Route::post('client/association/update', 'Client\AssociationController@updateFamily');
+
+
+
+
+
 
 
 
@@ -67,15 +69,16 @@ Route::get('manager/hole', 'Manager\ReferenceController@index');
 
 
 
+
+
+
+
 Route::get('manager/report/{itionGId}/{date}/{itorG}', 'Manager\ReportController@report')
   ->where([
     'itionGId' => '[0-9]+'
   ]);
-
-
-
-
 Route::get('manager/pdf/checkReport/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@checkReport');
+
 
 
 Route::get('show/mapping/panelId/{partTypeId}/{itionGId}/{itorG}/{panelId}', 'ShowController@panelIdMapping');
@@ -110,6 +113,8 @@ Route::get('show/modifications/{itionGId}', 'ShowController@modifications')
 
 
 
+
+
 Route::get('show', 'ShowController@tableData');
 Route::get('show/pageType/{vehicle}/{process}/{inspection}/{division}/{line?}', 'ShowController@pageType')
 	->where([
@@ -127,6 +132,14 @@ Route::post('show/partFamily', 'ShowController@partFamily');
 Route::get('show/test', 'ShowController@test');
 
 
+
+Route::post('manager/association/mapping', 'Manager\MappingController@partIdMapping');
+
+
+
+
+
+
 /*
  * For Maintenance
  */
@@ -137,8 +150,11 @@ Route::post('maintenance/inspector/{id}/activate', 'Manager\MaintenanceControlle
 Route::post('maintenance/inspector/{id}/deactivate', 'Manager\MaintenanceController@deactivateInspector');
 
 
-Route::get('maintenance/failure', 'Manager\MaintenanceController@failure');
-
+Route::post('maintenance/failures', 'Manager\MaintenanceController@failures');
+Route::post('maintenance/failure/create', 'Manager\MaintenanceController@createFailure');
+Route::post('maintenance/failure/update', 'Manager\MaintenanceController@updateFailure');
+Route::post('maintenance/failure/{id}/activate', 'Manager\MaintenanceController@activateFailure');
+Route::post('maintenance/failure/{id}/deactivate', 'Manager\MaintenanceController@deactivateFailure');
 
 
 // $api = app('Dingo\Api\Routing\Router');

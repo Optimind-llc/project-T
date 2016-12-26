@@ -88,20 +88,6 @@ class Report extends Component {
         {VeItorGProcData.data !== null &&
           <div className="bg-white serch-flex">
             <div>
-              <p>車種*</p>
-              <Select
-                name="車種"
-                placeholder="選択してください"
-                clearable={false}
-                Searchable={true}
-                value={this.state.vehicle}
-                options={VeItorGProcData.data.vehicle.map(v => {
-                  return { value: v.c, label: v.c }
-                })}
-                onChange={value => this.setVehicle(value.value)}
-              />
-            </div>
-            <div>
               <p>日付*</p>
               <MyCalendar
                 defaultValue={this.state.date}

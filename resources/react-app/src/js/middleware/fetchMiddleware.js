@@ -73,7 +73,8 @@ export default store => next => action => {
         type: failureType,
         payload: {
           status: typeof error.status === 'string' ? error.status : 'danger',
-          message: typeof error.message === 'string' ? error.message : 'unexpected'
+          message: typeof error.message === 'string' ? error.message : 'unexpected',
+          meta: error.meta
         },
         meta: { timestamp },
         error: true,

@@ -8,6 +8,7 @@ import { handleDownload } from '../../../utils/Export';
 // Actions
 import { partFActions } from '../ducks/partF';
 import { updatePartFActions } from '../ducks/updatePartF';
+import { mappingActions } from '../ducks/mapping';
 // Material-ui Components
 import { Paper, Dialog, RaisedButton, FlatButton } from 'material-ui';
 import { grey50, indigo500 } from 'material-ui/styles/colors';
@@ -16,6 +17,7 @@ import './association.scss';
 // Components
 import RangeCalendar from '../components/rangeCalendar/rangeCalendar';
 import Loading from '../../../components/loading/loading';
+import Mapping from '../components/mapping/mapping';
 
 class Association extends Component {
   constructor(props, context) {
@@ -25,13 +27,16 @@ class Association extends Component {
       vehicle: {value: '680A', label: '680A'},
       partTId: null,
       panelId: '',
-      startDate: moment(),
+      startDate: null,
       startHour: null,
-      endDate: moment(),
+      endDate: null,
       endHour: null,
       processId: null,
       itionGId: null,
       mappingModal: false,
+      mappingId: 0,
+      mappingPartTypeId: 0,
+      header: '',
       editModal: false,
       editting_f: 0,
       editting_1: 0,
@@ -68,9 +73,16 @@ class Association extends Component {
     getPartFData(start, end, partTypeId, panelId);
   }
 
+  requestMapping(itionGId) {
+    const { getMappingData } = this.props.actions;
+    const { mappingId } = this.state;
+
+    getMappingData(mappingId, itionGId);
+  }
+
   render() {
-    const { PartFData, UpdatePartFData } = this.props;
-    const { vehicle, partTId, startDate, endDate, panelId, processId, itionGId, editting } = this.state;
+    const { PartFData, UpdatePartFData, MappingData } = this.props;
+    const { vehicle, partTId, startDate, endDate, panelId, processId, itionGId, editting, mappingPartTypeId, header } = this.state;
 
     let table = [];
     if (PartFData.data != null && !PartFData.isFetching) {
@@ -271,18 +283,93 @@ class Association extends Component {
                       <tr className="content">
                         <td>{i+1}</td>
                         <td>{f.associatedAt}</td>
-                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67149'][0].panelId}</p></td>
+                        <td>
+                          <p onClick={() => {
+                            this.setState({
+                              mappingModal: true,
+                              mappingId: f.parts['67149'][0].id,
+                              mappingPartTypeId: 1,
+                              header: `67149 バックドアインナー　パネルID: ${f.parts['67149'][0].panelId}`
+                            });
+                          }}>
+                            {f.parts['67149'][0].panelId}
+                          </p>
+                        </td>
                         <td>
                           {
                             f.parts['67119'] &&
-                            <p onClick={() => this.setState({mappingModal: true})}>{f.parts['67119'][0].panelId}</p>
+                            <p onClick={() => {
+                              this.setState({
+                                mappingModal: true,
+                                mappingId: f.parts['67119'][0].id,
+                                mappingPartTypeId: 2,
+                                header: `67119 アッパー　パネルID: ${f.parts['67119'][0].panelId}`
+                              });
+                            }}>
+                              {f.parts['67119'][0].panelId}
+                            </p>
                           }
                         </td>
-                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67176'][0].panelId}</p></td>
-                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67175'][0].panelId}</p></td>
-                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67178'][0].panelId}</p></td>
-                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67177'][0].panelId}</p></td>
-                        <td><p onClick={() => this.setState({mappingModal: true})}>{f.parts['67007'][0].panelId}</p></td>
+                        <td>
+                          <p onClick={() => {
+                            this.setState({
+                              mappingModal: true,
+                              mappingId: f.parts['67176'][0].id,
+                              mappingPartTypeId: 4,
+                              header: `67176 サイドアッパーLH　パネルID: ${f.parts['67176'][0].panelId}`
+                            });
+                          }}>
+                            {f.parts['67176'][0].panelId}
+                          </p>
+                        </td>
+                        <td>
+                          <p onClick={() => {
+                            this.setState({
+                              mappingModal: true,
+                              mappingId: f.parts['67175'][0].id,
+                              mappingPartTypeId: 3,
+                              header: `67175 サイドアッパーRH　パネルID: ${f.parts['67175'][0].panelId}`
+                            });
+                          }}>
+                            {f.parts['67175'][0].panelId}
+                          </p>
+                        </td>
+                        <td>
+                          <p onClick={() => {
+                            this.setState({
+                              mappingModal: true,
+                              mappingId: f.parts['67178'][0].id,
+                              mappingPartTypeId: 6,
+                              header: `67178 サイドロアLH　パネルID: ${f.parts['67178'][0].panelId}`
+                            });
+                          }}>
+                            {f.parts['67178'][0].panelId}
+                          </p>
+                        </td>
+                        <td>
+                          <p onClick={() => {
+                            this.setState({
+                              mappingModal: true,
+                              mappingId: f.parts['67177'][0].id,
+                              mappingPartTypeId: 5,
+                              header: `67177 サイドロアRH　パネルID: ${f.parts['67177'][0].panelId}`
+                            });
+                          }}>
+                            {f.parts['67177'][0].panelId}
+                          </p>
+                        </td>
+                        <td>
+                          <p onClick={() => {
+                            this.setState({
+                              mappingModal: true,
+                              mappingId: f.parts['67007'][0].id,
+                              mappingPartTypeId: 7,
+                              header: `67007 バックドアインナーASSY　パネルID: ${f.parts['67007'][0].panelId}`
+                            });
+                          }}>
+                            {f.parts['67007'][0].panelId}
+                          </p>
+                        </td>
                         <td>
                           <button
                             className="dark edit"
@@ -313,51 +400,6 @@ class Association extends Component {
             </tbody>
           </table>
           {
-            this.state.mappingModal &&
-            <div>
-              <div className="modal">
-              </div>
-              <div className="mapping-wrap">
-                <div className="panel-btn" onClick={() => this.setState({mappingModal: false})}>
-                  <span className="panel-btn-close"></span>
-                </div>
-                {/*
-                  <p>工程と検査を選択してください</p>
-                  <div className="mapping">
-                    <div className="process-wrap">
-                      <p>工程*</p>
-                      <Select
-                        name="工程"
-                        styles={{height: 36}}
-                        placeholder={'工程を選択'}
-                        disabled={partTId == null}
-                        clearable={false}
-                        Searchable={true}
-                        value={null}
-                        options={null}
-                      />
-                    </div>
-                    <div className="inspection-wrap">
-                      <p>検査*</p>
-                      <Select
-                        name="検査"
-                        styles={{height: 36}}
-                        placeholder={'先に工程を選択'}
-                        disabled={processId == null}
-                        clearable={false}
-                        Searchable={true}
-                        value={null}
-                        options={null}
-                      />
-                    </div>
-                  </div>
-                */}
-                <div>
-                  <p>67149 バックドアインナー パネルID: A0000001</p>
-                </div>
-              </div>
-            </div>
-          }{
             this.state.editModal &&
             <div>
               <div className="modal">
@@ -493,6 +535,21 @@ class Association extends Component {
             </div>
           }
         </div>
+        {
+          this.state.mappingModal &&
+          <Mapping
+            close={() => {
+              this.setState({mappingModal: false});
+              this.props.actions.clearMappingData();
+            }}
+            header={header}
+            requestMapping={(itionGid) => this.requestMapping(itionGid)}
+            data={MappingData.data}
+            isFetching={MappingData.isFetching}
+            didInvalidate={MappingData.didInvalidate}
+            mappingPartTypeId={mappingPartTypeId}
+          />
+        }
       </div>
     );
   }
@@ -505,12 +562,13 @@ Association.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     PartFData: state.PartFData,
-    UpdatePartFData: state.UpdatePartFData
+    UpdatePartFData: state.UpdatePartFData,
+    MappingData: state.MappingData,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({}, partFActions ,updatePartFActions);
+  const actions = Object.assign({}, partFActions ,updatePartFActions, mappingActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };

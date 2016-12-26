@@ -135,7 +135,7 @@ class InsertDummyData extends Command
             'comment' => ($group['id'] == 5 || $group['id'] == 6 || $group['id'] == 8) ? null : 'インナーのコメント',
             'inspector' => $tyoku.','.$group['inspectorGroups']['Y'][0]['name'],
             'pages' => $group['pages']->filter(function($p) {
-                switch (rand(6, 6)) {
+                switch (rand(0, 6)) {
                     case 0: $result = $p['id'] != 14; break;
                     case 1: $result = ($p['id'] != 14 && $p['id'] != 13); break;
                     case 2: $result = ($p['id'] != 14 && $p['id'] != 27); break;
@@ -164,7 +164,7 @@ class InsertDummyData extends Command
 
         //成型：検査：ライン１：インナー
         $group = $controller->inspection(1);
-        for ($id = 1; $id <= 100; $id++) {
+        for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             // var_dump(json_encode($data));
             $request->setFamily($data);
@@ -173,7 +173,7 @@ class InsertDummyData extends Command
 
         //成型：検査：ライン２：インナー
         $group = $controller->inspection(2);
-        for ($id = 101; $id <= 200; $id++) {
+        for ($id = 11; $id <= 20; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -181,7 +181,7 @@ class InsertDummyData extends Command
 
         //成型：検査：ライン１：アウター
         $group = $controller->inspection(5);
-        for ($id = 1; $id <= 100; $id++) {
+        for ($id = 1; $id <= 10; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -189,7 +189,7 @@ class InsertDummyData extends Command
 
         //成型：検査：ライン２：アウター
         $group = $controller->inspection(6);
-        for ($id = 101; $id <= 200; $id++) {
+        for ($id = 11; $id <= 20; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -197,7 +197,7 @@ class InsertDummyData extends Command
 
         //穴あけ：外観検査：インナー
         $group = $controller->inspection(15);
-        for ($id = 1; $id <= 200; $id++) {
+        for ($id = 1; $id <= 20; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -205,7 +205,7 @@ class InsertDummyData extends Command
 
         //穴あけ：検査：インナー
         $group = $controller->inspection(4);
-        for ($id = 1; $id <= 200; $id++) {
+        for ($id = 1; $id <= 20; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        
@@ -213,7 +213,7 @@ class InsertDummyData extends Command
 
         //穴あけ：検査：アウター
         $group = $controller->inspection(8);
-        for ($id = 1; $id <= 200; $id++) {
+        for ($id = 1; $id <= 20; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        

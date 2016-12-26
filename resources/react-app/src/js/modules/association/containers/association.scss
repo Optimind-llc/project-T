@@ -204,15 +204,6 @@
     }
   }
 
-  .modal {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: rgba(0,0,0,0.7);
-  }
-
   .panel-btn {
     cursor: pointer;
       display: inline-block;
@@ -253,75 +244,6 @@
 
       &:after {
         transform: rotate(45deg);
-      }
-    }
-  }
-
-  .mapping-wrap {
-    position: fixed;
-    top: 0;
-    left: 160px;
-    margin: 10px;
-    padding: 20px;
-    height: calc(100% - 20px);
-    width: calc(100% - 180px);
-    background-color: white;
-    border-radius: 4px;
-
-    p {
-      text-align: center;
-    }
-
-    .mapping {
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-between;
-      padding: 10px;
-
-      > div {
-        margin: 0 4px;
-
-        &:nth-child(1) {
-          margin-left: 0;
-        }
-
-        &:nth-last-of-type(1) {
-          margin-right: 0;
-        }
-      }
-
-      .process-wrap {
-        display: flex;
-        flex-flow: row nowrap;
-        flex-grow: 1;
-        flex-basis: 200px;
-
-        > div {
-          flex-grow: 1;
-          flex-basis: 150px;
-        }
-        > p {
-          margin: 0 8px 0 0;
-          padding: 0;
-          line-height: 36px;
-        }
-      }
-
-      .inspection-wrap {
-        display: flex;
-        flex-flow: row nowrap;
-        flex-grow: 1;
-        flex-basis: 200px;
-
-        > div {
-          flex-grow: 1;
-          flex-basis: 150px;
-        }
-        > p {
-          margin: 0 8px 0 0;
-          padding: 0;
-          line-height: 36px;
-        }
       }
     }
   }

@@ -171,8 +171,6 @@
 					font-size: 14px;
 
 					> div {
-						flex-basis: 42px;
-
 						ul {
 							margin: 0;
 							padding: 0;
@@ -228,23 +226,23 @@
 				.hole .collection {
                     min-width: 282px;
 					> div:nth-child(1) {
-						flex-basis: 40px;
+						width: 40px;
 						border-right: 1px solid #BFBFBF;	
 					}
 					> div:nth-child(2) {
-						flex-basis: 50px;
+						width: 80px;
 						border-right: 1px solid #BFBFBF;
 					}
 					> div:nth-child(3) {
-						flex-basis: 50px;
+						width: 80px;
 						border-right: 1px solid #BFBFBF;
 					}
 					> div:nth-child(4) {
-						flex-basis: 50px;
+						width: 80px;
 						border-right: 1px solid #BFBFBF;
 					}
 					> div:nth-child(5) {
-						flex-basis: 44px;
+						width: 60px;
 					}
 
 					ul span {

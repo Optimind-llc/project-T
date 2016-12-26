@@ -344,14 +344,16 @@ class CustomTable extends Component {
                 }{
                   inlines.length > 0 &&
                   inlines.map(i => {
-                    let status = '○';
+                    let status = true;
+                    let target = 0;
                     if (d.inlines[i.id]) {
-                      let target = d.inlines[i.id];
+                      target = d.inlines[i.id];
                       if ( target.status > target.max || target.status < target.min ) {
-                        status = '×';
+                        status = false;
                       }
                     }
-                    return (<td style={{width: colWidth.inline}}>{status}</td>);
+
+                    return (<td style={{width: colWidth.inline, color: status ? '#000' : 'red'}}>{target.status}</td>);
                   })
                 }
                 <td style={{width: colWidth.comment}}>{d.comment ? d.comment.slice(0,5)+'...' : ''}</td>

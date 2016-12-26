@@ -151,7 +151,7 @@ class InspectionGroup extends Model
                 $q->select(['id']);
             },
             'inspection.failures' => function($q) {
-                $q->select(['id', 'name', 'label']);
+                $q->select(['id', 'name', 'label', 'status']);
             },
             'inspection.modifications' => function($q) {
                 $q->select(['id', 'name', 'label']);
@@ -170,7 +170,11 @@ class InspectionGroup extends Model
         ])
         ->find($id);
 
-        $failures = $group->inspection->failures->map(function ($f) {
+        $failures = $group->inspection->failures
+        ->filter(function ($f) {
+            return $f->status === 1;
+        })
+        ->map(function ($f) {
             return [
                 'id' => $f->id,
                 'label' => $f->label,
@@ -178,7 +182,8 @@ class InspectionGroup extends Model
                 'type' => $f->pivot->type,
                 'sort' => $f->pivot->sort
             ];
-        })->toArray();
+        })
+        ->toArray();
 
         foreach( $failures as $key => $row ) {
             $f_type_array[$key] = $row['type'];

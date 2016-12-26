@@ -16,7 +16,7 @@
       left: 160px;
       bottom: 0;
       width: 10px;
-      box-shadow: inset 6px 0 14px -6px rgba(0, 0, 0, 0.4);
+      box-shadow: inset 6px 0 14px -6px rgba(0, 0, 0, 0.2);
       z-index: 10;
   }
 
@@ -111,6 +111,7 @@
   .login-wrap {
     position: absolute;
     bottom: 0px;
+    width: 148px;
     margin: 0 6px 20px 6px;
 
     p {
@@ -121,6 +122,10 @@
 
     p.error-message {
       font-size: 11px;
+    }
+
+    input {
+      width: 148px;
     }
 
     .login-btn {
@@ -152,6 +157,7 @@
   .logout-wrap {
     position: absolute;
     bottom: 0px;
+    width: 80px;
     margin: 0 40px 20px 40px;
 
     p {

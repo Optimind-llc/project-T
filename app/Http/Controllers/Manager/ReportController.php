@@ -27,17 +27,21 @@ class ReportController extends Controller
     public function report($itionGId, $date, $itorG)
     {
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
-        $start = $date->addHours(6)->addMinutes(30);
+        // $start = $date->addHours(6)->addMinutes(30);
+        $start = $date->addHours(4)->addMinutes(30);
         $end = $date->copy()->addDay(1)->addHours(2);
         $itorG = [InspectorGroup::find($itorG)->name];
 
         if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
-            $parts = Page::join('inspection_families as if', function($join) use ($itionGId, $start, $end) {
+            $itorGWithF = $itorG;
+            array_push($itorGWithF, '不明');
+
+            $parts = Page::join('inspection_families as if', function($join) use ($itionGId, $start, $end, $itorGWithF) {
                 $join->on('pages.family_id', '=', 'if.id')
-                    ->whereIn('if.inspector_group', ['不明'])
+                    ->whereIn('if.inspector_group', $itorGWithF)
                     ->where('if.inspection_group_id', '=', $itionGId)
-                    ->where('if.inspected_at', '>=', $start)
-                    ->where('if.inspected_at', '<', $end);
+                    ->where('if.created_at', '>=', $start)
+                    ->where('if.created_at', '<', $end);
             })
             ->join('part_page as pp', function($join) {
                 $join->on('pages.id', '=', 'pp.page_id');
@@ -54,7 +58,21 @@ class ReportController extends Controller
                 return $p->first();
             })
             ->values()
-            ->sortBy('inspected_at');
+            ->sortBy('created_at');
+
+            $count = $parts->filter(function($p) use ($start) {
+                return $p->created_at->gte($start) && $p->created_at->lte($start->copy()->addHours(2));
+            })->count();
+
+            if ($count > 0) {
+                $parts = $parts->filter(function($p) use ($start) {
+                    return $p->created_at->gte($start->copy()->addHours(4)) && $p->created_at->lte($start->copy()->addHours(28));
+                });
+            } else {
+                $parts = $parts->filter(function($p) use ($start) {
+                    return $p->created_at->gte($start->copy()->addHours(2)) && $p->created_at->lte($start->copy()->addHours(26));
+                });
+            }
 
         }
         elseif ($itionGId == 1 || $itionGId == 2 || $itionGId == 5 || $itionGId == 6 || $itionGId == 15) {
@@ -95,6 +113,20 @@ class ReportController extends Controller
                 ])
                 ->orderBy('if.created_at')
                 ->get();
+
+            $count = $parts->filter(function($p) use ($start) {
+                return $p->created_at->gte($start) && $p->created_at->lte($start->copy()->addHours(2));
+            })->count();
+
+            if ($count > 0) {
+                $parts = $parts->filter(function($p) use ($start) {
+                    return $p->created_at->gte($start->copy()->addHours(4)) && $p->created_at->lte($start->copy()->addHours(28));
+                });
+            } else {
+                $parts = $parts->filter(function($p) use ($start) {
+                    return $p->created_at->gte($start->copy()->addHours(2)) && $p->created_at->lte($start->copy()->addHours(26));
+                });
+            }
         }
         elseif ($itionGId == 4 || $itionGId == 8) {
             $parts = Part::where('parts.created_at', '<', $end)
@@ -146,6 +178,20 @@ class ReportController extends Controller
                 ])
                 ->orderBy('if.created_at')
                 ->get();
+
+            $count = $parts->filter(function($p) use ($start) {
+                return $p->created_at->gte($start) && $p->created_at->lte($start->copy()->addHours(2));
+            })->count();
+
+            if ($count > 0) {
+                $parts = $parts->filter(function($p) use ($start) {
+                    return $p->created_at->gte($start->copy()->addHours(4)) && $p->created_at->lte($start->copy()->addHours(28));
+                });
+            } else {
+                $parts = $parts->filter(function($p) use ($start) {
+                    return $p->created_at->gte($start->copy()->addHours(2)) && $p->created_at->lte($start->copy()->addHours(26));
+                });
+            }
         }
         elseif ($itionGId == 16 || $itionGId == 10 || $itionGId == 11 || $itionGId == 12 || $itionGId == 14) {
             $parts = Part::where('parts.created_at', '<', $end)
@@ -187,6 +233,20 @@ class ReportController extends Controller
                 ])
                 ->orderBy('if.created_at')
                 ->get();
+
+            $count = $parts->filter(function($p) use ($start) {
+                return $p->created_at->gte($start) && $p->created_at->lte($start->copy()->addHours(2));
+            })->count();
+
+            if ($count > 0) {
+                $parts = $parts->filter(function($p) use ($start) {
+                    return $p->created_at->gte($start->copy()->addHours(4)) && $p->created_at->lte($start->copy()->addHours(28));
+                });
+            } else {
+                $parts = $parts->filter(function($p) use ($start) {
+                    return $p->created_at->gte($start->copy()->addHours(2)) && $p->created_at->lte($start->copy()->addHours(26));
+                });
+            }
         }
 
         if ($parts->count() == 0) {

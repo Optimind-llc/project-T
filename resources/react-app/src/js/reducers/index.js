@@ -18,12 +18,11 @@ import ItionGData from '../modules/report/ducks/inspectionGroup';
 
 import PartFData from '../modules/association/ducks/partF';
 import UpdatePartFData from '../modules/association/ducks/updatePartF';
+import MappingData from '../modules/association/ducks/mapping';
 
 import InspectorData from '../modules/inspector/ducks/inspector';
-
-import AllFailureData from '../modules/failure/ducks/failure';
-
-import AllHoleData from '../modules/hole/ducks/hole';
+import maintFailureData from '../modules/failure/ducks/failure';
+import maintHoleData from '../modules/hole/ducks/hole';
 
 
 const rootReducer = combineReducers(Object.assign({
@@ -40,9 +39,10 @@ const rootReducer = combineReducers(Object.assign({
   ItionGData,
   PartFData,
   UpdatePartFData,
+  MappingData,
   InspectorData,
-  AllFailureData,
-  AllHoleData,
+  maintFailureData,
+  maintHoleData,
   routing: routerReducer
 }));
 

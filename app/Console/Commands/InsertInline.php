@@ -97,12 +97,40 @@ class InsertInline extends Command
 
                         $status = $raw[5] == 'OK' ? 1 : 0;
 
+                        // Get choke from molding inspection of same panelID
+                        $molding_result = DB::table('inspection_families')
+                            ->join('pages as pg', function ($join) {
+                                $join->on('pg.family_id', '=', 'inspection_families.id')
+                                    ->whereIn('pg.page_type_id', [1, 32]);
+                            })
+                            ->join('part_page as pp', function($join) {
+                                $join->on('pp.page_id', '=', 'pg.id');
+                            })
+                            ->join('parts as pt', function ($join) use ($newPart) {
+                                $join->on('pt.id', '=', 'pp.part_id')
+                                    ->where('pt.id', '=', $newPart->id);
+                            })
+                            ->select('inspection_families.*')
+                            ->first();
+
+                        $choku = '不明';
+                        $created_by = '精度検査';
+                        if (count($molding_result) >= 1) {
+                            $choku = $molding_result->inspector_group;
+                            $created_by = $molding_result->created_by;
+                        }
+
                         // Create new Family, inspection_group_id = 3
                         $newFamily = new InspectionFamily;
                         $newFamily->inspection_group_id = 3;
-                        $newFamily->inspector_group = '不明';
-                        $newFamily->created_by = '精度検査';
+                        $newFamily->inspector_group = $choku;
+                        $newFamily->created_by = $created_by;
                         $newFamily->inspected_at = $inspected_at;
+                        if (count($molding_result) >= 1) {
+                            $newFamily->created_at = $molding_result->created_at;
+                        } else {
+                            $newFamily->created_at = $inspected_at;
+                        }
                         $newFamily->status = $status;
                         $newFamily->save();
 
@@ -322,12 +350,40 @@ class InsertInline extends Command
 
                         $status = $raw[5] == 'OK' ? 1 : 0;
 
+                        // Get choke from molding inspection of same panelID
+                        $molding_result = DB::table('inspection_families')
+                            ->join('pages as pg', function ($join) {
+                                $join->on('pg.family_id', '=', 'inspection_families.id')
+                                    ->whereIn('pg.page_type_id', [1, 32]);
+                            })
+                            ->join('part_page as pp', function($join) {
+                                $join->on('pp.page_id', '=', 'pg.id');
+                            })
+                            ->join('parts as pt', function ($join) use ($newPart) {
+                                $join->on('pt.id', '=', 'pp.part_id')
+                                    ->where('pt.id', '=', $newPart->id);
+                            })
+                            ->select('inspection_families.*')
+                            ->first();
+
+                        $choku = '不明';
+                        $created_by = '精度検査';
+                        if (count($molding_result) >= 1) {
+                            $choku = $molding_result->inspector_group;
+                            $created_by = $molding_result->created_by;
+                        }
+
                         // Create new Family, inspection_group_id = 3
                         $newFamily = new InspectionFamily;
                         $newFamily->inspection_group_id = 19;
-                        $newFamily->inspector_group = '不明';
-                        $newFamily->created_by = '精度検査';
+                        $newFamily->inspector_group = $choku;
+                        $newFamily->created_by = $created_by;
                         $newFamily->inspected_at = $inspected_at;
+                        if (count($molding_result) >= 1) {
+                            $newFamily->created_at = $molding_result->created_at;
+                        } else {
+                            $newFamily->created_at = $inspected_at;
+                        }
                         $newFamily->status = $status;
                         $newFamily->save();
 

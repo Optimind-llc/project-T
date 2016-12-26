@@ -120,22 +120,22 @@ class Export
 
         switch ($itionGId) {
             case 1:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成型','001','680A'];
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成形','001','680A'];
                 $file_name = 'M001_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 2:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成型','002','680A'];
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成形','002','680A'];
                 $file_name = 'M002_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 5:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成型','001','680A'];
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成形','001','680A'];
                 $file_name = 'M001_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 6:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成型','002','680A'];
+                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成形','002','680A'];
                 $file_name = 'M002_'.$part_type->pn.'_'.$now->format('Ymd_His');
                 $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;

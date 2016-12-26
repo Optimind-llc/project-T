@@ -60,7 +60,6 @@ export function updatePartFamily(body) {
 }
 
 export function clearMessage() {
-  console.log('aaaaaaa')
   return {
     type: CLEAR_MESSAGE
   }

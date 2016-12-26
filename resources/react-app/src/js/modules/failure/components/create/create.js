@@ -1,21 +1,20 @@
 import React, { Component, PropTypes } from 'react';
 import Select from 'react-select';
 // Styles
-import './edit.scss';
+import './create.scss';
 
-class Edit extends Component {
+class Create extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      id: props.id,
-      name: props.name,
-      label: props.label,
-      inspections: props.inspections
+      name: '',
+      label: '',
+      inspections: []
     };
   }
 
   render() {
-    const { id, name, label, inspections } = this.state;
+    const { name, label, inspections } = this.state;
     const inspectionIds = [1,10,3,11,5,6,7,9];
 
     return (
@@ -26,7 +25,7 @@ class Edit extends Component {
           <div className="panel-btn" onClick={() => this.props.close()}>
             <span className="panel-btn-close"></span>
           </div>
-          <p className="title">担当者情報編集</p>
+          <p className="title">新規担当者登録</p>
           <div className="edit">
             <div className="name">
               <p>名前</p>
@@ -78,14 +77,14 @@ class Edit extends Component {
             <tbody>
               <tr className="content">
               {
-                inspectionIds.map(iID =>
-                  inspections.find(i => i.id == iID) ?
+                inspectionIds.map(iID => 
+                  inspections.find(ig => ig.id == iID) ?
                   <td key={iID}>
                     <input
                       type="number"
-                      value={inspections.find(i => i.id == iID) ? inspections.find(i => i.id == iID).sort : null}
+                      value={inspections.find(ig => ig.id == iID) ? inspections.find(ig => ig.id == iID).sort : null}
                       onChange={e => this.setState({
-                        inspections: inspections.map(i => i.id == iID ? Object.assing(i, {sort: e.target.value}) : i)
+                        inspections: inspections.map(ig => ig.id == iID ? Object.assign(ig, {sort: e.target.value}) : ig)
                       })}
                     />
                     <div className="failure-type-wrap">
@@ -99,9 +98,9 @@ class Edit extends Component {
                       <p>重要</p>
                     </div>
                     <div
-                      className="panel-btn"
+                      className="panel-btn" 
                       onClick={() => this.setState({
-                        inspections: inspections.filter(i => i.id !== iID)
+                        inspections: inspections.filter(ig => ig.id !== iID)
                       })}
                     >
                       <span className="panel-btn-close"></span>
@@ -125,8 +124,8 @@ class Edit extends Component {
           </table>
           <p className="explanation">※ 数字はiPadでの表示順</p>
           <div className="btn-wrap">
-            <button onClick={() => this.props.update(name, label, inspections)}>
-              保存
+            <button onClick={() => this.props.create(name, label, inspections)}>
+              登録
             </button>
           </div>
         </div>
@@ -135,15 +134,9 @@ class Edit extends Component {
   }
 };
 
-Edit.propTypes = {
-  id: PropTypes.number,
-  name: PropTypes.string,
-  label: PropTypes.number,
-  inspections: PropTypes.array,
-  message: PropTypes.string,
-  meta: PropTypes.object,
+Create.propTypes = {
   close: PropTypes.func,
-  update: PropTypes.func,
+  create: PropTypes.func,
 };
 
-export default Edit;
+export default Create;

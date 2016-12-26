@@ -160,10 +160,10 @@ class Inspector extends Component {
                 value={this.state.itionG}
                 options={[
                   {label: '全て', value: 'all'},
-                  {label: '成型工程ライン① インナー外観検査', value: 1},
-                  {label: '成型工程ライン① アウター外観検査', value: 5},
-                  {label: '成型工程ライン② インナー外観検査', value: 2},
-                  {label: '成型工程ライン② アウター外観検査', value: 6},
+                  {label: '成形工程ライン① インナー外観検査', value: 1},
+                  {label: '成形工程ライン① アウター外観検査', value: 5},
+                  {label: '成形工程ライン② インナー外観検査', value: 2},
+                  {label: '成形工程ライン② アウター外観検査', value: 6},
                   {label: '穴あけ工程 インナー外観検査', value: 15},
                   {label: '穴あけ工程 インナー穴検査', value: 4},
                   {label: '穴あけ工程 アウター穴検査', value: 8},
@@ -235,8 +235,8 @@ class Inspector extends Component {
                 >
                   直
                 </th>
-                <th colSpan={2}>成型工程ライン①</th>
-                <th colSpan={2}>成型工程ライン②</th>
+                <th colSpan={2}>成形工程ライン①</th>
+                <th colSpan={2}>成形工程ライン②</th>
                 <th colSpan={3}>穴あけ工程</th>
                 <th colSpan={5}>接着工程</th>
                 <th colSpan={1} rowSpan={3}>iPad<br/>表示</th>
@@ -413,11 +413,14 @@ class Inspector extends Component {
                       }
                       </td>
                       <td>
-                        <button onClick={() => this.setState({
-                          editModal: true,
-                          editting: itor
-                        })}>
-                          編集
+                        <button
+                          className="dark edit"
+                          onClick={() => this.setState({
+                            editModal: true,
+                            editting: itor
+                          })}
+                        >
+                          <p>編集</p>
                         </button>
                       </td>
                     </tr>

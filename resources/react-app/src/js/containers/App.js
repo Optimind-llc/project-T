@@ -31,9 +31,9 @@ class App extends Component {
 
     const masterlinks = [
       { en: 'inspector', name: '担当者マスタメンテ', disable: false },
-      { en: 'hole', name: '穴あけ加工ポイント登録', disable: false },
       { en: 'failure', name: '不良区分マスタメンテ', disable: false },
-      { en: 'master', name: '手直し区分マスタメンテ', disable: true }
+      { en: 'master', name: '手直し区分マスタメンテ', disable: true },
+      { en: 'hole', name: '穴あけ加工ポイント登録', disable: true },
     ];
 
     const nameList = [
@@ -62,7 +62,7 @@ class App extends Component {
           links={links}
           masterlinks={masterlinks}
           logedin={Application.master}
-          pw={'master'}
+          pw={'0000'}
           login={() => actions.login()}
           logout={() => actions.logout()}
           push={actions.push}

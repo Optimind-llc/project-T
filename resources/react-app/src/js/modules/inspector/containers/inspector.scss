@@ -48,7 +48,7 @@
       div.yomi {
         flex-basis: 200px;
         > input {
-          flex-basis: 140px;
+          width: 200px;
         }
       }
 
@@ -163,7 +163,6 @@
           button {
             position: relative;
             right: 0;
-            margin: 0 4px;
           }
         }
 

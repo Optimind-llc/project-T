@@ -71,8 +71,8 @@ class Edit extends Component {
           <table>
             <thead>
               <tr>
-                <th colSpan={2}>成型工程ライン①</th>
-                <th colSpan={2}>成型工程ライン②</th>
+                <th colSpan={2}>成形工程ライン①</th>
+                <th colSpan={2}>成形工程ライン②</th>
                 <th colSpan={3}>穴あけ工程</th>
                 <th colSpan={5}>接着工程</th>
               </tr>

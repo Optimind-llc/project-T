@@ -833,8 +833,9 @@ class ShowController extends Controller
                 ->join('pages as pg', function($join) {
                     $join->on('ip.page_id', '=', 'pg.id');
                 })
-                ->join('inspection_families as if', function($join) use ($start_at, $end_at) {
+                ->join('inspection_families as if', function($join) use ($itionGId, $start_at, $end_at) {
                     $join->on('pg.family_id', '=', 'if.id')
+                        ->where('if.inspection_group_id', '=', $itionGId)
                         ->where('ip.inspected_at', '>', $start_at)
                         ->where('ip.inspected_at', '<=', $end_at);
                 })
@@ -985,9 +986,10 @@ class ShowController extends Controller
             ->join('pages as pg', function($join) {
                 $join->on('pg.id', '=', 'pp.page_id');
             })
-            ->join('inspection_families as if', function($join) use ($itionGId, $start, $end, $tyoku) {
+            ->join('inspection_families as if', function($join) use ($itionGId, $start, $end, $tyoku, $judgement) {
                 $join->on('if.id', '=', 'pg.family_id')
                     ->whereIn('if.inspector_group', $tyoku)
+                    ->whereIn('if.status', $judgement)
                     ->where('inspection_group_id', '=', $itionGId)
                     ->where(function($q) use ($start, $end) {
                         $q->whereNotNull('if.inspected_at')->orWhere(function($q) use ($start, $end) {
@@ -996,7 +998,8 @@ class ShowController extends Controller
                     })
                     ->where(function($q) use ($start, $end) {
                         $q->whereNull('if.inspected_at')->orWhere(function($q) use ($start, $end) {
-                            $q->where('if.inspected_at', '>=', $start)->where('if.inspected_at', '<', $end);
+                            // $q->where('if.inspected_at', '>=', $start)->where('if.inspected_at', '<', $end);
+                            $q->where('if.created_at', '>=', $start)->where('if.created_at', '<', $end);
                         });
                     });
             })
@@ -1062,7 +1065,10 @@ class ShowController extends Controller
         $hm = $inspection_group->sortedHoleModifications();
         $h = [];
         if ($inspection_group->inspection->en == 'ana') {
-            $h = PartType::find($partTypeId)->holes()->orderBy('label')->get();
+            $h = PartType::find($partTypeId)
+                ->holes()
+                ->where('figure_id', '!=', 9)
+                ->orderBy('label')->get();
         }
         $i = [];
         if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
@@ -1181,6 +1187,7 @@ class ShowController extends Controller
                 'associatedAt' => $f->updated_at->format('Y-m-d H:i:s'),
                 'parts' => $f->parts->map(function($p) {
                     return [
+                        'id' => $p->id,
                         'panelId' => $p->panel_id,
                         'pn' => $p->partType->pn
                     ];

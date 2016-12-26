@@ -76,7 +76,6 @@ export default function reducer(state = initialState, action) {
     case UPDATE_INSPECTORS_DATA_FAIL:
     case ACTIVATE_INSPECTORS_DATA_FAIL:
     case DEACTIVATE_INSPECTORS_DATA_FAIL:
-    console.log(action);
       return Object.assign({}, state, {
         updating: false,
         updated: false,

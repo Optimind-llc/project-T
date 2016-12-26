@@ -389,7 +389,12 @@ class Report
 
                 if ($minutes >= $min && $minutes < $max) {
                     $timeChunkedFamilies[$tc['label']][] = $formated_family->map(function($part) {
-                        return $part['failures'];
+                        return [
+                            'iStatus' => $part['iStatus'],
+                            'gStatus' => $part['gStatus'],
+                            'status' => $part['status'],
+                            'f' => $part['failures']
+                        ];
                     });
                 }
             }
@@ -400,13 +405,40 @@ class Report
 
             $plucked = [];
             foreach ($parts_obj as $part_obj) {
-                $plucked[$part_obj->id] = array_count_values($collected->pluck($part_obj->id)->flatten()->toArray());
+                $plucked[$part_obj->id] = [
+                    'f' => array_count_values($collected->pluck($part_obj->id)->pluck('f')->flatten()->toArray()),
+                    'iStatus' => [
+                        0 => $collected->pluck($part_obj->id)->pluck('iStatus')->filter(function($s) {
+                            return $s === 0;
+                        })->count(),
+                        1 => $collected->pluck($part_obj->id)->pluck('iStatus')->filter(function($s) {
+                            return $s === 1;
+                        })->count()
+                    ],
+                    'gStatus' => [
+                        0 => $collected->pluck($part_obj->id)->pluck('gStatus')->filter(function($s) {
+                            return $s === 0;
+                        })->count(),
+                        1 => $collected->pluck($part_obj->id)->pluck('gStatus')->filter(function($s) {
+                            return $s === 1;
+                        })->count()
+                    ],
+                    'status' => [
+                        0 => $collected->pluck($part_obj->id)->pluck('status')->filter(function($s) {
+                            return $s === 0;
+                        })->count(),
+                        1 => $collected->pluck($part_obj->id)->pluck('status')->filter(function($s) {
+                            return $s === 1;
+                        })->count()
+                    ]
+                ];
+
             }
 
             return collect($plucked);
         });
 
-        $fd = ($A3['xmax'] - $A3['x0']*2 - 24)/$fn;
+        $fd = ($A3['xmax'] - $A3['x0']*2 - 100)/$fn;
         $fdj = $fd*0.85/$parts_obj->count();
 
         $tcpdf->AddPage('L', 'A3');
@@ -414,15 +446,20 @@ class Report
         $this->renderA3Header($tcpdf);
 
         // Render table header
-        $tcpdf->SetFont('kozgopromedium', '', 8);
+        $tcpdf->SetFont('kozgopromedium', '', 7);
+
+        $tcpdf->Text($A3['x0']+24, $A3['y1'], '出荷判定');
+        $tcpdf->Text($A3['x0']+24+24, $A3['y1'], '精度判定');
+        $tcpdf->Text($A3['x0']+24+48, $A3['y1'], '外観判定');
+
         foreach ($failureTypes as $i => $f) {
-            $tcpdf->Text($A3['x0']+24+($i*$fd), $A3['y1'], $f['name']);
+            $tcpdf->Text($A3['x0']+100+($i*$fd), $A3['y1'], $f['name']);
         }
 
         foreach ($parts_obj as $n => $part_obj) {
             $tcpdf->StartTransform();
-            $tcpdf->Rotate(90, $A3['x0']+24+$n*$fdj-1, $A3['y1']+9);
-            $tcpdf->Text($A3['x0']+24+$n*$fdj-3, $A3['y1']+9, $part_obj->short_name);
+            $tcpdf->Rotate(90, $A3['x0']+24+$n*4-1, $A3['y1']+9);
+            $tcpdf->Text($A3['x0']+24+$n*4-3, $A3['y1']+9, $part_obj->short_name);
             $tcpdf->StopTransform();
         }
 
@@ -439,16 +476,29 @@ class Report
 
             if (count($sum) != 0) {
                 $ip = 0;
+
+                $tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th-1.5, '×');
+                $tcpdf->Text($A3['x0']+20-0.4, $A3['y2']+$n*$th+1.5, '○');
+
                 foreach ($sum as $part_sum) {
+                    $tcpdf->Text($A3['x0']+24+4*$ip, $A3['y2']+$n*$th-1.5, $part_sum['status'][0]);
+                    $tcpdf->Text($A3['x0']+24+4*$ip, $A3['y2']+$n*$th+1.5, $part_sum['status'][1]);
+
+                    $tcpdf->Text($A3['x0']+24+4*$ip+24, $A3['y2']+$n*$th-1.5, $part_sum['iStatus'][0]);
+                    $tcpdf->Text($A3['x0']+24+4*$ip+24, $A3['y2']+$n*$th+1.5, $part_sum['iStatus'][1]);
+
+                    $tcpdf->Text($A3['x0']+24+4*$ip+48, $A3['y2']+$n*$th-1.5, $part_sum['gStatus'][0]);
+                    $tcpdf->Text($A3['x0']+24+4*$ip+48, $A3['y2']+$n*$th+1.5, $part_sum['gStatus'][1]);
+
                     foreach ($failureTypes as $i => $f) {
-                        if (!array_key_exists($f['id'], $part_sum)) {
+                        if (!array_key_exists($f['id'], $part_sum['f'])) {
                             $f_sum = 0;
                         }
                         else {
-                            $f_sum = $part_sum[$f['id']];
+                            $f_sum = $part_sum['f'][$f['id']];
                         }
-                        
-                        $tcpdf->Text($A3['x0']+24+($i*$fd)+$fdj*$ip, $A3['y2']+$n*$th, $f_sum);
+
+                        $tcpdf->Text($A3['x0']+100+($i*$fd)+$fdj*$ip, $A3['y2']+$n*$th, $f_sum);
                     }
                     $ip += 1;
                 }
@@ -2034,9 +2084,9 @@ class Report
         }
 
         if ($this->triple) {
-            $tcpdf->Line($A3['x0'], 100, $A3['xmax'] - $A3['x0'], 100, array('dash' => '3,1'));
-            $tcpdf->Line($A3['x0'], 180, $A3['xmax'] - $A3['x0'], 180, array('dash' => '3,1'));
-            $tcpdf->Line($A3['x0'], 260, $A3['xmax'] - $A3['x0'], 260, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 102.3, $A3['xmax'] - $A3['x0'], 102.3, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 182.3, $A3['xmax'] - $A3['x0'], 182.3, array('dash' => '3,1'));
+            $tcpdf->Line($A3['x0'], 262.3, $A3['xmax'] - $A3['x0'], 262.3, array('dash' => '3,1'));
         }
 
         // Render table body

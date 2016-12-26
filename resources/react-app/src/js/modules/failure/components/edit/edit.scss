@@ -1,4 +1,4 @@
-#inspector .body {
+#failure .body {
   .modal {
     width: 100%;
     height: 100%;
@@ -103,13 +103,12 @@
     .edit {
       display: flex;
       flex-flow: row nowrap;
-      justify-content: space-between;
-      padding: 10px 0;
+      justify-content: flex-start;
+      padding: 16px 0 20px 0;
 
       > div {
         display: flex;
         flex-flow: row nowrap;
-        flex-grow: 1;
         margin: 0 4px;
         position: relative;
 
@@ -126,21 +125,17 @@
           line-height: 30px;
         }
 
-        > div {
-          flex-grow: 1;
-        }
-
         > p.error-message {
           position: absolute;
-          top: -20px;
-          left: 40px;
+          top: -16px;
+          left: 36px;
           margin: 0;
           font-size: 12px;
           line-height: 12px;
+          white-space: nowrap;
         }
 
         > input {
-          flex-grow: 1;
           border: 1px solid;
           border-color: #ccc;
           border-radius: 4px;
@@ -154,18 +149,11 @@
         }
       }
 
-      .yomi {
+      .label {
         flex-basis: 200px;
         > input {
           flex-basis: 150px;
-        }
-      }
-
-
-      .choku {
-        flex-basis: 200px;
-        > div {
-          flex-basis: 150px;
+          padding-left: 8px;
         }
       }
     }
@@ -173,24 +161,45 @@
     table tr td {
       position: relative;
       text-align: left;
-      width: 80px;
 
       input {
-        width: 40px;
+        width: 36px;
         height: 26px;
         border: 1px solid;
         border-color: #ccc;
         border-radius: 4px;
-        padding: 0 0 0 8px;
+        padding: 0 0 0 4px;
       }
 
-      p {
-        height: 28px;
+      div.failure-type-wrap {
+        display: inline-block;
+        margin: 0 4px;
+        height: 10px;
+
+        p {
+          float: left;
+          margin-left: 2px;
+          font-size: 14px;
+          line-height: 14px;
+        }
+
+        input {
+          float: left;
+          width: 14px;
+          height: 14px;
+          padding: 0;
+        }
+      }
+
+      p.null {
+        display: inline-block;
+        height: 22px;
+        width: 88px;
         margin: 0;
       }
 
       .panel-btn {
-        top: 8px;
+        top: 7px;
         right: 4px;
         width: 20px;
         height: 20px;
