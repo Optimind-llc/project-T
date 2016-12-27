@@ -44,6 +44,7 @@ export function handleDownload(table) {
         for (var i = 0, imax = table.length - 1; i <= imax; ++i) {
             var row = table[i];
             for (var j = 0, jmax = row.length - 1; j <= jmax; ++j) {
+                console.log(row);
                 str += '"' + row[j].replace('"', '""') + '"';
                 if (j !== jmax) {
                     str += ',';

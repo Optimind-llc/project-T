@@ -87,7 +87,7 @@ class CustomTable extends Component {
       updatedAt: 127
     };
 
-    let tableWidth = colWidth.number + colWidth.vehicle + colWidth.pn + colWidth.name + colWidth.panelId + colWidth.tyoku + colWidth.createdBy + colWidth.updatedBy + colWidth.status + colWidth.comment + colWidth.createdAt + colWidth.updatedAt + 16;
+    let tableWidth = colWidth.number + colWidth.vehicle + colWidth.pn + colWidth.name + colWidth.panelId + colWidth.tyoku + colWidth.createdBy + colWidth.updatedBy + colWidth.status + colWidth.comment + colWidth.createdAt + colWidth.updatedAt + 18;
     if (failures.length > 0) {
       tableWidth = tableWidth + colWidth.failure*failures.length;
     }

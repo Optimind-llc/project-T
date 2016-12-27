@@ -99,9 +99,9 @@ class InsertInline extends Command
 
                         // Get choke from molding inspection of same panelID
                         $molding_result = DB::table('inspection_families')
+                            ->whereIn('inspection_group_id', [1, 2])
                             ->join('pages as pg', function ($join) {
-                                $join->on('pg.family_id', '=', 'inspection_families.id')
-                                    ->whereIn('pg.page_type_id', [1, 32]);
+                                $join->on('pg.family_id', '=', 'inspection_families.id');
                             })
                             ->join('part_page as pp', function($join) {
                                 $join->on('pp.page_id', '=', 'pg.id');
@@ -352,9 +352,9 @@ class InsertInline extends Command
 
                         // Get choke from molding inspection of same panelID
                         $molding_result = DB::table('inspection_families')
+                            ->whereIn('inspection_group_id', [1, 2])
                             ->join('pages as pg', function ($join) {
-                                $join->on('pg.family_id', '=', 'inspection_families.id')
-                                    ->whereIn('pg.page_type_id', [1, 32]);
+                                $join->on('pg.family_id', '=', 'inspection_families.id');
                             })
                             ->join('part_page as pp', function($join) {
                                 $join->on('pp.page_id', '=', 'pg.id');

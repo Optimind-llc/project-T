@@ -907,7 +907,7 @@ class ShowController extends Controller
             $h = PartType::find($partTypeId)->holes()->orderBy('label')->get();
         }
         $i = [];
-        if ($itionGId == 3 || $itionGId == 9) {
+        if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
             $i = PartType::find($partTypeId)->inlines;
         }
 

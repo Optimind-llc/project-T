@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\InsertInline',
+        'App\Console\Commands\UpdateInline',
         'App\Console\Commands\InsertDummyData',
         'App\Console\Commands\PrintPDF'
     ];

@@ -164,7 +164,7 @@ class InsertDummyData extends Command
 
         //成型：検査：ライン１：インナー
         $group = $controller->inspection(1);
-        for ($id = 1; $id <= 10; $id++) {
+        for ($id = 1; $id <= 30; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             // var_dump(json_encode($data));
             $request->setFamily($data);
@@ -173,7 +173,7 @@ class InsertDummyData extends Command
 
         //成型：検査：ライン２：インナー
         $group = $controller->inspection(2);
-        for ($id = 11; $id <= 20; $id++) {
+        for ($id = 31; $id <= 40; $id++) {
             $data = $this->createData($group['group'], $id ,[] ,[]);
             $request->setFamily($data);
             $controller->saveInspection($request);        

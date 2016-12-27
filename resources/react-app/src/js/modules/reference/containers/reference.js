@@ -140,10 +140,13 @@ class Reference extends Component {
 
         if (SerchedData.data.i.length > 0) {
           SerchedData.data.i.forEach(i => {
-            let value = p.inlines[i.id];
-            let status = '○';
-            if ( value.status > value.max || value.status < value.min ) {status = '×';}
-            result.push(status);
+            const value = String(p.inlines[i.id].status);
+            // let value = p.inlines[i.id].status;
+            // let status = '○';
+            // if ( value.status > value.max || value.status < value.min ) {status = '×';}
+            // result.push(status);
+            console.log(value);
+            result.push(value);
           })
         }
 

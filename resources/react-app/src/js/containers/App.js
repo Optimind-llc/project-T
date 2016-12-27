@@ -44,7 +44,7 @@ class App extends Component {
 
     const styles = {
       container: {
-        minWidth: 1350,
+        minWidth: 1349,
         backgroundColor: 'rgba(231,236,245,1)',
         height: '100%',
         minHeight: 400
