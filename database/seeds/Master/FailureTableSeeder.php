@@ -469,7 +469,7 @@ class FailureTableSeeder extends Seeder
             [
                 'failure_id' => 1,
                 'inspection_id' => 5,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 2,
@@ -484,7 +484,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 4,
                 'inspection_id' => 5,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 6,
@@ -509,12 +509,12 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 21,
                 'inspection_id' => 5,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 22,
                 'inspection_id' => 5,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 23,
@@ -524,7 +524,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 24,
                 'inspection_id' => 5,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 25,
@@ -544,7 +544,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 30,
                 'inspection_id' => 5,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 0
             ],[
                 'failure_id' => 31,
@@ -557,7 +557,7 @@ class FailureTableSeeder extends Seeder
             [
                 'failure_id' => 1,
                 'inspection_id' => 6,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 2,
@@ -572,7 +572,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 4,
                 'inspection_id' => 6,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 6,
@@ -597,12 +597,12 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 21,
                 'inspection_id' => 6,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 22,
                 'inspection_id' => 6,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 23,
@@ -612,7 +612,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 24,
                 'inspection_id' => 6,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 25,
@@ -632,7 +632,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 30,
                 'inspection_id' => 6,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 0
             ],[
                 'failure_id' => 31,
@@ -646,7 +646,7 @@ class FailureTableSeeder extends Seeder
             [
                 'failure_id' => 1,
                 'inspection_id' => 7,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 2,
@@ -661,7 +661,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 4,
                 'inspection_id' => 7,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 6,
@@ -686,12 +686,12 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 21,
                 'inspection_id' => 7,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 22,
                 'inspection_id' => 7,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 23,
@@ -701,7 +701,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 24,
                 'inspection_id' => 7,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 25,
@@ -721,7 +721,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 30,
                 'inspection_id' => 7,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 31,
@@ -735,7 +735,7 @@ class FailureTableSeeder extends Seeder
             [
                 'failure_id' => 1,
                 'inspection_id' => 8,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 2,
@@ -750,7 +750,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 4,
                 'inspection_id' => 8,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 6,
@@ -775,12 +775,12 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 21,
                 'inspection_id' => 8,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 22,
                 'inspection_id' => 8,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 23,
@@ -790,7 +790,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 24,
                 'inspection_id' => 8,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 25,
@@ -811,7 +811,7 @@ class FailureTableSeeder extends Seeder
             [
                 'failure_id' => 30,
                 'inspection_id' => 8,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],
             [
@@ -826,7 +826,7 @@ class FailureTableSeeder extends Seeder
             [
                 'failure_id' => 1,
                 'inspection_id' => 9,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 2,
@@ -841,7 +841,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 4,
                 'inspection_id' => 9,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 6,
@@ -866,12 +866,12 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 21,
                 'inspection_id' => 9,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 22,
                 'inspection_id' => 9,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 23,
@@ -881,7 +881,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 24,
                 'inspection_id' => 9,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 25,
@@ -901,7 +901,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 30,
                 'inspection_id' => 9,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 31,
@@ -913,7 +913,7 @@ class FailureTableSeeder extends Seeder
             [
                 'failure_id' => 1,
                 'inspection_id' => 11,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 2,
@@ -928,7 +928,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 4,
                 'inspection_id' => 11,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 6,
@@ -953,12 +953,12 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 21,
                 'inspection_id' => 11,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 22,
                 'inspection_id' => 11,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 23,
@@ -968,7 +968,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 24,
                 'inspection_id' => 11,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 25,
@@ -988,7 +988,7 @@ class FailureTableSeeder extends Seeder
             ],[
                 'failure_id' => 30,
                 'inspection_id' => 11,
-                'type'       => 1,
+                'type'       => 2,
                 'sort'       => 1
             ],[
                 'failure_id' => 31,

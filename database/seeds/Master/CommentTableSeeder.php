@@ -73,6 +73,16 @@ class CommentTableSeeder extends Seeder
                 'label'      => 7,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => 'ぼかし',
+                'label'      => 8,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '保留',
+                'label'      => 9,
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ];
 
@@ -101,40 +111,50 @@ class CommentTableSeeder extends Seeder
             [
                 'modification_id' => 1,
                 'inspection_id'   => 5,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 2,
                 'inspection_id'   => 5,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 3,
                 'inspection_id'   => 5,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 4,
                 'inspection_id'   => 5,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 5,
                 'inspection_id'   => 5,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 7,
                 'inspection_id'   => 5,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 8,
                 'inspection_id'   => 5,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 9,
+                'inspection_id'   => 5,
+                'type'            => 2,
+                'sort'            => 1
+            ],[
+                'modification_id' => 10,
+                'inspection_id'   => 5,
+                'type'            => 2,
+                'sort'            => 1
+            ],[
+                'modification_id' => 11,
                 'inspection_id'   => 5,
                 'type'            => 1,
                 'sort'            => 1
@@ -143,40 +163,50 @@ class CommentTableSeeder extends Seeder
             [
                 'modification_id' => 1,
                 'inspection_id'   => 6,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 2,
                 'inspection_id'   => 6,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 3,
                 'inspection_id'   => 6,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 4,
                 'inspection_id'   => 6,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 5,
                 'inspection_id'   => 6,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 7,
                 'inspection_id'   => 6,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 8,
                 'inspection_id'   => 6,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 9,
+                'inspection_id'   => 6,
+                'type'            => 2,
+                'sort'            => 1
+            ],[
+                'modification_id' => 10,
+                'inspection_id'   => 6,
+                'type'            => 2,
+                'sort'            => 1
+            ],[
+                'modification_id' => 11,
                 'inspection_id'   => 6,
                 'type'            => 1,
                 'sort'            => 1
@@ -185,40 +215,50 @@ class CommentTableSeeder extends Seeder
             [
                 'modification_id' => 1,
                 'inspection_id'   => 7,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 2,
                 'inspection_id'   => 7,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 3,
                 'inspection_id'   => 7,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 4,
                 'inspection_id'   => 7,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 5,
                 'inspection_id'   => 7,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 7,
                 'inspection_id'   => 7,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 8,
                 'inspection_id'   => 7,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 9,
+                'inspection_id'   => 7,
+                'type'            => 2,
+                'sort'            => 1
+            ],[
+                'modification_id' => 10,
+                'inspection_id'   => 7,
+                'type'            => 2,
+                'sort'            => 1
+            ],[
+                'modification_id' => 11,
                 'inspection_id'   => 7,
                 'type'            => 1,
                 'sort'            => 1
@@ -227,82 +267,92 @@ class CommentTableSeeder extends Seeder
             [
                 'modification_id' => 1,
                 'inspection_id'   => 8,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 2,
                 'inspection_id'   => 8,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 3,
                 'inspection_id'   => 8,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 4,
                 'inspection_id'   => 8,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 5,
                 'inspection_id'   => 8,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 7,
                 'inspection_id'   => 8,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 8,
                 'inspection_id'   => 8,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 9,
                 'inspection_id'   => 8,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],
             //手直し
             [
                 'modification_id' => 1,
                 'inspection_id'   => 9,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 2,
                 'inspection_id'   => 9,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 3,
                 'inspection_id'   => 9,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 4,
                 'inspection_id'   => 9,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 5,
                 'inspection_id'   => 9,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 7,
                 'inspection_id'   => 9,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 8,
                 'inspection_id'   => 9,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 9,
+                'inspection_id'   => 9,
+                'type'            => 2,
+                'sort'            => 1
+            ],[
+                'modification_id' => 10,
+                'inspection_id'   => 9,
+                'type'            => 2,
+                'sort'            => 1
+            ],[
+                'modification_id' => 11,
                 'inspection_id'   => 9,
                 'type'            => 1,
                 'sort'            => 1
@@ -311,40 +361,50 @@ class CommentTableSeeder extends Seeder
             [
                 'modification_id' => 1,
                 'inspection_id'   => 11,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 2,
                 'inspection_id'   => 11,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 3,
                 'inspection_id'   => 11,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 4,
                 'inspection_id'   => 11,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 5,
                 'inspection_id'   => 11,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 7,
                 'inspection_id'   => 11,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 8,
                 'inspection_id'   => 11,
-                'type'            => 1,
+                'type'            => 2,
                 'sort'            => 1
             ],[
                 'modification_id' => 9,
+                'inspection_id'   => 11,
+                'type'            => 2,
+                'sort'            => 1
+            ],[
+                'modification_id' => 10,
+                'inspection_id'   => 11,
+                'type'            => 2,
+                'sort'            => 1
+            ],[
+                'modification_id' => 11,
                 'inspection_id'   => 11,
                 'type'            => 1,
                 'sort'            => 1
