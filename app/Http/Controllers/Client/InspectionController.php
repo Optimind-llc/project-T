@@ -521,4 +521,24 @@ class InspectionController extends Controller
             $export->exportCSV($p['panelId'], $p['partTypeId'], $p['itionGId']);
         }
     }
+
+    public function deleteInspection(Request $request)
+    {
+        $familyId = $request->id;
+
+        $family = InspectionFamily::find($familyId);
+
+        if ($family) {
+            $family->deleted_at = Carbon::now();
+            $family->save();
+
+            return \Response::json([
+                'message' => 'success'
+            ], 200);
+        }
+
+            return \Response::json([
+                'message' => 'Nothing to delete'
+            ], 200);
+    }
 }

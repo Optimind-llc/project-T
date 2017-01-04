@@ -21,6 +21,11 @@ Route::get('client/inspection/{itionG_id}', 'Client\InspectionController@inspect
 		'itionG_id' => '[0-9]+'
 	]);
 
+// Delete infomation 
+Route::post('client/inspection/delete', 'Client\InspectionController@deleteInspection');
+
+
+
 Route::get('client/i2/{itionG_id}', 'Client\InspectionController@inspection2')
 	->where([
 		'itionG_id' => '[0-9]+'
@@ -73,10 +78,7 @@ Route::get('manager/hole', 'Manager\ReferenceController@index');
 
 
 
-Route::get('manager/report/{itionGId}/{date}/{itorG}', 'Manager\ReportController@report')
-  ->where([
-    'itionGId' => '[0-9]+'
-  ]);
+Route::get('manager/report/{itionGId}/{date}/{itorG}', 'Manager\ReportController@report');
 Route::get('manager/pdf/checkReport/{itionG_id}/{date}/{itorG_code}', 'Manager\PdfController@checkReport');
 
 

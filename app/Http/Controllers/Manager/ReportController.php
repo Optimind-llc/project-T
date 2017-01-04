@@ -27,8 +27,8 @@ class ReportController extends Controller
     public function report($itionGId, $date, $itorG)
     {
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
-        $start = $date->addHours(4)->addMinutes(30);
-        $end = $date->copy()->addDay(1)->addHours(2);
+        $start = $date->copy()->addMinutes(15);
+        $end = $date->copy()->addDay(1)->addHours(8)->addMinutes(30);
         $itorG = [InspectorGroup::find($itorG)->name];
 
         if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
@@ -39,6 +39,7 @@ class ReportController extends Controller
                 $join->on('pages.family_id', '=', 'if.id')
                     ->whereIn('if.inspector_group', $itorGWithF)
                     ->where('if.inspection_group_id', '=', $itionGId)
+                    ->whereNull('if.deleted_at')
                     ->where('if.created_at', '>=', $start)
                     ->where('if.created_at', '<', $end);
             })
@@ -59,21 +60,38 @@ class ReportController extends Controller
             ->values()
             ->sortBy('created_at');
 
-            $count = $parts->filter(function($p) use ($start) {
-                return $p->created_at->gte($start) && $p->created_at->lte($start->copy()->addHours(1));
+            $count1 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(9)) && $p->created_at->lte($date->copy()->addHours(13));
             })->count();
 
-            if ($count > 0) {
-                $parts = $parts->filter(function($p) use ($start) {
-                    return ($p->inspector_group == '不明' && $p->created_at->gte($start->copy()->addHours(2)) && $p->created_at->lte($start->copy()->addHours(26))) || ($p->created_at->gte($start->copy()->addHours(4)) && $p->created_at->lte($start->copy()->addHours(28)));
-                    // return $p->created_at->gte($start->copy()->addHours(4)) && $p->created_at->lte($start->copy()->addHours(28));
-                });
-            } else {
-                $parts = $parts->filter(function($p) use ($start) {
-                    return $p->created_at->gte($start->copy()->addHours(2)) && $p->created_at->lte($start->copy()->addHours(26));
+            $count2 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(16)->addMinutes(30)) && $p->created_at->lte($date->copy()->addHours(21)->addMinutes(15));
+            })->count();
+
+            $count3 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addHours(29)->addMinutes(30));
+            })->count();
+
+            if ($count1 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addHours(16)));
                 });
             }
-
+            elseif ($count2 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(13)->addMinutes(50)) && $p->created_at->lt($date->copy()->addDay()->addMinutes(15)));
+                });
+            }
+            elseif ($count3 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(22)->addMinutes(5)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30)));
+                });
+            }
+            else {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return false;
+                });
+            }
         }
         elseif ($itionGId == 1 || $itionGId == 2 || $itionGId == 5 || $itionGId == 6 || $itionGId == 15) {
             $parts = Part::where('parts.created_at', '<', $end)
@@ -85,6 +103,7 @@ class ReportController extends Controller
                 })
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                     $join->on('if.id', '=', 'pg.family_id')
+                        ->whereNull('if.deleted_at')
                         ->where('if.created_at', '>=', $start)
                         ->where('if.created_at', '<', $end)
                         ->where('if.inspection_group_id', '=', $itionGId)
@@ -114,17 +133,36 @@ class ReportController extends Controller
                 ->orderBy('if.created_at')
                 ->get();
 
-            $count = $parts->filter(function($p) use ($start) {
-                return $p->created_at->gte($start) && $p->created_at->lte($start->copy()->addHours(1));
+            $count1 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(9)) && $p->created_at->lte($date->copy()->addHours(13));
             })->count();
 
-            if ($count > 0) {
-                $parts = $parts->filter(function($p) use ($start) {
-                    return $p->created_at->gte($start->copy()->addHours(4)) && $p->created_at->lte($start->copy()->addHours(28));
+            $count2 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(16)->addMinutes(30)) && $p->created_at->lte($date->copy()->addHours(21)->addMinutes(15));
+            })->count();
+
+            $count3 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addDay()->addHours(6)->addMinutes(20));
+            })->count();
+
+            if ($count1 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addHours(16));
                 });
-            } else {
-                $parts = $parts->filter(function($p) use ($start) {
-                    return $p->created_at->gte($start->copy()->addHours(2)) && $p->created_at->lte($start->copy()->addHours(26));
+            }
+            elseif ($count2 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(13)->addMinutes(50)) && $p->created_at->lt($date->copy()->addDay()->addMinutes(15));
+                });
+            }
+            elseif ($count3 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(22)->addMinutes(5)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
+                });
+            }
+            else {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return false;
                 });
             }
         }
@@ -138,6 +176,7 @@ class ReportController extends Controller
                 })
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                     $join->on('if.id', '=', 'pg.family_id')
+                        ->whereNull('if.deleted_at')
                         ->where('if.created_at', '>=', $start)
                         ->where('if.created_at', '<', $end)
                         ->where('if.inspection_group_id', '=', $itionGId)
@@ -179,18 +218,36 @@ class ReportController extends Controller
                 ->orderBy('if.created_at')
                 ->get();
 
-            $count = $parts->filter(function($p) use ($start) {
-                return $p->created_at->gte($start) && $p->created_at->lte($start->copy()->addHours(1));
+            $count1 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(9)) && $p->created_at->lte($date->copy()->addHours(13));
             })->count();
 
+            $count2 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(16)->addMinutes(30)) && $p->created_at->lte($date->copy()->addHours(21)->addMinutes(15));
+            })->count();
 
-            if ($count > 0) {
-                $parts = $parts->filter(function($p) use ($start) {
-                    return $p->created_at->gte($start->copy()->addHours(4)) && $p->created_at->lte($start->copy()->addHours(28));
+            $count3 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addHours(29)->addMinutes(30));
+            })->count();
+
+            if ($count1 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addHours(16));
                 });
-            } else {
-                $parts = $parts->filter(function($p) use ($start) {
-                    return $p->created_at->gte($start->copy()->addHours(2)) && $p->created_at->lte($start->copy()->addHours(26));
+            }
+            elseif ($count2 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(13)->addMinutes(50)) && $p->created_at->lt($date->copy()->addDay()->addMinutes(15));
+                });
+            }
+            elseif ($count3 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(22)->addMinutes(5)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
+                });
+            }
+            else {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return false;
                 });
             }
         }
@@ -204,6 +261,7 @@ class ReportController extends Controller
                 })
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                     $join->on('if.id', '=', 'pg.family_id')
+                        ->whereNull('if.deleted_at')
                         ->where('if.created_at', '>=', $start)
                         ->where('if.created_at', '<', $end)
                         ->where('if.inspection_group_id', '=', $itionGId)
@@ -235,19 +293,114 @@ class ReportController extends Controller
                 ->orderBy('if.created_at')
                 ->get();
 
-            $count = $parts->filter(function($p) use ($start) {
-                return $p->created_at->gte($start) && $p->created_at->lte($start->copy()->addHours(1));
+            $count1 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(9)) && $p->created_at->lte($date->copy()->addHours(13));
             })->count();
 
-            if ($count > 0) {
-                $parts = $parts->filter(function($p) use ($start) {
-                    return $p->created_at->gte($start->copy()->addHours(4)) && $p->created_at->lte($start->copy()->addHours(28));
-                });
-            } else {
-                $parts = $parts->filter(function($p) use ($start) {
-                    return $p->created_at->gte($start->copy()->addHours(2)) && $p->created_at->lte($start->copy()->addHours(26));
+            $count2 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(16)->addMinutes(30)) && $p->created_at->lte($date->copy()->addHours(21)->addMinutes(15));
+            })->count();
+
+            $count3 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addHours(29)->addMinutes(30));
+            })->count();
+
+            if ($count1 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addHours(16));
                 });
             }
+            elseif ($count2 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(13)->addMinutes(50)) && $p->created_at->lt($date->copy()->addDay()->addMinutes(15));
+                });
+            }
+            elseif ($count3 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(22)->addMinutes(5)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
+                });
+            }
+            else {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return false;
+                });
+            }
+        }
+        elseif ($itionGId == 'through') {
+            $parts = Part::where('parts.created_at', '<', $end)
+                ->join('part_page as pp', function($join) {
+                    $join->on('pp.part_id', '=', 'parts.id');
+                })
+                ->join('pages as pg', function($join) {
+                    $join->on('pg.id', '=', 'pp.page_id');
+                })
+                ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
+                    $join->on('if.id', '=', 'pg.family_id')
+                        ->whereNull('if.deleted_at')
+                        ->where('if.created_at', '>=', $start)
+                        ->where('if.created_at', '<', $end)
+                        ->where('if.inspection_group_id', '=', 16)
+                        ->whereIn('if.inspector_group', $itorG);
+                })
+                ->select(['parts.id', 'if.created_at'])
+                ->orderBy('if.inspected_at')
+                ->get();
+
+            $count1 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(9)) && $p->created_at->lte($date->copy()->addHours(13));
+            })->count();
+
+            $count2 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(16)->addMinutes(30)) && $p->created_at->lte($date->copy()->addHours(21)->addMinutes(15));
+            })->count();
+
+            $count3 = $parts->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addHours(29)->addMinutes(30));
+            })->count();
+
+            if ($count1 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addHours(16));
+                });
+            }
+            elseif ($count2 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(13)->addMinutes(50)) && $p->created_at->lt($date->copy()->addDay()->addMinutes(15));
+                });
+            }
+            elseif ($count3 > 1) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(22)->addMinutes(5)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
+                });
+            }
+            else {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return false;
+                });
+            }
+
+            $partIds = $parts->map(function($p) {
+                return $p['id'];
+            });
+
+            $parts = Part::whereIn('parts.id', $partIds)
+                ->join('part_page as pp', function($join) {
+                    $join->on('pp.part_id', '=', 'parts.id');
+                })
+                ->join('pages as pg', function($join) {
+                    $join->on('pg.id', '=', 'pp.page_id');
+                })
+                ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
+                    $join->on('if.id', '=', 'pg.family_id')
+                        ->whereIn('if.inspection_group_id', [9, 16, 10, 11, 12, 14]);
+                })
+                ->select(['parts.panel_id', 'pp.status', 'pg.page_type_id', 'pg.family_id', 'if.inspection_group_id', 'if.created_by', 'if.inspected_at', 'if.created_at', 'if.updated_at'])
+                ->orderBy('if.inspected_at')
+                ->get()
+                ->groupBy('panel_id')
+                ->map(function($p) {
+                    return $p->keyBy('inspection_group_id');
+                });
         }
 
         if ($parts->count() == 0) {

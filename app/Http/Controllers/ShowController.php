@@ -925,8 +925,6 @@ class ShowController extends Controller
 
         $detail = new PartResult($part->id, $partTypeId, $itionGId);
         $formated = $detail->setDetails()->formatForRerefence()->get();
-        // $formated = $detail->setDetails()->get();
-        // $formated = $detail->setDetails()->formatForRerefence();
 
         if (!$formated) {
             return ['data' => [
@@ -991,6 +989,7 @@ class ShowController extends Controller
                     ->whereIn('if.inspector_group', $tyoku)
                     ->whereIn('if.status', $judgement)
                     ->where('inspection_group_id', '=', $itionGId)
+                    ->whereNull('if.deleted_at')
                     ->where(function($q) use ($start, $end) {
                         $q->whereNotNull('if.inspected_at')->orWhere(function($q) use ($start, $end) {
                             $q->where('if.created_at', '>=', $start)->where('if.created_at', '<', $end);
