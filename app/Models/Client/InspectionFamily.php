@@ -3,6 +3,7 @@
 namespace App\Models\Client;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class InspectionFamily
@@ -10,13 +11,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class InspectionFamily extends Model
 {
+    use SoftDeletes;
+
     /**
      * The attributes that are not mass assignable.
      *
      * @var array
      */
     protected $guarded = ['id'];
-    protected $dates = ['inspected_at'];
+    protected $dates = ['inspected_at', 'deleted_at'];
     
     public function groups()
     {

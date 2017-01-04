@@ -21,7 +21,7 @@ Route::get('client/inspection/{itionG_id}', 'Client\InspectionController@inspect
 		'itionG_id' => '[0-9]+'
 	]);
 
-// Delete infomation 
+// Delete inspection
 Route::post('client/inspection/delete', 'Client\InspectionController@deleteInspection');
 
 
