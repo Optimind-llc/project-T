@@ -117,6 +117,7 @@ class Result
         ->toArray();
 
         $family = InspectionFamily::where('inspection_group_id', '=', $itionGId)
+            ->whereNull('deleted_at')
             ->whereHas('pages', function ($q) use ($pages) {
                 $q->whereIn('id', $pages);
             })

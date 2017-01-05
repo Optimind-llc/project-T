@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class InspectionFamily extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
 
     /**
      * The attributes that are not mass assignable.
