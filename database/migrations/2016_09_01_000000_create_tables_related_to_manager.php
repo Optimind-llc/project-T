@@ -317,6 +317,7 @@ class CreateTablesRelatedToManager extends Migration
             $table->increments('id');
             $table->string('name', 16);
             $table->string('label', 16);
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
 

@@ -26,4 +26,14 @@ class Modification extends Model
             'page_id'
         );
     }
+
+    public function inspections()
+    {
+        return $this->belongsToMany(
+            'App\Models\Inspection',
+            'modification_inspection',
+            'modification_id',
+            'inspection_id'
+        )->withPivot('type', 'sort');
+    }
 }

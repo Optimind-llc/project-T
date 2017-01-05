@@ -22,6 +22,7 @@ import MappingData from '../modules/association/ducks/mapping';
 
 import InspectorData from '../modules/inspector/ducks/inspector';
 import maintFailureData from '../modules/failure/ducks/failure';
+import maintModificationData from '../modules/modification/ducks/modification';
 import maintHoleData from '../modules/hole/ducks/hole';
 
 
@@ -42,6 +43,7 @@ const rootReducer = combineReducers(Object.assign({
   MappingData,
   InspectorData,
   maintFailureData,
+  maintModificationData,
   maintHoleData,
   routing: routerReducer
 }));

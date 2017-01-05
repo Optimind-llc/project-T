@@ -70,6 +70,7 @@ Route::get('manager/report', 'Manager\ReferenceController@index');
 Route::get('manager/association', 'Manager\ReferenceController@index');
 Route::get('manager/inspector', 'Manager\ReferenceController@index');
 Route::get('manager/failure', 'Manager\ReferenceController@index');
+Route::get('manager/modification', 'Manager\ReferenceController@index');
 Route::get('manager/hole', 'Manager\ReferenceController@index');
 
 
@@ -158,6 +159,12 @@ Route::post('maintenance/failure/update', 'Manager\MaintenanceController@updateF
 Route::post('maintenance/failure/{id}/activate', 'Manager\MaintenanceController@activateFailure');
 Route::post('maintenance/failure/{id}/deactivate', 'Manager\MaintenanceController@deactivateFailure');
 
+
+Route::post('maintenance/modifications', 'Manager\MaintenanceController@modifications');
+Route::post('maintenance/modification/create', 'Manager\MaintenanceController@createModification');
+Route::post('maintenance/modification/update', 'Manager\MaintenanceController@updateModification');
+Route::post('maintenance/modification/{id}/activate', 'Manager\MaintenanceController@activateModification');
+Route::post('maintenance/modification/{id}/deactivate', 'Manager\MaintenanceController@deactivateModification');
 
 // $api = app('Dingo\Api\Routing\Router');
 

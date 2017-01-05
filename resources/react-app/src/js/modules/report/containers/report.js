@@ -287,6 +287,17 @@ class Report extends Component {
                 <p>インナーASSY</p>
               </div>
             </div>
+            <div>
+              <p>接着スルー</p>
+              <div
+                onClick={() => this.setState({
+                  modal: true,
+                  path: `/manager/report/through/${this.state.date.format("YYYY-MM-DD")}/${this.state.inspectorG}`
+                })}
+              >
+                <p>インナーASSY</p>
+              </div>
+            </div>
           </div>
         }{
           this.state.modal &&

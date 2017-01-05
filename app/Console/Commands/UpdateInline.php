@@ -97,44 +97,61 @@ class UpdateInline extends Command
 
         }
 
+
+        //For Jointing
+        $targetFamilies = InspectionFamily::where('created_by', '=', '精度検査')
+            ->where('inspection_group_id', '=', 9)
+            ->where('created_at', '>=', $today->subDays(30))
+            ->with([
+                'pages' => function($q) {
+                    return $q->select(['pages.id', 'pages.family_id']);
+                },
+                'pages.parts' => function($q) {
+                    return $q->select(['parts.id']);
+                }
+            ])
+            ->get()
+            ->map(function($f) {
+                return [
+                    'id' => $f->id,
+                    'partId' => $f->pages->first()->parts->first()->id
+                ];
+            });
+
+        foreach ($targetFamilies as $family) {
+            $molding_result = DB::table('inspection_families')
+                ->whereIn('inspection_group_id', [16])
+                ->join('pages as pg', function ($join) {
+                    $join->on('pg.family_id', '=', 'inspection_families.id');
+                })
+                ->join('part_page as pp', function($join) {
+                    $join->on('pp.page_id', '=', 'pg.id');
+                })
+                ->join('parts as pt', function ($join) use ($family) {
+                    $join->on('pt.id', '=', 'pp.part_id')
+                        ->where('pt.id', '=', $family['partId']);
+                })
+                ->select('inspection_families.*')
+                ->first();
+
+            $choku = '不明';
+            $created_by = '精度検査';
+            if (count($molding_result) >= 1) {
+                $choku = $molding_result->inspector_group;
+                $created_by = $molding_result->created_by;
+
+                // Update new Family, inspection_group_id = 9
+                $TBU = InspectionFamily::find($family['id']);
+                $TBU->inspector_group = $choku;
+                $TBU->created_by = $created_by;
+                $TBU->created_at = $molding_result->created_at;
+                $TBU->save();
+            }
+
+        }
+
+
         $message = 'success';
         $this->info($message);
-
-        // Get choke from molding inspection of same panelID
-        // $molding_result = DB::table('inspection_families')
-        //     ->whereIn('inspection_group_id', [1, 2])
-        //     ->join('pages as pg', function ($join) {
-        //         $join->on('pg.family_id', '=', 'inspection_families.id');
-        //     })
-        //     ->join('part_page as pp', function($join) {
-        //         $join->on('pp.page_id', '=', 'pg.id');
-        //     })
-        //     ->join('parts as pt', function ($join) use ($newPart) {
-        //         $join->on('pt.id', '=', 'pp.part_id')
-        //             ->where('pt.id', '=', $newPart->id);
-        //     })
-        //     ->select('inspection_families.*')
-        //     ->first();
-
-        // $choku = '不明';
-        // $created_by = '精度検査';
-        // if (count($molding_result) >= 1) {
-        //     $choku = $molding_result->inspector_group;
-        //     $created_by = $molding_result->created_by;
-        // }
-
-        // // Create new Family, inspection_group_id = 3
-        // $newFamily = new InspectionFamily;
-        // $newFamily->inspection_group_id = 3;
-        // $newFamily->inspector_group = $choku;
-        // $newFamily->created_by = $created_by;
-        // $newFamily->inspected_at = $inspected_at;
-        // if (count($molding_result) >= 1) {
-        //     $newFamily->created_at = $molding_result->created_at;
-        // } else {
-        //     $newFamily->created_at = $inspected_at;
-        // }
-        // $newFamily->status = $status;
-        // $newFamily->save();
     }
 }

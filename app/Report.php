@@ -213,7 +213,7 @@ class Report
                 $tcpdf->SetFont('kozgopromedium', '', 8);
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x1'], $A4['y2'], 'No.');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y2'], 'パネルID');
-                $tcpdf->Text($A3['x1']+$col*$A4['x1'], $A4['y2'], '検査者');
+                $tcpdf->Text($A4['x0']+$col*$A4['x1'], $A4['y2'], '検査者');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y2'], '出荷判定');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '登録時間');
 
@@ -228,7 +228,7 @@ class Report
 
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x1'], $A4['y3']+($row)*$th, $p*100+$col*50+$row+1);
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y3']+($row)*$th, $panelId);
-                    $tcpdf->Text($A3['x1']+$col*$A4['x1'], $A4['y3']+($row)*$th, $inspectedBy);
+                    $tcpdf->Text($A4['x0']+$col*$A4['x1'], $A4['y3']+($row)*$th, $inspectedBy);
 
                     foreach ($parts_obj as $n => $part_obj) {
                         $part = $parts[$part_obj->id];
@@ -2307,13 +2307,6 @@ class Report
 
             if (count($chunk) != 0) {
                 $col = 0;
-
-                $tcpdf->Text($A3['x1']+20, $A3['y1'], '精度');
-                $tcpdf->Text($A3['x1']+40, $A3['y1'], '簡易CF');
-                $tcpdf->Text($A3['x1']+60, $A3['y1'], '止水');
-                $tcpdf->Text($A3['x1']+80, $A3['y1'], '仕上');
-                $tcpdf->Text($A3['x1']+100, $A3['y1'], '検査');
-                $tcpdf->Text($A3['x1']+120, $A3['y1'], '手直');
 
                 $tcpdf->Text($A3['x1']+20, $A3['y2']+$th*$row, $chunk['s9']['sum0']);
                 $tcpdf->Text($A3['x1']+20, $A3['y2']+$th*$row+($th/2), $chunk['s9']['sum1']);

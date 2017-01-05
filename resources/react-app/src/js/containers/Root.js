@@ -13,6 +13,7 @@ import Report from '../modules/report/containers/report';
 import Association from '../modules/association/containers/association';
 import Inspector from '../modules/inspector/containers/inspector';
 import Failure from '../modules/failure/containers/failure';
+import Modification from '../modules/modification/containers/modification';
 import Hole from '../modules/hole/containers/hole';
 
 class Root extends Component {
@@ -28,6 +29,7 @@ class Root extends Component {
             <Route name="小部品ID紐付" path="association" component={Association}/>
             <Route name="担当者マスタメンテ" path="inspector" component={Inspector}/>
             <Route name="不良区分マスタメンテ" path="failure" component={Failure}/>
+            <Route name="手直区分マスタメンテ" path="modification" component={Modification}/>
             <Route name="穴あけ加工ポイント登録" path="hole" component={Hole}/>
           </Route>
         </Router>

@@ -32,7 +32,7 @@ class App extends Component {
     const masterlinks = [
       { en: 'inspector', name: '担当者マスタメンテ', disable: false },
       { en: 'failure', name: '不良区分マスタメンテ', disable: false },
-      { en: 'master', name: '手直し区分マスタメンテ', disable: true },
+      { en: 'modification', name: '手直区分マスタメンテ', disable: false },
       { en: 'hole', name: '穴あけ加工ポイント登録', disable: true },
     ];
 

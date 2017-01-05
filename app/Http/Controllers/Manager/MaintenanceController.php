@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 // Models
 use App\Models\InspectionGroup;
 use App\Models\Failure;
+use App\Models\Modification;
 use App\Models\Inspector;
 use App\Models\Client\FailurePosition;
 // Exceptions
@@ -214,13 +215,13 @@ class MaintenanceController extends Controller
             1  => [1 => 7,  2 => 14, 'name' => '成形工程:外観検査'],
             10 => [1 => 7,  2 => 14, 'name' => '穴あけ工程:外観検査'],
             3  => [1 => 10, 2 => 0,  'name' => '穴あけ工程:外観検査'],
-            11 => [1 => 7,  2 => 14, 'name' => ''],
-            12 => [1 => 7,  2 => 14, 'name' => '接着工程:簡易CF'],
-            5  => [1 => 7,  2 => 14, 'name' => '接着工程:止水'],
-            6  => [1 => 7,  2 => 14, 'name' => '接着工程:仕上'],
-            7  => [1 => 7,  2 => 14, 'name' => '接着工程:検査'],
-            8  => [1 => 7,  2 => 14, 'name' => ''],
-            9  => [1 => 7,  2 => 14, 'name' => '接着工程:手直']
+            12 => [1 => 10, 2 => 0,  'name' => ''],
+            11 => [1 => 0,  2 => 21, 'name' => '接着工程:簡易CF'],
+            5  => [1 => 0,  2 => 21, 'name' => '接着工程:止水'],
+            6  => [1 => 0,  2 => 21, 'name' => '接着工程:仕上'],
+            7  => [1 => 0,  2 => 21, 'name' => '接着工程:検査'],
+            8  => [1 => 0,  2 => 21, 'name' => ''],
+            9  => [1 => 0,  2 => 21, 'name' => '接着工程:手直']
         ];
 
         DB::beginTransaction();
@@ -288,18 +289,18 @@ class MaintenanceController extends Controller
 
         // 成形：　重要７　　普通１４
         // 穴あけ：重要１０　普通０
-        // 接着：　重要７　　普通１４
+        // 接着：　重要２１　普通０
         $maxFailures = [
             1  => [1 => 7,  2 => 14, 'name' => '成形工程:外観検査'],
             10 => [1 => 7,  2 => 14, 'name' => '穴あけ工程:外観検査'],
             3  => [1 => 10, 2 => 0,  'name' => '穴あけ工程:外観検査'],
-            11 => [1 => 7,  2 => 14, 'name' => ''],
-            12 => [1 => 7,  2 => 14, 'name' => '接着工程:簡易CF'],
-            5  => [1 => 7,  2 => 14, 'name' => '接着工程:止水'],
-            6  => [1 => 7,  2 => 14, 'name' => '接着工程:仕上'],
-            7  => [1 => 7,  2 => 14, 'name' => '接着工程:検査'],
-            8  => [1 => 7,  2 => 14, 'name' => ''],
-            9  => [1 => 7,  2 => 14, 'name' => '接着工程:手直']
+            12 => [1 => 10, 2 => 0,  'name' => ''],
+            11 => [1 => 0,  2 => 21, 'name' => '接着工程:簡易CF'],
+            5  => [1 => 0,  2 => 21, 'name' => '接着工程:止水'],
+            6  => [1 => 0,  2 => 21, 'name' => '接着工程:仕上'],
+            7  => [1 => 0,  2 => 21, 'name' => '接着工程:検査'],
+            8  => [1 => 0,  2 => 21, 'name' => ''],
+            9  => [1 => 0,  2 => 21, 'name' => '接着工程:手直']
         ];
 
         if ($failure instanceof Failure) {
@@ -360,6 +361,210 @@ class MaintenanceController extends Controller
         $failure = Failure::find($id);
 
         if ($failure instanceof Failure) {
+            $failure->status = 0;
+            $failure->save();
+
+            return ['message' => 'success'];
+        }
+        return ['message' => 'nothing to do'];
+    }
+
+
+
+    public function modifications(Request $request)
+    {
+        $name = $request->name;
+        $inspection = $request->inspection;
+        $status = $request->status;
+
+        $modifications = Modification::whereIn('status', $status)
+            ->where(function($q) use ($name) {
+                if ($name !== '') {
+                    $q->where('name', 'like', $name.'%');
+                }
+            });
+
+        if ($inspection !== 'all') {
+            $modifications = $modifications->whereHas('inspections', function($q) use ($inspection) {
+                $q->where('id', '=', $inspection);
+            });
+        }
+
+        $modifications = $modifications->orderBy('label')->get()->map(function($f) {
+            return [
+                'id' => $f->id,
+                'name' => $f->name,
+                'label' => $f->label,
+                'status' => $f->status,
+                'inspections' => $f->inspections->map(function($i) {
+                    return [
+                        'id' => $i->id,
+                        'type' => $i->pivot->type,
+                        'sort' => $i->pivot->sort
+                    ];
+                })
+            ];
+        });
+
+        return ['data' => $modifications];
+    }
+
+    public function createModification(Request $request)
+    {
+        $duplicate = Modification::where('name', $request->name)->get()->count();
+
+        if ($duplicate > 0) {
+            return \Response::json([
+                'status' => 'error',
+                'message' => 'duplicate failure name'
+            ], 400);
+        }
+
+        $duplicate = Modification::where('label', $request->label)->get()->count();
+
+        if ($duplicate > 0) {
+            return \Response::json([
+                'status' => 'error',
+                'message' => 'duplicate failure label'
+            ], 400);
+        }
+
+        $maxModifications = [
+            11 => [1 => 1,  2 => 11, 'name' => '接着工程:簡易CF'],
+            5  => [1 => 1,  2 => 11, 'name' => '接着工程:止水'],
+            6  => [1 => 1,  2 => 11, 'name' => '接着工程:仕上'],
+            7  => [1 => 1,  2 => 11, 'name' => '接着工程:検査'],
+            8  => [1 => 1,  2 => 11, 'name' => ''],
+            9  => [1 => 1,  2 => 11, 'name' => '接着工程:手直']
+        ];
+
+        DB::beginTransaction();
+        $failure = new Modification;
+        $failure->name = $request->name;
+        $failure->label = $request->label;
+        $failure->save();
+
+        foreach ($request->inspections as $i) {
+            $mi = DB::table('modification_inspection')
+                ->where('inspection_id', $i['id'])
+                ->where('type', $i['type'])
+                ->count();
+
+            if ($mi >= $maxModifications[$i['id']][$i['type']]) {
+                DB::rollBack();
+                return \Response::json([
+                    'status' => 'error',
+                    'message' => 'over limit of failures',
+                    'meta' => [
+                        'inspection' => $maxModifications[$i['id']]['name'],
+                        'limit' => $maxModifications[$i['id']][$i['type']]
+                    ]
+                ], 400);
+            }
+
+            $failure->inspections()->attach($i['id'], [
+                'sort' => $i['sort'],
+                'type' => $i['type']
+            ]);
+        }
+        DB::commit();
+
+        return ['message' => 'success'];
+    }
+
+    public function updateModification(Request $request)
+    {
+        $duplicate = Modification::where('id', '!=', $request->id)
+            ->where('name', $request->name)
+            ->get()
+            ->count();
+
+        if ($duplicate > 0) {
+            return \Response::json([
+                'status' => 'error',
+                'message' => 'duplicate failure name'
+            ], 400);
+        }
+
+        $duplicate = Modification::where('id', '!=', $request->id)
+            ->where('label', $request->label)
+            ->get()
+            ->count();
+
+        if ($duplicate > 0) {
+            return \Response::json([
+                'status' => 'error',
+                'message' => 'duplicate failure label'
+            ], 400);
+        }
+
+        $modification = Modification::find($request->id);
+
+        $maxModifications = [
+            11 => [1 => 1,  2 => 11, 'name' => '接着工程:簡易CF'],
+            5  => [1 => 1,  2 => 11, 'name' => '接着工程:止水'],
+            6  => [1 => 1,  2 => 11, 'name' => '接着工程:仕上'],
+            7  => [1 => 1,  2 => 11, 'name' => '接着工程:検査'],
+            8  => [1 => 1,  2 => 11, 'name' => ''],
+            9  => [1 => 1,  2 => 11, 'name' => '接着工程:手直']
+        ];
+
+        if ($modification instanceof Modification) {
+            DB::beginTransaction();
+            $modification->name = $request->name;
+            $modification->label = $request->label;
+            $modification->save();
+
+            $modification->inspections()->detach();
+            foreach ($request->inspections as $i) {
+                $mi = DB::table('failure_inspection')
+                    ->where('inspection_id', $i['id'])
+                    ->where('type', $i['type'])
+                    ->count();
+
+                if ($mi >= $maxModifications[$i['id']][$i['type']]) {
+                    DB::rollBack();
+                    return \Response::json([
+                        'status' => 'error',
+                        'message' => 'over limit of failures',
+                        'meta' => [
+                            'inspection' => $maxModifications[$i['id']]['name'],
+                            'limit' => $maxModifications[$i['id']][$i['type']]
+                        ]
+                    ], 400);
+                }
+
+                $modification->inspections()->attach($i['id'], [
+                    'sort' => $i['sort'],
+                    'type' => $i['type']
+                ]);
+            }
+            DB::commit();
+
+            return ['message' => 'success'];
+        }
+
+        return ['message' => 'nothing to do'];
+    }
+
+    public function activateModification($id)
+    {
+        $failure = Modification::find($id);
+
+        if ($failure instanceof Modification) {
+            $failure->status = 1;
+            $failure->save();
+
+            return ['message' => 'success'];
+        }
+        return ['message' => 'nothing to do'];
+    }
+
+    public function deactivateModification($id)
+    {
+        $failure = Modification::find($id);
+
+        if ($failure instanceof Modification) {
             $failure->status = 0;
             $failure->save();
 
