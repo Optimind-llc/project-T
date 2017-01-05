@@ -103,13 +103,14 @@ class InspectionGroup extends Model
             ->toArray();
 
         foreach($sortedModifications as $key => $row) {
-            $m_type_array[$key] = $row['type'];
+            // $m_type_array[$key] = $row['type'];
             $m_label_array[$key] = $row['label'];
             $m_sort_array[$key] = $row['sort'];
         }
 
         if (count($sortedModifications) > 0) {
-            array_multisort($m_type_array, $m_sort_array, $m_label_array, $sortedModifications);
+            // array_multisort($m_type_array, $m_sort_array, $m_label_array, $sortedModifications);
+            array_multisort($m_sort_array, $m_label_array, $modifications);
         }
 
         return collect($sortedModifications);
@@ -204,13 +205,14 @@ class InspectionGroup extends Model
         })->toArray();
 
         foreach( $modifications as $key => $row ) {
-            $m_type_array[$key] = $row['type'];
+            // $m_type_array[$key] = $row['type'];
             $m_label_array[$key] = $row['label'];
             $m_sort_array[$key] = $row['sort'];
         }
 
         if (count($modifications) !== 0 ) {
-            array_multisort($m_type_array, $m_sort_array, $m_label_array, $modifications);
+            // array_multisort($m_type_array, $m_sort_array, $m_label_array, $modifications);
+            array_multisort($m_sort_array, $m_label_array, $modifications);
         }
 
         $hModifications = $group->inspection->hModifications->map(function ($hm) {
