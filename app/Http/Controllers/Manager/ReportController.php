@@ -396,11 +396,7 @@ class ReportController extends Controller
                 })
                 ->select(['parts.panel_id', 'pp.status', 'pg.page_type_id', 'pg.family_id', 'if.inspection_group_id', 'if.created_by', 'if.inspected_at', 'if.created_at', 'if.updated_at'])
                 ->orderBy('if.inspected_at')
-                ->get()
-                ->groupBy('panel_id')
-                ->map(function($p) {
-                    return $p->keyBy('inspection_group_id');
-                });
+                ->get();
         }
 
         if ($parts->count() == 0) {
@@ -413,17 +409,31 @@ class ReportController extends Controller
         }
 
         $now = Carbon::now();
-        $inspectionGroup = InspectionGroup::find($itionGId);
-        $vehicle = $inspectionGroup->vehicle_num;
-        $line = $inspectionGroup->line;
-        $ition_name = $inspectionGroup->inspection->name;
-        $process_name = $inspectionGroup->inspection->process->name;
-        $division = $inspectionGroup->division->name;
+        if ($itionGId !== 'through') {
+            $inspectionGroup = InspectionGroup::find($itionGId);
+            $vehicle = $inspectionGroup->vehicle_num;
+            $line = $inspectionGroup->line;
+            $ition_name = $inspectionGroup->inspection->name;
+            $process_name = $inspectionGroup->inspection->process->name;
+            $division = $inspectionGroup->division->name;
 
-        $report = new Report;
-        $report->setInfo($vehicle, $process_name, $ition_name, $line, $division, $date, implode(',', $itorG));
-        $report->setFailureTypes($inspectionGroup->sortedFailures());
-        $report->setModificationTypes($inspectionGroup->sortedModifications());
+            $report = new Report;
+            $report->setInfo($vehicle, $process_name, $ition_name, $line, $division, $date, implode(',', $itorG));
+            $report->setFailureTypes($inspectionGroup->sortedFailures());
+            $report->setModificationTypes($inspectionGroup->sortedModifications());
+        }
+        else {
+            $inspectionGroup = InspectionGroup::find($itionGId);
+            $vehicle = '680A';
+            $line = null;
+            $ition_name = 'ASSYスルー';
+            $process_name = '接着';
+            $division = '';
+
+            $report = new Report;
+            $report->setInfo($vehicle, $process_name, $ition_name, $line, $division, $date, implode(',', $itorG));
+        }
+
 
         switch ($itionGId) {
             case 1:
@@ -485,6 +495,10 @@ class ReportController extends Controller
             case 14:
                 $tcpdf = $report->forJointing($parts);
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_j_tenaoshi_assy';
+                break;
+            case 'through':
+                $tcpdf = $report->forThrough($parts);
+                $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_j_through_assy';
                 break;
         }
 

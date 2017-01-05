@@ -110,7 +110,7 @@ class InspectionGroup extends Model
 
         if (count($sortedModifications) > 0) {
             // array_multisort($m_type_array, $m_sort_array, $m_label_array, $sortedModifications);
-            array_multisort($m_sort_array, $m_label_array, $modifications);
+            array_multisort($m_sort_array, $m_label_array, $sortedModifications);
         }
 
         return collect($sortedModifications);
