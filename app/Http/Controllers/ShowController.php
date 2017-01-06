@@ -972,7 +972,7 @@ class ShowController extends Controller
         $tyoku = $request->tyoku;
         array_push($tyoku, '不明');
         $start = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 06:30:00');
-        $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 06:30:00')->addDay(1);
+        $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 08:30:00')->addDay(1);
         $f = $request->f;
         $m = $request->m;
 
@@ -997,7 +997,6 @@ class ShowController extends Controller
                     })
                     ->where(function($q) use ($start, $end) {
                         $q->whereNull('if.inspected_at')->orWhere(function($q) use ($start, $end) {
-                            // $q->where('if.inspected_at', '>=', $start)->where('if.inspected_at', '<', $end);
                             $q->where('if.created_at', '>=', $start)->where('if.created_at', '<', $end);
                         });
                     });
@@ -1026,9 +1025,7 @@ class ShowController extends Controller
                         });
                     }
                     $q->get();
-                },
-                'pages.failurePositions',
-                'pages.comments'
+                }
             ])
             ->get()
             ->filter(function($part) {

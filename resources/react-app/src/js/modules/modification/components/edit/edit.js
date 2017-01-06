@@ -33,7 +33,11 @@ console.log(this.state);
               <input
                 type="text"
                 value={this.state.name}
-                onChange={e => this.setState({name: e.target.value})}
+                onChange={e => {
+                  if (e.target.value.length <= 6) {
+                    this.setState({name: e.target.value});
+                  }
+                }}
               />
               {
                 this.props.message == 'duplicate failure name' &&
@@ -45,7 +49,11 @@ console.log(this.state);
               <input
                 type="number"
                 value={this.state.label}
-                onChange={e => this.setState({label: e.target.value})}
+                onChange={e => {
+                  if (e.target.value >= 0 && e.target.value < 100) {
+                    this.setState({label: e.target.value});
+                  }
+                }}
               />
               {
                 this.props.message == 'duplicate failure label' &&

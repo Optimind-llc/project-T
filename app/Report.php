@@ -213,7 +213,7 @@ class Report
                 $tcpdf->SetFont('kozgopromedium', '', 8);
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x1'], $A4['y2'], 'No.');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y2'], 'パネルID');
-                $tcpdf->Text($A4['x0']+$col*$A4['x1'], $A4['y2'], '検査者');
+                $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y2'], '検査者');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y2'], '出荷判定');
                 $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y2'], '登録時間');
 
@@ -228,7 +228,7 @@ class Report
 
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x1'], $A4['y3']+($row)*$th, $p*100+$col*50+$row+1);
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y3']+($row)*$th, $panelId);
-                    $tcpdf->Text($A4['x0']+$col*$A4['x1'], $A4['y3']+($row)*$th, $inspectedBy);
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y3']+($row)*$th, $inspectedBy);
 
                     foreach ($parts_obj as $n => $part_obj) {
                         $part = $parts[$part_obj->id];

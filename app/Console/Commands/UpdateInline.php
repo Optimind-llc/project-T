@@ -120,7 +120,7 @@ class UpdateInline extends Command
 
         foreach ($targetFamilies as $family) {
             $molding_result = DB::table('inspection_families')
-                ->whereIn('inspection_group_id', [16])
+                ->whereIn('inspection_group_id', [11])
                 ->join('pages as pg', function ($join) {
                     $join->on('pg.family_id', '=', 'inspection_families.id');
                 })
