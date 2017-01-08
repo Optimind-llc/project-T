@@ -19,6 +19,7 @@ use App\Models\PartType;
 use App\Models\Failure;
 use App\Models\Hole;
 use App\Models\Inline;
+use App\Models\Client\InspectionFamily;
 use App\Models\Client\PartFamily;
 use App\Models\Client\Part;
 use App\Models\Client\Page;
@@ -28,7 +29,6 @@ use App\Models\Client\ModificationFailurePosition;
 use App\Models\Client\HolePageHoleModification;
 // Exceptions
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Dingo\Api\Exception\StoreResourceFailedException;
 
 /**
  * Class ShowController
@@ -434,7 +434,7 @@ class ShowController extends Controller
         ->with(['family'])
         ->get()
         ->filter(function($p) use ($itionGId) {
-            return $p->page_type_id != 14 && $p->family->inspection_group_id == $itionGId;
+            return $p->page_type_id != 14 && $p->family->inspection_group_id == $itionGId && $p->family->deleted_at == null;
         })
         ->map(function($p) {
             return $p->id;
@@ -466,7 +466,8 @@ class ShowController extends Controller
                     $q->select(['id', 'family_id', 'page_type_id']);
                 },
                 'page.family' => function($q) {
-                    $q->select(['id', 'inspector_group']);
+                    $q->whereNull('inspection_families.deleted_at')
+                        ->select(['id', 'inspector_group']);
                 }
             ])
             ->get(['id', 'point', 'page_id', 'part_id', 'failure_id'])
@@ -970,9 +971,43 @@ class ShowController extends Controller
 
         $judgement = $request->judgement;
         $tyoku = $request->tyoku;
+
+        $s1 = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 08:30:00');
+        $e1 = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 10:30:00');
+
+        $familiesForS = InspectionFamily::whereIn('inspector_group', $tyoku)
+            ->where('inspection_group_id', '=', $itionGId)
+            ->where('created_at', '>=', $s1)
+            ->where('created_at', '<', $e1)
+            ->get()
+            ->count();
+
+        $s2 = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 04:30:00');
+        $e2 = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 06:30:00');
+
+        $familiesForE = InspectionFamily::whereIn('inspector_group', $tyoku)
+            ->where('inspection_group_id', '=', $itionGId)
+            ->where('created_at', '>=', $s2)
+            ->where('created_at', '<', $e2)
+            ->get()
+            ->count();
+
+        if ($familiesForS > 1) {
+            $start = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 06:30:00');
+            $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 08:30:00')->addDay(1);
+        }
+        else {
+            $start = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 08:30:00');            
+        }
+
+        if ($familiesForE > 1) {
+            $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 08:30:00')->addDay(1);
+        }
+        else {
+            $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 06:30:00')->addDay(1);
+        }
+
         array_push($tyoku, '不明');
-        $start = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 06:30:00');
-        $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 08:30:00')->addDay(1);
         $f = $request->f;
         $m = $request->m;
 
@@ -1142,24 +1177,37 @@ class ShowController extends Controller
     {
         $partTypeId = $request->partTypeId;
         $panelId = $request->panelId;
+        $narrowedBy = $request->narrowedBy;
 
-        if ($request->start) {
-            $start = Carbon::createFromFormat('Y-m-d-H i:s', $request->start.' 00:00');
-        } else {
-            $start = Carbon::createFromFormat('Y-m-d-H i:s', '2000-01-01-00 00:00');
-        }
-        if ($request->end) {
-            $end = Carbon::createFromFormat('Y-m-d-H i:s', $request->end.' 00:00')->addHours(1);
-        } else {
-            $end = Carbon::now();
-        }
+        if ($narrowedBy === 'date') {
+            if ($request->start) {
+                $start = Carbon::createFromFormat('Y-m-d-H i:s', $request->start.' 00:00');
+            } else {
+                $start = Carbon::today();
+            }
+            if ($request->end) {
+                $end = Carbon::createFromFormat('Y-m-d-H i:s', $request->end.' 00:00')->addHours(1);
+            } else {
+                $end = Carbon::now();
+            }
 
-        $PartFamilis = PartFamily::where('part_families.updated_at', '>=', $start)
-            ->where('part_families.updated_at', '<', $end)
-            ->join('parts', function ($join) use ($partTypeId, $panelId) {
+            $PartFamilis = PartFamily::where('part_families.updated_at', '>=', $start)
+                ->where('part_families.updated_at', '<', $end)
+                ->get()
+                ->map(function($pf) {
+                    return $pf->id;
+                })
+                ->toArray();
+        }
+        else {
+            $PartFamilis = PartFamily::join('parts', function ($join) use ($partTypeId, $panelId) {
                 if ($partTypeId !== null && $panelId !== null) {
                     $join->on('part_families.id', '=', 'parts.family_id')
                         ->where('part_type_id', '=', $partTypeId)
+                        ->where('panel_id', 'like', $panelId.'%');
+                }
+                elseif ($partTypeId == null && $panelId !== null) {
+                    $join->on('part_families.id', '=', 'parts.family_id')
                         ->where('panel_id', 'like', $panelId.'%');
                 }
                 else {
@@ -1171,6 +1219,7 @@ class ShowController extends Controller
                 return $pf->family_id;
             })
             ->toArray();
+        }
 
         $data = PartFamily::whereIn('id', $PartFamilis)->with([
             'parts.partType'
@@ -1191,7 +1240,15 @@ class ShowController extends Controller
             ];
         });
 
-        return ['data' => $data];
+        $count = $data->count();
+        if ($count > 1000) {
+            $data = $data->take(1000);
+        }
+
+        return ['data' => [
+            'count' => $count,
+            'families' => $data
+        ]];
     }
 
     public function test()

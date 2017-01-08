@@ -56,9 +56,8 @@ export function handleDownload(table) {
     };
 
     var content = tableToCsvString(table);
-    var file_name = 'test.csv';
+    var file_name = 'download.csv';
 
-    // var blob = new Blob([ content ], { "type" : "text/plain" });
     var blob = new Blob([content] , {
         type: "text/csv;charset=utf-8;"
     });

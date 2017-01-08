@@ -36,7 +36,7 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 }
-export function getPartFData(start, end, partTypeId, panelId) {
+export function getPartFData(narrowedBy, start, end, partTypeId, panelId) {
   return {
     [CALL_API]: {
       types: [
@@ -46,7 +46,7 @@ export function getPartFData(start, end, partTypeId, panelId) {
       ],
       endpoint: '/show/partFamily',
       method: 'POST',
-      body: { partTypeId, panelId, start, end }
+      body: { narrowedBy, partTypeId, panelId, start, end }
     }
   };
 }

@@ -2133,6 +2133,8 @@ class Report
             ]);
         });
 
+// return $formated_parts;
+
         /*
          * Render A4
          */
@@ -2179,8 +2181,8 @@ class Report
                 foreach ($parts50->values() as $row => $part) {
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x1'], $A4['y3']+($row)*$th, $p*100+$col*50+$row+1);
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x1'], $A4['y3']+($row)*$th, $part['panelId']);
-                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y3']+($row)*$th, is_null($part['s16']) ? '' : ($part['s16'] === 1 ? '○' : '×'));
-                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y3']+($row)*$th, is_null($part['s9'])  ? '' : ($part['s9']  === 1 ? '○' : '×'));
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x1'], $A4['y3']+($row)*$th, is_null($part['s9'])  ? '' : ($part['s9']  === 1 ? '○' : '×'));
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x1'], $A4['y3']+($row)*$th, is_null($part['s16']) ? '' : ($part['s16'] === 1 ? '○' : '×'));
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x1'], $A4['y3']+($row)*$th, is_null($part['s10']) ? '' : ($part['s10'] === 1 ? '○' : '×'));
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,5))+$col*$A4['x1'], $A4['y3']+($row)*$th, is_null($part['s11']) ? '' : ($part['s11'] === 1 ? '○' : '×'));
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,6))+$col*$A4['x1'], $A4['y3']+($row)*$th, is_null($part['s12']) ? '' : ($part['s12'] === 1 ? '○' : '×'));
@@ -2276,8 +2278,6 @@ class Report
                 ];
             });
         });
-
-// return $timeChunksSum;
 
         $tcpdf->AddPage('L', 'A3');
         // Render page header

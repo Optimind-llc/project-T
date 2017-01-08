@@ -287,9 +287,6 @@ class MaintenanceController extends Controller
 
         $failure = Failure::find($request->id);
 
-        // 成形：　重要７　　普通１４
-        // 穴あけ：重要１０　普通０
-        // 接着：　重要２１　普通０
         $maxFailures = [
             1  => [1 => 7,  2 => 14, 'name' => '成形工程:外観検査'],
             10 => [1 => 7,  2 => 14, 'name' => '穴あけ工程:外観検査'],
@@ -304,7 +301,6 @@ class MaintenanceController extends Controller
         ];
 
         if ($failure instanceof Failure) {
-
             DB::beginTransaction();
             $failure->name = $request->name;
             $failure->label = $request->label;
@@ -312,7 +308,6 @@ class MaintenanceController extends Controller
 
             $failure->inspections()->detach();
             foreach ($request->inspections as $i) {
-
                 $fi = DB::table('failure_inspection')
                     ->where('inspection_id', $i['id'])
                     ->where('type', $i['type'])
@@ -501,12 +496,12 @@ class MaintenanceController extends Controller
         $modification = Modification::find($request->id);
 
         $maxModifications = [
-            11 => [1 => 1,  2 => 11, 'name' => '接着工程:簡易CF'],
-            5  => [1 => 1,  2 => 11, 'name' => '接着工程:止水'],
-            6  => [1 => 1,  2 => 11, 'name' => '接着工程:仕上'],
-            7  => [1 => 1,  2 => 11, 'name' => '接着工程:検査'],
-            8  => [1 => 1,  2 => 11, 'name' => ''],
-            9  => [1 => 1,  2 => 11, 'name' => '接着工程:手直']
+            11 => ['limit' => 12, 'name' => '接着工程:簡易CF'],
+            5  => ['limit' => 12, 'name' => '接着工程:止水'],
+            6  => ['limit' => 12, 'name' => '接着工程:仕上'],
+            7  => ['limit' => 12, 'name' => '接着工程:検査'],
+            8  => ['limit' => 12, 'name' => ''],
+            9  => ['limit' => 12, 'name' => '接着工程:手直']
         ];
 
         if ($modification instanceof Modification) {
@@ -517,12 +512,12 @@ class MaintenanceController extends Controller
 
             $modification->inspections()->detach();
             foreach ($request->inspections as $i) {
-                $mi = DB::table('failure_inspection')
+                $mi = DB::table('modification_inspection')
                     ->where('inspection_id', $i['id'])
                     ->where('type', $i['type'])
                     ->count();
 
-                if ($mi >= $maxModifications[$i['id']][$i['type']]) {
+                if ($mi >= $maxModifications[$i['id']]['limit']) {
                     DB::rollBack();
                     return \Response::json([
                         'status' => 'error',

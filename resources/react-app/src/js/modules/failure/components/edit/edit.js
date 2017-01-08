@@ -26,7 +26,7 @@ class Edit extends Component {
           <div className="panel-btn" onClick={() => this.props.close()}>
             <span className="panel-btn-close"></span>
           </div>
-          <p className="title">担当者情報編集</p>
+          <p className="title">不良区分情報編集</p>
           <div className="edit">
             <div className="name">
               <p>名前</p>
@@ -85,7 +85,7 @@ class Edit extends Component {
                       type="number"
                       value={inspections.find(i => i.id == iID) ? inspections.find(i => i.id == iID).sort : null}
                       onChange={e => this.setState({
-                        inspections: inspections.map(i => i.id == iID ? Object.assing(i, {sort: e.target.value}) : i)
+                        inspections: inspections.map(i => i.id == iID ? Object.assign(i, {sort: Number(e.target.value)}) : i)
                       })}
                     />
                     <div className="failure-type-wrap">
@@ -125,7 +125,10 @@ class Edit extends Component {
           </table>
           <p className="explanation">※ 数字はiPadでの表示順</p>
           <div className="btn-wrap">
-            <button onClick={() => this.props.update(name, label, inspections)}>
+            <button onClick={() => {
+              console.log(inspections);
+              this.props.update(id, name, label, inspections)
+            }}>
               保存
             </button>
           </div>

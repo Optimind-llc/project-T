@@ -34,7 +34,11 @@ class Edit extends Component {
               <input
                 type="text"
                 value={this.state.name}
-                onChange={e => this.setState({name: e.target.value})}
+                onChange={e => {
+                  if (e.target.value.length <= 6) {
+                    this.setState({name: e.target.value});
+                  }
+                }}
               />
               {
                 this.props.message == 'duplicate inspector name' &&

@@ -119,7 +119,7 @@ class Modification extends Component {
         <div className="refine-wrap bg-white">
           <div className="refine">
             <div className="name">
-              <p>不良名</p>
+              <p>手直名</p>
               <input
                 type="text"
                 value={this.state.name}

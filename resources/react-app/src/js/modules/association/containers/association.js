@@ -24,12 +24,13 @@ class Association extends Component {
     super(props, context);
 
     this.state = {
+      narrowedBy: 'panelId',
       vehicle: {value: '680A', label: '680A'},
       partTId: null,
       panelId: '',
-      startDate: null,
+      startDate: moment(),
       startHour: null,
-      endDate: null,
+      endDate: moment(),
       endHour: null,
       processId: null,
       itionGId: null,
@@ -50,7 +51,7 @@ class Association extends Component {
 
   serch() {
     const { actions: {getPartFData} } = this.props;
-    const { startDate, startHour, endDate, endHour, partTId, panelId } = this.state;
+    const { narrowedBy, startDate, startHour, endDate, endHour, partTId, panelId } = this.state;
 
     let start;
     if (startHour == null) {
@@ -70,7 +71,7 @@ class Association extends Component {
     }
 
     const partTypeId = partTId == null ? null : partTId.value;
-    getPartFData(start, end, partTypeId, panelId);
+    getPartFData(narrowedBy, start, end, partTypeId, panelId);
   }
 
   requestMapping(itionGId) {
@@ -82,14 +83,14 @@ class Association extends Component {
 
   render() {
     const { PartFData, UpdatePartFData, MappingData } = this.props;
-    const { vehicle, partTId, startDate, endDate, panelId, processId, itionGId, editting, mappingPartTypeId, header } = this.state;
+    const { narrowedBy, vehicle, partTId, startDate, endDate, panelId, processId, itionGId, editting, mappingPartTypeId, header } = this.state;
 
     let table = [];
     if (PartFData.data != null && !PartFData.isFetching) {
       let header = ['更新日','バックドアインナー','アッパー','サイドアッパーLH','サイドアッパーRH','サイドロアLH','サイドロアRH'];
       table.push(header);
 
-      table = table.concat(PartFData.data.map(pf => [
+      table = table.concat(PartFData.data.families.map(pf => [
         pf.associatedAt,
         pf.parts['67149'][0].panelId,
         pf.parts['67119'] ? pf.parts['67119'][0].panelId : '',
@@ -104,42 +105,50 @@ class Association extends Component {
       <div id="association">
         <div className="serch-wrap-wrap bg-white">
           <div className="serch-wrap">
-            <div className="parts-wrap">
-              <p>部品</p>
-              <Select
-                name="部品"
-                styles={{height: 36}}
-                placeholder={vehicle == null ? '先に車種を選択' :'部品を選択'}
-                disabled={vehicle == null}
-                clearable={false}
-                Searchable={false}
-                scrollMenuIntoView={false}
-                value={this.state.partTId}
-                options={[
-                  {label: 'バックドアインナー', value: 1},
-                  {label: 'アッパー', value: 2},
-                  {label: 'サイドアッパーRH', value: 3},
-                  {label: 'サイドアッパーLH', value: 4},
-                  {label: 'サイドロアRH', value: 5},
-                  {label: 'サイドロアLH', value: 6},
-                  {label: 'バックドアインナーASSY', value: 7}
-                ]}
-                onChange={value => this.setState({
-                  partTId: value,
-                  processId: null,
-                  itionGId: null
-                })}
-              />
+            <div
+              className={narrowedBy === 'panelId' ? 'parts-panel-id-wrap active' : 'parts-panel-id-wrap'}
+              onClick={() => this.setState({narrowedBy: 'panelId'})}
+            >
+              <div className="parts-wrap">
+                <p>部品</p>
+                <Select
+                  name="部品"
+                  styles={{height: 36}}
+                  placeholder={vehicle == null ? '先に車種を選択' :'部品を選択'}
+                  disabled={vehicle == null}
+                  clearable={false}
+                  Searchable={false}
+                  scrollMenuIntoView={false}
+                  value={this.state.partTId}
+                  options={[
+                    {label: 'バックドアインナー', value: 1},
+                    {label: 'アッパー', value: 2},
+                    {label: 'サイドアッパーRH', value: 3},
+                    {label: 'サイドアッパーLH', value: 4},
+                    {label: 'サイドロアRH', value: 5},
+                    {label: 'サイドロアLH', value: 6},
+                    {label: 'バックドアインナーASSY', value: 7}
+                  ]}
+                  onChange={value => this.setState({
+                    partTId: value,
+                    processId: null,
+                    itionGId: null
+                  })}
+                />
+              </div>
+              <div className="panel-id-wrap">
+                <p>ID</p>
+                <input
+                  type="text"
+                  value={panelId}
+                  onChange={(e) => this.setState({panelId: e.target.value})}
+                />
+              </div>
             </div>
-            <div className="panel-id-wrap">
-              <p>ID</p>
-              <input
-                type="text"
-                value={panelId}
-                onChange={(e) => this.setState({panelId: e.target.value})}
-              />
-            </div>
-            <div className="term-wrap">
+            <div
+              className={narrowedBy === 'date' ? 'term-wrap active' : 'term-wrap'}
+              onClick={() => this.setState({narrowedBy: 'date'})}
+            >
               <p>時間</p>
                 <RangeCalendar
                   defaultValue={startDate}
@@ -241,301 +250,313 @@ class Association extends Component {
             <p>この条件で検索</p>
           </button>
         </div>
-        <div className="result bg-white">
-          <button className="download dark" onClick={() => handleDownload(table)}>
-            <p>CSVをダウンロード</p>
-          </button>
-          <table>
-            <thead>
-              <tr>
-                <th colSpan={1} rowSpan={3}>No.</th>
-                <th colSpan={1} rowSpan={3}>更新日</th>
-                <th colSpan={1}>インナー</th>
-                <th colSpan={5}>アウター</th>
-                <th colSpan={1}>ASSY</th>
-                <th colSpan={1} rowSpan={3}>機能</th>
-              </tr>
-              <tr>
-                <th>バックドアインナー</th>
-                <th>アッパー</th>
-                <th>サイドアッパーLH</th>
-                <th>サイドアッパーRH</th>
-                <th>サイドロアLH</th>
-                <th>サイドロアRH</th>
-                <th>バックドアインナASSY</th>
-              </tr>
-              <tr>
-                <th>67149 47060 000</th>
-                <th>67119 47060 000</th>
-                <th>67176 47060 000</th>
-                <th>67175 47060 000</th>
-                <th>67178 47010 000</th>
-                <th>67177 47050 000</th>
-                <th>67007 47120 000</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                PartFData.data && PartFData.data.length != 0 &&
-                PartFData.data.map((f, i)=> 
-                  {
-                    return(
-                      <tr className="content">
-                        <td>{i+1}</td>
-                        <td>{f.associatedAt}</td>
-                        <td>
-                          <p onClick={() => {
-                            this.setState({
-                              mappingModal: true,
-                              mappingId: f.parts['67149'][0].id,
-                              mappingPartTypeId: 1,
-                              header: `67149 バックドアインナー　パネルID: ${f.parts['67149'][0].panelId}`
-                            });
-                          }}>
-                            {f.parts['67149'][0].panelId}
-                          </p>
-                        </td>
-                        <td>
-                          {
-                            f.parts['67119'] &&
+        {
+          PartFData.isFetching &&
+          <p>検索中...</p>
+        }{
+          PartFData.data != null && !PartFData.isFetching &&
+          <div className="result bg-white">
+            {
+              PartFData.data.count < 1000 &&
+              <p className="result-count">{`${PartFData.data.count}件中 ${PartFData.data.families.length}件表示`}</p>
+            }{
+              PartFData.data.count >= 1000 &&
+              <p className="result-count">{`${PartFData.data.count}件中 1000件表示`}</p>
+            }
+            <button className="download dark" onClick={() => handleDownload(table)}>
+              <p>CSVをダウンロード</p>
+            </button>
+            <table>
+              <thead>
+                <tr>
+                  <th colSpan={1} rowSpan={3}>No.</th>
+                  <th colSpan={1} rowSpan={3}>更新日</th>
+                  <th colSpan={1}>インナー</th>
+                  <th colSpan={5}>アウター</th>
+                  <th colSpan={1}>ASSY</th>
+                  <th colSpan={1} rowSpan={3}>機能</th>
+                </tr>
+                <tr>
+                  <th>バックドアインナー</th>
+                  <th>アッパー</th>
+                  <th>サイドアッパーLH</th>
+                  <th>サイドアッパーRH</th>
+                  <th>サイドロアLH</th>
+                  <th>サイドロアRH</th>
+                  <th>バックドアインナASSY</th>
+                </tr>
+                <tr>
+                  <th>67149 47060 000</th>
+                  <th>67119 47060 000</th>
+                  <th>67176 47060 000</th>
+                  <th>67175 47060 000</th>
+                  <th>67178 47010 000</th>
+                  <th>67177 47050 000</th>
+                  <th>67007 47120 000</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  PartFData.data && PartFData.data.families.length != 0 &&
+                  PartFData.data.families.map((f, i)=> 
+                    {
+                      return(
+                        <tr className="content">
+                          <td>{i+1}</td>
+                          <td>{f.associatedAt}</td>
+                          <td>
                             <p onClick={() => {
                               this.setState({
                                 mappingModal: true,
-                                mappingId: f.parts['67119'][0].id,
-                                mappingPartTypeId: 2,
-                                header: `67119 アッパー　パネルID: ${f.parts['67119'][0].panelId}`
+                                mappingId: f.parts['67149'][0].id,
+                                mappingPartTypeId: 1,
+                                header: `67149 バックドアインナー　パネルID: ${f.parts['67149'][0].panelId}`
                               });
                             }}>
-                              {f.parts['67119'][0].panelId}
+                              {f.parts['67149'][0].panelId}
                             </p>
-                          }
-                        </td>
-                        <td>
-                          <p onClick={() => {
-                            this.setState({
-                              mappingModal: true,
-                              mappingId: f.parts['67176'][0].id,
-                              mappingPartTypeId: 4,
-                              header: `67176 サイドアッパーLH　パネルID: ${f.parts['67176'][0].panelId}`
-                            });
-                          }}>
-                            {f.parts['67176'][0].panelId}
-                          </p>
-                        </td>
-                        <td>
-                          <p onClick={() => {
-                            this.setState({
-                              mappingModal: true,
-                              mappingId: f.parts['67175'][0].id,
-                              mappingPartTypeId: 3,
-                              header: `67175 サイドアッパーRH　パネルID: ${f.parts['67175'][0].panelId}`
-                            });
-                          }}>
-                            {f.parts['67175'][0].panelId}
-                          </p>
-                        </td>
-                        <td>
-                          <p onClick={() => {
-                            this.setState({
-                              mappingModal: true,
-                              mappingId: f.parts['67178'][0].id,
-                              mappingPartTypeId: 6,
-                              header: `67178 サイドロアLH　パネルID: ${f.parts['67178'][0].panelId}`
-                            });
-                          }}>
-                            {f.parts['67178'][0].panelId}
-                          </p>
-                        </td>
-                        <td>
-                          <p onClick={() => {
-                            this.setState({
-                              mappingModal: true,
-                              mappingId: f.parts['67177'][0].id,
-                              mappingPartTypeId: 5,
-                              header: `67177 サイドロアRH　パネルID: ${f.parts['67177'][0].panelId}`
-                            });
-                          }}>
-                            {f.parts['67177'][0].panelId}
-                          </p>
-                        </td>
-                        <td>
-                          <p onClick={() => {
-                            this.setState({
-                              mappingModal: true,
-                              mappingId: f.parts['67007'][0].id,
-                              mappingPartTypeId: 7,
-                              header: `67007 バックドアインナーASSY　パネルID: ${f.parts['67007'][0].panelId}`
-                            });
-                          }}>
-                            {f.parts['67007'][0].panelId}
-                          </p>
-                        </td>
-                        <td>
-                          <button
-                            className="dark edit"
-                            onClick={() => this.setState({
-                              editModal: true,
-                              editting_f: f.familyId,
-                              editting_1: f.parts[67149][0].panelId,
-                              editting_2: f.parts[67119] ? f.parts[67119][0].panelId : '',
-                              editting_4: f.parts[67176][0].panelId,
-                              editting_3: f.parts[67175][0].panelId,
-                              editting_6: f.parts[67178][0].panelId,
-                              editting_5: f.parts[67177][0].panelId
-                            })}
-                          >
-                            <p>編集</p>
-                          </button>
-                        </td>
-                      </tr>
-                    )
-                  }              
-                )
-              }{
-                PartFData.data && PartFData.data.length == 0 &&
-                <tr className="content">
-                  <td colSpan="10">結果なし</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-          {
-            this.state.editModal &&
-            <div>
-              <div className="modal">
-              </div>
-              <div className="edit-wrap">
-                <div className="edit">
-                  <div className="message-wrap">
-                  {
-                    UpdatePartFData.message == 'Already be associated others' &&
-                    UpdatePartFData.parts.map(p =>
-                      <p>{`${p.pn} : ${p.name} : ${p.panelId} の更新に失敗しました　すでに他の部品に使用されています。`}</p>
-                    )
-                  }{
-                    UpdatePartFData.message == 'success' &&
-                    <p>更新しました</p>
-                  }
-                  </div>
-                  <div className="input-wrap">
-                    <div className="input">
-                      <p className="label">バックドアインナー<br/>67149</p>
-                      <input
-                        type="text"
-                        value={this.state.editting_1}
-                        onChange={(e) => this.setState({editting_1: e.target.value})}
-                      />
-                      {
-                        this.state.editting_1.length != 8 &&
-                        <p className="validation_msg">8桁で入力してください</p>
-                      }
-                    </div>
-                    <div className="input">
-                      <p className="label">アッパー<br/>67119</p>
-                      <input
-                        type="text"
-                        placeholder="QRコード無し"
-                        value={this.state.editting_2}
-                        onChange={(e) => this.setState({editting_2: e.target.value})}
-                      />
-                      {
-                        this.state.editting_2.length !== 0 && this.state.editting_2.length != 8 &&
-                        <p className="validation_msg">8桁で入力してください</p>
-                      }
-                    </div>
-                    <div className="input">
-                      <p className="label">サイドアッパーLH<br/>67176</p>
-                      <input
-                        type="text"
-                        value={this.state.editting_4}
-                        onChange={(e) => this.setState({editting_4: e.target.value})}
-                      />
-                      {
-                        this.state.editting_4.length != 8 &&
-                        <p className="validation_msg">8桁で入力してください</p>
-                      }
-                    </div>
-                    <div className="input">
-                      <p className="label">サイドアッパーRH<br/>67175</p>
-                      <input
-                        type="text"
-                        value={this.state.editting_3}
-                        onChange={(e) => this.setState({editting_3: e.target.value})}
-                      />
-                      {
-                        this.state.editting_3.length != 8 &&
-                        <p className="validation_msg">8桁で入力してください</p>
-                      }
-                    </div>
-                    <div className="input">
-                      <p className="label">サイドロアLH<br/>67178</p>
-                      <input
-                        type="text"
-                        value={this.state.editting_6}
-                        onChange={(e) => this.setState({editting_6: e.target.value})}
-                      />
-                      {
-                        this.state.editting_6.length != 8 &&
-                        <p className="validation_msg">8桁で入力してください</p>
-                      }
-                    </div>
-                    <div className="input">
-                      <p className="label">サイドロアRH<br/>67177</p>
-                      <input
-                        type="text"
-                        value={this.state.editting_5}
-                        onChange={(e) => this.setState({editting_5: e.target.value})}
-                      />
-                      {
-                        this.state.editting_5.length != 8 &&
-                        <p className="validation_msg">8桁で入力してください</p>
-                      }
-                    </div>
-                  </div>
-                  <div className="btn-wrap">
-                    <button
-                      className={(this.state.editting_1.length === 8 && (this.state.editting_2.length === 0 || this.state.editting_2.length === 8) && this.state.editting_3.length === 8 && this.state.editting_4.length === 8 && this.state.editting_5.length === 8 && this.state.editting_6.length === 8) ? '' : 'disabled'}
-                      onClick={() => {
-                        this.props.actions.updatePartFamily({
-                          "id": this.state.editting_f,
-                          "parts": [
+                          </td>
+                          <td>
                             {
-                              "partTypeId": 1,
-                              "panelId": this.state.editting_1
-                            },{
-                              "partTypeId": 2,
-                              "panelId": this.state.editting_2
-                            },{
-                              "partTypeId": 3,
-                              "panelId": this.state.editting_3
-                            },{
-                              "partTypeId": 4,
-                              "panelId": this.state.editting_4
-                            },{
-                              "partTypeId": 5,
-                              "panelId": this.state.editting_5
-                            },{
-                              "partTypeId": 6,
-                              "panelId": this.state.editting_6
+                              f.parts['67119'] &&
+                              <p onClick={() => {
+                                this.setState({
+                                  mappingModal: true,
+                                  mappingId: f.parts['67119'][0].id,
+                                  mappingPartTypeId: 2,
+                                  header: `67119 アッパー　パネルID: ${f.parts['67119'][0].panelId}`
+                                });
+                              }}>
+                                {f.parts['67119'][0].panelId}
+                              </p>
                             }
-                          ]
-                        });
-                      }}
-                    >
-                      保存
-                    </button>
-                    <button onClick={() => {
-                      this.serch()
-                      this.props.actions.clearMessage();
-                      this.setState({editModal: false});
-                    }}>終了</button>
+                          </td>
+                          <td>
+                            <p onClick={() => {
+                              this.setState({
+                                mappingModal: true,
+                                mappingId: f.parts['67176'][0].id,
+                                mappingPartTypeId: 4,
+                                header: `67176 サイドアッパーLH　パネルID: ${f.parts['67176'][0].panelId}`
+                              });
+                            }}>
+                              {f.parts['67176'][0].panelId}
+                            </p>
+                          </td>
+                          <td>
+                            <p onClick={() => {
+                              this.setState({
+                                mappingModal: true,
+                                mappingId: f.parts['67175'][0].id,
+                                mappingPartTypeId: 3,
+                                header: `67175 サイドアッパーRH　パネルID: ${f.parts['67175'][0].panelId}`
+                              });
+                            }}>
+                              {f.parts['67175'][0].panelId}
+                            </p>
+                          </td>
+                          <td>
+                            <p onClick={() => {
+                              this.setState({
+                                mappingModal: true,
+                                mappingId: f.parts['67178'][0].id,
+                                mappingPartTypeId: 6,
+                                header: `67178 サイドロアLH　パネルID: ${f.parts['67178'][0].panelId}`
+                              });
+                            }}>
+                              {f.parts['67178'][0].panelId}
+                            </p>
+                          </td>
+                          <td>
+                            <p onClick={() => {
+                              this.setState({
+                                mappingModal: true,
+                                mappingId: f.parts['67177'][0].id,
+                                mappingPartTypeId: 5,
+                                header: `67177 サイドロアRH　パネルID: ${f.parts['67177'][0].panelId}`
+                              });
+                            }}>
+                              {f.parts['67177'][0].panelId}
+                            </p>
+                          </td>
+                          <td>
+                            <p onClick={() => {
+                              this.setState({
+                                mappingModal: true,
+                                mappingId: f.parts['67007'][0].id,
+                                mappingPartTypeId: 7,
+                                header: `67007 バックドアインナーASSY　パネルID: ${f.parts['67007'][0].panelId}`
+                              });
+                            }}>
+                              {f.parts['67007'][0].panelId}
+                            </p>
+                          </td>
+                          <td>
+                            <button
+                              className="dark edit"
+                              onClick={() => this.setState({
+                                editModal: true,
+                                editting_f: f.familyId,
+                                editting_1: f.parts[67149][0].panelId,
+                                editting_2: f.parts[67119] ? f.parts[67119][0].panelId : '',
+                                editting_4: f.parts[67176][0].panelId,
+                                editting_3: f.parts[67175][0].panelId,
+                                editting_6: f.parts[67178][0].panelId,
+                                editting_5: f.parts[67177][0].panelId
+                              })}
+                            >
+                              <p>編集</p>
+                            </button>
+                          </td>
+                        </tr>
+                      )
+                    }              
+                  )
+                }{
+                  PartFData.data && PartFData.data.families.length == 0 &&
+                  <tr className="content">
+                    <td colSpan="10">結果なし</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+            {
+              this.state.editModal &&
+              <div>
+                <div className="modal">
+                </div>
+                <div className="edit-wrap">
+                  <div className="edit">
+                    <div className="message-wrap">
+                    {
+                      UpdatePartFData.message == 'Already be associated others' &&
+                      UpdatePartFData.parts.map(p =>
+                        <p>{`${p.pn} : ${p.name} : ${p.panelId} の更新に失敗しました　すでに他の部品に使用されています。`}</p>
+                      )
+                    }{
+                      UpdatePartFData.message == 'success' &&
+                      <p>更新しました</p>
+                    }
+                    </div>
+                    <div className="input-wrap">
+                      <div className="input">
+                        <p className="label">バックドアインナー<br/>67149</p>
+                        <input
+                          type="text"
+                          value={this.state.editting_1}
+                          onChange={(e) => this.setState({editting_1: e.target.value})}
+                        />
+                        {
+                          this.state.editting_1.length != 8 &&
+                          <p className="validation_msg">8桁で入力してください</p>
+                        }
+                      </div>
+                      <div className="input">
+                        <p className="label">アッパー<br/>67119</p>
+                        <input
+                          type="text"
+                          placeholder="QRコード無し"
+                          value={this.state.editting_2}
+                          onChange={(e) => this.setState({editting_2: e.target.value})}
+                        />
+                        {
+                          this.state.editting_2.length !== 0 && this.state.editting_2.length != 8 &&
+                          <p className="validation_msg">8桁で入力してください</p>
+                        }
+                      </div>
+                      <div className="input">
+                        <p className="label">サイドアッパーLH<br/>67176</p>
+                        <input
+                          type="text"
+                          value={this.state.editting_4}
+                          onChange={(e) => this.setState({editting_4: e.target.value})}
+                        />
+                        {
+                          this.state.editting_4.length != 8 &&
+                          <p className="validation_msg">8桁で入力してください</p>
+                        }
+                      </div>
+                      <div className="input">
+                        <p className="label">サイドアッパーRH<br/>67175</p>
+                        <input
+                          type="text"
+                          value={this.state.editting_3}
+                          onChange={(e) => this.setState({editting_3: e.target.value})}
+                        />
+                        {
+                          this.state.editting_3.length != 8 &&
+                          <p className="validation_msg">8桁で入力してください</p>
+                        }
+                      </div>
+                      <div className="input">
+                        <p className="label">サイドロアLH<br/>67178</p>
+                        <input
+                          type="text"
+                          value={this.state.editting_6}
+                          onChange={(e) => this.setState({editting_6: e.target.value})}
+                        />
+                        {
+                          this.state.editting_6.length != 8 &&
+                          <p className="validation_msg">8桁で入力してください</p>
+                        }
+                      </div>
+                      <div className="input">
+                        <p className="label">サイドロアRH<br/>67177</p>
+                        <input
+                          type="text"
+                          value={this.state.editting_5}
+                          onChange={(e) => this.setState({editting_5: e.target.value})}
+                        />
+                        {
+                          this.state.editting_5.length != 8 &&
+                          <p className="validation_msg">8桁で入力してください</p>
+                        }
+                      </div>
+                    </div>
+                    <div className="btn-wrap">
+                      <button
+                        className={(this.state.editting_1.length === 8 && (this.state.editting_2.length === 0 || this.state.editting_2.length === 8) && this.state.editting_3.length === 8 && this.state.editting_4.length === 8 && this.state.editting_5.length === 8 && this.state.editting_6.length === 8) ? '' : 'disabled'}
+                        onClick={() => {
+                          this.props.actions.updatePartFamily({
+                            "id": this.state.editting_f,
+                            "parts": [
+                              {
+                                "partTypeId": 1,
+                                "panelId": this.state.editting_1
+                              },{
+                                "partTypeId": 2,
+                                "panelId": this.state.editting_2
+                              },{
+                                "partTypeId": 3,
+                                "panelId": this.state.editting_3
+                              },{
+                                "partTypeId": 4,
+                                "panelId": this.state.editting_4
+                              },{
+                                "partTypeId": 5,
+                                "panelId": this.state.editting_5
+                              },{
+                                "partTypeId": 6,
+                                "panelId": this.state.editting_6
+                              }
+                            ]
+                          });
+                        }}
+                      >
+                        保存
+                      </button>
+                      <button onClick={() => {
+                        this.serch()
+                        this.props.actions.clearMessage();
+                        this.setState({editModal: false});
+                      }}>終了</button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          }
-        </div>
-        {
+            }
+          </div>
+        }{
           this.state.mappingModal &&
           <Mapping
             close={() => {

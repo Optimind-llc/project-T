@@ -17,7 +17,7 @@ class Edit extends Component {
   render() {
     const { id, name, label, inspections } = this.state;
     const inspectionIds = [11,5,6,7,9];
-console.log(this.state);
+
     return (
       <div>
         <div className="modal">
@@ -26,7 +26,7 @@ console.log(this.state);
           <div className="panel-btn" onClick={() => this.props.close()}>
             <span className="panel-btn-close"></span>
           </div>
-          <p className="title">担当者情報編集</p>
+          <p className="title">手直区分情報編集</p>
           <div className="edit">
             <div className="name">
               <p>名前</p>
@@ -88,7 +88,7 @@ console.log(this.state);
                       type="number"
                       value={inspections.find(i => i.id == iID) ? inspections.find(i => i.id == iID).sort : null}
                       onChange={e => this.setState({
-                        inspections: inspections.map(i => i.id == iID ? Object.assing(i, {sort: e.target.value}) : i)
+                        inspections: inspections.map(i => i.id == iID ? Object.assign(i, {sort: e.target.value}) : i)
                       })}
                     />
                     <div className="failure-type-wrap">

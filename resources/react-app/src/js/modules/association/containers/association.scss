@@ -19,7 +19,7 @@
   .serch-wrap {
     display: flex;
     flex-flow: row nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 10px;
 
     > div {
@@ -34,46 +34,71 @@
       }
     }
 
-    .vehicle-wrap {
+    .parts-panel-id-wrap {
+      flex-basis: 550px;
       display: flex;
       flex-flow: row nowrap;
-      flex-grow: 1;
-      flex-basis: 120px;
+      padding: 6px;
 
-      > div {
-        flex-grow: 1;
-        flex-basis: 80px;
-      }
-      > p {
-        margin: 0 8px 0 0;
-        padding: 0;
-        line-height: 30px;
-      }
-    }
+      &.active {
+        background-color: #4A4A4A;
+        border-radius: 4px;
 
-    .parts-wrap {
-      display: flex;
-      flex-flow: row nowrap;
-      flex-grow: 1;
-      flex-basis: 280px;
-
-      > div {
-        flex-grow: 1;
-        flex-basis: 200px;
+        p {
+          color: #FFF;
+        }
       }
-      > p {
-        margin: 0 8px 0 0;
-        padding: 0;
-        line-height: 30px;
+
+      .parts-wrap {
+        display: flex;
+        flex-flow: row nowrap;
+        flex-basis: 280px;
+
+        > div {
+          flex-grow: 1;
+          flex-basis: 200px;
+        }
+        > p {
+          margin: 0 8px 0 0;
+          padding: 0;
+          width: 40px;
+          line-height: 30px;
+        }
+      }
+
+      .panel-id-wrap {
+        flex-basis: 174px;
+        display: flex;
+        flex-flow: row nowrap;
+        margin-left: 8px;
+
+        p {
+          margin: 0 8px 0 0;
+          padding: 0;
+          line-height: 30px;
+        }
+
+        input {
+          flex-basis: 30px;
+        }
       }
     }
 
     .term-wrap {
-      flex-basis: 490px;
-      flex-grow: 1;
+      flex-basis: 530px;
       display: flex;
       flex-flow: row nowrap;
+      padding: 6px;
 
+      &.active {
+        background-color: #4A4A4A;
+        border-radius: 4px;
+
+        p {
+          color: #FFF;
+        }
+      }
+      
       p {
         margin: 0 4px;
         padding: 0;
@@ -84,28 +109,11 @@
       }
 
       div {
-        flex-basis: 80px;
+        flex-basis: 100px;
       }
 
       input {
         color: #BBB;
-      }
-    }
-
-    .panel-id-wrap {
-      flex-basis: 174px;
-      flex-grow: 1;
-      display: flex;
-      flex-flow: row nowrap;
-
-      p {
-        margin: 0 8px 0 0;
-        padding: 0;
-        line-height: 30px;
-      }
-
-      input {
-        flex-basis: 30px;
       }
     }
   }
@@ -119,6 +127,16 @@
     position: relative;
     margin-top: 10px;
     padding: 4px;
+
+    p.result-count {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+
+      margin: 4px;
+      font-size: 12px;
+      text-align: left;
+    }
 
     button.download {
       position: absolute;

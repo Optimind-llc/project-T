@@ -426,7 +426,7 @@ class ReportController extends Controller
             $inspectionGroup = InspectionGroup::find($itionGId);
             $vehicle = '680A';
             $line = null;
-            $ition_name = 'ASSYスルー';
+            $ition_name = '検査サマリー';
             $process_name = '接着';
             $division = '';
 

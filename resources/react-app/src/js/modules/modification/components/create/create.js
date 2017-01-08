@@ -25,7 +25,7 @@ class Create extends Component {
           <div className="panel-btn" onClick={() => this.props.close()}>
             <span className="panel-btn-close"></span>
           </div>
-          <p className="title">新規担当者登録</p>
+          <p className="title">新規手直区分登録</p>
           <div className="edit">
             <div className="name">
               <p>名前</p>
