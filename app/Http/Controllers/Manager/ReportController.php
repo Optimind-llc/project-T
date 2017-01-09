@@ -74,17 +74,17 @@ class ReportController extends Controller
 
             if ($count1 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addHours(16)));
+                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30)));
                 });
             }
             elseif ($count2 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(13)->addMinutes(50)) && $p->created_at->lt($date->copy()->addDay()->addMinutes(15)));
+                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30)));
                 });
             }
             elseif ($count3 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(22)->addMinutes(5)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30)));
+                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30)));
                 });
             }
             else {
@@ -147,17 +147,17 @@ class ReportController extends Controller
 
             if ($count1 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addHours(16));
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
             elseif ($count2 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(13)->addMinutes(50)) && $p->created_at->lt($date->copy()->addDay()->addMinutes(15));
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
             elseif ($count3 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(22)->addMinutes(5)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
+                    return $p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
                 });
             }
             else {
@@ -232,17 +232,17 @@ class ReportController extends Controller
 
             if ($count1 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addHours(16));
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
             elseif ($count2 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(13)->addMinutes(50)) && $p->created_at->lt($date->copy()->addDay()->addMinutes(15));
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
             elseif ($count3 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(22)->addMinutes(5)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
+                    return $p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
                 });
             }
             else {
@@ -307,17 +307,17 @@ class ReportController extends Controller
 
             if ($count1 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addHours(16));
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
             elseif ($count2 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(13)->addMinutes(50)) && $p->created_at->lt($date->copy()->addDay()->addMinutes(15));
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
             elseif ($count3 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(22)->addMinutes(5)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
+                    return $p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
                 });
             }
             else {
@@ -360,17 +360,17 @@ class ReportController extends Controller
 
             if ($count1 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addHours(16));
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
             elseif ($count2 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(13)->addMinutes(50)) && $p->created_at->lt($date->copy()->addDay()->addMinutes(15));
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
             elseif ($count3 > 1) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(22)->addMinutes(5)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
+                    return $p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
                 });
             }
             else {
