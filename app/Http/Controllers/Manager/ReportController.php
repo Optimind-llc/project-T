@@ -72,24 +72,24 @@ class ReportController extends Controller
                 return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addHours(29)->addMinutes(30));
             })->count();
 
-            if ($count1 > 1) {
+            if ($count1 > 0) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30)));
+                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30)));
                 });
             }
-            elseif ($count2 > 1) {
+            elseif ($count2 > 0) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30)));
+                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30)));
                 });
             }
-            elseif ($count3 > 1) {
+            elseif ($count3 > 0) {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30)));
+                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30)));
                 });
             }
             else {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return false;
+                    return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30)));
                 });
             }
         }
@@ -142,27 +142,27 @@ class ReportController extends Controller
             })->count();
 
             $count3 = $parts->filter(function($p) use ($date) {
-                return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addDay()->addHours(6)->addMinutes(20));
+                return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addDay()->addHours(6)->addMinutes(30));
             })->count();
 
-            if ($count1 > 1) {
-                $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
-                });
-            }
-            elseif ($count2 > 1) {
+            if ($count1 > 0) {
                 $parts = $parts->filter(function($p) use ($date) {
                     return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
-            elseif ($count3 > 1) {
+            elseif ($count2 > 0) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
+                });
+            }
+            elseif ($count3 > 0) {
                 $parts = $parts->filter(function($p) use ($date) {
                     return $p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
                 });
             }
             else {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return false;
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
         }
@@ -230,24 +230,24 @@ class ReportController extends Controller
                 return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addHours(29)->addMinutes(30));
             })->count();
 
-            if ($count1 > 1) {
-                $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
-                });
-            }
-            elseif ($count2 > 1) {
+            if ($count1 > 0) {
                 $parts = $parts->filter(function($p) use ($date) {
                     return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
-            elseif ($count3 > 1) {
+            elseif ($count2 > 0) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
+                });
+            }
+            elseif ($count3 > 0) {
                 $parts = $parts->filter(function($p) use ($date) {
                     return $p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
                 });
             }
             else {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return false;
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
         }
@@ -305,28 +305,31 @@ class ReportController extends Controller
                 return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addHours(29)->addMinutes(30));
             })->count();
 
-            if ($count1 > 1) {
-                $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
-                });
-            }
-            elseif ($count2 > 1) {
+            if ($count1 > 0) {
                 $parts = $parts->filter(function($p) use ($date) {
                     return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
-            elseif ($count3 > 1) {
+            elseif ($count2 > 0) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
+                });
+            }
+            elseif ($count3 > 0) {
                 $parts = $parts->filter(function($p) use ($date) {
                     return $p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
                 });
             }
             else {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return false;
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
         }
         elseif ($itionGId == 'through') {
+            $itorGWithF = $itorG;
+            array_push($itorGWithF, '不明');
+
             $parts = Part::where('parts.created_at', '<', $end)
                 ->join('part_page as pp', function($join) {
                     $join->on('pp.part_id', '=', 'parts.id');
@@ -334,13 +337,13 @@ class ReportController extends Controller
                 ->join('pages as pg', function($join) {
                     $join->on('pg.id', '=', 'pp.page_id');
                 })
-                ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
+                ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorGWithF) {
                     $join->on('if.id', '=', 'pg.family_id')
                         ->whereNull('if.deleted_at')
                         ->where('if.created_at', '>=', $start)
                         ->where('if.created_at', '<', $end)
                         ->where('if.inspection_group_id', '=', 16)
-                        ->whereIn('if.inspector_group', $itorG);
+                        ->whereIn('if.inspector_group', $itorGWithF);
                 })
                 ->select(['parts.id', 'if.created_at'])
                 ->orderBy('if.inspected_at')
@@ -358,24 +361,24 @@ class ReportController extends Controller
                 return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addHours(29)->addMinutes(30));
             })->count();
 
-            if ($count1 > 1) {
-                $parts = $parts->filter(function($p) use ($date) {
-                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(20)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
-                });
-            }
-            elseif ($count2 > 1) {
+            if ($count1 > 0) {
                 $parts = $parts->filter(function($p) use ($date) {
                     return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
-            elseif ($count3 > 1) {
+            elseif ($count2 > 0) {
+                $parts = $parts->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
+                });
+            }
+            elseif ($count3 > 0) {
                 $parts = $parts->filter(function($p) use ($date) {
                     return $p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
                 });
             }
             else {
                 $parts = $parts->filter(function($p) use ($date) {
-                    return false;
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
                 });
             }
 
@@ -392,11 +395,64 @@ class ReportController extends Controller
                 })
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                     $join->on('if.id', '=', 'pg.family_id')
+                        ->whereNull('if.deleted_at')
                         ->whereIn('if.inspection_group_id', [9, 16, 10, 11, 12, 14]);
                 })
                 ->select(['parts.panel_id', 'pp.status', 'pg.page_type_id', 'pg.family_id', 'if.inspection_group_id', 'if.created_by', 'if.inspected_at', 'if.created_at', 'if.updated_at'])
-                ->orderBy('if.inspected_at')
+                ->orderBy('if.created_at')
                 ->get();
+
+            // For A3
+            $parts2 = Part::join('part_page as pp', function($join) {
+                $join->on('pp.part_id', '=', 'parts.id');
+            })
+            ->join('pages as pg', function($join) {
+                $join->on('pg.id', '=', 'pp.page_id');
+            })
+            ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorGWithF) {
+                $join->on('if.id', '=', 'pg.family_id')
+                    ->whereNull('if.deleted_at')
+                    ->where('if.created_at', '>=', $start)
+                    ->where('if.created_at', '<', $end)
+                    ->whereIn('if.inspection_group_id', [9, 16, 10, 11, 12, 14])
+                    ->whereIn('if.inspector_group', $itorGWithF);
+            })
+            ->select(['parts.panel_id', 'pp.status', 'pg.page_type_id', 'pg.family_id', 'if.inspection_group_id', 'if.created_by', 'if.inspected_at', 'if.created_at', 'if.updated_at'])
+            ->orderBy('if.inspected_at')
+            ->get();
+
+            $count1 = $parts2->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(9)) && $p->created_at->lte($date->copy()->addHours(13));
+            })->count();
+
+            $count2 = $parts2->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(16)->addMinutes(30)) && $p->created_at->lte($date->copy()->addHours(21)->addMinutes(15));
+            })->count();
+
+            $count3 = $parts2->filter(function($p) use ($date) {
+                return $p->created_at->gte($date->copy()->addHours(24)->addMinutes(45)) && $p->created_at->lte($date->copy()->addHours(29)->addMinutes(30));
+            })->count();
+
+            if ($count1 > 0) {
+                $parts2 = $parts2->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
+                });
+            }
+            elseif ($count2 > 0) {
+                $parts2 = $parts2->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
+                });
+            }
+            elseif ($count3 > 0) {
+                $parts2 = $parts2->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30));
+                });
+            }
+            else {
+                $parts2 = $parts2->filter(function($p) use ($date) {
+                    return $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30));
+                });
+            }
         }
 
         if ($parts->count() == 0) {
@@ -497,7 +553,7 @@ class ReportController extends Controller
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_j_tenaoshi_assy';
                 break;
             case 'through':
-                $tcpdf = $report->forThrough($parts);
+                $tcpdf = $report->forThrough($parts, $parts2);
                 $pdf_path = 'report_'.'680A'.'_'.$now->format('Ymd').'_j_through_assy';
                 break;
         }

@@ -2111,7 +2111,7 @@ class Report
         return $tcpdf;
     }
 
-    public function forThrough($parts)
+    public function forThrough($parts, $parts2)
     {
         $tcpdf = $this->createTCPDF();
 
@@ -2132,8 +2132,6 @@ class Report
                 's14' => $p->has(14) ? $p[14]['status'] : null
             ]);
         });
-
-// return $formated_parts;
 
         /*
          * Render A4
@@ -2199,22 +2197,19 @@ class Report
         /*
          * Format for A3 Aggregation
          */
-        $formated_parts = $parts->groupBy('panel_id')->map(function($p) {
+        $formated_parts = $parts2->groupBy('panel_id')->map(function($p) {
             return $p->keyBy('inspection_group_id');
-        })->map(function($p) {
-            return collect([
-                'P'=> $p,
-                'panelId' => $p->first()['panel_id'],
-                'time'=> $p->has(16) ? $p[16]['created_at'] : null,
-                's16' => $p->has(16) ? $p[16]['status'] : null,
-                's9'  => $p->has(9)  ? $p[9]['status']  : null,
-                's10' => $p->has(10) ? $p[10]['status'] : null,
-                's11' => $p->has(11) ? $p[11]['status'] : null,
-                's12' => $p->has(12) ? $p[12]['status'] : null,
-                's14' => $p->has(14) ? $p[14]['status'] : null
-            ]);
+        })->flatten()->map(function($p) {
+            $time = $p->created_at;
+            if ($p->inspection_group_id == 9) {
+                $time = Carbon::createFromFormat('Y-m-d H:i:s', $p->inspected_at);
+            }
+            return [
+                'time' => $time,
+                'status' => $p->status,
+                'group' => $p->inspection_group_id
+            ];
         });
-
 
         /*
          * Render A3 Aggregation
@@ -2256,21 +2251,11 @@ class Report
         }
 
         $timeChunksSum = collect($timeChunkedParts)->map(function($chunk) {
-            $result = [];
-            foreach ($chunk as $part) {
-                $result['s9'][] = $part['s9'];
-                $result['s16'][] = $part['s16'];
-                $result['s10'][] = $part['s10'];
-                $result['s11'][] = $part['s11'];
-                $result['s12'][] = $part['s12'];
-                $result['s14'][] = $part['s14'];
-            }
-
-            return collect($result)->map(function($i) {
-                $sum0 = collect($i)->filter(function($s) {
-                    return $s == 0;
+            return collect($chunk)->groupBy('group')->map(function($g) {
+                $sum0 = $g->filter(function($p) {
+                    return $p['status'] == 0;
                 })->count();
-                $sum1 = collect($i)->count() - $sum0;
+                $sum1 = $g->count() - $sum0;
 
                 return [
                     'sum0' => $sum0,
@@ -2308,18 +2293,35 @@ class Report
             if (count($chunk) != 0) {
                 $col = 0;
 
-                $tcpdf->Text($A3['x1']+20, $A3['y2']+$th*$row, $chunk['s9']['sum0']);
-                $tcpdf->Text($A3['x1']+20, $A3['y2']+$th*$row+($th/2), $chunk['s9']['sum1']);
-                $tcpdf->Text($A3['x1']+40, $A3['y2']+$th*$row, $chunk['s16']['sum0']);
-                $tcpdf->Text($A3['x1']+40, $A3['y2']+$th*$row+($th/2), $chunk['s16']['sum1']);
-                $tcpdf->Text($A3['x1']+60, $A3['y2']+$th*$row, $chunk['s10']['sum0']);
-                $tcpdf->Text($A3['x1']+60, $A3['y2']+$th*$row+($th/2), $chunk['s10']['sum1']);
-                $tcpdf->Text($A3['x1']+80, $A3['y2']+$th*$row, $chunk['s11']['sum0']);
-                $tcpdf->Text($A3['x1']+80, $A3['y2']+$th*$row+($th/2), $chunk['s11']['sum1']);
-                $tcpdf->Text($A3['x1']+100, $A3['y2']+$th*$row, $chunk['s12']['sum0']);
-                $tcpdf->Text($A3['x1']+100, $A3['y2']+$th*$row+($th/2), $chunk['s12']['sum1']);
-                $tcpdf->Text($A3['x1']+120, $A3['y2']+$th*$row, $chunk['s14']['sum0']);
-                $tcpdf->Text($A3['x1']+120, $A3['y2']+$th*$row+($th/2), $chunk['s14']['sum1']);
+                if ($chunk->has(9)) {
+                    $tcpdf->Text($A3['x1']+20, $A3['y2']+$th*$row, $chunk[9]['sum0']);
+                    $tcpdf->Text($A3['x1']+20, $A3['y2']+$th*$row+($th/2), $chunk[9]['sum1']);
+                }
+
+                if ($chunk->has(16)) {
+                    $tcpdf->Text($A3['x1']+40, $A3['y2']+$th*$row, $chunk[16]['sum0']);
+                    $tcpdf->Text($A3['x1']+40, $A3['y2']+$th*$row+($th/2), $chunk[16]['sum1']);
+                }
+
+                if ($chunk->has(10)) {
+                    $tcpdf->Text($A3['x1']+60, $A3['y2']+$th*$row, $chunk[10]['sum0']);
+                    $tcpdf->Text($A3['x1']+60, $A3['y2']+$th*$row+($th/2), $chunk[10]['sum1']);
+                }
+
+                if ($chunk->has(11)) {
+                    $tcpdf->Text($A3['x1']+80, $A3['y2']+$th*$row, $chunk[11]['sum0']);
+                    $tcpdf->Text($A3['x1']+80, $A3['y2']+$th*$row+($th/2), $chunk[11]['sum1']);
+                }
+
+                if ($chunk->has(12)) {
+                    $tcpdf->Text($A3['x1']+100, $A3['y2']+$th*$row, $chunk[12]['sum0']);
+                    $tcpdf->Text($A3['x1']+100, $A3['y2']+$th*$row+($th/2), $chunk[12]['sum1']);
+                }
+
+                if ($chunk->has(14)) {
+                    $tcpdf->Text($A3['x1']+120, $A3['y2']+$th*$row, $chunk[14]['sum0']);
+                    $tcpdf->Text($A3['x1']+120, $A3['y2']+$th*$row+($th/2), $chunk[14]['sum1']);
+                }
             }
 
             $row += 1;

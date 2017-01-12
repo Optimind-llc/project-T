@@ -681,6 +681,7 @@ class ShowController extends Controller
         $page_ids = Page::join('inspection_families as if', function($join) use ($itionGId, $tyoku, $start_at, $end_at) {
             $join->on('pages.family_id', '=', 'if.id')
                 ->whereIn('if.inspector_group', $tyoku)
+                ->whereNull('if.deleted_at')
                 ->where('if.inspection_group_id', '=', $itionGId)
                 ->where('if.updated_at', '>=', $start_at)
                 ->where('if.updated_at', '<', $end_at);
@@ -834,11 +835,13 @@ class ShowController extends Controller
                 ->join('pages as pg', function($join) {
                     $join->on('ip.page_id', '=', 'pg.id');
                 })
-                ->join('inspection_families as if', function($join) use ($itionGId, $start_at, $end_at) {
+                ->join('inspection_families as if', function($join) use ($itionGId, $tyoku, $start_at, $end_at) {
                     $join->on('pg.family_id', '=', 'if.id')
                         ->where('if.inspection_group_id', '=', $itionGId)
-                        ->where('ip.inspected_at', '>', $start_at)
-                        ->where('ip.inspected_at', '<=', $end_at);
+                        ->whereIn('if.inspector_group', $tyoku)
+                        ->whereNull('if.deleted_at')
+                        ->where('if.inspected_at', '>', $start_at)
+                        ->where('if.inspected_at', '<=', $end_at);
                 })
                 ->select(['inlines.id', 'ip.status', 'ip.part_id', 'ip.inspected_at', 'if.inspector_group'])
                 ->orderBy('ip.inspected_at', 'desc')
@@ -860,7 +863,6 @@ class ShowController extends Controller
                         ->values();
                 });
         }
-
 
         $inspectionGroup = InspectionGroup::find($itionGId);
 
@@ -972,8 +974,8 @@ class ShowController extends Controller
         $judgement = $request->judgement;
         $tyoku = $request->tyoku;
 
-        $s1 = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 08:30:00');
-        $e1 = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 10:30:00');
+        $s1 = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 00:00:00')->addDays(1)->addMinutes(15);
+        $e1 = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 00:00:00')->addDays(1)->addHours(6)->addMinutes(30);
 
         $familiesForS = InspectionFamily::whereIn('inspector_group', $tyoku)
             ->where('inspection_group_id', '=', $itionGId)
@@ -982,8 +984,8 @@ class ShowController extends Controller
             ->get()
             ->count();
 
-        $s2 = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 04:30:00');
-        $e2 = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 06:30:00');
+        $s2 = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 00:00:00')->addDays(1)->addMinutes(15);
+        $e2 = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 00:00:00')->addDays(1)->addHours(6)->addMinutes(30);
 
         $familiesForE = InspectionFamily::whereIn('inspector_group', $tyoku)
             ->where('inspection_group_id', '=', $itionGId)
@@ -992,19 +994,18 @@ class ShowController extends Controller
             ->get()
             ->count();
 
-        if ($familiesForS > 1) {
+        if ($familiesForS == 0) {
             $start = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 06:30:00');
-            $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 08:30:00')->addDay(1);
         }
         else {
             $start = Carbon::createFromFormat('Y/m/d H:i:s', $request->start.' 08:30:00');            
         }
 
-        if ($familiesForE > 1) {
-            $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 08:30:00')->addDay(1);
+        if ($familiesForE == 0) {
+            $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 06:30:00')->addDay(1);
         }
         else {
-            $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 06:30:00')->addDay(1);
+            $end = Carbon::createFromFormat('Y/m/d H:i:s', $request->end.' 08:30:00')->addDay(1);
         }
 
         array_push($tyoku, '不明');

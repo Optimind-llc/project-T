@@ -22,7 +22,6 @@ class Mapping extends Component {
   }
 
   requestMapping(ition) {
-    console.log('クリック')
     const { requestMapping, mappingPartTypeId, header } = this.props;
     const { p, ji } = this.state;
 
@@ -565,7 +564,7 @@ class Mapping extends Component {
                 data.filter(d => 
                   p === 'j' ? ji.indexOf(d.family.inspectionGroupId) >= 0 : true
                 ).map(d => 
-                  <p>{`${inspectionGroups.find(ig => ig.iG == d.family.inspectionGroupId).name}: ${d.family.createdBy}, ${d.family.createdAt}, コメント：${d.family.comment ? d.family.comment : ''}`}</p>
+                  <p>{`${inspectionGroups.find(ig => ig.iG == d.family.inspectionGroupId).name}: 判定${d.status === 1 ? '◯' : '×'},${d.family.createdBy}, ${d.family.createdAt}, コメント：${d.family.comment ? d.family.comment : ''}`}</p>
                 )
               }
                 <div className="figure">

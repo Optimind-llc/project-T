@@ -94,7 +94,7 @@ class RangeCalendar extends Component {
                     border: '1px solid #ccc',
                     padding: '0 10px',
                     margin: 0,
-                    width: 130,
+                    width: 150,
                     height: 30,
                     borderRadius: 4,
                     color: state.disabled ? '#BBB' : '#000',

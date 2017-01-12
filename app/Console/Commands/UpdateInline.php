@@ -48,7 +48,7 @@ class UpdateInline extends Command
         $today = Carbon::today();
 
         $targetFamilies = InspectionFamily::where('created_by', '=', '精度検査')
-            ->where('created_at', '>=', $today->subDays(22))
+            ->where('created_at', '>=', $today->subDays(1))
             ->with([
                 'pages' => function($q) {
                     return $q->select(['pages.id', 'pages.family_id']);
@@ -94,14 +94,12 @@ class UpdateInline extends Command
                 $TBU->created_at = $molding_result->created_at;
                 $TBU->save();
             }
-
         }
-
 
         //For Jointing
         $targetFamilies = InspectionFamily::where('created_by', '=', '精度検査')
             ->where('inspection_group_id', '=', 9)
-            ->where('created_at', '>=', $today->subDays(30))
+            ->where('created_at', '>=', $today->subDays(1))
             ->with([
                 'pages' => function($q) {
                     return $q->select(['pages.id', 'pages.family_id']);
@@ -120,7 +118,7 @@ class UpdateInline extends Command
 
         foreach ($targetFamilies as $family) {
             $molding_result = DB::table('inspection_families')
-                ->whereIn('inspection_group_id', [11])
+                ->whereIn('inspection_group_id', [16])
                 ->join('pages as pg', function ($join) {
                     $join->on('pg.family_id', '=', 'inspection_families.id');
                 })
@@ -147,9 +145,7 @@ class UpdateInline extends Command
                 $TBU->created_at = $molding_result->created_at;
                 $TBU->save();
             }
-
         }
-
 
         $message = 'success';
         $this->info($message);

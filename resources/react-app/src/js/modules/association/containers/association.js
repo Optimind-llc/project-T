@@ -24,7 +24,7 @@ class Association extends Component {
     super(props, context);
 
     this.state = {
-      narrowedBy: 'panelId',
+      narrowedBy: 'date',
       vehicle: {value: '680A', label: '680A'},
       partTId: null,
       panelId: '',
@@ -105,46 +105,6 @@ class Association extends Component {
       <div id="association">
         <div className="serch-wrap-wrap bg-white">
           <div className="serch-wrap">
-            <div
-              className={narrowedBy === 'panelId' ? 'parts-panel-id-wrap active' : 'parts-panel-id-wrap'}
-              onClick={() => this.setState({narrowedBy: 'panelId'})}
-            >
-              <div className="parts-wrap">
-                <p>部品</p>
-                <Select
-                  name="部品"
-                  styles={{height: 36}}
-                  placeholder={vehicle == null ? '先に車種を選択' :'部品を選択'}
-                  disabled={vehicle == null}
-                  clearable={false}
-                  Searchable={false}
-                  scrollMenuIntoView={false}
-                  value={this.state.partTId}
-                  options={[
-                    {label: 'バックドアインナー', value: 1},
-                    {label: 'アッパー', value: 2},
-                    {label: 'サイドアッパーRH', value: 3},
-                    {label: 'サイドアッパーLH', value: 4},
-                    {label: 'サイドロアRH', value: 5},
-                    {label: 'サイドロアLH', value: 6},
-                    {label: 'バックドアインナーASSY', value: 7}
-                  ]}
-                  onChange={value => this.setState({
-                    partTId: value,
-                    processId: null,
-                    itionGId: null
-                  })}
-                />
-              </div>
-              <div className="panel-id-wrap">
-                <p>ID</p>
-                <input
-                  type="text"
-                  value={panelId}
-                  onChange={(e) => this.setState({panelId: e.target.value})}
-                />
-              </div>
-            </div>
             <div
               className={narrowedBy === 'date' ? 'term-wrap active' : 'term-wrap'}
               onClick={() => this.setState({narrowedBy: 'date'})}
@@ -241,6 +201,46 @@ class Association extends Component {
                     endHour: value
                   })}
                 />
+            </div>
+            <div
+              className={narrowedBy === 'panelId' ? 'parts-panel-id-wrap active' : 'parts-panel-id-wrap'}
+              onClick={() => this.setState({narrowedBy: 'panelId'})}
+            >
+              <div className="parts-wrap">
+                <p>部品</p>
+                <Select
+                  name="部品"
+                  styles={{height: 36}}
+                  placeholder={vehicle == null ? '先に車種を選択' :'部品を選択'}
+                  disabled={vehicle == null}
+                  clearable={false}
+                  Searchable={false}
+                  scrollMenuIntoView={false}
+                  value={this.state.partTId}
+                  options={[
+                    {label: 'バックドアインナー', value: 1},
+                    {label: 'アッパー', value: 2},
+                    {label: 'サイドアッパーRH', value: 3},
+                    {label: 'サイドアッパーLH', value: 4},
+                    {label: 'サイドロアRH', value: 5},
+                    {label: 'サイドロアLH', value: 6},
+                    {label: 'バックドアインナーASSY', value: 7}
+                  ]}
+                  onChange={value => this.setState({
+                    partTId: value,
+                    processId: null,
+                    itionGId: null
+                  })}
+                />
+              </div>
+              <div className="panel-id-wrap">
+                <p>ID</p>
+                <input
+                  type="text"
+                  value={panelId}
+                  onChange={(e) => this.setState({panelId: e.target.value})}
+                />
+              </div>
             </div>
           </div>
           <button

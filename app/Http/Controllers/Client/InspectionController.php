@@ -100,12 +100,17 @@ class InspectionController extends Controller
         foreach ($request->id as $id) {
             $formated = null;
 
+            // If the requested part exist
             if ($part instanceof Part) {
                 $detail = new Result($part->id, $partTypeId, $id);
                 $formated = $detail->setDetails()->formatForClient()->get();
             }
 
             $name = InspectionGroup::find($id)->inspection->en;
+            $line = InspectionGroup::find($id)->line;
+
+            $name = $name . $line;
+
             $heritage[$name] = 0;
 
             if (!is_null($formated)) {
@@ -366,7 +371,7 @@ class InspectionController extends Controller
         $family_odj = InspectionFamily::find($familyId);
         $family_odj->status = $family['status'];
         $family_odj->comment = array_key_exists('comment', $family) ? $family['comment'] : null;
-        $family_odj->inspector_group = $family['choku'];
+        // $family_odj->inspector_group = $family['choku'];
         $family_odj->updated_by = $family['updatedBy'];
         $family_odj->save();
 
