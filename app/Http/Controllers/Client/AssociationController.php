@@ -31,6 +31,7 @@ class AssociationController extends Controller
 
         // Check
         $associated = [];
+        $heritage = [];
         foreach ($association as $pn => $panelId) {
             $partTypeId = PartType::where('pn', $pn)->first()->id;
             $part_obj = Part::where('part_type_id', '=', $partTypeId)
@@ -47,6 +48,47 @@ class AssociationController extends Controller
                         'panelId' => $part_obj->panel_id
                     ];
                 }
+
+                $heritage[] = Part::where('part_type_id', '=', $partTypeId)
+                    ->where('panel_id', '=', $panelId)
+                    ->with([
+                        'pages' => function($q) {
+                            $q->join('inspection_families as if', function($join) {
+                                $join->on('pages.family_id', '=', 'if.id');
+                            })->join('inspection_groups as ig', function($join) {
+                                $join->on('if.inspection_group_id', '=', 'ig.id');
+                            })->join('inspections as i', function($join) {
+                                $join->on('ig.inspection_id', '=', 'i.id');
+                            })
+                            ->select('pages.*', 'if.inspected_at', 'if.inspection_group_id', 'ig.line', 'i.en', 'i.process_id')
+                            ->orderBy('if.inspected_at')
+                            ->get();
+                        }
+                    ])
+                    ->get()
+                    ->map(function($p) {
+                        $heritage = collect([
+                            'molding_gaikan1' => 0,
+                            'molding_gaikan2' => 0,
+                            'molding_inline1' => 0,
+                            'molding_inline2' => 0,
+                            'holing_gaikan' => 0,
+                            'holing_ana' => 0,
+                        ]);
+                        return [
+                            'panelId' => $p->panel_id,
+                            'associated' => $p->family_id === null ? 0 : 1,
+                            'heritage' => $heritage->merge($p->pages->map(function($p) {
+                                return [
+                                    'name' => $p['process_id'].'_'.$p['en'].$p['line'],
+                                    'pivot' => $p['pivot']
+                                ];
+                            })->groupBy('name')->map(function($page) {
+                                return $page->first()['pivot']['status'] === 1 ? 1 : 2;
+                            }))
+                        ];
+                    })
+                    ->toArray();
             }
         }
 
@@ -56,6 +98,14 @@ class AssociationController extends Controller
                 'parts' => $associated
             ], 200);
         }
+
+        if (count($heritage) > 0) {
+            return response()->json([
+                'message' => 'heritage',
+                'parts' => $heritage
+            ], 200);
+        }
+
 
         $association['67007'] = $association['67149'];
 
