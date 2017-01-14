@@ -52,6 +52,7 @@ Route::post('client/print', 'Client\PrintController@printByTemplate');
 
 // Associate Parts
 Route::post('client/association', 'Client\AssociationController@saveAssociation');
+Route::post('client/association/check', 'Client\AssociationController@checkStatus');
 Route::post('client/association/family', 'Client\AssociationController@getFamily');
 Route::post('client/association/update', 'Client\AssociationController@updateFamily');
 
