@@ -49,7 +49,7 @@ class AssociationController extends Controller
                     ];
                 }
 
-                $heritage[] = Part::where('part_type_id', '=', $partTypeId)
+                // $heritage[] = Part::where('part_type_id', '=', $partTypeId)
                     ->where('panel_id', '=', $panelId)
                     ->with([
                         'pages' => function($q) {
@@ -99,12 +99,12 @@ class AssociationController extends Controller
             ], 200);
         }
 
-        if (count($heritage) > 0) {
-            return response()->json([
-                'message' => 'heritage',
-                'parts' => $heritage
-            ], 200);
-        }
+        // if (count($heritage) > 0) {
+        //     return response()->json([
+        //         'message' => 'heritage',
+        //         'parts' => $heritage
+        //     ], 200);
+        // }
 
 
         $association['67007'] = $association['67149'];
