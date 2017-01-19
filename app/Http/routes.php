@@ -167,6 +167,14 @@ Route::post('maintenance/modification/update', 'Manager\MaintenanceController@up
 Route::post('maintenance/modification/{id}/activate', 'Manager\MaintenanceController@activateModification');
 Route::post('maintenance/modification/{id}/deactivate', 'Manager\MaintenanceController@deactivateModification');
 
+
+Route::post('maintenance/holes', 'Manager\MaintenanceController@holes');
+Route::post('maintenance/hole/create', 'Manager\MaintenanceController@createHole');
+Route::post('maintenance/hole/update', 'Manager\MaintenanceController@updateHole');
+Route::post('maintenance/hole/{id}/activate', 'Manager\MaintenanceController@activateHole');
+Route::post('maintenance/hole/{id}/deactivate', 'Manager\MaintenanceController@deactivateHole');
+
+
 // $api = app('Dingo\Api\Routing\Router');
 
 // $api->version('v1', ['prefix' => 'client', 'namespace' => 'App\Http\Controllers\Client'], function ($api) {

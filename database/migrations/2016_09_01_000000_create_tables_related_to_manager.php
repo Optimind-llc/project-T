@@ -294,6 +294,7 @@ class CreateTablesRelatedToManager extends Migration
             $table->string('shape', 16); //square or circle
             $table->integer('part_type_id')->unsigned();
             $table->integer('figure_id')->unsigned();
+            $table->tinyInteger('status')->unsigned()->default(1);
             $table->timestamps();
             $table->softDeletes();
 

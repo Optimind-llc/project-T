@@ -1,125 +1,152 @@
 import React, { Component, PropTypes } from 'react';
-import Calendar from 'rc-calendar';
-import moment from 'moment';
-import DatePicker from 'rc-calendar/lib/Picker';
-import jaJP from './ja_JP';
-import 'rc-calendar/assets/index.css';
-import './rangeCalendar.css';
-import TimePickerPanel from 'rc-time-picker/lib/Panel';
-import 'rc-time-picker/assets/index.css';
+import Select from 'react-select';
+// Styles
+import './edit.scss';
 
-class RangeCalendar extends Component {
+class Edit extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      format: 'YYYY年MM月DD日',
-      showTime: false,
-      showDateInput: true,
-      disabled: props.disabled,
-      value: props.defaultValue,
+      id: props.id,
+      name: props.name,
+      label: props.label,
+      inspections: props.inspections
     };
   }
 
-  onChange(value) {
-    this.setState({
-      value,
-    });
-    this.props.setState(value);
-  }
-
-  onShowTimeChange(e) {
-    this.setState({
-      showTime: e.target.checked,
-    });
-  }
-
-  onShowDateInputChange(e) {
-    this.setState({
-      showDateInput: e.target.checked,
-    });
-  }
-
-  toggleDisabled() {
-    this.setState({
-      disabled: !this.state.disabled,
-    });
-  }
-
   render() {
-    const now = moment();
-    const defaultCalendarValue = now.clone();
-    defaultCalendarValue.add(-1, 'month');
-
-    const timePickerElement = <TimePickerPanel />;
-
-    function disabledDate(current) {
-      if (!current) {
-        // allow empty select
-        return false;
-      }
-      const date = moment();
-      return !date.isAfter(current);
-    }
-
-
-    const state = this.state;
-    const calendar = (<Calendar
-      locale={jaJP}
-      style={{ zIndex: 1000 }}
-      dateInputPlaceholder="please input"
-      formatter={state.format}
-      timePicker={state.showTime ? timePickerElement : null}
-      defaultValue={this.props.defaultCalendarValue}
-      showDateInput={state.showDateInput}
-      disabledDate={disabledDate}
-    />);
+    const { id, name, label, inspections } = this.state;
+    const inspectionIds = [1,10,3,11,5,6,7,9];
 
     return (
-        <DatePicker
-          animation="slide-up"
-          disabled={state.disabled}
-          calendar={calendar}
-          value={state.value}
-          onChange={(value) => this.onChange(value)}
-          disabled={this.props.disabled}
-        >
+      <div>
+        <div className="modal">
+        </div>
+        <div className="edit-wrap">
+          <div className="panel-btn" onClick={() => this.props.close()}>
+            <span className="panel-btn-close"></span>
+          </div>
+          <p className="title">不良区分情報編集</p>
+          <div className="edit">
+            <div className="name">
+              <p>名前</p>
+              <input
+                type="text"
+                value={this.state.name}
+                onChange={e => this.setState({name: e.target.value})}
+              />
+              {
+                this.props.message == 'duplicate failure name' &&
+                <p className="error-message">同じ名前の不良区分がすでに登録されています</p>
+              }
+            </div>
+            <div className="label">
+              <p>番号</p>
+              <input
+                type="number"
+                value={this.state.label}
+                onChange={e => this.setState({label: e.target.value})}
+              />
+              {
+                this.props.message == 'duplicate failure label' &&
+                <p className="error-message">同じ番号の不良区分がすでに登録されています</p>
+              }
+            </div>
+          </div>
           {
-            ({ value }) => {
-              return (
-                <span tabIndex="0">
-                <input
-                  placeholder="選択してください"
-                  style={{
-                    boxSizing: 'border-box',
-                    border: '1px solid #ccc',
-                    padding: '0 10px',
-                    margin: 0,
-                    width: 130,
-                    height: 36,
-                    borderRadius: 4,
-                    color: state.disabled ? '#BBB' : '#000',
-                    lineHeight: '34px',
-                  }}
-                  disabled={state.disabled}
-                  readOnly
-                  tabIndex="-1"
-                  className="ant-calendar-picker-input ant-input"
-                  value={value && value.format(state.format) || ''}
-                />
-                </span>
-              );
-            }
+            this.props.message == 'over limit of failures' &&
+            <p className="error-message">{`${this.props.meta.inspection}の不良区分数が上限(${this.props.meta.limit})を超えてしまいます`}</p>
           }
-        </DatePicker>
+          <table>
+            <thead>
+              <tr>
+                <th colSpan={1}>成形工程</th>
+                <th colSpan={2}>穴あけ工程</th>
+                <th colSpan={5}>接着工程</th>
+              </tr>
+              <tr>
+                <th colSpan={1}>外観検査</th>
+                <th colSpan={1}>外観検査</th>
+                <th colSpan={1}>穴検査</th>
+                <th colSpan={1}>簡易CF</th>
+                <th colSpan={1}>止水</th>
+                <th colSpan={1}>仕上</th>
+                <th colSpan={1}>検査</th>
+                <th colSpan={1}>手直</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="content">
+              {
+                inspectionIds.map(iID =>
+                  inspections.find(i => i.id == iID) ?
+                  <td key={iID}>
+                    <input
+                      type="number"
+                      value={inspections.find(i => i.id == iID) ? inspections.find(i => i.id == iID).sort : null}
+                      onChange={e => this.setState({
+                        inspections: inspections.map(i => i.id == iID ? Object.assign(i, {sort: Number(e.target.value)}) : i)
+                      })}
+                    />
+                    <div className="failure-type-wrap">
+                      <input
+                        type="checkbox"
+                        checked={inspections.find(i => i.id == iID) ? inspections.find(i => i.id == iID).type === 1 : null}
+                        onChange={() => this.setState({
+                          inspections: inspections.map(i => i.id == iID ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i)
+                        })}
+                      />
+                      <p>重要</p>
+                    </div>
+                    <div
+                      className="panel-btn"
+                      onClick={() => this.setState({
+                        inspections: inspections.filter(i => i.id !== iID)
+                      })}
+                    >
+                      <span className="panel-btn-close"></span>
+                    </div>
+                  </td> :
+                  <td key={iID}>
+                    <p className="null"></p>
+                    <div
+                      className="panel-btn"
+                      onClick={() => this.setState({
+                        inspections: [{id: iID, sort: 1, type: 2}, ...inspections]
+                      })}
+                    >
+                      <span className="panel-btn-add"></span>
+                    </div>
+                  </td>
+                )
+              }
+              </tr>
+            </tbody>
+          </table>
+          <p className="explanation">※ 数字はiPadでの表示順</p>
+          <div className="btn-wrap">
+            <button onClick={() => {
+              console.log(inspections);
+              this.props.update(id, name, label, inspections)
+            }}>
+              保存
+            </button>
+          </div>
+        </div>
+      </div>
     );
   }
 };
 
-RangeCalendar.propTypes = {
-  defaultValue: PropTypes.object,
-  defaultCalendarValue: PropTypes.object,
-  setState: PropTypes.func,
-  disabled: PropTypes.bool
+Edit.propTypes = {
+  id: PropTypes.number,
+  name: PropTypes.string,
+  label: PropTypes.number,
+  inspections: PropTypes.array,
+  message: PropTypes.string,
+  meta: PropTypes.object,
+  close: PropTypes.func,
+  update: PropTypes.func,
 };
 
-export default RangeCalendar;
+export default Edit;

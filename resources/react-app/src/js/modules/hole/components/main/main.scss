@@ -1,0 +1,145 @@
+#hole .body {
+  position: relative;
+  min-height: 520px;
+  margin-top: 4px;
+
+  .figure-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 870px;
+
+    img {
+      width: 870px;
+      display: block;
+    }
+
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 870px;
+      height: 515px;
+    }
+  }
+
+  .holes-wrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 311px;
+    padding: 4px;
+
+    table {
+      width: 100%;
+      border-spacing: 0;
+      border-collapse: collapse;
+      white-space: nowrap;
+      font-size: 11px;
+
+      .clickable {
+        cursor: pointer;
+
+        &:after {
+          content: "";
+        }
+        &.asc:after {
+          content: "↑";
+        }
+        &.desc:after {
+          content: "↓";
+        }
+      }
+
+      th {
+        color: #fff;
+        padding: 4px 8px;
+        background: #258;
+        font-weight: bold;
+        border-left: 1px solid #FFF;
+        border-top: 1px solid #258;
+        border-bottom: 1px solid #CCC;
+        line-height: 120%;
+        text-align: center;
+
+        &:first-child {
+          border-left: none;
+        }
+      }
+
+      tr {
+        background: #fff;
+
+        td {
+          padding: 4px 8px;
+          border-bottom: 1px solid #84b2e0;
+          border-left: 1px solid #84b2e0;
+          text-align: center;
+
+          &:last-child {
+            border-right: 1px solid #84b2e0;
+            box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+          }
+
+          div.failure-status {
+            div {
+              display: inline-block;
+
+              &.failure-type {
+                width: 30px;
+                border: 1px solid #4A4A4A;
+                border-radius: 4px;
+
+                &.important {
+                  border: 1px solid red;
+                  color: red;
+                }
+              }
+
+              &.failure-sort {
+                margin-left: 4px;
+              }
+            }
+          }
+
+          p {
+            cursor: pointer;
+            margin: 0;
+          }
+
+          img.icon-checked {
+            height: 15px;
+            width: auto;
+            position: relative;
+            top: 3px;
+            left: 0;
+            cursor: pointer;
+          }
+
+          div.icon-check {
+            display: inline-block;
+            position: relative;
+            top: 3px;
+            left: 0;
+            height: 15px;
+            width: 15px;
+            border: 2px solid #CCC;
+            cursor: pointer;
+          }
+
+          button {
+            position: relative;
+            right: 0;
+          }
+        }
+
+        &:nth-child(2n+1) {
+          background: #f1f6fc;
+        }
+        &:last-child td {
+          box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+        }
+      }
+    }
+  }
+}

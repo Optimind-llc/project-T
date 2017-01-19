@@ -613,6 +613,16 @@ class ShowController extends Controller
             throw new StoreResourceFailedException('Validation error', $validator->errors());
         }
 
+        if ($partTypeId == 3 || $partTypeId == 4) {
+            $partTypeIds = [3, 4];
+        }
+        elseif ($partTypeId == 5 || $partTypeId == 6) {
+            $partTypeIds = [5, 6];
+        }
+        else {
+            $partTypeIds = [$partTypeId];
+        }
+
         $now = Carbon::now();
 
         if (isset($request->start) && isset($request->end)) {
@@ -663,8 +673,9 @@ class ShowController extends Controller
         }
 
         $page_types = PageType::where('group_id', '=', $itionGId)
-            ->whereHas('partTypes', function($q) use ($partTypeId){
-                $q->where('part_types.id', '=', $partTypeId);
+            ->whereHas('partTypes', function($q) use ($partTypeIds){
+                // $q->where('part_types.id', '=', $partTypeId);
+                $q->whereIn('part_types.id', $partTypeIds);
             })
             ->with(['figure'])
             ->get(['id', 'number', 'figure_id'])
@@ -689,8 +700,9 @@ class ShowController extends Controller
         ->join('part_page as pp', function($join) {
             $join->on('pages.id', '=', 'pp.page_id');
         })
-        ->join('parts', function($join) use ($partTypeId) {
-            $join->on('parts.id', '=', 'pp.part_id')->where('parts.part_type_id', '=', $partTypeId);
+        ->join('parts', function($join) use ($partTypeIds) {
+            // $join->on('parts.id', '=', 'pp.part_id')->where('parts.part_type_id', '=', $partTypeId);
+            $join->on('parts.id', '=', 'pp.part_id')->whereIn('parts.part_type_id', $partTypeIds);
         })
         ->select('pages.id', 'pages.page_type_id')
         ->get()
@@ -749,8 +761,9 @@ class ShowController extends Controller
                 }
             ])
             ->get(['id', 'point', 'page_id', 'part_id', 'failure_id'])
-            ->filter(function($fp) use ($partTypeId) {
-                return $fp->part->part_type_id == $partTypeId;
+            ->filter(function($fp) use ($partTypeIds) {
+                // return $fp->part->part_type_id == $partTypeId;
+                return in_array($fp->part->part_type_id, $partTypeIds);
             })
             ->map(function($fp) {
                 return [
@@ -784,7 +797,8 @@ class ShowController extends Controller
                 ];
             });
 
-        $holes = Hole::where('holes.part_type_id', '=', $partTypeId)
+        // $holes = Hole::where('holes.part_type_id', '=', $partTypeId)
+        $holes = Hole::whereIn('holes.part_type_id', $partTypeIds)
             ->join('figures as f', function($join) {
                 $join->on('f.id', '=', 'holes.figure_id');
             })
@@ -802,10 +816,12 @@ class ShowController extends Controller
                     $q->select(['hole_page_hole_modification.id', 'hp_id']);
                 }
             ])
+            ->orderBy('holes.part_type_id')
             ->get(['id', 'point', 'holes.part_type_id', 'figure_id'])
             ->map(function($h) {
                 return [
                     'id' => $h->id,
+                    'pt' => $h->part_type_id,
                     'l' => $h->label,
                     'p' => $h->point,
                     'd' => $h->direction,
@@ -907,7 +923,11 @@ class ShowController extends Controller
         $hm = $inspection_group->sortedHoleModifications();
         $h = [];
         if ($inspection_group->inspection->en == 'ana') {
-            $h = PartType::find($partTypeId)->holes()->orderBy('label')->get();
+            $h = PartType::find($partTypeId)
+                ->holes()
+                ->where('figure_id', '!=', 9)
+                ->orderBy('label')
+                ->get();
         }
         $i = [];
         if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
@@ -1100,7 +1120,9 @@ class ShowController extends Controller
             $h = PartType::find($partTypeId)
                 ->holes()
                 ->where('figure_id', '!=', 9)
-                ->orderBy('label')->get();
+                ->where('part_type_id', '==', $partTypeId)
+                ->orderBy('label')
+                ->get();
         }
         $i = [];
         if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {

@@ -11,191 +11,116 @@ import { grey50, indigo500 } from 'material-ui/styles/colors';
 // Styles
 import './hole.scss';
 // Components
-// import RangeCalendar from '../components/rangeCalendar/rangeCalendar';
+import Main from '../components/main/main';
 
-class Failure extends Component {
+class Hole extends Component {
   constructor(props, context) {
     super(props, context);
-    this.props.actions.getHoles();
+
+    props.actions.getHoles(4, [1]);
 
     this.state = {
+      figure: {label: 'インナーPage1', value: 4},
+      status: {label: '表示中', value: [1]},
       editModal: false,
-      editting_l: null,
-      editting_n: null,
+      createModal: false
     };
   }
 
-  render() {
-    const { AllHoleData } = this.props;
-    const { vehicle } = this.state;
+  requestHoles() {
+    const { getHoles } = this.props.actions;
+    const { figure, status } = this.state;
 
-    const getDirection = d => {
-      switch (d) {
-        case 'left': return '左'; break;
-        case 'right': return '右'; break;
-        case 'top': return '上'; break;
-        case 'bottom': return '下'; break;
-      }
-    } 
+    getHoles(figure.value, status.value);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.maintHoleData.updated && nextProps.maintHoleData.updated) {
+      this.requestHoles();
+      this.setState({
+        editModal: false,
+        createModal: false
+      });
+    }
+  }
+
+  render() {
+    const { maintHoleData } = this.props;
+    const { figure, status, editModal, createModal, sort } = this.state;
 
     return (
-      <div id="inspector">
-        <div className="header bg-white">
-          <p>不良区分マスタメンテ</p>
-        </div>
-        <div className="body bg-white">
-          <button className="create-btn">新規登録</button>
-          <table>
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>図面</th>
-                <th>番号</th>
-                <th>位置</th>
-                <th>色</th>
-                <th>形</th>
-                <th>線</th>
-                <th>ラベル位置</th>
-                <th>機能</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-              AllHoleData.data && AllHoleData.data.length != 0 &&
-              AllHoleData.data.map((h, i)=> 
-                {
-                  return(
-                    <tr className="content">
-                      <td>{i+1}</td>
-                      <td>{'穴あけインナー Page1'}</td>
-                      <td>{h.label}</td>
-                      <td>{h.point}</td>
-                      <td><p style={{backgroundColor: `#${h.color}`, border: '1px solid #000'}}>{h.color}</p></td>
-                      <td>{h.shape == 'circle' ? '円' : '四角'}</td>
-                      <td>{h.border == 'solid' ? '実線' : '破線'}</td>
-                      <td>{getDirection(h.direction)}</td>
-                      <td>
-                        <button onClick={() => this.setState({
-                          editModal: true,
-                          editting_l: f.label,
-                          editting_n: f.name,
-                        })}>
-                          非表示
-                        </button>
-                        <button onClick={() => this.setState({
-                          editModal: true,
-                          editting_l: f.label,
-                          editting_n: f.name
-                        })}>
-                          編集
-                        </button>
-                      </td>
-                    </tr>
-                  )
-                }              
-              )
-            }{
-              AllHoleData.data && AllHoleData.data.length == 0 &&
-              <tr className="content">
-                <td colSpan="10">結果なし</td>
-              </tr>
-            }
-            </tbody>
-          </table>
-          {
-            this.state.editModal &&
-            <div>
-              <div className="modal">
-              </div>
-              <div className="edit-wrap">
-                <div className="panel-btn" onClick={() => this.setState({editModal: false})}>
-                  <span className="panel-btn-close"></span>
-                </div>
-                <p className="title">不良区分情報編集</p>
-                <div className="edit">
-                  <div className="process-wrap">
-                    <p>番号</p>
-                    <input
-                      type="text"
-                      value={this.state.editting_l}
-                      onChange={(e) => this.setState({editting_l: e.target.value})}
-                    />
-                  </div>
-                  <div className="inspection-wrap">
-                    <p>名前</p>
-                    <input
-                      type="text"
-                      value={this.state.editting_n}
-                      onChange={(e) => this.setState({editting_n: e.target.value})}
-                    />
-                  </div>
-                </div>
-                <table>
-                  <thead>
-                    <tr>
-                      <th colSpan={2}>成形工程</th>
-                      <th colSpan={3}>穴あけ工程</th>
-                      <th colSpan={5}>接着工程</th>
-                    </tr>
-                    <tr>
-                      <th colSpan={1}>インナー</th>
-                      <th colSpan={1}>アウター</th>
-                      <th colSpan={2}>インナー</th>
-                      <th colSpan={1}>アウター</th>
-                      <th colSpan={5}>インナーASSY</th>
-                    </tr>
-                    <tr>
-                      <th colSpan={1}>外観検査</th>
-                      <th colSpan={1}>外観検査</th>
-                      <th colSpan={1}>外観検査</th>
-                      <th colSpan={1}>穴検査</th>
-                      <th colSpan={1}>穴検査</th>
-                      <th colSpan={1}>簡易CF</th>
-                      <th colSpan={1}>止水</th>
-                      <th colSpan={1}>仕上</th>
-                      <th colSpan={1}>検査</th>
-                      <th colSpan={1}>手直</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="content">
-                      <td>{'○'}</td>
-                      <td>{'○'}</td>
-                      <td>{'○'}</td>
-                      <td>{'○'}</td>
-                      <td>{'○'}</td>
-                      <td>{'○'}</td>
-                      <td>{'○'}</td>
-                      <td>{'○'}</td>
-                      <td>{'○'}</td>
-                      <td>{'○'}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="btn-wrap">
-                  <button>
-                    保存
-                  </button>
-                  <button>
-                    終了
-                  </button>
-                </div>
-              </div>
+      <div id="hole">
+        <div className="refine-wrap bg-white">
+          <div className="refine">
+            <div className="inspection">
+              <p>図面</p>
+              <Select
+                name="検査"
+                placeholder="検査を選択"
+                styles={{height: 30}}
+                clearable={false}
+                Searchable={true}
+                value={this.state.figure}
+                options={[
+                  {label: 'インナーPage1', value: 4},
+                  {label: 'インナーPage2', value: 5},
+                  {label: 'インナーPage3', value: 6},
+                  {label: 'インナーPage4', value: 7},
+                  {label: 'アウターPage1', value: 8},
+                  {label: 'アウターPage2', value: 13},
+                  {label: 'アウターPage3', value: 14}
+                ]}
+                onChange={value => this.setState(
+                  {figure: value},
+                  () => this.requestHoles()
+                )}
+              />
             </div>
-          }
+            <div className="status">
+              <p>状態</p>
+              <Select
+                name="状態"
+                placeholder="状態を選択"
+                styles={{height: 30}}
+                clearable={false}
+                Searchable={true}
+                value={this.state.status}
+                options={[
+                  {label: '全て', value: [0,1]},
+                  {label: '非表示中', value: [0]},
+                  {label: '表示中', value: [1]},
+                ]}
+                onChange={value => this.setState(
+                  {status: value},
+                  () => this.requestHoles()
+                )}
+              />
+            </div>
+          </div>
         </div>
+        {
+          maintHoleData.data !== null &&
+          <Main
+            path={maintHoleData.data.path}
+            holes={maintHoleData.data.holes}
+            activateHole={(id) => this.props.actions.activateHole(id)}
+            deactivateHole={(id) => this.props.actions.deactivateHole(id)}
+            editModal={editModal}
+            createModal={createModal}
+          />
+        }
       </div>
     );
   }
 }
 
-Failure.propTypes = {
-  AllHoleData: PropTypes.object.isRequired,
+Hole.propTypes = {
+  maintHoleData: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    AllHoleData: state.AllHoleData
+    maintHoleData: state.maintHoleData
   };
 }
 
@@ -206,4 +131,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Failure);
+export default connect(mapStateToProps, mapDispatchToProps)(Hole);

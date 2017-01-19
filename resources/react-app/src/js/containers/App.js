@@ -33,13 +33,7 @@ class App extends Component {
       { en: 'inspector', name: '担当者マスタメンテ', disable: false },
       { en: 'failure', name: '不良区分マスタメンテ', disable: false },
       { en: 'modification', name: '手直区分マスタメンテ', disable: false },
-      { en: 'hole', name: '穴あけ加工ポイント登録', disable: true },
-    ];
-
-    const nameList = [
-      '検査工程　不良マッピングシステム',
-      routes[0].name,
-      routes[1].name
+      { en: 'hole', name: '穴あけポイント登録', disable: false }
     ];
 
     const styles = {
@@ -47,7 +41,7 @@ class App extends Component {
         minWidth: 1349,
         backgroundColor: 'rgba(231,236,245,1)',
         height: '100%',
-        minHeight: 400
+        minHeight: 600
       },
       content: {
         paddingLeft: 160, 

@@ -1,0 +1,65 @@
+#hole {
+  padding: 4px 4px 0 4px;
+  min-width: 1110px;
+
+  .refine-wrap {
+    p {
+      margin: 4px;
+      font-size: 18px;
+    }
+
+    .refine {
+      padding: 4px;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content:flex-start;
+
+      > div {
+        display: flex;
+        flex-flow: row nowrap;
+        padding: 4px;
+
+        &:first-child {
+          padding-left: 0;
+        }
+
+        &:last-child {
+          padding-right: 0;
+        }
+
+        > p {
+          margin: 0 4px;
+          text-align: center;
+          line-height: 30px;
+        }
+
+        > input {
+          border: 1px solid;
+          border-color: #ccc;
+          border-radius: 4px;
+        }
+      }
+
+      div.name {
+        flex-basis: 200px;
+        > input {
+          width: 240px;
+        }
+      }
+
+      div.inspection {
+        flex-basis: 380px;
+        > div {
+          flex-basis: 320px;
+        }
+      }
+
+      div.status {
+        flex-basis: 200px;
+        > div {
+          flex-basis: 130px;
+        }
+      }
+    }
+  }
+}

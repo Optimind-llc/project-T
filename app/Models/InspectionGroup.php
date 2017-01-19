@@ -163,7 +163,7 @@ class InspectionGroup extends Model
             'pageTypes',
             'pageTypes.figure',
             'pageTypes.figure.holes' => function($q) {
-                $q->select(['id', 'point', 'label', 'direction', 'color', 'border', 'shape', 'figure_id']);
+                $q->select(['id', 'point', 'label', 'direction', 'color', 'border', 'shape', 'figure_id', 'part_type_id']);
             },
             'pageTypes.partTypes' => function($q) {
                 $q->select(['id', 'pn', 'name', 'sort', 'vehicle_num']);
@@ -205,7 +205,6 @@ class InspectionGroup extends Model
         })->toArray();
 
         foreach( $modifications as $key => $row ) {
-            // $m_type_array[$key] = $row['type'];
             $m_label_array[$key] = $row['label'];
             $m_sort_array[$key] = $row['sort'];
         }

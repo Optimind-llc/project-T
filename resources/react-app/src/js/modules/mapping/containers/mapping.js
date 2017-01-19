@@ -58,6 +58,8 @@ class Mapping extends Component {
       case 'failure':
         return (
           <div className="failure">
+          {
+            (this.props.partTId.value === 3 || this.props.partTId.value === 4) &&
             <div className="collection">
               <div>
                 <ul>
@@ -91,21 +93,140 @@ class Mapping extends Component {
                   })}
                 </ul>
               </div>
-              {
-                <div>
-                  <ul className="parts">
-                    <li>計</li>
-                    {
-                      data.ft.map(ft => 
-                        <li>
-                          {data.failures ? data.failures.filter(f => f.id == ft.id).length : 0}
-                        </li>
-                      )
-                    }
-                  </ul>
-                </div>
-              }
+              <div>
+                <ul className="parts">
+                  <li>LH</li>
+                  {
+                    data.ft.map(ft => 
+                      <li>
+                        {data.failures ? data.failures.filter(f => f.id == ft.id && f.pt == 4).length : 0}
+                      </li>
+                    )
+                  }
+                </ul>
+              </div>
+              <div>
+                <ul className="parts">
+                  <li>RH</li>
+                  {
+                    data.ft.map(ft => 
+                      <li>
+                        {data.failures ? data.failures.filter(f => f.id == ft.id && f.pt == 3).length : 0}
+                      </li>
+                    )
+                  }
+                </ul>
+              </div>
             </div>
+          }{
+            (this.props.partTId.value === 5 || this.props.partTId.value === 6) &&
+            <div className="collection">
+              <div>
+                <ul>
+                  <li
+                    onClick={() => {
+                      let newFilter;
+                      if ( fFilter.length !== 0) newFilter = [];
+                      else newFilter = data.ft.map(ft => ft.id);
+                      this.setState({ fFilter: newFilter });
+                    }}
+                  >
+                    <span>{fFilter.length === 0 && <p>{'✔'}︎</p>}</span>
+                    <span>不良区分</span>
+                  </li>
+                  {data.ft.map(ft =>{
+                    const index = fFilter.indexOf(ft.id);
+                    return (
+                      <li
+                        key={ft.id}
+                        className={index === -1 ? 'active' : ''}
+                        onClick={() => {
+                          if ( index === -1) fFilter.push(ft.id);
+                          else fFilter.splice(index, 1);
+                          this.setState({ fFilter });
+                        }}
+                      >
+                        <span>{index === -1 && <p>{'✔'}︎</p>}</span>
+                        <span>{`${ft.label}. ${ft.name}`}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              <div>
+                <ul className="parts">
+                  <li>LH</li>
+                  {
+                    data.ft.map(ft => 
+                      <li>
+                        {data.failures ? data.failures.filter(f => f.id == ft.id && f.pt == 6).length : 0}
+                      </li>
+                    )
+                  }
+                </ul>
+              </div>
+              <div>
+                <ul className="parts">
+                  <li>RH</li>
+                  {
+                    data.ft.map(ft => 
+                      <li>
+                        {data.failures ? data.failures.filter(f => f.id == ft.id && f.pt == 5).length : 0}
+                      </li>
+                    )
+                  }
+                </ul>
+              </div>
+            </div>
+          }{
+            this.props.partTId.value !== 3 && this.props.partTId.value !== 4 && this.props.partTId.value !== 5 && this.props.partTId.value !== 6 &&
+            <div className="collection">
+              <div>
+                <ul>
+                  <li
+                    onClick={() => {
+                      let newFilter;
+                      if ( fFilter.length !== 0) newFilter = [];
+                      else newFilter = data.ft.map(ft => ft.id);
+                      this.setState({ fFilter: newFilter });
+                    }}
+                  >
+                    <span>{fFilter.length === 0 && <p>{'✔'}︎</p>}</span>
+                    <span>不良区分</span>
+                  </li>
+                  {data.ft.map(ft =>{
+                    const index = fFilter.indexOf(ft.id);
+                    return (
+                      <li
+                        key={ft.id}
+                        className={index === -1 ? 'active' : ''}
+                        onClick={() => {
+                          if ( index === -1) fFilter.push(ft.id);
+                          else fFilter.splice(index, 1);
+                          this.setState({ fFilter });
+                        }}
+                      >
+                        <span>{index === -1 && <p>{'✔'}︎</p>}</span>
+                        <span>{`${ft.label}. ${ft.name}`}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              <div>
+                <ul className="parts">
+                  <li>計</li>
+                  {
+                    data.ft.map(ft => 
+                      <li>
+                        {data.failures ? data.failures.filter(f => f.id == ft.id).length : 0}
+                      </li>
+                    )
+                  }
+                </ul>
+              </div>
+            </div>
+          }
           </div>
         );
       case 'hole':
@@ -115,7 +236,17 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li>{'穴'}</li>
-                  {data.holes.map(h => <li>{h.l}</li>)}
+                  {
+                    (this.props.partTId.value === 3 || this.props.partTId.value === 4 || this.props.partTId.value === 5 || this.props.partTId.value === 6) ?
+                    data.holes.map(h => {
+                      let side = 'L';
+                      if (h.pt === 3 || h.pt === 5) {
+                        side = 'R';
+                      }
+                      return (<li>{`${h.l}(${side})`}</li>)
+                    }):
+                    data.holes.map(h => <li>{h.l}</li>)
+                  }
                 </ul>
               </div>
               <div>
@@ -261,7 +392,17 @@ class Mapping extends Component {
               <div>
                 <ul>
                   <li>{'穴'}</li>
-                  {data.holes.map(h => <li>{h.l}</li>)}
+                  {
+                    (this.props.partTId.value === 3 || this.props.partTId.value === 4 || this.props.partTId.value === 5 || this.props.partTId.value === 6) ?
+                    data.holes.map(h => {
+                      let side = 'L';
+                      if (h.pt === 3 || h.pt === 5) {
+                        side = 'R';
+                      }
+                      return (<li>{`${h.l}(${side})`}</li>)
+                    }):
+                    data.holes.map(h => <li>{h.l}</li>)
+                  }
                 </ul>
               </div>
               {
@@ -685,7 +826,8 @@ class Mapping extends Component {
 Mapping.propTypes = {
   PageData: PropTypes.object.isRequired,
   realtime: PropTypes.bool.isRequired,
-  active: PropTypes.object.isRequired
+  active: PropTypes.object.isRequired,
+  partTId: PropTypes.number.isRequired
 };
 
 export default Mapping;

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
-import { vehicles, parts, processes, inspections, inspectionGroups } from '../../../utils/Processes';
+import { vehicles, processes, inspections, inspectionGroups } from '../../../utils/Processes';
 // Actions
 import { push } from 'react-router-redux';
 import { vehicleActions } from '../ducks/vehicle';
@@ -118,13 +118,20 @@ class Dashboard extends Component {
     else {
       advancedMapping(state.partTId.value, inspectionGroupId, state.itorG.value, start, end, panelId);
     }
-
   }
 
   render() {
     const { vehicle, partTId, processId, inspectionId, itorG, narrowedBy, startDate, endDate, panelId, mapping, defaultActive } = this.state;
     const { VehicleData, ItorGData, PageData, actions } = this.props;
     const format = 'YYYY-MM-DD';
+
+    const parts = [
+      { label: 'バックドアインナー', value: 1 },
+      { label: 'アッパー', value: 2 },
+      { label: 'サイドアッパー', value: 3 },
+      { label: 'サイドロア', value: 5 },
+      { label: 'バックドアインナーASSY', value: 7 }
+    ];
 
     const filteredProcess = inspectionGroups.filter(ig =>
       ig.vehicle == vehicle.value &&

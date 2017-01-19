@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 // Models
 use App\Models\InspectionGroup;
 use App\Models\Failure;
+use App\Models\Hole;
+use App\Models\Figure;
 use App\Models\Modification;
 use App\Models\Inspector;
 use App\Models\Client\FailurePosition;
@@ -565,6 +567,71 @@ class MaintenanceController extends Controller
 
             return ['message' => 'success'];
         }
+        return ['message' => 'nothing to do'];
+    }
+
+
+    public function holes(Request $request)
+    {
+        $figureId = $request->figureId;
+        $status = $request->status;
+
+        $holes = Hole::where('figure_id', '=', $figureId)
+            ->whereIn('status', $status)
+            ->orderBy('label')
+            ->with(['partType' => function($q) {
+                $q->select(['id', 'name']);
+            }])
+            ->get()
+            ->map(function($h) {
+                return [
+                    'id' => $h->id,
+                    'label' => $h->label,
+                    'border' => $h->border,
+                    'color' => $h->color,
+                    'direction' => $h->direction,
+                    'point' => $h->point,
+                    'shape' => $h->shape,
+                    'status' => $h->status,
+                    'partName' => $h->partType->name
+                ];
+            })
+            ->sortBy('partName')
+            ->values();
+
+        $path = Figure::find($figureId)->path;
+
+        return ['data' => [
+            'path' => '/img/figures/'.$path,
+            'holes' => $holes
+        ]];
+    }
+
+    public function activateHole($id)
+    {
+        $hole = Hole::find($id);
+
+        if ($hole instanceof Hole) {
+            $hole->status = 1;
+            $hole->save();
+
+            return ['message' => 'success'];
+        }
+
+        return ['message' => 'nothing to do'];
+    }
+
+    public function deactivateHole($id)
+    {
+        $hole = Hole::find($id);
+
+        if ($hole instanceof Hole) {
+            $hole->status = 0;
+            $hole->save();
+
+            return ['message' => 'success'];
+        }
+
         return ['message' => 'nothing to do'];
     }
 }
