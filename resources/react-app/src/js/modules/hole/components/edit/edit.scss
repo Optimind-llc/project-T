@@ -9,6 +9,16 @@
   }
 
   .edit-wrap {
+    z-index: 10000;
+    background-color: white;
+    position: fixed;
+    top: 40px;
+    left: 220px;
+    padding: 10px;
+    width: 1060px;
+    height: 605px;
+    border-radius: 4px;
+
     .panel-btn {
       cursor: pointer;
       display: inline-block;
@@ -84,15 +94,6 @@
         }
       }
     }
-
-    width: 1060px;
-    z-index: 10000;
-    background-color: white;
-    position: fixed;
-    top: 100px;
-    left: 220px;
-    padding: 10px;
-    border-radius: 4px;
 
     p.title {
       text-align: center;
@@ -172,7 +173,25 @@
       }
     }
 
+    .figure-wrap {
+      position: absolute;
+      top: 90px;
+      left: 95px;
+      width: 870px;
 
+      img {
+        width: 870px;
+        display: block;
+      }
+
+      svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 870px;
+        height: 515px;
+      }
+    }
 
 
 

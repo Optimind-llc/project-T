@@ -150,6 +150,7 @@ class Main extends Component {
           editModal &&
           <Edit
             hole={editting}
+            path={path}
             message={'aaa'}
             meta={{}}
             close={() => this.setState({editModal: false})}
