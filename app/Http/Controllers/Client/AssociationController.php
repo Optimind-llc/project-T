@@ -213,19 +213,21 @@ class AssociationController extends Controller
                             }))
                         ];
                     })
-                    ->toArray();
+                    ->toArray()[0];
             }
             else {
-                $heritage[] = collect([
+                $heritage[] = [
                     'partTypeId' => $partTypeId,
                     'panelId' => $panelId,
-                    'molding_gaikan1' => 0,
-                    'molding_gaikan2' => 0,
-                    'molding_inline1' => 0,
-                    'molding_inline2' => 0,
-                    'holing_gaikan' => 0,
-                    'holing_ana' => 0,
-                ]);
+                    'heritage' => [
+                        'molding_gaikan1' => 0,
+                        'molding_gaikan2' => 0,
+                        'molding_inline1' => 0,
+                        'molding_inline2' => 0,
+                        'holing_gaikan' => 0,
+                        'holing_ana' => 0,
+                    ]
+                ];
             }
         }
 
