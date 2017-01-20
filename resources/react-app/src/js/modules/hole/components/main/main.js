@@ -2,6 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import iconCheck from '../../../../../assets/img/icon/check.svg';
 // Styles
 import './main.scss';
+// Components
+import Edit from '../edit/edit';
+// import Create from '../create/create';
 
 class Main extends Component {
   constructor(props, context) {
@@ -38,7 +41,8 @@ class Main extends Component {
   }
 
   render() {
-    const { path, holes, activateHole, deactivateHole, editModal, createModal } = this.props;
+    const { path, holes, activateHole, deactivateHole } = this.props;
+    const { editModal, createModal, editting } = this.state;
 
     return (
       <div className="body bg-white">
@@ -48,9 +52,8 @@ class Main extends Component {
           {
             holes.map(hole => {
               const h = this.formatHole(hole);
-              console.log(h.tColor)
               return(
-                <g>
+                <g key={h.id}>
                   <circle cx={h.x} cy={h.y} r={3} fill="red" />
                   {
                     h.shape === 'square' &&
@@ -107,7 +110,7 @@ class Main extends Component {
             <tbody>
             {
               holes.map((h, i) =>
-                <tr className="content">
+                <tr className="content" key={h.id}>
                   <td>{i+1}</td>
                   <td>{h.label}</td>
                   <td>{h.partName}</td>
@@ -146,17 +149,17 @@ class Main extends Component {
         {
           editModal &&
           <Edit
-            hole={editting.id}
-            message={maintFailureData.message}
-            meta={maintFailureData.meta}
+            hole={editting}
+            message={'aaa'}
+            meta={{}}
             close={() => this.setState({editModal: false})}
-            update={(id, name, label, is) => this.updateFailure(id, name, label, is)}
+            update={(hole) => this.updateHole(hole)}
           />
         }{
           createModal &&
           <Create
             close={() => this.setState({createModal: false})}
-            create={(name, label, is) => this.createFailure(name, label, is)}
+            create={(hole) => this.createHole(hole)}
           />
         }
       </div>

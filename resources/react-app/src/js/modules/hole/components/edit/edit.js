@@ -6,40 +6,60 @@ import './edit.scss';
 class Edit extends Component {
   constructor(props, context) {
     super(props, context);
+
+    let direction;
+    switch (props.hole.direction) {
+      case 'left':   direction = {label: '左', value: 'left'}; break;
+      case 'right':  direction = {label: '右', value: 'right'}; break;
+      case 'top':    direction = {label: '上', value: 'top'}; break;
+      case 'bottom': direction = {label: '下', value: 'bottom'}; break;
+      default: break;
+    }
+
+    let shape;
+    switch (props.hole.shape) {
+      case 'circle': shape = {label: '円', value: 'circle'}; break;
+      case 'square': shape = {label: '四角', value: 'square'}; break;
+      default: break;
+    }
+
+    let border;
+    switch (props.hole.border) {
+      case 'solid':  border = {label: '実線', value: 'solid'}; break;
+      case 'dotted': border = {label: '破線', value: 'dotted'}; break;
+      default: break;
+    }
+
     this.state = {
-      id: props.id,
-      name: props.name,
-      label: props.label,
-      inspections: props.inspections
+      id: props.hole.id,
+      label: props.hole.label,
+      point: props.hole.point,
+      direction: direction,
+      shape: shape,
+      border: border,
+      color: props.hole.color,
+      partName: props.hole.partName
     };
   }
 
   render() {
-    const { id, name, label, inspections } = this.state;
-    const inspectionIds = [1,10,3,11,5,6,7,9];
+    const { message, close, update } = this.props;
+    const { label, point, direction, shape, border, color, partName } = this.state;
 
+    const labelColore = [
+      '000000', '021F57', '4A90E2', '7ED321', '9B9B9B', 'BD10E0',
+      'D0021B', 'F5A623', 'F8E71C', 'FD6ACB', 'FFFFFF'
+    ];
+console.log(color)
     return (
       <div>
-        <div className="modal">
-        </div>
+        <div className="modal"></div>
         <div className="edit-wrap">
           <div className="panel-btn" onClick={() => this.props.close()}>
             <span className="panel-btn-close"></span>
           </div>
           <p className="title">不良区分情報編集</p>
           <div className="edit">
-            <div className="name">
-              <p>名前</p>
-              <input
-                type="text"
-                value={this.state.name}
-                onChange={e => this.setState({name: e.target.value})}
-              />
-              {
-                this.props.message == 'duplicate failure name' &&
-                <p className="error-message">同じ名前の不良区分がすでに登録されています</p>
-              }
-            </div>
             <div className="label">
               <p>番号</p>
               <input
@@ -52,82 +72,84 @@ class Edit extends Component {
                 <p className="error-message">同じ番号の不良区分がすでに登録されています</p>
               }
             </div>
+            <div className="point">
+              <p>穴位置</p>
+              <input
+                type="text"
+                readOnly="readonly"
+                value={this.state.point}
+              />
+            </div>
+            <div className="direction">
+              <p>ラベル位置</p>
+              <Select
+                name="ラベル位置"
+                clearable={false}
+                Searchable={false}
+                value={this.state.direction}
+                options={[
+                  {label: '左', value: 'left'},
+                  {label: '右', value: 'right'},
+                  {label: '上', value: 'top'},
+                  {label: '下', value: 'bottom'}
+                ]}
+                onChange={value => this.setState({direction: value})}
+              />
+            </div>
+            <div className="shape">
+              <p>ラベル形</p>
+              <Select
+                name="ラベル形"
+                clearable={false}
+                Searchable={false}
+                value={this.state.shape}
+                options={[
+                  {label: '円', value: 'circle'},
+                  {label: '四角', value: 'square'}
+                ]}
+                onChange={value => this.setState({shape: value})}
+              />
+            </div>
+            <div className="border">
+              <p>ラベル枠線</p>
+              <Select
+                name="ラベル枠線"
+                clearable={false}
+                Searchable={false}
+                value={this.state.border}
+                options={[
+                  {label: '実線', value: 'solid'},
+                  {label: '破線', value: 'dotted'}
+                ]}
+                onChange={value => this.setState({border: value})}
+              />
+            </div>
+            <div className="color">
+              <p>ラベル枠線</p>
+              <div className="select-color-wrap">
+                {labelColore.map(c => {
+                  const size = c === color ? 20 : 12;
+                  return(
+                    <div
+                      style={{
+                      backgroundColor: `#${c}`,
+                      width: size,
+                      height: size,
+                      border: '1px solid #000',
+                      borderRadius: size/2,
+                      }}
+                      onClick={() => this.setState({})}
+                    >
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
           </div>
-          {
-            this.props.message == 'over limit of failures' &&
-            <p className="error-message">{`${this.props.meta.inspection}の不良区分数が上限(${this.props.meta.limit})を超えてしまいます`}</p>
-          }
-          <table>
-            <thead>
-              <tr>
-                <th colSpan={1}>成形工程</th>
-                <th colSpan={2}>穴あけ工程</th>
-                <th colSpan={5}>接着工程</th>
-              </tr>
-              <tr>
-                <th colSpan={1}>外観検査</th>
-                <th colSpan={1}>外観検査</th>
-                <th colSpan={1}>穴検査</th>
-                <th colSpan={1}>簡易CF</th>
-                <th colSpan={1}>止水</th>
-                <th colSpan={1}>仕上</th>
-                <th colSpan={1}>検査</th>
-                <th colSpan={1}>手直</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="content">
-              {
-                inspectionIds.map(iID =>
-                  inspections.find(i => i.id == iID) ?
-                  <td key={iID}>
-                    <input
-                      type="number"
-                      value={inspections.find(i => i.id == iID) ? inspections.find(i => i.id == iID).sort : null}
-                      onChange={e => this.setState({
-                        inspections: inspections.map(i => i.id == iID ? Object.assign(i, {sort: Number(e.target.value)}) : i)
-                      })}
-                    />
-                    <div className="failure-type-wrap">
-                      <input
-                        type="checkbox"
-                        checked={inspections.find(i => i.id == iID) ? inspections.find(i => i.id == iID).type === 1 : null}
-                        onChange={() => this.setState({
-                          inspections: inspections.map(i => i.id == iID ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i)
-                        })}
-                      />
-                      <p>重要</p>
-                    </div>
-                    <div
-                      className="panel-btn"
-                      onClick={() => this.setState({
-                        inspections: inspections.filter(i => i.id !== iID)
-                      })}
-                    >
-                      <span className="panel-btn-close"></span>
-                    </div>
-                  </td> :
-                  <td key={iID}>
-                    <p className="null"></p>
-                    <div
-                      className="panel-btn"
-                      onClick={() => this.setState({
-                        inspections: [{id: iID, sort: 1, type: 2}, ...inspections]
-                      })}
-                    >
-                      <span className="panel-btn-add"></span>
-                    </div>
-                  </td>
-                )
-              }
-              </tr>
-            </tbody>
-          </table>
           <p className="explanation">※ 数字はiPadでの表示順</p>
           <div className="btn-wrap">
             <button onClick={() => {
-              console.log(inspections);
-              this.props.update(id, name, label, inspections)
+              update(id, name, label, inspections)
             }}>
               保存
             </button>
@@ -139,14 +161,11 @@ class Edit extends Component {
 };
 
 Edit.propTypes = {
-  id: PropTypes.number,
-  name: PropTypes.string,
-  label: PropTypes.number,
-  inspections: PropTypes.array,
-  message: PropTypes.string,
-  meta: PropTypes.object,
-  close: PropTypes.func,
-  update: PropTypes.func,
+  hole: PropTypes.number.isRequired,
+  message: PropTypes.string.isRequired,
+  meta: PropTypes.object.isRequired,
+  close: PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired
 };
 
 export default Edit;
