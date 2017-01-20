@@ -60,6 +60,18 @@ class Main extends Component {
                     <g>
                       <rect x={h.lx-10} y={h.ly-9} width="20" height="18" fill="#000000"/>
                       <rect x={h.lx-9} y={h.ly-8} width="18" height="16" fill={`#${h.color}`}/>
+                      {
+                        h.border === 'dotted' &&
+                        <g stroke="none" strokeWidth={1} fill="none" fillRule="evenodd" strokeDasharray={3}>
+                          <defs>
+                            <rect id="path-1" x={h.lx-10} y={h.ly-9} width={20} height={18} />
+                            <mask id="mask-2" maskcontentunits="userSpaceOnUse" maskunits="objectBoundingBox" x={0} y={0} width={20} height={18} fill="white">
+                              <use xlinkHref="#path-1" />
+                            </mask>
+                          </defs>
+                          <use id="Rectangle" stroke="#FFF" mask="url(#mask-2)" strokeWidth={2} xlinkHref="#path-1" />
+                        </g>
+                      }
                       <text
                         x={h.lx}
                         y={h.ly}
@@ -77,6 +89,18 @@ class Main extends Component {
                     <g>
                       <circle cx={h.lx} cy={h.ly} r={10} fill="#000000"/>
                       <circle cx={h.lx} cy={h.ly} r={9} fill={`#${h.color}`}/>
+                      {
+                        h.border === 'dotted' &&
+                        <g stroke="none" strokeWidth={1} fill="none" fillRule="evenodd" strokeDasharray={3}>
+                          <defs>
+                            <ellipse id="path-1" cx={h.lx} cy={h.ly} rx={10} ry={10} />
+                            <mask id="mask-2" maskcontentunits="userSpaceOnUse" maskunits="objectBoundingBox" x={0} y={0} width={20} height={20} fill="white">
+                              <use xlinkHref="#path-1" />
+                            </mask>
+                          </defs>
+                          <use stroke="#FFF" mask="url(#mask-2)" strokeWidth={2} xlinkHref="#path-1" />
+                        </g>
+                      }
                       <text
                         x={h.lx}
                         y={h.ly}
