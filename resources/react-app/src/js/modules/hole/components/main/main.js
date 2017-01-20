@@ -95,7 +95,7 @@ class Main extends Component {
                           <defs>
                             <ellipse id="path-1" cx={h.lx} cy={h.ly} rx={10} ry={10} />
                             <mask id="mask-2" maskcontentunits="userSpaceOnUse" maskunits="objectBoundingBox" x={0} y={0} width={20} height={20} fill="white">
-                              <use xlinkHref="#path-1" />
+                              <use xlinkHref="#path-1"/>
                             </mask>
                           </defs>
                           <use stroke="#FFF" mask="url(#mask-2)" strokeWidth={2} xlinkHref="#path-1" />

@@ -218,7 +218,7 @@ class AssociationController extends Controller
             else {
                 $heritage[] = collect([
                     'partTypeId' => $partTypeId,
-                    'panelId' => $p->panelId,
+                    'panelId' => $panelId,
                     'molding_gaikan1' => 0,
                     'molding_gaikan2' => 0,
                     'molding_inline1' => 0,
