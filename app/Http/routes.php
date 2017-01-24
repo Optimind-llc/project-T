@@ -175,6 +175,17 @@ Route::post('maintenance/hole/{id}/activate', 'Manager\MaintenanceController@act
 Route::post('maintenance/hole/{id}/deactivate', 'Manager\MaintenanceController@deactivateHole');
 
 
+/*
+ * For 950A
+ */
+
+Route::group(['prefix' => '950A', 'namespace' => 'Vehicle950A'], function () {
+    Route::post('/client/inspection', 'Client\InspectionController@getInspection');
+});
+
+
+
+
 // $api = app('Dingo\Api\Routing\Router');
 
 // $api->version('v1', ['prefix' => 'client', 'namespace' => 'App\Http\Controllers\Client'], function ($api) {

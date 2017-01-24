@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         }
 
-        $this->call(UserTableSeeder::class);
+        // $this->call(UserTableSeeder::class);
 
         $this->call(ProcessTableSeeder::class);
         $this->call(InspectionTableSeeder::class);
@@ -40,6 +40,13 @@ class DatabaseSeeder extends Seeder
         $this->call(InlineTableSeeder::class);
 
         // $this->call(DummyInspectionsSeeder::class);
+
+        $this->call(RelatedPartTableSeeder::class);
+        $this->call(RelatedInspectionGroupTableSeeder::class);
+        $this->call(RelatedFigureTableSeeder::class);
+        $this->call(RelatedWorkerTableSeeder::class);
+        $this->call(RelatedFailureTableSeeder::class);
+        $this->call(RelatedModificationTableSeeder::class);
 
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
