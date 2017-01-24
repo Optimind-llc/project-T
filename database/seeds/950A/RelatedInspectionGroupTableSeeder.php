@@ -115,11 +115,6 @@ class RelatedInspectionGroupTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '止水',
-                'en'         => 'shisui',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
                 'name'       => '手直',
                 'en'         => 'tenaoshi',
                 'created_at' => $now,
@@ -205,12 +200,6 @@ class RelatedInspectionGroupTableSeeder extends Seeder
             ],[
                 'division'      => 'door',
                 'process_en'    => 'jointing',
-                'inspection_en' => 'shisui',
-                'created_at'    => $now,
-                'updated_at'    => $now
-            ],[
-                'division'      => 'door',
-                'process_en'    => 'jointing',
                 'inspection_en' => 'inline',
                 'created_at'    => $now,
                 'updated_at'    => $now
@@ -278,12 +267,6 @@ class RelatedInspectionGroupTableSeeder extends Seeder
                 'division'      => 'luggage',
                 'process_en'    => 'jointing',
                 'inspection_en' => 'tosoukeirego',
-                'created_at'    => $now,
-                'updated_at'    => $now
-            ],[
-                'division'      => 'luggage',
-                'process_en'    => 'jointing',
-                'inspection_en' => 'shisui',
                 'created_at'    => $now,
                 'updated_at'    => $now
             ],[

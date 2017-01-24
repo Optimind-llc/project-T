@@ -74,754 +74,385 @@ class RelatedWorkerTableSeeder extends Seeder
         }
 
         $data = [
-            // 成型　白直
             [
-                'name'       => '後藤 芳光',
-                'yomi'       => 'ゴトウ',
+                'name'       => '田村 良二',
+                'yomi'       => 'タムラリョウジ',
                 'code'       => '0001',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '鈴木 貴紫',
-                'yomi'       => 'スズキ',
+                'name'       => '高木 洋一',
+                'yomi'       => 'タカギヨウイチ',
                 'code'       => '0002',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '鈴木 常喜',
-                'yomi'       => 'スズキ',
+                'name'       => '山本 佳祐',
+                'yomi'       => 'ヤマシタケイスケ',
                 'code'       => '0003',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '佐藤 優輝',
-                'yomi'       => 'サトウ',
+                'name'       => '森下 和哉',
+                'yomi'       => 'モリシタカズヤ',
                 'code'       => '0004',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '北村 凌太郎',
-                'yomi'       => 'キタムラ',
+                'name'       => '浅田 英幸',
+                'yomi'       => 'アサダヒデユキ',
                 'code'       => '0005',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '上松 健太',
-                'yomi'       => 'ウエマツ',
+                'name'       => '青木 匠',
+                'yomi'       => 'アオキタクミ',
                 'code'       => '0006',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '磯貝 寿樹',
-                'yomi'       => 'イソガイ',
+                'name'       => '高須 信吾',
+                'yomi'       => 'タカスシンゴ',
                 'code'       => '0007',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '原田 真一',
-                'yomi'       => 'ハラダ',
+                'name'       => '矢澤 鉱一',
+                'yomi'       => 'ヤザワコウイチ',
                 'code'       => '0008',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '出口 政孝',
-                'yomi'       => 'デグチ',
+                'name'       => '大園 博美',
+                'yomi'       => 'オオゾノヒロミ',
                 'code'       => '0009',
-                'choku_code' => 'W',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '大森 知明',
-                'yomi'       => 'オオモリ',
+                'name'       => '川畑 英義',
+                'yomi'       => 'カワバタヒデヨシ',
                 'code'       => '0010',
-                'choku_code' => 'W',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '堀内 翔悟',
-                'yomi'       => 'ホリウチ',
+                'name'       => '金谷 達弘',
+                'yomi'       => 'カナヤタツヒロ',
                 'code'       => '0011',
-                'choku_code' => 'W',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '門田 洸樹',
-                'yomi'       => 'カドタ',
+                'name'       => '阿部 哲士',
+                'yomi'       => 'アベテツシ',
                 'code'       => '0012',
-                'choku_code' => 'W',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '早坂 孝道',
-                'yomi'       => 'ハヤサカ',
+                'name'       => '黒崎 将平',
+                'yomi'       => 'クロサキ ショウヘイ',
                 'code'       => '0013',
-                'choku_code' => 'W',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
-            ],
-            // 成型　黄直
-            [
-                'name'       => '畑中 武太蔵',
-                'yomi'       => 'ハタナカ',
+            ],[
+                'name'       => '小川 晟央',
+                'yomi'       => 'オガワマサオ',
                 'code'       => '0014',
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '吉田 健作',
-                'yomi'       => 'ヨシダ',
+                'name'       => '古井 康真',
+                'yomi'       => 'フルイヤスシ',
                 'code'       => '0015',
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '八木 恵司',
-                'yomi'       => 'ヤギ',
+                'name'       => '大塚 絢貴',
+                'yomi'       => 'オオツカアヤタカ',
                 'code'       => '0016',
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '岩本 大和',
-                'yomi'       => 'イワモト',
+                'name'       => '濱田 政雄',
+                'yomi'       => 'ハマダマサオ',
                 'code'       => '0017',
-                'choku_code' => 'Y',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '門倉 潤平',
-                'yomi'       => 'カドクラ',
+                'name'       => '岡本 崇弘',
+                'yomi'       => 'オカモトタカヒロ',
                 'code'       => '0018',
-                'choku_code' => 'Y',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '川村 博康',
-                'yomi'       => 'カワムラ',
+                'name'       => '戸上 憲一',
+                'yomi'       => 'トガミケンイチ',
                 'code'       => '0019',
-                'choku_code' => 'Y',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '西村 乃武',
-                'yomi'       => 'ニシムラ',
+                'name'       => '西嶋 慎吾',
+                'yomi'       => 'ニシジマシンゴ',
                 'code'       => '0020',
-                'choku_code' => 'Y',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '木里 裕也',
-                'yomi'       => 'キザト',
+                'name'       => '橋本 高浩',
+                'yomi'       => 'ハシモトタカヒロ',
                 'code'       => '0021',
-                'choku_code' => 'Y',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '下釜 千春',
-                'yomi'       => 'シモガマ',
+                'name'       => '西川 佳孝',
+                'yomi'       => 'ニシカワヨシタカ',
                 'code'       => '0022',
-                'choku_code' => 'Y',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '奥村 康平',
-                'yomi'       => 'オクムラ',
+                'name'       => '嶋津 直樹',
+                'yomi'       => 'シマズナオキ',
                 'code'       => '0023',
-                'choku_code' => 'Y',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '板垣 孝輔',
-                'yomi'       => 'イタガキ',
+                'name'       => '梅田 雄司',
+                'yomi'       => 'ウメダユウジ',
                 'code'       => '0024',
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '川瀬 悠',
-                'yomi'       => 'カワセ',
+                'name'       => '山尾 祐介',
+                'yomi'       => 'ヤマオユウスケ',
                 'code'       => '0025',
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '中井 達也',
-                'yomi'       => 'ナカイ',
+                'name'       => '白波瀬 忍',
+                'yomi'       => 'シロナミセシノブ',
                 'code'       => '0026',
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
-            ],
-            // 成型　黒直
-            [
-                'name'       => '古川 達也',
-                'yomi'       => 'フルカワ',
+            ],[
+                'name'       => '中田 将吾',
+                'yomi'       => 'ナカダショウゴ',
                 'code'       => '0027',
-                'choku_code' => 'B',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '黒岩 良',
-                'yomi'       => 'クロイワ',
+                'name'       => '井坂 光雄',
+                'yomi'       => 'イサカミツオ',
                 'code'       => '0028',
-                'choku_code' => 'B',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '黒川 航平',
-                'yomi'       => 'クロカワ',
+                'name'       => '大寺 真悟',
+                'yomi'       => 'オオデラシンゴ',
                 'code'       => '0029',
-                'choku_code' => 'B',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '藤原 拓海',
-                'yomi'       => 'フジワラ',
+                'name'       => '大谷 直人',
+                'yomi'       => 'オオタニナオト',
                 'code'       => '0030',
-                'choku_code' => 'B',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '吉田 諒佑',
-                'yomi'       => 'ヨシダ',
+                'name'       => '児嶋 誠',
+                'yomi'       => 'コジママコト',
                 'code'       => '0031',
-                'choku_code' => 'B',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '一色 誠司',
-                'yomi'       => 'イッシキ',
+                'name'       => '吉武 伸浩',
+                'yomi'       => 'ヨシタケノブヒロ',
                 'code'       => '0032',
-                'choku_code' => 'B',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '新田 和範',
-                'yomi'       => 'ニッタ',
+                'name'       => '加藤 徹',
+                'yomi'       => 'カトウトオル',
                 'code'       => '0033',
-                'choku_code' => 'B',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '岡元 和浩',
-                'yomi'       => 'オカモト',
+                'name'       => '瀬川 瑛志',
+                'yomi'       => 'セガワエイシ',
                 'code'       => '0034',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '坂本 一幸',
-                'yomi'       => 'サカモト',
-                'code'       => '0035',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '赤城 大樹',
-                'yomi'       => 'アカギ',
-                'code'       => '0036',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '河村 将光',
-                'yomi'       => 'カワムラ',
-                'code'       => '0037',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '永元 保隆',
-                'yomi'       => 'ナガモト',
-                'code'       => '0038',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '大山 徳仁',
-                'yomi'       => 'オオヤマ',
-                'code'       => '0039',
-                'choku_code' => 'B',
+                'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '宗像 徹郎',
-                'yomi'       => 'ムネカタ',
+                'yomi'       => 'ムナカタテツロウ',
+                'code'       => '0035',
+                'choku_code' => 'W',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '田村 豊',
+                'yomi'       => 'タムラユタカ',
+                'code'       => '0036',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '伊藤 伸一',
+                'yomi'       => 'イトウシンイチ',
+                'code'       => '0037',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '中本 直樹',
+                'yomi'       => 'ナカモトナオキ',
+                'code'       => '0038',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '尾前 裕也',
+                'yomi'       => 'オマエユウヤ',
+                'code'       => '0039',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '蘭 龍二',
+                'yomi'       => 'ランリュウジ',
                 'code'       => '0040',
-                'choku_code' => 'B',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
-            ],
-
-            //穴あけ工程　白直
-            [
-                'name'       => '今野 良紀',
-                'yomi'       => 'コンノ',
+            ],[
+                'name'       => '渡辺 孝司',
+                'yomi'       => 'ワタナベコウジ',
                 'code'       => '0041',
-                'choku_code' => 'W',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '迫田 忠信',
-                'yomi'       => 'サコタ',
+                'name'       => '大石 峰志',
+                'yomi'       => 'オオイシタカシ',
                 'code'       => '0042',
-                'choku_code' => 'W',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '稲本 竜士',
-                'yomi'       => 'イナモト',
+                'name'       => '土居 豊',
+                'yomi'       => 'ツチイ ユタカ',
                 'code'       => '0043',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '門間 洸樹',
-                'yomi'       => 'カドマ',
+                'name'       => '龍田 憲太',
+                'yomi'       => 'タツタケンタ',
                 'code'       => '0044',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '阿部 均',
-                'yomi'       => 'アベ',
+                'name'       => '小林 徹也',
+                'yomi'       => 'コバヤシテツヤ',
                 'code'       => '0045',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '鈴木 藍斗',
-                'yomi'       => 'スズキ',
+                'name'       => '渡久地 政通',
+                'yomi'       => 'トグチマサトシ',
                 'code'       => '0046',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '小田代 大介',
-                'yomi'       => 'コタダイ',
+                'name'       => '浅野 秀明',
+                'yomi'       => 'アサノヒデアキ',
                 'code'       => '0047',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '里園 友基',
-                'yomi'       => 'サトゾノ',
+                'name'       => '蜂谷 拓也',
+                'yomi'       => 'ハチヤタクヤ',
                 'code'       => '0048',
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '水上 貢',
-                'yomi'       => 'ミナカミ',
+                'name'       => '瀬畑 長正',
+                'yomi'       => 'セバタナガマサ',
                 'code'       => '0049',
-                'choku_code' => 'W',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '中村 亮介',
-                'yomi'       => 'ナカムラ',
+                'name'       => '長畑 学',
+                'yomi'       => 'ナガハタマナブ',
                 'code'       => '0050',
-                'choku_code' => 'W',
+                'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
-            ],
-            //穴あけ工程　黄直
-            [
-                'name'       => '堀口 幸一',
-                'yomi'       => 'ホリグチ',
+            ],[
+                'name'       => '吉川 慎吾',
+                'yomi'       => 'ヨシカワ シンゴ',
                 'code'       => '0051',
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '末信 高弘',
-                'yomi'       => 'スエノブ',
+                'name'       => '東野 博',
+                'yomi'       => 'ヒガシノヒロシ',
                 'code'       => '0052',
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '梶川 潤一郎',
-                'yomi'       => 'カジカワ',
+                'name'       => '藤川 徹',
+                'yomi'       => 'フジカワトオル',
                 'code'       => '0053',
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '嶺山 仁志',
-                'yomi'       => 'ミネヤマ',
+                'name'       => '萩野 隆',
+                'yomi'       => 'ハギノタカシ',
                 'code'       => '0054',
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
-            ],[
-                'name'       => '田中 翔',
-                'yomi'       => 'タナカ',
-                'code'       => '0055',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '佐藤 恭一',
-                'yomi'       => 'サトウ',
-                'code'       => '0056',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '小渕 賢一',
-                'yomi'       => 'オブチ',
-                'code'       => '0057',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '山田 和生',
-                'yomi'       => 'ヤマダ',
-                'code'       => '0058',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '高橋 広幹',
-                'yomi'       => 'タカハシ',
-                'code'       => '0059',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '西脇 宙',
-                'yomi'       => 'ニシワキ',
-                'code'       => '0060',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '山下 一男',
-                'yomi'       => 'ヤマシタ',
-                'code'       => '0061',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],
-            //穴あけ工程　黒直
-            [
-                'name'       => '山内 高寛',
-                'yomi'       => 'ヤマウチ',
-                'code'       => '0062',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '波多野 充希',
-                'yomi'       => 'ハタノ',
-                'code'       => '0063',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '上田 龍太',
-                'yomi'       => 'ウエダ',
-                'code'       => '0064',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '竹下 博城',
-                'yomi'       => 'タケシタ',
-                'code'       => '0065',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '内田 敏和',
-                'yomi'       => 'ウチダ',
-                'code'       => '0066',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '石橋 卓昇',
-                'yomi'       => 'イシバシ',
-                'code'       => '0067',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '松山 亮太',
-                'yomi'       => 'マツヤマ',
-                'code'       => '0068',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '門馬 弘尚',
-                'yomi'       => 'モンバ',
-                'code'       => '0069',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '服部 智之',
-                'yomi'       => 'ハットリ',
-                'code'       => '0070',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '早川 正博',
-                'yomi'       => 'ハヤカワ',
-                'code'       => '0071',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '岩永 秀道',
-                'yomi'       => 'イワナガ',
-                'code'       => '0072',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],
-
-            // 接着工程　白直
-            [
-                'name'       => '山本 雄策',
-                'yomi'       => 'ヤマモト',
-                'code'       => '0073',
-                'choku_code' => 'W',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '浦丸 弘喜',
-                'yomi'       => 'ウラマル',
-                'code'       => '0074',
-                'choku_code' => 'W',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '古田 宏樹',
-                'yomi'       => 'フルタ',
-                'code'       => '0075',
-                'choku_code' => 'W',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '加々良 豊',
-                'yomi'       => 'カガラ',
-                'code'       => '0076',
-                'choku_code' => 'W',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '松井 規浩',
-                'yomi'       => 'マツイ',
-                'code'       => '0077',
-                'choku_code' => 'W',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '平野 篤史',
-                'yomi'       => 'ヒラノ',
-                'code'       => '0078',
-                'choku_code' => 'W',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '市川 俊之',
-                'yomi'       => 'イチカワ',
-                'code'       => '0079',
-                'choku_code' => 'W',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '菊池 幸司',
-                'yomi'       => 'キクチ',
-                'code'       => '0080',
-                'choku_code' => 'W',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '久野 力',
-                'yomi'       => 'ヒサノ',
-                'code'       => '0081',
-                'choku_code' => 'W',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '松田 勝三',
-                'yomi'       => 'マツダ',
-                'code'       => '0082',
-                'choku_code' => 'W',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '竹内 匡之',
-                'yomi'       => 'タケウチ',
-                'code'       => '0083',
-                'choku_code' => 'W',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],
-            // 接着工程　黄直
-            [
-                'name'       => '河田 翼',
-                'yomi'       => 'カワタ',
-                'code'       => '0084',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '廣政 大輔',
-                'yomi'       => 'ヒロマサ',
-                'code'       => '0085',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '山中 英司',
-                'yomi'       => 'ヤマナカ',
-                'code'       => '0086',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '告吉 貴史',
-                'yomi'       => 'ツゲヨシ',
-                'code'       => '0087',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '中田 浩二',
-                'yomi'       => 'ナカタ',
-                'code'       => '0088',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '村山 貴志',
-                'yomi'       => 'ムラヤマ',
-                'code'       => '0089',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '近松 伸一',
-                'yomi'       => 'チカマツ',
-                'code'       => '0090',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '横田 和宣',
-                'yomi'       => 'ヨコタ',
-                'code'       => '0091',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '小笠原 拓哉',
-                'yomi'       => 'オガサワラ',
-                'code'       => '0092',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '森山 和江',
-                'yomi'       => 'モリヤマ',
-                'code'       => '0093',
-                'choku_code' => 'Y',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],
-            // 接着工程　黒直
-            [
-                'name'       => '奥口 朋哉',
-                'yomi'       => 'オクグチ',
-                'code'       => '0094',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '青山 政光',
-                'yomi'       => 'アオヤマ',
-                'code'       => '0095',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '真塩 隆英',
-                'yomi'       => 'マジオ',
-                'code'       => '0096',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '平野 隆',
-                'yomi'       => 'ヒラノ',
-                'code'       => '0097',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '永田 優',
-                'yomi'       => 'ナガタ',
-                'code'       => '0098',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '盛川 賢一',
-                'yomi'       => 'モリカワ',
-                'code'       => '0099',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '鍛冶屋 仁',
-                'yomi'       => 'カジヤ',
-                'code'       => '0100',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '高田 一輝',
-                'yomi'       => 'タカダ',
-                'code'       => '0101',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '遠藤 恵介',
-                'yomi'       => 'エンドウ',
-                'code'       => '0102',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '高橋 祐也',
-                'yomi'       => 'タカハシ',
-                'code'       => '0103',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'name'       => '川口 隆司',
-                'yomi'       => 'カワグチ',
-                'code'       => '0104',
-                'choku_code' => 'B',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],
+            ]
         ];
 
         DB::connection('950A')->table($table_name)->insert($data);
@@ -854,9 +485,7 @@ class RelatedWorkerTableSeeder extends Seeder
                 'ig_id'     => 1,
                 'worker_id' => 2,
                 'sort'      => 2
-            ],
-            //成型_外観検査_ドア_黄
-            [
+            ],[
                 'ig_id'     => 1,
                 'worker_id' => 3,
                 'sort'      => 3
@@ -864,348 +493,905 @@ class RelatedWorkerTableSeeder extends Seeder
                 'ig_id'     => 1,
                 'worker_id' => 4,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 1,
+                'worker_id' => 5,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 1,
+                'worker_id' => 6,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 1,
+                'worker_id' => 7,
+                'sort'      => 7
+            ],[
+                'ig_id'     => 1,
+                'worker_id' => 8,
+                'sort'      => 8
+            ],
+            //成型_外観検査_ドア_黄
+            [
+                'ig_id'     => 1,
+                'worker_id' => 9,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 1,
+                'worker_id' => 10,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 1,
+                'worker_id' => 11,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 1,
+                'worker_id' => 12,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 1,
+                'worker_id' => 13,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 1,
+                'worker_id' => 14,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 1,
+                'worker_id' => 15,
+                'sort'      => 7
+            ],[
+                'ig_id'     => 1,
+                'worker_id' => 16,
+                'sort'      => 8
             ],
 
 
             //穴あけ_外観検査_ドア_白
             [
                 'ig_id'     => 3,
-                'worker_id' => 5,
+                'worker_id' => 17,
                 'sort'      => 1
             ],[
                 'ig_id'     => 3,
-                'worker_id' => 6,
+                'worker_id' => 18,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 3,
+                'worker_id' => 19,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 3,
+                'worker_id' => 20,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 3,
+                'worker_id' => 21,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 3,
+                'worker_id' => 22,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 3,
+                'worker_id' => 23,
+                'sort'      => 7
             ],
             //穴あけ_外観検査_ドア_黄
             [
                 'ig_id'     => 3,
-                'worker_id' => 7,
+                'worker_id' => 24,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 3,
+                'worker_id' => 25,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 3,
+                'worker_id' => 26,
                 'sort'      => 3
             ],[
                 'ig_id'     => 3,
-                'worker_id' => 8,
+                'worker_id' => 27,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 3,
+                'worker_id' => 28,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 3,
+                'worker_id' => 29,
+                'sort'      => 6
             ],
 
             //穴あけ_穴検査_ドア_白
             [
                 'ig_id'     => 4,
-                'worker_id' => 5,
+                'worker_id' => 17,
                 'sort'      => 1
             ],[
                 'ig_id'     => 4,
-                'worker_id' => 6,
+                'worker_id' => 18,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 4,
+                'worker_id' => 19,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 4,
+                'worker_id' => 20,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 4,
+                'worker_id' => 21,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 4,
+                'worker_id' => 22,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 4,
+                'worker_id' => 23,
+                'sort'      => 7
             ],
             //穴あけ_穴検査_ドア_黄
             [
                 'ig_id'     => 4,
-                'worker_id' => 7,
+                'worker_id' => 24,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 4,
+                'worker_id' => 25,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 4,
+                'worker_id' => 26,
                 'sort'      => 3
             ],[
                 'ig_id'     => 4,
-                'worker_id' => 8,
+                'worker_id' => 27,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 4,
+                'worker_id' => 28,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 4,
+                'worker_id' => 29,
+                'sort'      => 6
             ],
 
             //かしめ/接着_かしめ後検査_ドア_白
             [
                 'ig_id'     => 5,
-                'worker_id' => 5,
+                'worker_id' => 30,
                 'sort'      => 1
             ],[
                 'ig_id'     => 5,
-                'worker_id' => 6,
+                'worker_id' => 31,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 5,
+                'worker_id' => 32,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 5,
+                'worker_id' => 33,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 5,
+                'worker_id' => 34,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 5,
+                'worker_id' => 35,
+                'sort'      => 6
             ],
             //かしめ/接着_かしめ後検査_ドア_黄
             [
                 'ig_id'     => 5,
-                'worker_id' => 7,
+                'worker_id' => 36,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 5,
+                'worker_id' => 37,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 5,
+                'worker_id' => 38,
                 'sort'      => 3
             ],[
                 'ig_id'     => 5,
-                'worker_id' => 8,
+                'worker_id' => 39,
                 'sort'      => 4
-            ],
-
-            //かしめ/接着_止水_ドア_白
-            [
-                'ig_id'     => 10,
-                'worker_id' => 5,
-                'sort'      => 1
             ],[
-                'ig_id'     => 10,
-                'worker_id' => 6,
-                'sort'      => 2
-            ],
-            //かしめ/接着_止水_ドア_黄
-            [
-                'ig_id'     => 10,
-                'worker_id' => 7,
-                'sort'      => 3
+                'ig_id'     => 5,
+                'worker_id' => 40,
+                'sort'      => 5
             ],[
-                'ig_id'     => 10,
-                'worker_id' => 8,
-                'sort'      => 4
+                'ig_id'     => 5,
+                'worker_id' => 41,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 5,
+                'worker_id' => 42,
+                'sort'      => 7
             ],
 
             //かしめ/接着_外観検査_ドア_白
             [
-                'ig_id'     => 12,
-                'worker_id' => 5,
+                'ig_id'     => 11,
+                'worker_id' => 30,
                 'sort'      => 1
             ],[
-                'ig_id'     => 12,
-                'worker_id' => 6,
+                'ig_id'     => 11,
+                'worker_id' => 31,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 11,
+                'worker_id' => 32,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 11,
+                'worker_id' => 33,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 11,
+                'worker_id' => 34,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 11,
+                'worker_id' => 35,
+                'sort'      => 6
             ],
             //かしめ/接着_外観検査_ドア_黄
             [
-                'ig_id'     => 12,
-                'worker_id' => 7,
+                'ig_id'     => 11,
+                'worker_id' => 36,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 11,
+                'worker_id' => 37,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 11,
+                'worker_id' => 38,
                 'sort'      => 3
             ],[
-                'ig_id'     => 12,
-                'worker_id' => 8,
+                'ig_id'     => 11,
+                'worker_id' => 39,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 11,
+                'worker_id' => 40,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 11,
+                'worker_id' => 41,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 11,
+                'worker_id' => 42,
+                'sort'      => 7
             ],
 
             //かしめ/接着_手直_ドア_白
             [
-                'ig_id'     => 13,
-                'worker_id' => 5,
+                'ig_id'     => 12,
+                'worker_id' => 30,
                 'sort'      => 1
             ],[
-                'ig_id'     => 13,
-                'worker_id' => 6,
+                'ig_id'     => 12,
+                'worker_id' => 31,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 12,
+                'worker_id' => 32,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 12,
+                'worker_id' => 33,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 12,
+                'worker_id' => 34,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 12,
+                'worker_id' => 35,
+                'sort'      => 6
             ],
             //かしめ/接着_手直_ドア_黄
             [
-                'ig_id'     => 13,
-                'worker_id' => 7,
+                'ig_id'     => 12,
+                'worker_id' => 36,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 12,
+                'worker_id' => 37,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 12,
+                'worker_id' => 38,
                 'sort'      => 3
             ],[
-                'ig_id'     => 13,
-                'worker_id' => 8,
+                'ig_id'     => 12,
+                'worker_id' => 39,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 12,
+                'worker_id' => 40,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 12,
+                'worker_id' => 41,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 12,
+                'worker_id' => 42,
+                'sort'      => 7
             ],
 
 
 
             //成型_外観検査_ラゲージ_白
             [
-                'ig_id'     => 14,
+                'ig_id'     => 13,
                 'worker_id' => 1,
                 'sort'      => 1
             ],[
-                'ig_id'     => 14,
+                'ig_id'     => 13,
                 'worker_id' => 2,
                 'sort'      => 2
-            ],
-            //成型_外観検査_ラゲージ_黄
-            [
-                'ig_id'     => 14,
+            ],[
+                'ig_id'     => 13,
                 'worker_id' => 3,
                 'sort'      => 3
             ],[
-                'ig_id'     => 14,
+                'ig_id'     => 13,
                 'worker_id' => 4,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 13,
+                'worker_id' => 5,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 13,
+                'worker_id' => 6,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 13,
+                'worker_id' => 7,
+                'sort'      => 7
+            ],[
+                'ig_id'     => 13,
+                'worker_id' => 8,
+                'sort'      => 8
+            ],
+            //成型_外観検査_ラゲージ_黄
+            [
+                'ig_id'     => 13,
+                'worker_id' => 9,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 13,
+                'worker_id' => 10,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 13,
+                'worker_id' => 11,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 13,
+                'worker_id' => 12,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 13,
+                'worker_id' => 13,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 13,
+                'worker_id' => 14,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 13,
+                'worker_id' => 15,
+                'sort'      => 7
+            ],[
+                'ig_id'     => 13,
+                'worker_id' => 16,
+                'sort'      => 8
             ],
 
 
             //穴あけ_外観検査_ラゲージ_白
             [
-                'ig_id'     => 16,
-                'worker_id' => 5,
+                'ig_id'     => 15,
+                'worker_id' => 17,
                 'sort'      => 1
             ],[
-                'ig_id'     => 16,
-                'worker_id' => 6,
+                'ig_id'     => 15,
+                'worker_id' => 18,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 15,
+                'worker_id' => 19,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 15,
+                'worker_id' => 20,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 15,
+                'worker_id' => 21,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 15,
+                'worker_id' => 22,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 15,
+                'worker_id' => 23,
+                'sort'      => 7
             ],
             //穴あけ_外観検査_ラゲージ_黄
             [
-                'ig_id'     => 16,
-                'worker_id' => 7,
+                'ig_id'     => 15,
+                'worker_id' => 24,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 15,
+                'worker_id' => 25,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 15,
+                'worker_id' => 26,
                 'sort'      => 3
             ],[
-                'ig_id'     => 16,
-                'worker_id' => 8,
+                'ig_id'     => 15,
+                'worker_id' => 27,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 15,
+                'worker_id' => 28,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 15,
+                'worker_id' => 29,
+                'sort'      => 6
             ],
 
             //穴あけ_穴検査_ラゲージ_白
             [
-                'ig_id'     => 17,
-                'worker_id' => 5,
+                'ig_id'     => 16,
+                'worker_id' => 17,
                 'sort'      => 1
             ],[
-                'ig_id'     => 17,
-                'worker_id' => 6,
+                'ig_id'     => 16,
+                'worker_id' => 18,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 16,
+                'worker_id' => 19,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 16,
+                'worker_id' => 20,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 16,
+                'worker_id' => 21,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 16,
+                'worker_id' => 22,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 16,
+                'worker_id' => 23,
+                'sort'      => 7
             ],
             //穴あけ_穴検査_ラゲージ_黄
             [
-                'ig_id'     => 17,
-                'worker_id' => 7,
+                'ig_id'     => 16,
+                'worker_id' => 24,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 16,
+                'worker_id' => 25,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 16,
+                'worker_id' => 26,
                 'sort'      => 3
             ],[
-                'ig_id'     => 17,
-                'worker_id' => 8,
+                'ig_id'     => 16,
+                'worker_id' => 27,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 16,
+                'worker_id' => 28,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 16,
+                'worker_id' => 29,
+                'sort'      => 6
             ],
 
             //かしめ/接着_かしめ後検査_ラゲージ_白
             [
-                'ig_id'     => 18,
-                'worker_id' => 5,
+                'ig_id'     => 17,
+                'worker_id' => 30,
                 'sort'      => 1
             ],[
-                'ig_id'     => 18,
-                'worker_id' => 6,
+                'ig_id'     => 17,
+                'worker_id' => 31,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 17,
+                'worker_id' => 32,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 17,
+                'worker_id' => 33,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 17,
+                'worker_id' => 34,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 17,
+                'worker_id' => 35,
+                'sort'      => 6
             ],
             //かしめ/接着_かしめ後検査_ラゲージ_黄
             [
-                'ig_id'     => 18,
-                'worker_id' => 7,
+                'ig_id'     => 17,
+                'worker_id' => 36,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 17,
+                'worker_id' => 37,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 17,
+                'worker_id' => 38,
                 'sort'      => 3
             ],[
-                'ig_id'     => 18,
-                'worker_id' => 8,
+                'ig_id'     => 17,
+                'worker_id' => 39,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 17,
+                'worker_id' => 40,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 17,
+                'worker_id' => 41,
+                'sort'      => 6
+            ],[
+                'ig_id'     => 17,
+                'worker_id' => 42,
+                'sort'      => 7
             ],
 
             //かしめ/接着_外周仕上_ラゲージ_白
             [
-                'ig_id'     => 19,
-                'worker_id' => 5,
+                'ig_id'     => 18,
+                'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 19,
-                'worker_id' => 6,
+                'ig_id'     => 18,
+                'worker_id' => 44,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 18,
+                'worker_id' => 45,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 18,
+                'worker_id' => 46,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 18,
+                'worker_id' => 47,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 18,
+                'worker_id' => 48,
+                'sort'      => 6
             ],
             //かしめ/接着_外周仕上_ラゲージ_黄
             [
-                'ig_id'     => 19,
-                'worker_id' => 7,
+                'ig_id'     => 18,
+                'worker_id' => 49,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 18,
+                'worker_id' => 50,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 18,
+                'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 19,
-                'worker_id' => 8,
+                'ig_id'     => 18,
+                'worker_id' => 52,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 18,
+                'worker_id' => 53,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 18,
+                'worker_id' => 54,
+                'sort'      => 6
             ],
 
             //かしめ/接着_パテ修復後_ラゲージ_白
             [
-                'ig_id'     => 20,
-                'worker_id' => 5,
+                'ig_id'     => 19,
+                'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 20,
-                'worker_id' => 6,
+                'ig_id'     => 19,
+                'worker_id' => 44,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 19,
+                'worker_id' => 45,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 19,
+                'worker_id' => 46,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 19,
+                'worker_id' => 47,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 19,
+                'worker_id' => 48,
+                'sort'      => 6
             ],
             //かしめ/接着_パテ修復後_ラゲージ_黄
             [
-                'ig_id'     => 20,
-                'worker_id' => 7,
+                'ig_id'     => 19,
+                'worker_id' => 49,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 19,
+                'worker_id' => 50,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 19,
+                'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 20,
-                'worker_id' => 8,
+                'ig_id'     => 19,
+                'worker_id' => 52,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 19,
+                'worker_id' => 53,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 19,
+                'worker_id' => 54,
+                'sort'      => 6
             ],
 
             //かしめ/接着_水検後_ラゲージ_白
             [
-                'ig_id'     => 21,
-                'worker_id' => 5,
+                'ig_id'     => 20,
+                'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 21,
-                'worker_id' => 6,
+                'ig_id'     => 20,
+                'worker_id' => 44,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 20,
+                'worker_id' => 45,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 20,
+                'worker_id' => 46,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 20,
+                'worker_id' => 47,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 20,
+                'worker_id' => 48,
+                'sort'      => 6
             ],
             //かしめ/接着_水検後_ラゲージ_黄
             [
-                'ig_id'     => 21,
-                'worker_id' => 7,
+                'ig_id'     => 20,
+                'worker_id' => 49,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 20,
+                'worker_id' => 50,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 20,
+                'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 21,
-                'worker_id' => 8,
+                'ig_id'     => 20,
+                'worker_id' => 52,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 20,
+                'worker_id' => 53,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 20,
+                'worker_id' => 54,
+                'sort'      => 6
             ],
 
             //かしめ/接着_塗装受入後_ラゲージ_白
             [
-                'ig_id'     => 22,
-                'worker_id' => 5,
+                'ig_id'     => 21,
+                'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 22,
-                'worker_id' => 6,
+                'ig_id'     => 21,
+                'worker_id' => 44,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 21,
+                'worker_id' => 45,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 21,
+                'worker_id' => 46,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 21,
+                'worker_id' => 47,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 21,
+                'worker_id' => 48,
+                'sort'      => 6
             ],
             //かしめ/接着_塗装受入後_ラゲージ_黄
             [
-                'ig_id'     => 22,
-                'worker_id' => 7,
+                'ig_id'     => 21,
+                'worker_id' => 49,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 21,
+                'worker_id' => 50,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 21,
+                'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 22,
-                'worker_id' => 8,
+                'ig_id'     => 21,
+                'worker_id' => 52,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 21,
+                'worker_id' => 53,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 21,
+                'worker_id' => 54,
+                'sort'      => 6
             ],
+
 
             //かしめ/接着_外観検査_ラゲージ_白
             [
-                'ig_id'     => 25,
-                'worker_id' => 5,
+                'ig_id'     => 23,
+                'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 25,
-                'worker_id' => 6,
+                'ig_id'     => 23,
+                'worker_id' => 44,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 23,
+                'worker_id' => 45,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 23,
+                'worker_id' => 46,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 23,
+                'worker_id' => 47,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 23,
+                'worker_id' => 48,
+                'sort'      => 6
             ],
             //かしめ/接着_外観検査_ラゲージ_黄
             [
-                'ig_id'     => 25,
-                'worker_id' => 7,
+                'ig_id'     => 23,
+                'worker_id' => 49,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 23,
+                'worker_id' => 50,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 23,
+                'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 25,
-                'worker_id' => 8,
+                'ig_id'     => 23,
+                'worker_id' => 52,
                 'sort'      => 4
+            ],[
+                'ig_id'     => 23,
+                'worker_id' => 53,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 23,
+                'worker_id' => 54,
+                'sort'      => 6
             ],
 
             //かしめ/接着_手直_ラゲージ_白
             [
-                'ig_id'     => 26,
-                'worker_id' => 5,
+                'ig_id'     => 24,
+                'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 26,
-                'worker_id' => 6,
+                'ig_id'     => 24,
+                'worker_id' => 44,
                 'sort'      => 2
+            ],[
+                'ig_id'     => 24,
+                'worker_id' => 45,
+                'sort'      => 3
+            ],[
+                'ig_id'     => 24,
+                'worker_id' => 46,
+                'sort'      => 4
+            ],[
+                'ig_id'     => 24,
+                'worker_id' => 47,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 24,
+                'worker_id' => 48,
+                'sort'      => 6
             ],
             //かしめ/接着_手直_ラゲージ_黄
             [
-                'ig_id'     => 26,
-                'worker_id' => 7,
+                'ig_id'     => 24,
+                'worker_id' => 49,
+                'sort'      => 1
+            ],[
+                'ig_id'     => 24,
+                'worker_id' => 50,
+                'sort'      => 2
+            ],[
+                'ig_id'     => 24,
+                'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 26,
-                'worker_id' => 8,
+                'ig_id'     => 24,
+                'worker_id' => 52,
                 'sort'      => 4
-            ],
-
+            ],[
+                'ig_id'     => 24,
+                'worker_id' => 53,
+                'sort'      => 5
+            ],[
+                'ig_id'     => 24,
+                'worker_id' => 54,
+                'sort'      => 6
+            ]
         ];
 
         DB::connection('950A')->table($table_name)->insert($data);
