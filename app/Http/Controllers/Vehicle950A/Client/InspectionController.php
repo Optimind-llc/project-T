@@ -36,48 +36,26 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class InspectionController extends Controller
 {
-    protected function findProcessByEn($en) {
-        $process = Process::where('id', $en)->first();
-
-        if (!$process instanceof Process) {
-            throw new NotFoundHttpException('Process not found');
-        }
-
-        return $process;
-    }
-
-    protected function findInspectionGroup($inspection_en, $process_en, $division_en, $line = null) {
-        $inspection = $this->findProcessByEn($process_en)
-            ->inspections()
-            ->where('en', $inspection_en)
-            ->first();
-
-        if (!$inspection instanceof Inspection) {
-            throw new NotFoundHttpException('Inspection not found');
-        }
-
-        $group = $inspection->getByDivisionWithRelated($division_en, $line);
-
-        if (!$group instanceof InspectionGroup) {
-            throw new NotFoundHttpException('Inspection group not found');
-        }
-
-        return $group;
-    }
-
     public function getInspection(Request $request)
     {
         $process_en = $request->process;
         $inspection_en = $request->inspection;
-        $pt_ids = $request->partTypeIds;
+        $pt_names = $request->partNames;
 
         $ig = InspectionGroup::where('process_en', '=', $process_en)
             ->where('inspection_en', '=', $inspection_en)
             ->first();
 
+        // If inspectionGroup not found
+        if (!$ig instanceof InspectionGroup) {
+            return \Response::json([
+                'message' => 'inspectionGroup Not found'
+            ], 400);
+        }
+
         $ig_id = $ig->id;
 
-        $pt = PartType::whereIn('id', $pt_ids)
+        $pt = PartType::whereIn('name', $pt_names)
             ->with([
                 'figures' => function($q) use ($ig_id){
                     $q->where('ig_id', '=', $ig_id);
@@ -93,7 +71,7 @@ class InspectionController extends Controller
                     'figures' => $p->figures->map(function($f) {
                         return [
                             'name' => $f->name,
-                            'path' => $f->path,
+                            'path' => '/img/figures/950A/'.$f->path,
                             'holes' => []
                         ];
                     })
