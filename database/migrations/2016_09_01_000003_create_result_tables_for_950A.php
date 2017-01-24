@@ -46,6 +46,45 @@ class CreateResultTablesFor950A extends Migration
                 ->onDelete('restrict');
         });
 
+        Schema::connection('950A')->create('inspection_results', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('part_id')->unsigned();
+            $table->string('process_en', 16);
+            $table->string('inspection_en', 16);
+            $table->tinyInteger('line')->unsigned()->default(1);
+            $table->tinyInteger('status')->unsigned()->default(1);
+            $table->string('comment')->nullable();
+            $table->string('table')->nullable();
+            $table->string('ft_ids')->nullable();
+            $table->string('created_choku', 8);
+            $table->string('updated_choku', 8)->nullable();
+            $table->string('created_by', 8);
+            $table->string('updated_by', 8)->nullable();
+            $table->timestamp('inspected_at')->nullable();
+            $table->timestamps();
+
+            /*
+             * Add Foreign
+             */
+            $table->foreign('part_id')
+                ->references('id')
+                ->on('parts')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('process_en')
+                ->references('en')
+                ->on('processes')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('inspection_en')
+                ->references('en')
+                ->on('inspections')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+        });
+
         Schema::connection('950A')->create('failures', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('x')->unsigned()->default(0);
@@ -53,6 +92,7 @@ class CreateResultTablesFor950A extends Migration
             $table->integer('sub_x')->unsigned()->default(0);
             $table->integer('sub_y')->unsigned()->default(0);
             $table->integer('type_id')->unsigned();
+            $table->integer('ir_id')->unsigned();
             $table->integer('part_id')->unsigned();
             $table->integer('figure_id')->unsigned();
             $table->timestamps();
@@ -64,6 +104,12 @@ class CreateResultTablesFor950A extends Migration
             $table->foreign('type_id')
                 ->references('id')
                 ->on('failure_types')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('ir_id')
+                ->references('id')
+                ->on('inspection_results')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
@@ -84,8 +130,9 @@ class CreateResultTablesFor950A extends Migration
             $table->increments('id');
             $table->integer('type_id')->unsigned();
             $table->integer('failure_id')->unsigned();
-            $table->integer('figure_id')->unsigned();
+            $table->integer('ir_id')->unsigned();
             $table->integer('part_id')->unsigned();
+            $table->integer('figure_id')->unsigned();
             $table->string('comment', 100)->nullable();
             $table->timestamps();
 
@@ -109,9 +156,9 @@ class CreateResultTablesFor950A extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('figure_id')
+            $table->foreign('ir_id')
                 ->references('id')
-                ->on('figures')
+                ->on('inspection_results')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
@@ -120,11 +167,18 @@ class CreateResultTablesFor950A extends Migration
                 ->on('parts')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->foreign('figure_id')
+                ->references('id')
+                ->on('figures')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
 
         Schema::connection('950A')->create('holes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('type_id')->unsigned();
+            $table->integer('ir_id')->unsigned();
             $table->integer('part_id')->unsigned();
             $table->tinyInteger('status')->unsigned()->default(1);
             $table->timestamps();
@@ -143,6 +197,12 @@ class CreateResultTablesFor950A extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
+            $table->foreign('ir_id')
+                ->references('id')
+                ->on('inspection_results')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->foreign('part_id')
                 ->references('id')
                 ->on('parts')
@@ -154,6 +214,7 @@ class CreateResultTablesFor950A extends Migration
             $table->increments('id');
             $table->integer('type_id')->unsigned();
             $table->integer('hole_id')->unsigned();
+            $table->integer('ir_id')->unsigned();
             $table->integer('part_id')->unsigned();
             $table->string('comment', 100)->nullable();
             $table->timestamps();
@@ -178,6 +239,12 @@ class CreateResultTablesFor950A extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
+            $table->foreign('ir_id')
+                ->references('id')
+                ->on('inspection_results')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->foreign('part_id')
                 ->references('id')
                 ->on('parts')
@@ -189,8 +256,9 @@ class CreateResultTablesFor950A extends Migration
             $table->increments('id');
             $table->double('status', 6, 3)->nullable();
             $table->integer('type_id')->unsigned();
-            $table->integer('figure_id')->unsigned();
+            $table->integer('ir_id')->unsigned();
             $table->integer('part_id')->unsigned();
+            $table->integer('figure_id')->unsigned();
             $table->timestamp('inspected_at')->nullable();
             $table->timestamps();
 
@@ -203,15 +271,21 @@ class CreateResultTablesFor950A extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('figure_id')
+            $table->foreign('ir_id')
                 ->references('id')
-                ->on('figures')
+                ->on('inspection_results')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             $table->foreign('part_id')
                 ->references('id')
                 ->on('parts')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('figure_id')
+                ->references('id')
+                ->on('figures')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
@@ -229,6 +303,7 @@ class CreateResultTablesFor950A extends Migration
         Schema::connection('950A')->drop('holes');
         Schema::connection('950A')->drop('modifications');
         Schema::connection('950A')->drop('failures');
+        Schema::connection('950A')->drop('inspection_results');
         Schema::connection('950A')->drop('parts');
         Schema::connection('950A')->drop('part_families');
     }
