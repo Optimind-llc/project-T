@@ -67,10 +67,16 @@ class InspectionController extends Controller
 
     public function getInspection(Request $request)
     {
-        $ig_id = $request->inspectionGroupId;
+        $process_en = $request->process;
+        $inspection_en = $request->inspection;
         $pt_ids = $request->partTypeIds;
 
-        $ig = InspectionGroup::find($ig_id);
+        $ig = InspectionGroup::where('process_en', '=', $process_en)
+            ->where('inspection_en', '=', $inspection_en)
+            ->first();
+
+        $ig_id = $ig->id;
+
         $pt = PartType::whereIn('id', $pt_ids)
             ->with([
                 'figures' => function($q) use ($ig_id){
