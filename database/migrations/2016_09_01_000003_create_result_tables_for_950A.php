@@ -62,9 +62,11 @@ class CreateResultTablesFor950A extends Migration
             $table->string('updated_choku', 8)->nullable();
             $table->string('created_by', 8);
             $table->string('updated_by', 8)->nullable();
+            $table->tinyInteger('latest')->unsigned()->default(1);
             $table->timestamp('inspected_at')->nullable();
             $table->timestamps();
             $table->timestamp('exported_at')->nullable();
+
 
             /*
              * Add Foreign
