@@ -62,6 +62,7 @@ class CreateResultTablesFor950A extends Migration
             $table->string('updated_by', 8)->nullable();
             $table->timestamp('inspected_at')->nullable();
             $table->timestamps();
+            $table->timestamp('exported_at')->nullable();
 
             /*
              * Add Foreign

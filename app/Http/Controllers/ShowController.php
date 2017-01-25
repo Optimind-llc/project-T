@@ -1041,9 +1041,8 @@ class ShowController extends Controller
                 $join->on('pg.id', '=', 'pp.page_id');
             })
             ->join('inspection_families as if', function($join) use ($itionGId, $start, $end, $tyoku, $judgement) {
-                $join->on('if.id', '=', 'pg.family_id')
+                $join = $join->on('if.id', '=', 'pg.family_id')
                     ->whereIn('if.inspector_group', $tyoku)
-                    ->whereIn('if.status', $judgement)
                     ->where('inspection_group_id', '=', $itionGId)
                     ->whereNull('if.deleted_at')
                     ->where(function($q) use ($start, $end) {
@@ -1056,6 +1055,10 @@ class ShowController extends Controller
                             $q->where('if.created_at', '>=', $start)->where('if.created_at', '<', $end);
                         });
                     });
+
+                if ($itionGId == 3 || $itionGId == 7 || $itionGId == 9 || $itionGId == 19) {
+                    $join->whereIn('if.status', $judgement);
+                }
             })
             ->select(['parts.*', 'pp.status', 'pg.page_type_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at'])
             ->orderBy('if.inspected_at', 'asc', 'if.created_at', 'asc')

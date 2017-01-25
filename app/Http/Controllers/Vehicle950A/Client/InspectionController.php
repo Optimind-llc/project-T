@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Choku;
-use App\Export;
 use App\Result;
 // Models
 use App\Models\Vehicle950A\Process;

@@ -29,67 +29,111 @@ class RelatedPartTableSeeder extends Seeder
 
         $data = [
             [
-                'pn'         => '6714111020',
-                'pn2'        => '6',
+                'pn'         => 6714111020,
+                'pn2'        => 6,
                 'name'       => 'ドアインナR',
+                'en'         => 'doorInnerR',
                 'short_name' => 'DIR',
                 'sort'       => 2,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'pn'         => '6714211020',
-                'pn2'        => '6',
+                'pn'         => 6714211020,
+                'pn2'        => 6,
                 'name'       => 'ドアインナL',
+                'en'         => 'doorInnerL',
                 'short_name' => 'DIL',
                 'sort'       => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'pn'         => '6715111020',
-                'pn2'        => '6',
+                'pn'         => 6715111020,
+                'pn2'        => 6,
                 'name'       => 'リンフォースR',
+                'en'         => 'reinforceR',
                 'short_name' => 'RR',
                 'sort'       => 4,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'pn'         => '6715211020',
-                'pn2'        => '6',
+                'pn'         => 6715211020,
+                'pn2'        => 6,
                 'name'       => 'リンフォースL',
+                'en'         => 'reinforceL',
                 'short_name' => 'RL',
                 'sort'       => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'pn'         => '6441211010',
-                'pn2'        => '2',
+                'pn'         => 6441211010,
+                'pn2'        => 2,
                 'name'       => 'ラゲージインナSTD',
+                'en'         => 'luggageInnerSTD',
                 'short_name' => 'RIS',
                 'sort'       => 5,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'pn'         => '6441211020',
-                'pn2'        => '4',
+                'pn'         => 6441211020,
+                'pn2'        => 4,
                 'name'       => 'ラゲージインナARW',
+                'en'         => 'luggageInnerARW',
                 'short_name' => 'RIA',
                 'sort'       => 6,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'pn'         => '6441111010',
-                'pn2'        => '3',
+                'pn'         => 6441111010,
+                'pn2'        => 3,
                 'name'       => 'ラゲージアウタSTD',
-                'short_name' => 'RAS',
+                'en'         => 'luggageOuterSTD',
+                'short_name' => 'ROS',
                 'sort'       => 7,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'pn'         => '6441111020',
-                'pn2'        => '5',
+                'pn'         => 6441111020,
+                'pn2'        => 5,
                 'name'       => 'ラゲージアウタARW',
-                'short_name' => 'RAA',
+                'en'         => 'luggageOuterARW',
+                'short_name' => 'ROA',
                 'sort'       => 8,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'pn'         => 1,
+                'pn2'        => 0,
+                'name'       => 'ドアAssyR',
+                'en'         => 'doorAssyR',
+                'short_name' => 'DAR',
+                'sort'       => 10,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'pn'         => 2,
+                'pn2'        => 0,
+                'name'       => 'ドアAssyL',
+                'en'         => 'doorAssyL',
+                'short_name' => 'DAL',
+                'sort'       => 9,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'pn'         => 3,
+                'pn2'        => 0,
+                'name'       => 'ラゲージAssySTD',
+                'en'         => 'luggageAssySTD',
+                'short_name' => 'RAS',
+                'sort'       => 11,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'pn'         => 4,
+                'pn2'        => 0,
+                'name'       => 'ラゲージAssyARW',
+                'en'         => 'luggageAssyARW',
+                'short_name' => 'RAA',
+                'sort'       => 12,
                 'created_at' => $now,
                 'updated_at' => $now
             ]
