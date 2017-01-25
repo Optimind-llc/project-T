@@ -34,29 +34,6 @@ class CreateBaseTablesFor950A extends Migration
             $table->primary('en');
         });
 
-        Schema::connection('950A')->create('inspection_groups', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('division', 16);
-            $table->string('process_en', 16);
-            $table->string('inspection_en', 16);
-            $table->timestamps();
-
-            /**
-             * Add Foreign
-             */
-            $table->foreign('process_en')
-                ->references('en')
-                ->on('processes')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-
-            $table->foreign('inspection_en')
-                ->references('en')
-                ->on('inspections')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-        });
-
 
         Schema::connection('950A')->create('chokus', function (Blueprint $table) {
             $table->string('code', 16);
@@ -89,9 +66,11 @@ class CreateBaseTablesFor950A extends Migration
                 ->onDelete('restrict');
         });
 
-        Schema::connection('950A')->create('worker_inspection_group', function (Blueprint $table) {
+        Schema::connection('950A')->create('worker_related', function (Blueprint $table) {
             $table->integer('worker_id')->unsigned();
-            $table->integer('ig_id')->unsigned();
+            $table->string('process', 16);
+            $table->string('inspection', 16);
+            $table->string('division', 16);
             $table->integer('sort')->unsigned()->default(1);
             $table->timestamps();
 
@@ -104,16 +83,22 @@ class CreateBaseTablesFor950A extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('ig_id')
-                ->references('id')
-                ->on('inspection_groups')
+            $table->foreign('process')
+                ->references('en')
+                ->on('processes')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('inspection')
+                ->references('en')
+                ->on('inspections')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             /**
              * Add Primary
              */
-            $table->primary(['worker_id', 'ig_id']);
+            $table->primary(['worker_id', 'process', 'inspection', 'division']);
         });
 
 
@@ -124,6 +109,8 @@ class CreateBaseTablesFor950A extends Migration
             $table->string('name', 16)->unique();
             $table->string('en', 16)->unique();
             $table->string('short_name', 16);
+            $table->string('division1', 16);
+            $table->string('division2', 16);
             $table->integer('sort')->unsigned()->default(1);
             $table->timestamps();
         });
@@ -135,7 +122,8 @@ class CreateBaseTablesFor950A extends Migration
             $table->integer('size_x')->unsigned();
             $table->integer('size_y')->unsigned();
             $table->integer('pt_id')->unsigned();
-            $table->integer('ig_id')->unsigned();
+            $table->string('process', 16);
+            $table->string('inspection', 16);
             $table->timestamps();
 
             /**
@@ -147,9 +135,15 @@ class CreateBaseTablesFor950A extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('ig_id')
-                ->references('id')
-                ->on('inspection_groups')
+            $table->foreign('process')
+                ->references('en')
+                ->on('processes')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('inspection')
+                ->references('en')
+                ->on('inspections')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
@@ -164,8 +158,8 @@ class CreateBaseTablesFor950A extends Migration
         });
 
         Schema::connection('950A')->create('ft_related', function (Blueprint $table) {
-            $table->string('process_en', 16);
-            $table->string('inspection_en', 16);
+            $table->string('process', 16);
+            $table->string('inspection', 16);
             $table->string('division', 16);
             $table->integer('type_id')->unsigned();
             $table->tinyInteger('type')->unsigned()->default(1);
@@ -175,13 +169,13 @@ class CreateBaseTablesFor950A extends Migration
             /**
              * Add Foreign
              */
-            $table->foreign('process_en')
+            $table->foreign('process')
                 ->references('en')
                 ->on('processes')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('inspection_en')
+            $table->foreign('inspection')
                 ->references('en')
                 ->on('inspections')
                 ->onUpdate('cascade')
@@ -196,7 +190,7 @@ class CreateBaseTablesFor950A extends Migration
             /**
              * Add Primary
              */
-            $table->primary(['process_en', 'inspection_en', 'division', 'type_id']);
+            $table->primary(['process', 'inspection', 'division', 'type_id']);
         });
 
         Schema::connection('950A')->create('modification_types', function (Blueprint $table) {
@@ -208,8 +202,8 @@ class CreateBaseTablesFor950A extends Migration
         });
 
         Schema::connection('950A')->create('mt_related', function (Blueprint $table) {
-            $table->string('process_en', 16);
-            $table->string('inspection_en', 16);
+            $table->string('process', 16);
+            $table->string('inspection', 16);
             $table->string('division', 16);
             $table->integer('type_id')->unsigned();
             $table->tinyInteger('type')->unsigned()->default(1);
@@ -219,13 +213,13 @@ class CreateBaseTablesFor950A extends Migration
             /**
              * Add Foreign
              */
-            $table->foreign('process_en')
+            $table->foreign('process')
                 ->references('en')
                 ->on('processes')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('inspection_en')
+            $table->foreign('inspection')
                 ->references('en')
                 ->on('inspections')
                 ->onUpdate('cascade')
@@ -240,7 +234,7 @@ class CreateBaseTablesFor950A extends Migration
             /**
              * Add Primary
              */
-            $table->primary(['process_en', 'inspection_en', 'division', 'type_id']);
+            $table->primary(['process', 'inspection', 'division', 'type_id']);
         });
 
         Schema::connection('950A')->create('hole_types', function (Blueprint $table) {
@@ -282,8 +276,8 @@ class CreateBaseTablesFor950A extends Migration
         });
 
         Schema::connection('950A')->create('hmt_related', function (Blueprint $table) {
-            $table->string('process_en', 16);
-            $table->string('inspection_en', 16);
+            $table->string('process', 16);
+            $table->string('inspection', 16);
             $table->string('division', 16);
             $table->integer('type_id')->unsigned();
             $table->tinyInteger('type')->unsigned()->default(1);
@@ -293,13 +287,13 @@ class CreateBaseTablesFor950A extends Migration
             /**
              * Add Foreign
              */
-            $table->foreign('process_en')
+            $table->foreign('process')
                 ->references('en')
                 ->on('processes')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('inspection_en')
+            $table->foreign('inspection')
                 ->references('en')
                 ->on('inspections')
                 ->onUpdate('cascade')
@@ -314,7 +308,7 @@ class CreateBaseTablesFor950A extends Migration
             /**
              * Add Primary
              */
-            $table->primary(['process_en', 'inspection_en', 'division', 'type_id']);
+            $table->primary(['process', 'inspection', 'division', 'type_id']);
         });
 
         Schema::connection('950A')->create('inline_types', function (Blueprint $table) {
@@ -370,11 +364,10 @@ class CreateBaseTablesFor950A extends Migration
         Schema::connection('950A')->drop('figures');
         Schema::connection('950A')->drop('part_types');
 
-        Schema::connection('950A')->drop('worker_inspection_group');
+        Schema::connection('950A')->drop('worker_related');
         Schema::connection('950A')->drop('workers');
         Schema::connection('950A')->drop('chokus');
 
-        Schema::connection('950A')->drop('inspection_groups');
         Schema::connection('950A')->drop('inspections');
         Schema::connection('950A')->drop('processes');
     }

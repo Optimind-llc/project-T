@@ -49,13 +49,15 @@ class CreateResultTablesFor950A extends Migration
         Schema::connection('950A')->create('inspection_results', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('part_id')->unsigned();
-            $table->string('process_en', 16);
-            $table->string('inspection_en', 16);
+            $table->string('process', 16);
+            $table->string('inspection', 16);
             $table->tinyInteger('line')->unsigned()->default(1);
             $table->tinyInteger('status')->unsigned()->default(1);
             $table->string('comment')->nullable();
             $table->string('table')->nullable();
             $table->string('ft_ids')->nullable();
+            $table->string('mt_ids')->nullable();
+            $table->string('hmt_ids')->nullable();
             $table->string('created_choku', 8);
             $table->string('updated_choku', 8)->nullable();
             $table->string('created_by', 8);
@@ -73,13 +75,13 @@ class CreateResultTablesFor950A extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('process_en')
+            $table->foreign('process')
                 ->references('en')
                 ->on('processes')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
 
-            $table->foreign('inspection_en')
+            $table->foreign('inspection')
                 ->references('en')
                 ->on('inspections')
                 ->onUpdate('cascade')

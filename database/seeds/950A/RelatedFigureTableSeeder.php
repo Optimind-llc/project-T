@@ -35,7 +35,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 1,
-                'ig_id'      => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -44,7 +45,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 2,
-                'ig_id'      => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -53,7 +55,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 4,
-                'ig_id'      => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -62,7 +65,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 3,
-                'ig_id'      => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -71,7 +75,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 5,
-                'ig_id'      => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -80,7 +85,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 6,
-                'ig_id'      => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -89,7 +95,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 7,
-                'ig_id'      => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -98,7 +105,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 8,
-                'ig_id'      => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -109,7 +117,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 1,
-                'ig_id'      => 2,
+                'process'    => 'molding',
+                'inspection' => 'inline',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -118,7 +127,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 2,
-                'ig_id'      => 2,
+                'process'    => 'molding',
+                'inspection' => 'inline',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -127,7 +137,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 5,
-                'ig_id'      => 1,
+                'process'    => 'molding',
+                'inspection' => 'inline',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -136,7 +147,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 6,
-                'ig_id'      => 1,
+                'process'    => 'molding',
+                'inspection' => 'inline',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
@@ -147,7 +159,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 1,
-                'ig_id'      => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -156,7 +169,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 1,
-                'ig_id'      => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -165,7 +179,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 1,
-                'ig_id'      => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -174,7 +189,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 1,
-                'ig_id'      => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -183,7 +199,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 2,
-                'ig_id'      => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -192,7 +209,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 2,
-                'ig_id'      => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -201,7 +219,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 2,
-                'ig_id'      => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -210,7 +229,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 2,
-                'ig_id'      => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -219,7 +239,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 5,
-                'ig_id'      => 1,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -228,10 +249,12 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 980,
                 'pt_id'      => 6,
-                'ig_id'      => 1,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
+
             //穴あけ_穴検査
             [
                 'name'       => 'h_ana_door_innerR_page1',
@@ -239,7 +262,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 1,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -248,7 +272,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 1,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -257,7 +282,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 1,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -266,7 +292,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 1,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -275,7 +302,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 1,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -284,7 +312,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 2,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -293,7 +322,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 2,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -302,7 +332,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 2,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -311,7 +342,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 2,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -320,7 +352,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 2,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -329,7 +362,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 5,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -338,7 +372,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 6,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -347,7 +382,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 7,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -356,10 +392,12 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 8,
-                'ig_id'      => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
+
             //かしめ/接着_かしめ後検査
             [
                 'name'       => 'j_kashimego_door_innerR_page1',
@@ -367,7 +405,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 1,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -376,7 +415,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 1,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -385,7 +425,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 1,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -394,7 +435,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 1,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -403,7 +445,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 1,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -412,7 +455,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 2,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -421,7 +465,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 2,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -430,7 +475,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 2,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -439,7 +485,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 2,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -448,7 +495,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 2,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -457,7 +505,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 5,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -466,7 +515,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 6,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -475,7 +525,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 7,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -484,7 +535,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'pt_id'      => 8,
-                'ig_id'      => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
                 'created_at' => $now,
                 'updated_at' => $now
             ],

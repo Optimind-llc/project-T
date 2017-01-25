@@ -460,7 +460,7 @@ class RelatedWorkerTableSeeder extends Seeder
         /**
          * create inspector process related table seeder
          */
-        $table_name = 'worker_inspection_group';
+        $table_name = 'worker_related';
 
         if (env('DB_CONNECTION') == 'mysql') {
             DB::connection('950A')->statement('SET FOREIGN_KEY_CHECKS=0;');
@@ -478,69 +478,101 @@ class RelatedWorkerTableSeeder extends Seeder
         $data = [
             //成型_外観検査_ドア_白
             [
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 1,
                 'sort'      => 1
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 2,
                 'sort'      => 2
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 3,
                 'sort'      => 3
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 4,
                 'sort'      => 4
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 5,
                 'sort'      => 5
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 6,
                 'sort'      => 6
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 7,
                 'sort'      => 7
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 8,
                 'sort'      => 8
             ],
             //成型_外観検査_ドア_黄
             [
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 9,
                 'sort'      => 1
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 10,
                 'sort'      => 2
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 11,
                 'sort'      => 3
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 12,
                 'sort'      => 4
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 13,
                 'sort'      => 5
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 14,
                 'sort'      => 6
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 15,
                 'sort'      => 7
             ],[
-                'ig_id'     => 1,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 16,
                 'sort'      => 8
             ],
@@ -548,285 +580,415 @@ class RelatedWorkerTableSeeder extends Seeder
 
             //穴あけ_外観検査_ドア_白
             [
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 17,
                 'sort'      => 1
             ],[
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 18,
                 'sort'      => 2
             ],[
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 19,
                 'sort'      => 3
             ],[
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 20,
                 'sort'      => 4
             ],[
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 21,
                 'sort'      => 5
             ],[
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 22,
                 'sort'      => 6
             ],[
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 23,
                 'sort'      => 7
             ],
             //穴あけ_外観検査_ドア_黄
             [
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 24,
                 'sort'      => 1
             ],[
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 25,
                 'sort'      => 2
             ],[
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 26,
                 'sort'      => 3
             ],[
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 27,
                 'sort'      => 4
             ],[
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 28,
                 'sort'      => 5
             ],[
-                'ig_id'     => 3,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 29,
                 'sort'      => 6
             ],
 
             //穴あけ_穴検査_ドア_白
             [
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 17,
                 'sort'      => 1
             ],[
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 18,
                 'sort'      => 2
             ],[
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 19,
                 'sort'      => 3
             ],[
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 20,
                 'sort'      => 4
             ],[
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 21,
                 'sort'      => 5
             ],[
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 22,
                 'sort'      => 6
             ],[
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 23,
                 'sort'      => 7
             ],
             //穴あけ_穴検査_ドア_黄
             [
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 24,
                 'sort'      => 1
             ],[
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 25,
                 'sort'      => 2
             ],[
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 26,
                 'sort'      => 3
             ],[
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 27,
                 'sort'      => 4
             ],[
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 28,
                 'sort'      => 5
             ],[
-                'ig_id'     => 4,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
                 'worker_id' => 29,
                 'sort'      => 6
             ],
 
             //かしめ/接着_かしめ後検査_ドア_白
             [
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 30,
                 'sort'      => 1
             ],[
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 31,
                 'sort'      => 2
             ],[
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 32,
                 'sort'      => 3
             ],[
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 33,
                 'sort'      => 4
             ],[
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 34,
                 'sort'      => 5
             ],[
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 35,
                 'sort'      => 6
             ],
             //かしめ/接着_かしめ後検査_ドア_黄
             [
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 36,
                 'sort'      => 1
             ],[
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 37,
                 'sort'      => 2
             ],[
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 38,
                 'sort'      => 3
             ],[
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 39,
                 'sort'      => 4
             ],[
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 40,
                 'sort'      => 5
             ],[
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 41,
                 'sort'      => 6
             ],[
-                'ig_id'     => 5,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'door',
                 'worker_id' => 42,
                 'sort'      => 7
             ],
 
             //かしめ/接着_外観検査_ドア_白
             [
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 30,
                 'sort'      => 1
             ],[
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 31,
                 'sort'      => 2
             ],[
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 32,
                 'sort'      => 3
             ],[
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 33,
                 'sort'      => 4
             ],[
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 34,
                 'sort'      => 5
             ],[
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 35,
                 'sort'      => 6
             ],
             //かしめ/接着_外観検査_ドア_黄
             [
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 36,
                 'sort'      => 1
             ],[
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 37,
                 'sort'      => 2
             ],[
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 38,
                 'sort'      => 3
             ],[
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 39,
                 'sort'      => 4
             ],[
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 40,
                 'sort'      => 5
             ],[
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 41,
                 'sort'      => 6
             ],[
-                'ig_id'     => 11,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'door',
                 'worker_id' => 42,
                 'sort'      => 7
             ],
 
             //かしめ/接着_手直_ドア_白
             [
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 30,
                 'sort'      => 1
             ],[
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 31,
                 'sort'      => 2
             ],[
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 32,
                 'sort'      => 3
             ],[
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 33,
                 'sort'      => 4
             ],[
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 34,
                 'sort'      => 5
             ],[
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 35,
                 'sort'      => 6
             ],
             //かしめ/接着_手直_ドア_黄
             [
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 36,
                 'sort'      => 1
             ],[
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 37,
                 'sort'      => 2
             ],[
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 38,
                 'sort'      => 3
             ],[
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 39,
                 'sort'      => 4
             ],[
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 40,
                 'sort'      => 5
             ],[
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 41,
                 'sort'      => 6
             ],[
-                'ig_id'     => 12,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
                 'worker_id' => 42,
                 'sort'      => 7
             ],
@@ -835,69 +997,101 @@ class RelatedWorkerTableSeeder extends Seeder
 
             //成型_外観検査_ラゲージ_白
             [
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 1,
                 'sort'      => 1
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 2,
                 'sort'      => 2
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 3,
                 'sort'      => 3
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 4,
                 'sort'      => 4
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 5,
                 'sort'      => 5
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 6,
                 'sort'      => 6
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 7,
                 'sort'      => 7
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 8,
                 'sort'      => 8
             ],
             //成型_外観検査_ラゲージ_黄
             [
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 9,
                 'sort'      => 1
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 10,
                 'sort'      => 2
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 11,
                 'sort'      => 3
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 12,
                 'sort'      => 4
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 13,
                 'sort'      => 5
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 14,
                 'sort'      => 6
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 15,
                 'sort'      => 7
             ],[
-                'ig_id'     => 13,
+                'process'    => 'molding',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 16,
                 'sort'      => 8
             ],
@@ -905,383 +1099,557 @@ class RelatedWorkerTableSeeder extends Seeder
 
             //穴あけ_外観検査_ラゲージ_白
             [
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 17,
                 'sort'      => 1
             ],[
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 18,
                 'sort'      => 2
             ],[
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 19,
                 'sort'      => 3
             ],[
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 20,
                 'sort'      => 4
             ],[
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 21,
                 'sort'      => 5
             ],[
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 22,
                 'sort'      => 6
             ],[
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 23,
                 'sort'      => 7
             ],
             //穴あけ_外観検査_ラゲージ_黄
             [
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 24,
                 'sort'      => 1
             ],[
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 25,
                 'sort'      => 2
             ],[
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 26,
                 'sort'      => 3
             ],[
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 27,
                 'sort'      => 4
             ],[
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 28,
                 'sort'      => 5
             ],[
-                'ig_id'     => 15,
+                'process'    => 'holing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 29,
                 'sort'      => 6
             ],
 
             //穴あけ_穴検査_ラゲージ_白
             [
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 17,
                 'sort'      => 1
             ],[
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 18,
                 'sort'      => 2
             ],[
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 19,
                 'sort'      => 3
             ],[
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 20,
                 'sort'      => 4
             ],[
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 21,
                 'sort'      => 5
             ],[
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 22,
                 'sort'      => 6
             ],[
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 23,
                 'sort'      => 7
             ],
             //穴あけ_穴検査_ラゲージ_黄
             [
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 24,
                 'sort'      => 1
             ],[
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 25,
                 'sort'      => 2
             ],[
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 26,
                 'sort'      => 3
             ],[
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 27,
                 'sort'      => 4
             ],[
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 28,
                 'sort'      => 5
             ],[
-                'ig_id'     => 16,
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
                 'worker_id' => 29,
                 'sort'      => 6
             ],
 
             //かしめ/接着_かしめ後検査_ラゲージ_白
             [
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 30,
                 'sort'      => 1
             ],[
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 31,
                 'sort'      => 2
             ],[
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 32,
                 'sort'      => 3
             ],[
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 33,
                 'sort'      => 4
             ],[
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 34,
                 'sort'      => 5
             ],[
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 35,
                 'sort'      => 6
             ],
             //かしめ/接着_かしめ後検査_ラゲージ_黄
             [
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 36,
                 'sort'      => 1
             ],[
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 37,
                 'sort'      => 2
             ],[
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 38,
                 'sort'      => 3
             ],[
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 39,
                 'sort'      => 4
             ],[
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 40,
                 'sort'      => 5
             ],[
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 41,
                 'sort'      => 6
             ],[
-                'ig_id'     => 17,
+                'process'    => 'jointing',
+                'inspection' => 'kashimego',
+                'division'   => 'luggage',
                 'worker_id' => 42,
                 'sort'      => 7
             ],
 
             //かしめ/接着_外周仕上_ラゲージ_白
             [
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 44,
                 'sort'      => 2
             ],[
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 45,
                 'sort'      => 3
             ],[
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 46,
                 'sort'      => 4
             ],[
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 47,
                 'sort'      => 5
             ],[
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 48,
                 'sort'      => 6
             ],
             //かしめ/接着_外周仕上_ラゲージ_黄
             [
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 49,
                 'sort'      => 1
             ],[
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 50,
                 'sort'      => 2
             ],[
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 52,
                 'sort'      => 4
             ],[
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 53,
                 'sort'      => 5
             ],[
-                'ig_id'     => 18,
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
                 'worker_id' => 54,
                 'sort'      => 6
             ],
 
             //かしめ/接着_パテ修復後_ラゲージ_白
             [
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 44,
                 'sort'      => 2
             ],[
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 45,
                 'sort'      => 3
             ],[
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 46,
                 'sort'      => 4
             ],[
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 47,
                 'sort'      => 5
             ],[
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 48,
                 'sort'      => 6
             ],
             //かしめ/接着_パテ修復後_ラゲージ_黄
             [
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 49,
                 'sort'      => 1
             ],[
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 50,
                 'sort'      => 2
             ],[
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 52,
                 'sort'      => 4
             ],[
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 53,
                 'sort'      => 5
             ],[
-                'ig_id'     => 19,
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
                 'worker_id' => 54,
                 'sort'      => 6
             ],
 
             //かしめ/接着_水検後_ラゲージ_白
             [
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 44,
                 'sort'      => 2
             ],[
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 45,
                 'sort'      => 3
             ],[
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 46,
                 'sort'      => 4
             ],[
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 47,
                 'sort'      => 5
             ],[
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 48,
                 'sort'      => 6
             ],
             //かしめ/接着_水検後_ラゲージ_黄
             [
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 49,
                 'sort'      => 1
             ],[
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 50,
                 'sort'      => 2
             ],[
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 52,
                 'sort'      => 4
             ],[
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 53,
                 'sort'      => 5
             ],[
-                'ig_id'     => 20,
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
                 'worker_id' => 54,
                 'sort'      => 6
             ],
 
             //かしめ/接着_塗装受入後_ラゲージ_白
             [
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 44,
                 'sort'      => 2
             ],[
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 45,
                 'sort'      => 3
             ],[
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 46,
                 'sort'      => 4
             ],[
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 47,
                 'sort'      => 5
             ],[
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 48,
                 'sort'      => 6
             ],
             //かしめ/接着_塗装受入後_ラゲージ_黄
             [
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 49,
                 'sort'      => 1
             ],[
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 50,
                 'sort'      => 2
             ],[
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 52,
                 'sort'      => 4
             ],[
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 53,
                 'sort'      => 5
             ],[
-                'ig_id'     => 21,
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
                 'worker_id' => 54,
                 'sort'      => 6
             ],
@@ -1289,106 +1657,154 @@ class RelatedWorkerTableSeeder extends Seeder
 
             //かしめ/接着_外観検査_ラゲージ_白
             [
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 44,
                 'sort'      => 2
             ],[
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 45,
                 'sort'      => 3
             ],[
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 46,
                 'sort'      => 4
             ],[
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 47,
                 'sort'      => 5
             ],[
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 48,
                 'sort'      => 6
             ],
             //かしめ/接着_外観検査_ラゲージ_黄
             [
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 49,
                 'sort'      => 1
             ],[
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 50,
                 'sort'      => 2
             ],[
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 52,
                 'sort'      => 4
             ],[
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 53,
                 'sort'      => 5
             ],[
-                'ig_id'     => 23,
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
                 'worker_id' => 54,
                 'sort'      => 6
             ],
 
             //かしめ/接着_手直_ラゲージ_白
             [
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 43,
                 'sort'      => 1
             ],[
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 44,
                 'sort'      => 2
             ],[
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 45,
                 'sort'      => 3
             ],[
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 46,
                 'sort'      => 4
             ],[
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 47,
                 'sort'      => 5
             ],[
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 48,
                 'sort'      => 6
             ],
             //かしめ/接着_手直_ラゲージ_黄
             [
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 49,
                 'sort'      => 1
             ],[
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 50,
                 'sort'      => 2
             ],[
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 51,
                 'sort'      => 3
             ],[
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 52,
                 'sort'      => 4
             ],[
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 53,
                 'sort'      => 5
             ],[
-                'ig_id'     => 24,
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
                 'worker_id' => 54,
                 'sort'      => 6
             ]

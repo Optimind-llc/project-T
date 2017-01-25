@@ -4,27 +4,26 @@ namespace App\Http\Controllers\Vehicle950A\Client;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use App\Choku;
-use App\Result;
 // Models
 use App\Models\Vehicle950A\Process;
 use App\Models\Vehicle950A\Inspection;
-use App\Models\Vehicle950A\InspectionGroup;
 use App\Models\Vehicle950A\InspectionResult;
+use App\Models\Vehicle950A\Worker;
 use App\Models\Vehicle950A\PartType;
 use App\Models\Vehicle950A\Part;
+use App\Models\Vehicle950A\FailureType;
 use App\Models\Vehicle950A\Failure;
+use App\Models\Vehicle950A\ModificationType;
 use App\Models\Vehicle950A\Modification;
 // Exceptions
 use JWTAuth;
 use App\Exceptions\JsonException;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Dingo\Api\Exception\StoreResourceFailedException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
+/*
  * Class InspectionController
  * @package App\Http\Controllers
  */
@@ -32,27 +31,18 @@ class InspectionController extends Controller
 {
     public function getInspection(Request $request)
     {
-        $process_en = $request->process;
-        $inspection_en = $request->inspection;
+        $process = $request->process;
+        $inspection = $request->inspection;
         $pt_names = $request->partNames;
 
-        $ig = InspectionGroup::where('process_en', '=', $process_en)
-            ->where('inspection_en', '=', $inspection_en)
-            ->first();
-
-        // If inspectionGroup not found
-        if (!$ig instanceof InspectionGroup) {
-            return \Response::json([
-                'message' => 'inspectionGroup Not found'
-            ], 400);
-        }
-
-        $ig_id = $ig->id;
+        $first_pt = PartType::where('name', '=', $pt_names[0])->first();
+        $division1 = $first_pt->division1;
+        $division2 = $first_pt->division2;
 
         $pt = PartType::whereIn('name', $pt_names)
             ->with([
-                'figures' => function($q) use ($ig_id){
-                    $q->where('ig_id', '=', $ig_id);
+                'figures' => function($q) use ($process, $inspection){
+                    $q->where('process', '=', $process)->where('inspection', '=', $inspection);
                 }
             ])
             ->get()
@@ -75,10 +65,13 @@ class InspectionController extends Controller
                 ];
             });
 
+        $worker = new Worker;
+        $failureType = new FailureType;
+        $modificationType = new ModificationType;
         return [
-            'workers' => $ig->formatedWorkers()->toArray(),
-            'failures' => $ig->sortedFailureTypes()->toArray(),
-            'modifications' => [],
+            'workers' => $worker->formatedWorkers($process, $inspection, $division1)->toArray(),
+            'failures' => $failureType->sortedFailureTypes($process, $inspection, $division2)->toArray(),
+            'modifications' => $modificationType->sortedModificationTypes($process, $inspection, $division2)->toArray(),
             'hModifications' => [],
             'partTypes' => $pt,
         ];
@@ -152,8 +145,8 @@ class InspectionController extends Controller
                 ->first();
 
             if ($targetPart instanceof Part) {
-                $ir = InspectionResult::where('process_en', '=', $process)
-                    ->where('inspection_en', '=', $inspection)
+                $ir = InspectionResult::where('process', '=', $process)
+                    ->where('inspection', '=', $inspection)
                     ->where('part_id', '=', $targetPart->id)
                     ->first();
 
@@ -183,8 +176,8 @@ class InspectionController extends Controller
 
             $newResult = new InspectionResult;
             $newResult->part_id = $targetPart->id;
-            $newResult->process_en = $process;
-            $newResult->inspection_en = $inspection;
+            $newResult->process = $process;
+            $newResult->inspection = $inspection;
             $newResult->line = $line;
             $newResult->ft_ids = '';
             $newResult->created_choku = $choku;

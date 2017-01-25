@@ -103,148 +103,148 @@ class RelatedModificationTableSeeder extends Seeder
         $data = [
             //穴あけ_外観検査_ドアインナ
             [
-                'process_en'    => 'holing',
-                'inspection_en' => 'gaikan',
+                'process'       => 'holing',
+                'inspection'    => 'gaikan',
                 'division'      => 'doorInner',
                 'type_id'       => 1,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'gaikan',
+                'process'       => 'holing',
+                'inspection'    => 'gaikan',
                 'division'      => 'doorInner',
-                'type_id'       => 99,
+                'type_id'       => 9,
                 'type'          => 2,
                 'sort'          => 1
             ],
 
             //穴あけ_外観検査_ラゲージインナ
             [
-                'process_en'    => 'holing',
-                'inspection_en' => 'gaikan',
+                'process'       => 'holing',
+                'inspection'    => 'gaikan',
                 'division'      => 'luggageInner',
                 'type_id'       => 1,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'gaikan',
+                'process'       => 'holing',
+                'inspection'    => 'gaikan',
                 'division'      => 'luggageInner',
-                'type_id'       => 99,
+                'type_id'       => 9,
                 'type'          => 2,
                 'sort'          => 1
             ],
 
             //穴あけ_穴検査_ドアインナ
             [
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'doorInner',
                 'type_id'       => 1,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'doorInner',
                 'type_id'       => 2,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'doorInner',
                 'type_id'       => 3,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'doorInner',
                 'type_id'       => 4,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'doorInner',
-                'type_id'       => 99,
+                'type_id'       => 9,
                 'type'          => 2,
                 'sort'          => 1
             ],
 
             //穴あけ_穴検査_ラゲージインナ
             [
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'luggageInner',
                 'type_id'       => 1,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'luggageInner',
                 'type_id'       => 2,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'luggageInner',
                 'type_id'       => 3,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'luggageInner',
                 'type_id'       => 4,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'luggageInner',
-                'type_id'       => 99,
+                'type_id'       => 9,
                 'type'          => 2,
                 'sort'          => 1
             ],
 
             //穴あけ_穴検査_ラゲージアウタ
             [
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'luggageOuter',
                 'type_id'       => 1,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'luggageOuter',
                 'type_id'       => 2,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'luggageOuter',
                 'type_id'       => 3,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'luggageOuter',
                 'type_id'       => 4,
                 'type'          => 2,
                 'sort'          => 1
             ],[
-                'process_en'    => 'holing',
-                'inspection_en' => 'ana',
+                'process'       => 'holing',
+                'inspection'    => 'ana',
                 'division'      => 'luggageOuter',
-                'type_id'       => 99,
+                'type_id'       => 9,
                 'type'          => 2,
                 'sort'          => 1
             ],
