@@ -21,20 +21,20 @@ class CreateResultTablesFor950A extends Migration
         Schema::connection('950A')->create('parts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('panel_id');
-            $table->integer('type_id')->unsigned();
+            $table->bigInteger('pn')->unsigned();
             $table->integer('family_id')->unsigned()->nullable();
             $table->timestamps();
 
             /*
              * Add Index
              */
-            $table->unique(['panel_id','type_id']);
+            $table->unique(['panel_id', 'pn']);
 
             /*
              * Add Foreign
              */
-            $table->foreign('type_id')
-                ->references('id')
+            $table->foreign('pn')
+                ->references('pn')
                 ->on('part_types')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');

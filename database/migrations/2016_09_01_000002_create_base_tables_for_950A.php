@@ -103,9 +103,8 @@ class CreateBaseTablesFor950A extends Migration
 
 
         Schema::connection('950A')->create('part_types', function (Blueprint $table) {
-            $table->increments('id');
-            $table->bigInteger('pn')->unique();
-            $table->bigInteger('pn2');
+            $table->bigInteger('pn')->unsigned();
+            $table->integer('pn2')->unsigned();
             $table->string('name', 16)->unique();
             $table->string('en', 16)->unique();
             $table->string('short_name', 16);
@@ -113,6 +112,8 @@ class CreateBaseTablesFor950A extends Migration
             $table->string('division2', 16);
             $table->integer('sort')->unsigned()->default(1);
             $table->timestamps();
+
+            $table->primary(['pn']);
         });
 
         Schema::connection('950A')->create('figures', function (Blueprint $table) {
@@ -121,7 +122,7 @@ class CreateBaseTablesFor950A extends Migration
             $table->string('path', 32);
             $table->integer('size_x')->unsigned();
             $table->integer('size_y')->unsigned();
-            $table->integer('pt_id')->unsigned();
+            $table->bigInteger('pt_pn')->unsigned();
             $table->string('process', 16);
             $table->string('inspection', 16);
             $table->timestamps();
@@ -129,8 +130,8 @@ class CreateBaseTablesFor950A extends Migration
             /**
              * Add Foreign
              */
-            $table->foreign('pt_id')
-                ->references('id')
+            $table->foreign('pt_pn')
+                ->references('pn')
                 ->on('part_types')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -246,7 +247,7 @@ class CreateBaseTablesFor950A extends Migration
             $table->string('color', 16);                        //FFFFFF RGBの16進数
             $table->string('border', 16);                       //dotted or solid
             $table->string('shape', 16);                        //square or circle
-            $table->integer('pt_id')->unsigned();
+            $table->bigInteger('pt_pn')->unsigned();
             $table->integer('figure_id')->unsigned();
             $table->tinyInteger('status')->unsigned()->default(1);
             $table->timestamps();
@@ -255,8 +256,8 @@ class CreateBaseTablesFor950A extends Migration
             /**
              * Add Foreign
              */
-            $table->foreign('pt_id')
-                ->references('id')
+            $table->foreign('pt_pn')
+                ->references('pn')
                 ->on('part_types')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -324,15 +325,15 @@ class CreateBaseTablesFor950A extends Migration
             $table->double('max_tolerance', 6, 3);
             $table->double('min_tolerance', 6, 3)->nullable();
             $table->integer('sort')->unsigned()->default(1);
-            $table->integer('pt_id')->unsigned();
+            $table->bigInteger('pt_pn')->unsigned();
             $table->integer('figure_id')->unsigned();
             $table->timestamps();
 
             /**
              * Add Foreign
              */
-            $table->foreign('pt_id')
-                ->references('id')
+            $table->foreign('pt_pn')
+                ->references('pn')
                 ->on('part_types')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');

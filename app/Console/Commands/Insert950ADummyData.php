@@ -72,7 +72,7 @@ class Insert950ADummyData extends Command
             $dummy_comments = ['コメントだよ', '', ''];
 
             $result = [
-                'partTypeId' => $partType['id'],
+                'pn' => $partType['pn'],
                 'panelId' => $panelId,
                 'comment' => $dummy_comments[array_rand($dummy_comments, 1)],
                 'status' => rand(0, 1),

@@ -17,17 +17,17 @@ class Figure extends Model
     {
         return $this->belongsTo(
             'App\Models\Vehicle950A\PartType',
-            'pt_id',
-            'id'
+            'pt_pn',
+            'pn'
         );
     }
 
-    public function holes()
-    {
-        return $this->hasMany(
-            'App\Models\Hole',
-            'figure_id',
-            'id'
-        );
-    }
+    // public function holes()
+    // {
+    //     return $this->hasMany(
+    //         'App\Models\Hole',
+    //         'figure_id',
+    //         'id'
+    //     );
+    // }
 }

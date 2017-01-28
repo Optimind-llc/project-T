@@ -48,7 +48,6 @@ class InspectionController extends Controller
             ->get()
             ->map(function($pt) {
                 return [
-                    'id' => $pt->id,
                     'pn' => $pt->pn,
                     'name' => $pt->name,
                     'figures' => $pt->figures->map(function($f) {
@@ -140,7 +139,7 @@ class InspectionController extends Controller
 
         // Check duplicate
         foreach ($parts as $part) {
-            $targetPart = Part::where('type_id', '=', $part['partTypeId'])
+            $targetPart = Part::where('pn', '=', $part['pn'])
                 ->where('panel_id', '=', $part['panelId'])
                 ->first();
 
@@ -163,14 +162,14 @@ class InspectionController extends Controller
 
         // Save inspection
         foreach ($parts as $part) {
-            $targetPart = Part::where('type_id', '=', $part['partTypeId'])
+            $targetPart = Part::where('pn', '=', $part['pn'])
                 ->where('panel_id', '=', $part['panelId'])
                 ->first();
 
             if (!$targetPart instanceof Part) {
                 $targetPart = new Part;
                 $targetPart->panel_id = $part['panelId'];
-                $targetPart->type_id = $part['partTypeId'];
+                $targetPart->pn = $part['pn'];
                 $targetPart->save();
             }
 

@@ -12,15 +12,15 @@ class Inspection extends Model
 {
     protected $connection = '950A';
     protected $primaryKey = 'en';
-    public $incrementing = false;
     protected $guarded = ['en'];
+    public $incrementing = false;
 
-    public function groups()
-    {
-        return $this->hasMany(
-            'App\Models\Vehicle950A\InspectionGroup',
-            'inspection_en',
-            'en'
-        );
-    }
+    // public function groups()
+    // {
+    //     return $this->hasMany(
+    //         'App\Models\Vehicle950A\InspectionGroup',
+    //         'inspection_en',
+    //         'en'
+    //     );
+    // }
 }

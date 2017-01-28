@@ -11,25 +11,26 @@ use Illuminate\Database\Eloquent\Model;
 class PartType extends Model
 {
     protected $connection = '950A';
-    protected $guarded = ['id'];
+    protected $guarded = ['pn'];
+    public $incrementing = false;
 
     public function figures()
     {
         return $this->hasMany(
             'App\Models\Vehicle950A\Figure',
-            'pt_id',
-            'id'
+            'pt_pn',
+            'pn'
         );
     }
 
-    // public function parts()
-    // {
-    //     return $this->hasMany(
-    //         'App\Models\Client\Part',
-    //         'part_type_id',
-    //         'id'
-    //     );
-    // }
+    public function parts()
+    {
+        return $this->hasMany(
+            'App\Models\Vehicle950A\Part',
+            'type_id',
+            'id'
+        );
+    }
 
     // public function holes()
     // {

@@ -12,17 +12,17 @@ class Process extends Model
 {
     protected $connection = '950A';
     protected $primaryKey = 'en';
-    public $incrementing = false;
     protected $guarded = ['en'];
+    public $incrementing = false;
 
-    public function groups()
-    {
-        return $this->hasMany(
-            'App\Models\Vehicle950A\InspectionGroup',
-            'process_en',
-            'en'
-        );
-    }
+    // public function groups()
+    // {
+    //     return $this->hasMany(
+    //         'App\Models\Vehicle950A\InspectionGroup',
+    //         'process_en',
+    //         'en'
+    //     );
+    // }
 
     // public function getInspectionsHasSamePanelID($division_en, $panel_id, $enable_inspection_list)
     // {

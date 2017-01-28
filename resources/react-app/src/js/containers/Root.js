@@ -31,6 +31,9 @@ class Root extends Component {
             <Route name="不良区分マスタメンテ" path="failure" component={Failure}/>
             <Route name="手直区分マスタメンテ" path="modification" component={Modification}/>
             <Route name="穴あけ加工ポイント登録" path="hole" component={Hole}/>
+            <Route name="950A" path="950A">
+              <Route name="マッピング" path="mapping" component={Dashboard}/>
+            </Route>
           </Route>
         </Router>
         {/*<DevTools/>*/}

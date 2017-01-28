@@ -182,10 +182,28 @@ Route::group(['prefix' => '950A', 'namespace' => 'Vehicle950A'], function () {
 	Route::group(['prefix' => 'client', 'namespace' => 'Client'], function () {
 	    Route::post('inspection', 'InspectionController@getInspection');
 	    Route::post('inspection/save', 'InspectionController@saveInspection');
+
+		// Associate Parts
+		Route::post('association/check', 'AssociationController@check');
+		Route::post('association/save', 'AssociationController@save');
+		Route::post('association/family', 'AssociationController@getFamily');
+		Route::post('association/update', 'AssociationController@updateFamily');
 	});
 });
 
+Route::group(['prefix' => 'manager/950A', 'namespace' => 'Vehicle950A\Manager'], function () {
+    Route::get('dashboard', 'ShowController@index');
+    Route::get('mapping', 'ShowController@index');
+    Route::get('reference', 'ShowController@index');
+    Route::get('report', 'ShowController@index');
+    Route::get('association', 'ShowController@index');
 
+    // Route::get('mapping/{pageType}/{itorG}', 'ShowController@index');
+    // Route::get('inspector', 'ShowController@index');
+    // Route::get('failure', 'ShowController@index');
+    // Route::get('modification', 'ShowController@index');
+    // Route::get('hole', 'ShowController@index');
+});
 
 
 // $api = app('Dingo\Api\Routing\Router');

@@ -44,7 +44,7 @@ class App extends Component {
         minHeight: 600
       },
       content: {
-        paddingLeft: 160, 
+        paddingLeft: 160,
       }
     };
 
