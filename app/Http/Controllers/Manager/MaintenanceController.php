@@ -634,4 +634,43 @@ class MaintenanceController extends Controller
 
         return ['message' => 'nothing to do'];
     }
+
+    public function updateHole(Request $request)
+    {
+        $figureId = $request->figureId;
+        $x = $request->x;
+        $y = $request->y;
+
+        $partTypeId = 1;
+        switch ($figureId) {
+            case 1: $partTypeId = 1; break;
+            case 1: $partTypeId = 1; break;
+            case 1: $partTypeId = 1; break;
+            case 1: $partTypeId = 1; break;
+            case 1: $partTypeId = 1; break;
+            case 1: $partTypeId = 1; break;
+            case 1: $partTypeId = 1; break;
+            case 1: $partTypeId = 1; break;
+            case 1: $partTypeId = 1; break;
+            case 1: $partTypeId = 1; break;
+            case 1: $partTypeId = 1; break;
+            default: return ['message' => 'missing figureId']; break;
+        }
+
+        if ($figureId == 8 && $x > 870) {
+            $partTypeId = 1;
+        }
+
+        $hole = new Hole;
+        $hole->part_type_id = $partTypeId;
+        $hole->label = $request->label;
+        $hole->point = $point;
+        $hole->direction = $request->direction;
+        $hole->shape = $request->shape;
+        $hole->border = $request->border;
+        $hole->color = $request->color;
+        $hole->color = $request->color;
+
+        return ['message' => 'nothing to do'];
+    }
 }
