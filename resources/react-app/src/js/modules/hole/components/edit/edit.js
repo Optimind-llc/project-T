@@ -41,6 +41,13 @@ class Edit extends Component {
     };
   }
 
+  updateHole() {
+    const { hole, updateHole } = this.props;
+    const { label, point, direction, shape, border, color } = this.state;
+
+    updateHole(hole.id, label, point, direction.value, shape.value, border.value, color);
+  }
+
   getTextColor(color) {
     const cR = parseInt(color.slice(0,2), 16);
     const cG = parseInt(color.slice(2,4), 16);
@@ -156,7 +163,7 @@ class Edit extends Component {
           </div>
           <div className="figure-wrap">
             <img src={path} width={1740/2}/>
-            <svg onClick={(e) => this.setState({point: [(e.screenX - 315)*2, (e.screenY - 252)*2]})}>
+            <svg onClick={(e) => this.setState({point: [(e.screenX - 325)*2, (e.screenY - 162)*2]})}>
               <circle cx={point[0]/2} cy={point[1]/2} r={4} fill="red"/>
               {
                 shape.value === 'square' &&
@@ -220,9 +227,7 @@ class Edit extends Component {
             </svg>
           </div>
           <div className="btn-wrap">
-            <button onClick={() => {
-              update(id, name, label, inspections)
-            }}>
+            <button onClick={() => {this.updateHole()}}>
               保存
             </button>
           </div>

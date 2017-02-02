@@ -67,6 +67,7 @@ class Result
 
                         return collect([
                             'failurePositionId' => $fp->id,
+                            'partTypeId' => $fp->part->part_type_id,
                             'label' => $fp->failure->label,
                             'point' => $fp->point,
                             'cLabel' => $cLabel
@@ -128,6 +129,9 @@ class Result
                 'pages.failurePositions',
                 'pages.failurePositions.failure' => function($q) {
                     $q->select(['id', 'label']);
+                },
+                'pages.failurePositions.part' => function($q) {
+                    $q->select(['id', 'part_type_id']);
                 },
                 'pages.failurePositions.modifications.modification' => function($q) {
                     $q->select(['id', 'name', 'label']);

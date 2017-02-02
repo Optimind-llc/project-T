@@ -163,7 +163,7 @@ class InspectionGroup extends Model
             'pageTypes',
             'pageTypes.figure',
             'pageTypes.figure.holes' => function($q) {
-                $q->select(['id', 'point', 'label', 'direction', 'color', 'border', 'shape', 'figure_id', 'part_type_id']);
+                $q->where('status', '=', 1)->select(['id', 'point', 'label', 'direction', 'color', 'border', 'shape', 'figure_id', 'part_type_id', 'status']);
             },
             'pageTypes.partTypes' => function($q) {
                 $q->select(['id', 'pn', 'name', 'sort', 'vehicle_num']);

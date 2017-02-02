@@ -35,7 +35,8 @@ class Hole extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.maintHoleData.updated && nextProps.maintHoleData.updated) {
+    if (!this.props.maintHoleData.didUpdated && nextProps.maintHoleData.didUpdated) {
+    console.log('aaaaaaaa')
       this.requestHoles();
       this.setState({
         editModal: false,
@@ -105,6 +106,7 @@ class Hole extends Component {
             holes={maintHoleData.data.holes}
             activateHole={(id) => this.props.actions.activateHole(id)}
             deactivateHole={(id) => this.props.actions.deactivateHole(id)}
+            updateHole={(id, label, point, direction, shape, border, color) => this.props.actions.updateHole(id, label, point, direction, shape, border, color)}
             editModal={editModal}
             createModal={createModal}
           />

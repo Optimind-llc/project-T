@@ -12,11 +12,11 @@
     z-index: 10000;
     background-color: white;
     position: fixed;
-    top: 40px;
-    left: 220px;
+    top: 10px;
+    left: 230px;
     padding: 10px;
     width: 1060px;
-    height: 605px;
+    height: 645px;
     border-radius: 4px;
 
     .panel-btn {
@@ -193,14 +193,16 @@
       }
     }
 
-
-
     p.explanation {
       margin: 4px 0;
       font-size: 12px;
     }
 
     .btn-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
       display: flex;
       flex-flow: row nowrap;
       justify-content: center;

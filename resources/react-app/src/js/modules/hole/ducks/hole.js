@@ -57,8 +57,8 @@ export default function reducer(state = initialState, action) {
     case ACTIVATE_HOLE_DATA:
     case DEACTIVATE_HOLE_DATA:
       return Object.assign({}, state, {
-        updating: true,
-        updated: false,
+        isUpdating: true,
+        didUpdated: false,
         message: '',
         meta: null
       });
@@ -68,8 +68,8 @@ export default function reducer(state = initialState, action) {
     case ACTIVATE_HOLE_DATA_SUCCESS:
     case DEACTIVATE_HOLE_DATA_SUCCESS:
       return Object.assign({}, state, {
-        updating: false,
-        updated: true
+        isUpdating: false,
+        didUpdated: true
       });
 
     case CREATE_HOLE_DATA_FAIL:
@@ -77,8 +77,8 @@ export default function reducer(state = initialState, action) {
     case ACTIVATE_HOLE_DATA_FAIL:
     case DEACTIVATE_HOLE_DATA_FAIL:
       return Object.assign({}, state, {
-        updating: false,
-        updated: false,
+        isUpdating: false,
+        didUpdated: false,
         message: action.payload.message,
         meta: action.payload.meta
       });
@@ -118,7 +118,7 @@ export function createHole(name, label, inspections) {
   };
 }
 
-export function updateHole(id, name, label, inspections) {
+export function updateHole(id, label, point, direction, shape, border, color) {
   return {
     [CALL_API]: {
       types: [
@@ -128,7 +128,7 @@ export function updateHole(id, name, label, inspections) {
       ],
       endpoint: 'maintenance/hole/update',
       method: 'POST',
-      body: {id, name, label, inspections}
+      body: {id, label, point, direction, shape, border, color}
     }
   };
 }

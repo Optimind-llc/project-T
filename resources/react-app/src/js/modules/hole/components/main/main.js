@@ -10,10 +10,18 @@ class Main extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      editModal: false,
+      editModal: props.editModal,
       editting: null,
       createModal: false
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.editModal) {
+      this.setState({
+        editModal: false,
+      });
+    }
   }
 
   formatHole(hole) {
@@ -41,7 +49,7 @@ class Main extends Component {
   }
 
   render() {
-    const { path, holes, activateHole, deactivateHole } = this.props;
+    const { path, holes, activateHole, deactivateHole, updateHole } = this.props;
     const { editModal, createModal, editting } = this.state;
 
     return (
@@ -178,7 +186,7 @@ class Main extends Component {
             message={'aaa'}
             meta={{}}
             close={() => this.setState({editModal: false})}
-            update={(hole) => this.updateHole(hole)}
+            updateHole={(id, label, point, direction, shape, border, color) => updateHole(id, label, point, direction, shape, border, color)}
           />
         }{
           createModal &&
@@ -197,6 +205,7 @@ Main.propTypes = {
   holes: PropTypes.array.isRequired,
   activateHole: PropTypes.func.isRequired,
   deactivateHole: PropTypes.func.isRequired,
+  updateHole: PropTypes.func.isRequired,
   editModal: PropTypes.bool.isRequired,
   createModal: PropTypes.bool.isRequired,
 };
