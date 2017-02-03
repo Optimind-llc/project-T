@@ -797,7 +797,6 @@ class ShowController extends Controller
                 ];
             });
 
-        // $holes = Hole::where('holes.part_type_id', '=', $partTypeId)
         $holes = Hole::whereIn('holes.part_type_id', $partTypeIds)
             ->join('figures as f', function($join) {
                 $join->on('f.id', '=', 'holes.figure_id');
@@ -841,6 +840,21 @@ class ShowController extends Controller
                     'pg' => $h->page_type_id
                 ];
             });
+
+        $count_holes = Hole::whereIn('holes.part_type_id', $partTypeIds)
+            ->join('figures as f', function($join) {
+                $join->on('f.id', '=', 'holes.figure_id');
+            })
+            ->join('page_types as pt', function($join) use ($page_type_ids) {
+                $join->on('pt.figure_id', '=', 'f.id')->whereIn('pt.id', $page_type_ids);
+            })
+            ->join('hole_page as hp', function($join) use ($page_ids) {
+                $join->on('holes.id', '=', 'hp.hole_id')->whereIn('page_id', $page_ids);
+            })
+            ->select(DB::raw('count(holes.id) as user_count, holes.id as id'))
+            ->groupBy('holes.id')
+            ->get();
+
 
         $inlines = [];
         if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
@@ -904,6 +918,7 @@ class ShowController extends Controller
                 'failures' => $failures,
                 'modifications' => $modifications,
                 'holes' => $holes,
+                'countH' => $count_holes,
                 'inlines' => $inlines,
                 'ft' => $failureTypes,
                 'mt' => $modificationTypes,

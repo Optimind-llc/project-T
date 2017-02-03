@@ -71,13 +71,7 @@ class Main extends Component {
                       {
                         h.border === 'dotted' &&
                         <g stroke="none" strokeWidth={1} fill="none" fillRule="evenodd" strokeDasharray={3}>
-                          <defs>
-                            <rect id="path-1" x={h.lx-10} y={h.ly-9} width={20} height={18} />
-                            <mask id="mask-2" maskcontentunits="userSpaceOnUse" maskunits="objectBoundingBox" x={0} y={0} width={20} height={18} fill="white">
-                              <use xlinkHref="#path-1" />
-                            </mask>
-                          </defs>
-                          <use id="Rectangle" stroke="#FFF" mask="url(#mask-2)" strokeWidth={2} xlinkHref="#path-1" />
+                          <rect id="path-1" x={h.lx-10} y={h.ly-9} width={20} height={18} strokeWidth={2} stroke="#FFF"/>
                         </g>
                       }
                       <text
@@ -100,13 +94,7 @@ class Main extends Component {
                       {
                         h.border === 'dotted' &&
                         <g stroke="none" strokeWidth={1} fill="none" fillRule="evenodd" strokeDasharray={3}>
-                          <defs>
-                            <ellipse id="path-1" cx={h.lx} cy={h.ly} rx={10} ry={10} />
-                            <mask id="mask-2" maskcontentunits="userSpaceOnUse" maskunits="objectBoundingBox" x={0} y={0} width={20} height={20} fill="white">
-                              <use xlinkHref="#path-1"/>
-                            </mask>
-                          </defs>
-                          <use stroke="#FFF" mask="url(#mask-2)" strokeWidth={2} xlinkHref="#path-1" />
+                            <ellipse id="path-1" cx={h.lx} cy={h.ly} rx={10} ry={10} stroke="#FFF" strokeWidth={2}/>
                         </g>
                       }
                       <text

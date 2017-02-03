@@ -209,7 +209,7 @@ class AssociationController extends Controller
                                     'pivot' => $p['pivot']
                                 ];
                             })->groupBy('name')->map(function($page) {
-                                return $page->first()['pivot']['status'] === 1 ? 1 : 2;
+                                return $page->first()['pivot']['status'] === 1 ? 1 : $page->first()['pivot']['status'] === 0 ? 2 : 0;
                             }))
                         ];
                     })
