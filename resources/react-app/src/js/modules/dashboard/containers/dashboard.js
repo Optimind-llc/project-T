@@ -45,7 +45,8 @@ class Dashboard extends Component {
   }
 
   componentWillUnmount() {
-   clearInterval(this.state.intervalId); 
+   clearInterval(this.state.intervalId);
+   this.props.actions.clearPageData();
   }
 
   endInterval() {

@@ -233,7 +233,7 @@ class MappingController extends Controller
                     'hmt' => [],
                     'i' => []
                 ]]
-            ], 200);
+            ], 400);
         }
 
         return ['data' => $data];

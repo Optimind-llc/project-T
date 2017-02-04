@@ -4,6 +4,7 @@ import { CALL_API } from '../../../middleware/fetchMiddleware';
 export const REDUEST_Page_DATA = 'REDUEST_Page_DATA';
 export const REDUEST_Page_DATA_SUCCESS = 'REDUEST_Page_DATA_SUCCESS';
 export const REDUEST_Page_DATA_FAIL = 'REDUEST_Page_DATA_FAIL';
+export const CLEAR_Page_DATA = 'CLEAR_Page_DATA';
 
 const initialState = {
   data: null,
@@ -30,6 +31,11 @@ export default function reducer(state = initialState, action) {
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: true
+      });
+
+    case CLEAR_Page_DATA:
+      return Object.assign({}, state, {
+        data: null
       });
 
     default:
@@ -67,7 +73,14 @@ export function advancedMapping(partT, itionG, itorG, s = null, e = null) {
   };
 }
 
+export function clearPageData() {
+  return {
+    type: CLEAR_Page_DATA
+  }
+}
+
 export const pageActions = {
   panelIdMapping,
-  advancedMapping
+  advancedMapping,
+  clearPageData
 };

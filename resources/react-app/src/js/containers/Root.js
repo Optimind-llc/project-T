@@ -16,6 +16,8 @@ import Failure from '../modules/failure/containers/failure';
 import Modification from '../modules/modification/containers/modification';
 import Hole from '../modules/hole/containers/hole';
 
+import { default as Dashboard950A } from '../modules/Vehicle950A/dashboard/containers/dashboard';
+
 class Root extends Component {
   render() {
     const { history, store } = this.props;
@@ -32,7 +34,19 @@ class Root extends Component {
             <Route name="手直区分マスタメンテ" path="modification" component={Modification}/>
             <Route name="穴あけ加工ポイント登録" path="hole" component={Hole}/>
             <Route name="950A" path="950A">
-              <Route name="マッピング" path="mapping" component={Dashboard}/>
+              <Route name="マッピング" path="dashboard" component={Dashboard950A}/>
+              <Route name="マッピング" path="mapping" component={Dashboard950A}/>
+              <Route name="マッピング" path="reference" component={Dashboard950A}/>
+              <Route name="マッピング" path="report" component={Dashboard950A}/>
+              <Route name="マッピング" path="association" component={Dashboard950A}/>
+              <Route path="maintenance">
+                <Route name="マッピング" path="worker" component={Dashboard950A}/>
+                <Route name="マッピング" path="failure" component={Dashboard950A}/>
+                <Route name="マッピング" path="modification" component={Dashboard950A}/>
+                <Route name="マッピング" path="holeModification" component={Dashboard950A}/>
+                <Route name="マッピング" path="hole" component={Dashboard950A}/>
+                <Route name="マッピング" path="inline" component={Dashboard950A}/>
+              </Route>
             </Route>
           </Route>
         </Router>

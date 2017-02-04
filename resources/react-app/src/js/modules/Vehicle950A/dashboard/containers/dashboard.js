@@ -3,16 +3,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
-import { vehicles, processes, inspections, inspectionGroups } from '../../../utils/Processes';
+import { vehicles, processes, inspections, inspectionGroups } from '../../../../utils/Processes';
 // Actions
 import { push } from 'react-router-redux';
-import { pageActions } from '../duckmappingpping';
+import { pageActions } from '../ducks/mapping';
 // Styles
 import './dashboard.scss';
 // Components
-import Loading from '../../../components/loading/loading';
-import RangeCalendar from '../components/rangeCalendar/rangeCalendar';
-import Mapping from '../../mapping/containers/mapping';
+// import Loading from '../../../components/loading/loading';
+// import RangeCalendar from '../components/rangeCalendar/rangeCalendar';
+// import Mapping from '../../mapping/containers/mapping';
 
 class Dashboard extends Component {
   constructor(props, context) {
@@ -44,6 +44,7 @@ class Dashboard extends Component {
 
     return (
       <div id="950Dashboard">
+        <p>aaa</p>
       </div>
     );
   }
@@ -60,7 +61,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({push}, mappingActions);
+  const actions = Object.assign({push}, pageActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };

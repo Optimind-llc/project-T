@@ -22,10 +22,10 @@
 
   .header {
     position: relative;
+    margin: 10px;
 
     .vehicle-displaying {
       position: relative;
-      margin: 10px;
       border-radius: 4px;
       border: 1px solid #FFF;
       cursor: pointer;
@@ -62,15 +62,14 @@
     }
 
     .vehicle-hiding {
-      position: absolute;
-      top: 32px;
-      left: 10px;
       width: 140px;
       background-color: #FFF;
       border-radius: 0 0 4px 4px;
       border: 1px solid #A9A9A9;
       border-top: 0;
       cursor: not-allowed;
+      cursor: pointer;
+      // pointer-events: none;
 
       p {
         position: relative;

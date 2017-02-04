@@ -28,13 +28,15 @@ class Navigation extends Component {
   }
 
   render() {
-    const { vehicle, links, masterlinks, logedin } = this.props;
+    const { vehicle, links, masterlinks, logedin, changeVehicle, push } = this.props;
     const { pw, error, opened } = this.state;
 
     return (
       <div id="navigation">
-        <div className="header">
-          {/*<img src={logo} alt="logo"/>*/}
+        <div
+          className="header"
+          onMouseLeave={() => this.setState({opened: false})}
+        >
           <div
             className={`vehicle-displaying ${opened ? 'focused' : ''}`}
             onClick={() => this.setState({opened: !opened})}
@@ -43,8 +45,21 @@ class Navigation extends Component {
           </div>
           {
             opened &&
-            <div className="vehicle-hiding">
-              <p>{'950A'}</p>
+            <div
+              className="vehicle-hiding"
+              onClick={() => {
+                this.setState({opened: !opened});
+                if (vehicle === '680A') {
+                  changeVehicle('950A');
+                  push('/manager/950A/dashboard');
+                }
+                else if (vehicle === '950A'){
+                  changeVehicle('680A');
+                  push('/manager/dashboard');
+                }
+              }}
+            >
+              <p>{vehicle === '680A' ? '950A' : '680A'}</p>
             </div>
           }
         </div>
@@ -127,7 +142,8 @@ Navigation.propTypes = {
   logedin: PropTypes.bool.isRequired,
   pw: PropTypes.string.isRequired,
   login: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  changeVehicle: PropTypes.func.isRequired
 };
 
 export default Navigation;

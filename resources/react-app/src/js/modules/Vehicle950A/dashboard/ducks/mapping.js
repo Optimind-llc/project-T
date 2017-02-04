@@ -1,5 +1,5 @@
 import {fromJS, Map as iMap, List as iList} from 'immutable';
-import { CALL_API } from '../../../middleware/fetchMiddleware';
+import { CALL_API } from '../../../../middleware/fetchMiddleware';
 
 export const REDUEST_Page_DATA = 'REDUEST_Page_DATA';
 export const REDUEST_Page_DATA_SUCCESS = 'REDUEST_Page_DATA_SUCCESS';

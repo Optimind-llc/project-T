@@ -198,12 +198,20 @@ Route::group(['prefix' => 'manager/950A', 'namespace' => 'Vehicle950A\Manager'],
     Route::get('report', 'ShowController@index');
     Route::get('association', 'ShowController@index');
 
-    // Route::get('mapping/{pageType}/{itorG}', 'ShowController@index');
-    // Route::get('inspector', 'ShowController@index');
-    // Route::get('failure', 'ShowController@index');
-    // Route::get('modification', 'ShowController@index');
-    // Route::get('hole', 'ShowController@index');
+    // Maintenance
+    Route::group(['prefix' => 'maintenance'], function () {
+        Route::get('worker', 'ShowController@index');
+        Route::get('failure', 'ShowController@index');
+        Route::get('modification', 'ShowController@index');
+        Route::get('holeModification', 'ShowController@index');
+        Route::get('hole', 'ShowController@index');
+        Route::get('inline', 'ShowController@index');
+    });
 });
+
+
+
+
 
 
 // $api = app('Dingo\Api\Routing\Router');
