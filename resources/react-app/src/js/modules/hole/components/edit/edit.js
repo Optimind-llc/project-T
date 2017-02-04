@@ -58,7 +58,7 @@ class Edit extends Component {
 
   render() {
     const { hole, path, message, close, update } = this.props;
-    const { label, point, direction, shape, border, color, partName } = this.state;
+    const { label, point, direction, shape, border, color, partName, offsetX, offsetY } = this.state;
 
     const labelColore = [
       '000000', '021F57', '4A90E2', '7ED321', '9B9B9B', 'BD10E0',
@@ -163,7 +163,7 @@ class Edit extends Component {
           </div>
           <div className="figure-wrap">
             <img src={path} width={1740/2}/>
-            <svg onClick={(e) => this.setState({point: [(e.screenX - 325)*2, (e.screenY - 162)*2]})}>
+            <svg onClick={e => this.setState({point: [(e.clientX - 325)*2, (e.clientY - 100)*2]})}>
               <circle cx={point[0]/2} cy={point[1]/2} r={4} fill="red"/>
               {
                 shape.value === 'square' &&
@@ -196,7 +196,7 @@ class Edit extends Component {
                   {
                     border.value === 'dotted' &&
                     <g stroke="none" strokeWidth={1} fill="none" fillRule="evenodd" strokeDasharray={3}>
-                      <ellipse id="path-1" cx={point[0]/2 + direction.x} cy={point[1]/2 + direction.y} rx={10} ry={10} stroke="#FFF" strokeWidth={2}/>
+                      <ellipse id="path-1" cx={point[0]/2 + direction.x} cy={point[1]/2 + direction.y} rx={9.5} ry={9.5} stroke="#FFF" strokeWidth={1.5}/>
                     </g>
                   }
                   <text

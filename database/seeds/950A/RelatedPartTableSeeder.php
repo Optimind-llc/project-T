@@ -26,11 +26,11 @@ class RelatedPartTableSeeder extends Seeder
             //For PostgreSQL or anything else
             DB::connection('950A')->statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
         }
-品番品名回答
-ラゲージASSY STD:64401-11010
-ラゲージASSY ARW:64401-11020
-ドアASSY RH:67015-11020
-ドアASSY LH:67016-11020
+
+// ラゲージASSY STD:64401-11010
+// ラゲージASSY ARW:64401-11020
+// ドアASSY RH:67015-11020
+// ドアASSY LH:67016-11020
 
         $data = [
             [

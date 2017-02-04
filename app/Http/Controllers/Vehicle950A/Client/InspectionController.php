@@ -64,11 +64,14 @@ class InspectionController extends Controller
                 ];
             });
 
-        $worker = new Worker;
+        // $worker = new Worker;
         $failureType = new FailureType;
         $modificationType = new ModificationType;
+
+        $workers = Worker::formated($process, $inspection, $division1)->get()->formated();
         return [
-            'workers' => $worker->formatedWorkers($process, $inspection, $division1)->toArray(),
+            // 'workers' => $worker->formatedWorkers($process, $inspection, $division1)->toArray(),
+            'workers' => $workers,
             'failures' => $failureType->sortedFailureTypes($process, $inspection, $division2)->toArray(),
             'modifications' => $modificationType->sortedModificationTypes($process, $inspection, $division2)->toArray(),
             'hModifications' => [],

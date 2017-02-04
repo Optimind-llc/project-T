@@ -36,7 +36,6 @@ class Hole extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!this.props.maintHoleData.didUpdated && nextProps.maintHoleData.didUpdated) {
-    console.log('aaaaaaaa')
       this.requestHoles();
       this.setState({
         editModal: false,
