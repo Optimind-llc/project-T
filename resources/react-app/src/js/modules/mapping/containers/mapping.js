@@ -299,7 +299,7 @@ class Mapping extends Component {
                   </li>
                   {data.holes.map(h => {
                     let percentage = 0;
-                    const sum = data.count/data.pageTypes.length;
+                    const sum = data.countH.find(ch => ch.id === h.id).count;
                     const sum02 = h.s.length;
                     if (sum !== 0) percentage = Math.round(1000*(sum-sum02)/sum)/10;
 

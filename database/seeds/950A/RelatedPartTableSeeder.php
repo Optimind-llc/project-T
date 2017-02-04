@@ -26,6 +26,11 @@ class RelatedPartTableSeeder extends Seeder
             //For PostgreSQL or anything else
             DB::connection('950A')->statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
         }
+品番品名回答
+ラゲージASSY STD:64401-11010
+ラゲージASSY ARW:64401-11020
+ドアASSY RH:67015-11020
+ドアASSY LH:67016-11020
 
         $data = [
             [
@@ -117,46 +122,46 @@ class RelatedPartTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'pn'         => 1,
+                'pn'         => 6701511020,
                 'pn2'        => 0,
-                'name'       => 'ドアAssyR',
-                'en'         => 'doorAssyR',
+                'name'       => 'ドアASSY RH',
+                'en'         => 'doorASSY RH',
                 'short_name' => 'DAR',
                 'division1'  => 'door',
-                'division2'  => 'doorAssy',
+                'division2'  => 'doorASSY',
                 'sort'       => 10,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'pn'         => 2,
+                'pn'         => 6701611020,
                 'pn2'        => 0,
-                'name'       => 'ドアAssyL',
-                'en'         => 'doorAssyL',
+                'name'       => 'ドアASSY LH',
+                'en'         => 'doorASSY LH',
                 'short_name' => 'DAL',
                 'division1'  => 'door',
-                'division2'  => 'doorAssy',
+                'division2'  => 'doorASSY',
                 'sort'       => 9,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'pn'         => 3,
+                'pn'         => 6440111010,
                 'pn2'        => 0,
-                'name'       => 'ラゲージAssySTD',
-                'en'         => 'luggageAssySTD',
+                'name'       => 'ラゲージASSY STD',
+                'en'         => 'luggageASSY STD',
                 'short_name' => 'RAS',
                 'division1'  => 'luggage',
-                'division2'  => 'luggageAssy',
+                'division2'  => 'luggageASSY',
                 'sort'       => 11,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'pn'         => 4,
+                'pn'         => 6440111020,
                 'pn2'        => 0,
-                'name'       => 'ラゲージAssyARW',
-                'en'         => 'luggageAssyARW',
+                'name'       => 'ラゲージASSY ARW',
+                'en'         => 'luggageASSY ARW',
                 'short_name' => 'RAA',
                 'division1'  => 'luggage',
-                'division2'  => 'luggageAssy',
+                'division2'  => 'luggageASSY',
                 'sort'       => 12,
                 'created_at' => $now,
                 'updated_at' => $now

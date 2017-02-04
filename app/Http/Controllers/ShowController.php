@@ -412,9 +412,17 @@ class ShowController extends Controller
             case 'both': $tyoku = ['白直', '黄直', '黒直', '不明']; break;
         }
 
+        $partTypeIds = [$partTypeId];
+        if ($partTypeId == 3 || $partTypeId == 4) {
+            $partTypeIds = [3,4];
+        }
+        elseif ($partTypeId == 5 || $partTypeId == 6) {
+            $partTypeIds = [5,6];
+        }
+
         $page_types = PageType::where('group_id', '=', $itionGId)
-            ->whereHas('partTypes', function($q) use ($partTypeId){
-                $q->where('part_types.id', '=', $partTypeId);
+            ->whereHas('partTypes', function($q) use ($partTypeIds){
+                $q->whereIn('part_types.id', $partTypeIds);
             })
             ->with(['figure'])
             ->get(['id', 'number', 'figure_id'])
@@ -471,8 +479,9 @@ class ShowController extends Controller
                 }
             ])
             ->get(['id', 'point', 'page_id', 'part_id', 'failure_id'])
-            ->filter(function($fp) use ($partTypeId) {
-                return $fp->part->part_type_id == $partTypeId;
+            ->filter(function($fp) use ($partTypeIds) {
+                // return $fp->part->part_type_id == $partTypeId;
+                return in_array($fp->part->part_type_id, $partTypeIds);
             })
             ->map(function($fp) {
                 return [
@@ -506,7 +515,7 @@ class ShowController extends Controller
                 ];
             });
 
-        $holes = Hole::where('holes.part_type_id', '=', $partTypeId)
+        $holes = Hole::whereIn('holes.part_type_id', $partTypeIds)
             ->join('figures as f', function($join) {
                 $join->on('f.id', '=', 'holes.figure_id');
             })
@@ -547,6 +556,20 @@ class ShowController extends Controller
                     'pg' => $h->page_type_id
                 ];
             });
+
+        $count_holes = Hole::whereIn('holes.part_type_id', $partTypeIds)
+            ->join('figures as f', function($join) {
+                $join->on('f.id', '=', 'holes.figure_id');
+            })
+            ->join('page_types as pt', function($join) use ($page_type_ids) {
+                $join->on('pt.figure_id', '=', 'f.id')->whereIn('pt.id', $page_type_ids);
+            })
+            ->join('hole_page as hp', function($join) use ($page_ids) {
+                $join->on('holes.id', '=', 'hp.hole_id')->whereIn('page_id', $page_ids);
+            })
+            ->select(DB::raw('count(holes.id) as count, holes.id as id'))
+            ->groupBy('holes.id')
+            ->get();
 
         $inlines = [];
         if ($itionGId == 3 || $itionGId == 9 || $itionGId == 19) {
@@ -590,6 +613,7 @@ class ShowController extends Controller
                 'failures' => $failures,
                 'modifications' => $modifications,
                 'holes' => $holes,
+                'countH' => $count_holes,
                 'inlines' => $inlines,
                 'ft' => $failureTypes,
                 'mt' => $modificationTypes,
@@ -851,7 +875,7 @@ class ShowController extends Controller
             ->join('hole_page as hp', function($join) use ($page_ids) {
                 $join->on('holes.id', '=', 'hp.hole_id')->whereIn('page_id', $page_ids);
             })
-            ->select(DB::raw('count(holes.id) as user_count, holes.id as id'))
+            ->select(DB::raw('count(holes.id) as count, holes.id as id'))
             ->groupBy('holes.id')
             ->get();
 
