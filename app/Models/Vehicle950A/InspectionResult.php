@@ -14,7 +14,24 @@ class InspectionResult extends Model
     protected $connection = '950A';
     protected $guarded = ['id'];
     protected $dates = ['inspected_at', 'deleted_at'];
-    
+
+    public function failures()
+    {
+        return $this->hasMany(
+            'App\Models\Vehicle950A\Failure',
+            'ir_id',
+            'id'
+        );
+    }
+
+    public function scopeIdentify($query, $p, $i, $partId)
+    {
+        return $query->where('process', '=', $p)
+            ->where('inspection', '=', $i)
+            ->where('part_id', '=', $partId)
+            ->where('latest', '=', 1);
+    }
+
     // public function groups()
     // {
     //     return $this->belongsTo(

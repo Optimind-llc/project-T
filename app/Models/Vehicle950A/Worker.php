@@ -14,7 +14,7 @@ class Worker extends Model
     protected $table = 'workers';
     protected $guarded = ['id'];
 
-    public function scopeFormated($query, $p, $i, $d)
+    public function scopeNarrow($query, $p, $i, $d)
     {
         return $query->join('worker_related as wr', function ($join) use ($p, $i, $d){
             $join->on('workers.id', '=', 'wr.worker_id')
@@ -23,43 +23,6 @@ class Worker extends Model
                 ->where('wr.division', '=', $d);
         })
         ->select('workers.*', 'wr.sort');
-    }
-
-    public function formated()
-    {
-        return $this->map(function ($w) {
-            return [
-                'id' => $w->id,
-                'name' => $w->name,
-                'choku' => $w->choku_code,
-                'sort' => $w->sort
-            ];
-        })
-        ->sortBy('sort')
-        ->groupBy('choku');
-    }
-
-    public function formatedWorkers($p, $i, $d)
-    {
-        $workers = $this->join('worker_related as wr', function ($join) use ($p, $i, $d){
-            $join->on('workers.id', '=', 'wr.worker_id')
-                ->where('wr.process', '=', $p)
-                ->where('wr.inspection', '=', $i)
-                ->where('wr.division', '=', $d);
-        })
-        ->select('workers.*', 'wr.sort')
-        ->get();
-
-        return $workers->map(function ($w) {
-            return [
-                'id' => $w->id,
-                'name' => $w->name,
-                'choku' => $w->choku_code,
-                'sort' => $w->sort
-            ];
-        })
-        ->sortBy('sort')
-        ->groupBy('choku');
     }
 
     // public function groups()

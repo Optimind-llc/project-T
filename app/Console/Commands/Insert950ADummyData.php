@@ -8,6 +8,12 @@ use Carbon\Carbon;
 use App\Http\Controllers\Vehicle950A\Client\InspectionController;
 use Illuminate\Http\Request;
 use App\Services\DummyRequest;
+// Repositories
+use App\Repositories\WorkerRepository;
+use App\Repositories\FailureTypeRepository;
+use App\Repositories\ModificationTypeRepository;
+use App\Repositories\HoleModificationTypeRepository;
+use App\Repositories\InspectionResultRepository;
 
 class Insert950ADummyData extends Command
 {
@@ -24,15 +30,32 @@ class Insert950ADummyData extends Command
      * @var string
      */
     protected $description = 'insert 950A dummy data';
+    protected $worker;
+    protected $failureType;
+    protected $modificationType;
+    protected $holeModificationType;
+    protected $inspectionResult;
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct (
+        WorkerRepository $worker,
+        FailureTypeRepository $failureType,
+        ModificationTypeRepository $modificationType,
+        HoleModificationTypeRepository $holeModificationType,
+        InspectionResultRepository $inspectionResult
+    )
     {
         parent::__construct();
+
+        $this->worker = $worker;
+        $this->failureType = $failureType;
+        $this->modificationType = $modificationType;
+        $this->holeModificationType = $holeModificationType;
+        $this->inspectionResult = $inspectionResult;
     }
 
     protected function getChoku($workers)
@@ -93,7 +116,7 @@ class Insert950ADummyData extends Command
     public function handle()
     {
         $request = new DummyRequest;
-        $controller = new InspectionController;
+        $controller = new InspectionController($this->worker, $this->failureType, $this->modificationType, $this->holeModificationType, $this->inspectionResult);
 
         //成型_外観検査_ドア_ドアインナーR
         $process = 'molding';

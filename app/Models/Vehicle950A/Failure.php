@@ -13,13 +13,21 @@ class Failure extends Model
     protected $connection = '950A';
     protected $guarded = ['id'];
 
-    // public function inspections()
-    // {
-    //     return $this->belongsToMany(
-    //         'App\Models\Inspection',
-    //         'failure_inspection',
-    //         'failure_id',
-    //         'inspection_id'
-    //     )->withPivot('type', 'sort');
-    // }
+    public function type()
+    {
+        return $this->belongsTo(
+            'App\Models\Vehicle950A\FailureType',
+            'type_id',
+            'id'
+        );
+    }
+
+    public function figure()
+    {
+        return $this->belongsTo(
+            'App\Models\Vehicle950A\Figure',
+            'figure_id',
+            'id'
+        );
+    }
 }

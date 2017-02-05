@@ -181,7 +181,8 @@ Route::post('maintenance/hole/{id}/deactivate', 'Manager\MaintenanceController@d
 Route::group(['prefix' => '950A', 'namespace' => 'Vehicle950A'], function () {
 	Route::group(['prefix' => 'client', 'namespace' => 'Client'], function () {
 	    Route::post('inspection', 'InspectionController@getInspection');
-	    Route::post('inspection/save', 'InspectionController@saveInspection');
+        Route::post('inspection/save', 'InspectionController@saveInspection');
+        Route::post('inspection/result', 'InspectionController@result');
 
 		// Associate Parts
 		Route::post('association/check', 'AssociationController@check');

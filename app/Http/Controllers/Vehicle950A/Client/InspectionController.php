@@ -11,13 +11,16 @@ use App\Choku;
 use App\Models\Vehicle950A\Process;
 use App\Models\Vehicle950A\Inspection;
 use App\Models\Vehicle950A\InspectionResult;
-use App\Models\Vehicle950A\Worker;
 use App\Models\Vehicle950A\PartType;
 use App\Models\Vehicle950A\Part;
-use App\Models\Vehicle950A\FailureType;
 use App\Models\Vehicle950A\Failure;
-use App\Models\Vehicle950A\ModificationType;
 use App\Models\Vehicle950A\Modification;
+// Repositories
+use App\Repositories\WorkerRepository;
+use App\Repositories\FailureTypeRepository;
+use App\Repositories\ModificationTypeRepository;
+use App\Repositories\HoleModificationTypeRepository;
+use App\Repositories\InspectionResultRepository;
 // Exceptions
 use JWTAuth;
 use App\Exceptions\JsonException;
@@ -29,15 +32,36 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class InspectionController extends Controller
 {
-    public function getInspection(Request $request)
+    protected $worker;
+    protected $failureType;
+    protected $modificationType;
+    protected $holeModificationType;
+    protected $inspectionResult;
+
+    public function __construct (
+        WorkerRepository $worker,
+        FailureTypeRepository $failureType,
+        ModificationTypeRepository $modificationType,
+        HoleModificationTypeRepository $holeModificationType,
+        InspectionResultRepository $inspectionResult
+    )
+    {
+        $this->worker = $worker;
+        $this->failureType = $failureType;
+        $this->modificationType = $modificationType;
+        $this->holeModificationType = $holeModificationType;
+        $this->inspectionResult = $inspectionResult;
+    }
+
+    public function getInspection (Request $request)
     {
         $process = $request->process;
         $inspection = $request->inspection;
         $pt_names = $request->partNames;
 
         $first_pt = PartType::where('name', '=', $pt_names[0])->first();
-        $division1 = $first_pt->division1;
-        $division2 = $first_pt->division2;
+        $d1 = $first_pt->division1;
+        $d2 = $first_pt->division2;
 
         $pt = PartType::whereIn('name', $pt_names)
             ->with([
@@ -64,69 +88,12 @@ class InspectionController extends Controller
                 ];
             });
 
-        // $worker = new Worker;
-        $failureType = new FailureType;
-        $modificationType = new ModificationType;
-
-        $workers = Worker::formated($process, $inspection, $division1)->get()->formated();
         return [
-            // 'workers' => $worker->formatedWorkers($process, $inspection, $division1)->toArray(),
-            'workers' => $workers,
-            'failures' => $failureType->sortedFailureTypes($process, $inspection, $division2)->toArray(),
-            'modifications' => $modificationType->sortedModificationTypes($process, $inspection, $division2)->toArray(),
-            'hModifications' => [],
+            'workers' => $this->worker->formated($process, $inspection, $d1),
+            'failures' => $this->failureType->sorted($process, $inspection, $d2),
+            'modifications' => $this->modificationType->sorted($process, $inspection, $d2),
+            'hModifications' => $this->holeModificationType->sorted($process, $inspection, $d2),
             'partTypes' => $pt,
-        ];
-    }
-
-    public function history(Request $request)
-    {
-        $validator = app('validator')->make(
-            $request->all(),
-            [
-                'panelId' => ['required', 'alpha_num'],
-                'partType' => ['required', 'alpha_num'],
-                'id' => ['required']
-            ]
-        );
-
-        if ($validator->fails()) {
-            throw new StoreResourceFailedException('Validation error', $validator->errors());
-        }
-
-        $heritage = [];
-        $group = [];
-        $partTypeId = $request->partType;
-
-        $part = Part::where('panel_id', $request->panelId)
-            ->where('part_type_id', $partTypeId)
-            ->first();
-
-        foreach ($request->id as $id) {
-            $formated = null;
-
-            // If the requested part exist
-            if ($part instanceof Part) {
-                $detail = new Result($part->id, $partTypeId, $id);
-                $formated = $detail->setDetails()->formatForClient()->get();
-            }
-
-            $name = InspectionGroup::find($id)->inspection->en;
-            $line = InspectionGroup::find($id)->line;
-
-            $name = $name . $line;
-
-            $heritage[$name] = 0;
-
-            if (!is_null($formated)) {
-                $group[] = $formated;
-                $heritage[$name] = 1;
-            }
-        }
-
-        return [
-            'heritage' => $heritage,
-            'group' => $group
         ];
     }
 
@@ -219,6 +186,50 @@ class InspectionController extends Controller
         return [
             'message' => 'Save inspection succeeded'
         ];
+    }
+
+    public function result(Request $request)
+    {
+        $pn = $request->pn;
+        $panelId = $request->panelId;
+        $targets = $request->targets;
+
+        $part = Part::where('panel_id', $panelId)->where('pn', $pn)->first();
+
+        $partId = 0;
+        if ($part instanceof Part) {
+            $partId = $part->id;
+        }
+
+        $results = [];
+        foreach ($targets as $t) {
+            $result = $this->inspectionResult->all($t['process'], $t['inspection'], $partId);
+
+            if ($result) {
+                $results[$t['process'].'_'.$t['inspection']] = [
+                    'id' => $result['id'],
+                    'line' => $result['line'],
+                    'status' => $result['status'],
+                    'comment' => $result['comment'],
+                    'choku' => $result['created_choku'],
+                    'createdBy' => $result['created_by'],
+                    'createdAt' => $result['created_at']->format('m月d日'),
+                    'failures' => $result['failures']->map(function($f) {
+                        return [
+                            'id' => $f->id,
+                            'x' => $f->x,
+                            'y' => $f->y,
+                            'typeId' => $f->type_id,
+                            'figureName' => $f->figure->name
+                        ];
+                    })->groupBy('figureName')
+                ];
+            } else {
+                $results[$t['process'].'_'.$t['inspection']] = 0;
+            }
+        }
+
+        return ['inspectionResults' => $results];
     }
 
     public function updateInspection(Request $request)
@@ -385,23 +396,8 @@ class InspectionController extends Controller
         }
     }
 
-    public function deleteInspection(Request $request)
+    public function delete(Request $request)
     {
-        $familyId = $request->id;
-
-        $family = InspectionFamily::find($familyId);
-
-        if ($family) {
-            $family->deleted_at = Carbon::now();
-            $family->save();
-
-            return \Response::json([
-                'message' => 'success'
-            ], 200);
-        }
-
-            return \Response::json([
-                'message' => 'Nothing to delete'
-            ], 200);
+        return 'aaa';
     }
 }
