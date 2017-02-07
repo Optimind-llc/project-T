@@ -147,6 +147,7 @@ class Result
                     $q->select(['hole_modifications.id', 'name', 'label']);
                 }
             ])
+            ->orderBy('inspected_at', 'desc')
             ->first();
 
         $this->result = $family;

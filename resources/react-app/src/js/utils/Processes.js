@@ -26,12 +26,9 @@ export const inspections = [
   { label: '穴検査', value: 'ana' },
   { label: '簡易CF', value: 'kenicf' },
   { label: '止水', value: 'shisui' },
+  { label: '検査', value: 'kensa' },
   { label: '仕上', value: 'shiage' },
-  { label: '手直し', value: 'tenaoshi' },
-  { label: '検査１', value: 'kensa' },
-  { label: '検査２', value: 'kensa' },
-  { label: '検査(旧)', value: 'kensa' },
-
+  { label: '手直し', value: 'tenaoshi' }
 ];
 
 export const inspectionGroups = [

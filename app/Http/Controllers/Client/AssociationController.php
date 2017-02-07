@@ -193,7 +193,7 @@ class AssociationController extends Controller
                                 $join->on('ig.inspection_id', '=', 'i.id');
                             })
                             ->select('pages.*', 'if.inspected_at', 'if.inspection_group_id', 'ig.line', 'i.en', 'i.process_id')
-                            ->orderBy('if.inspected_at')
+                            ->orderBy('if.inspected_at', 'desc')
                             ->get();
                         }
                     ])

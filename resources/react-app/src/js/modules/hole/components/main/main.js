@@ -66,13 +66,20 @@ class Main extends Component {
                   {
                     h.shape === 'square' &&
                     <g>
-                      <rect x={h.lx-10} y={h.ly-9} width="20" height="18" fill="#000000"/>
-                      <rect x={h.lx-9} y={h.ly-8} width="18" height="16" fill={`#${h.color}`}/>
+                      <rect x={h.lx-10} y={h.ly-9} width="20" height="18" fill={`#${h.color}`} stroke="#000"/>
                       {
                         h.border === 'dotted' &&
-                        <g stroke="none" strokeWidth={1} fill="none" fillRule="evenodd" strokeDasharray={3}>
-                          <rect id="path-1" x={h.lx-10} y={h.ly-9} width={20} height={18} strokeWidth={2} stroke="#FFF"/>
-                        </g>
+                        <rect
+                          x={h.lx-10}
+                          y={h.ly-9}
+                          width={20}
+                          height={18}
+                          fill="none"
+                          fillRule="evenodd"
+                          stroke="#FFF"
+                          strokeWidth={1}
+                          strokeDasharray={3}
+                        />
                       }
                       <text
                         x={h.lx}
@@ -89,13 +96,20 @@ class Main extends Component {
                   }{
                     h.shape === 'circle' &&
                     <g>
-                      <circle cx={h.lx} cy={h.ly} r={10} fill="#000000"/>
-                      <circle cx={h.lx} cy={h.ly} r={9} fill={`#${h.color}`}/>
+                      <circle cx={h.lx} cy={h.ly} r={10} fill={`#${h.color}`} stroke="#000"/>
                       {
                         h.border === 'dotted' &&
-                        <g stroke="none" strokeWidth={1} fill="none" fillRule="evenodd" strokeDasharray={3}>
-                            <ellipse id="path-1" cx={h.lx} cy={h.ly} rx={10} ry={10} stroke="#FFF" strokeWidth={2}/>
-                        </g>
+                        <ellipse
+                          cx={h.lx}
+                          cy={h.ly}
+                          rx={10}
+                          ry={10}
+                          fill="none"
+                          fillRule="evenodd"
+                          stroke="#FFF"
+                          strokeWidth={2}
+                          strokeDasharray={3}
+                        />
                       }
                       <text
                         x={h.lx}

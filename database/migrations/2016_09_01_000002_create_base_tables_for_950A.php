@@ -52,7 +52,7 @@ class CreateBaseTablesFor950A extends Migration
             $table->string('name', 16)->unique();
             $table->string('yomi', 16);
             $table->string('code', 16)->unique();
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status')->unsigned()->default(1);
             $table->string('choku_code', 16);
             $table->timestamps();
 
@@ -118,24 +118,19 @@ class CreateBaseTablesFor950A extends Migration
 
         Schema::connection('950A')->create('figures', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 32);
             $table->string('path', 32);
-            $table->integer('size_x')->unsigned();
-            $table->integer('size_y')->unsigned();
-            $table->bigInteger('pt_pn')->unsigned();
             $table->string('process', 16);
             $table->string('inspection', 16);
+            $table->bigInteger('pt_pn')->unsigned();
+            $table->integer('page')->unsigned()->default(1);
+            $table->integer('size_x')->unsigned();
+            $table->integer('size_y')->unsigned();
+            $table->tinyInteger('status')->unsigned()->default(1);
             $table->timestamps();
 
             /**
              * Add Foreign
              */
-            $table->foreign('pt_pn')
-                ->references('pn')
-                ->on('part_types')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
             $table->foreign('process')
                 ->references('en')
                 ->on('processes')
@@ -147,6 +142,13 @@ class CreateBaseTablesFor950A extends Migration
                 ->on('inspections')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->foreign('pt_pn')
+                ->references('pn')
+                ->on('part_types')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
         });
 
 
@@ -154,7 +156,7 @@ class CreateBaseTablesFor950A extends Migration
             $table->increments('id');
             $table->string('name', 16)->unique();
             $table->integer('label')->unsigned()->default(1);
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status')->unsigned()->default(1);
             $table->timestamps();
         });
 
@@ -198,7 +200,7 @@ class CreateBaseTablesFor950A extends Migration
             $table->increments('id');
             $table->string('name', 16);
             $table->integer('label')->unsigned()->default(1);
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status')->unsigned()->default(1);
             $table->timestamps();
         });
 
@@ -318,13 +320,11 @@ class CreateBaseTablesFor950A extends Migration
             $table->integer('y')->unsigned()->default(0);
             $table->integer('lx')->unsigned()->default(0);
             $table->integer('ly')->unsigned()->default(0);
+            $table->integer('label')->unsigned()->default(1);
             $table->string('side', 16);
-            $table->string('face', 16)->nullable();
             $table->string('position', 16)->nullable();
-            $table->string('calibration', 16)->nullable();
-            $table->double('max_tolerance', 6, 3);
-            $table->double('min_tolerance', 6, 3)->nullable();
-            $table->integer('sort')->unsigned()->default(1);
+            $table->double('min', 6, 3)->default(0);
+            $table->double('max', 6, 3)->default(0);
             $table->bigInteger('pt_pn')->unsigned();
             $table->integer('figure_id')->unsigned();
             $table->timestamps();

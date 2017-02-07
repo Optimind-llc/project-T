@@ -168,13 +168,20 @@ class Edit extends Component {
               {
                 shape.value === 'square' &&
                 <g>
-                  <rect x={(point[0]/2 + direction.x)-10} y={(point[1]/2 + direction.y)-9} width="20" height="18" fill="#000000"/>
-                  <rect x={(point[0]/2 + direction.x)-9 } y={(point[1]/2 + direction.y)-8} width="18" height="16" fill={`#${color}`}/>
+                  <rect x={(point[0]/2 + direction.x)-10} y={(point[1]/2 + direction.y)-9} width="20" height="18" fill={`#${color}`} stroke="#000"/>
                   {
                     border.value === 'dotted' &&
-                    <g stroke="none" strokeWidth={1} fill="none" fillRule="evenodd" strokeDasharray={3}>
-                      <rect id="path-1" x={(point[0]/2 + direction.x)-10} y={(point[1]/2 + direction.y)-9} width={20} height={18} strokeWidth={2} stroke="#FFF"/>
-                    </g>
+                    <rect
+                      x={(point[0]/2 + direction.x) - 10}
+                      y={(point[1]/2 + direction.y) - 9}
+                      width={20}
+                      height={18}
+                      fill="none"
+                      fillRule="evenodd"
+                      strokeWidth={2}
+                      stroke="#FFF"
+                      strokeDasharray={3}
+                    />
                   }
                   <text
                     x={point[0]/2 + direction.x}
@@ -191,13 +198,20 @@ class Edit extends Component {
               }{
                 shape.value === 'circle' &&
                 <g>
-                  <circle cx={point[0]/2 + direction.x} cy={point[1]/2 + direction.y} r={10} fill="#000000"/>
-                  <circle cx={point[0]/2 + direction.x} cy={point[1]/2 + direction.y} r={9} fill={`#${color}`}/>
+                  <circle cx={point[0]/2 + direction.x} cy={point[1]/2 + direction.y} r={10} fill={`#${color}`} stroke="#000"/>
                   {
                     border.value === 'dotted' &&
-                    <g stroke="none" strokeWidth={1} fill="none" fillRule="evenodd" strokeDasharray={3}>
-                      <ellipse id="path-1" cx={point[0]/2 + direction.x} cy={point[1]/2 + direction.y} rx={9.5} ry={9.5} stroke="#FFF" strokeWidth={1.5}/>
-                    </g>
+                    <ellipse
+                      cx={point[0]/2 + direction.x}
+                      cy={point[1]/2 + direction.y}
+                      rx={10}
+                      ry={10}
+                      fill="none"
+                      fillRule="evenodd"
+                      stroke="#FFF"
+                      strokeWidth={1}
+                      strokeDasharray={3}
+                    />
                   }
                   <text
                     x={point[0]/2 + direction.x}
