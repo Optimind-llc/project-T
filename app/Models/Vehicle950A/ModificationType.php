@@ -21,6 +21,7 @@ class ModificationType extends Model
                 ->where('mtr.inspection', '=', $i)
                 ->where('mtr.division', '=', $d);
         })
+        ->where('modification_types.status', '=', 1)
         ->select('modification_types.*', 'mtr.sort', 'mtr.type');
     }
 }

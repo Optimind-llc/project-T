@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class PartType extends Model
 {
     protected $connection = '950A';
+    protected $primaryKey = 'pn';
     protected $guarded = ['pn'];
     public $incrementing = false;
 

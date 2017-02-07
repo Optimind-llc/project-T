@@ -101,6 +101,40 @@ class RelatedModificationTableSeeder extends Seeder
         }
 
         $data = [
+            //成形_外観検査_ドアインナ
+            [
+                'process'       => 'molding',
+                'inspection'    => 'gaikan',
+                'division'      => 'doorInner',
+                'type_id'       => 1,
+                'type'          => 2,
+                'sort'          => 1
+            ],[
+                'process'       => 'molding',
+                'inspection'    => 'gaikan',
+                'division'      => 'doorInner',
+                'type_id'       => 9,
+                'type'          => 2,
+                'sort'          => 1
+            ],
+
+            //成形_外観検査_ラゲージインナ
+            [
+                'process'       => 'molding',
+                'inspection'    => 'gaikan',
+                'division'      => 'luggageInner',
+                'type_id'       => 1,
+                'type'          => 2,
+                'sort'          => 1
+            ],[
+                'process'       => 'molding',
+                'inspection'    => 'gaikan',
+                'division'      => 'luggageInner',
+                'type_id'       => 9,
+                'type'          => 2,
+                'sort'          => 1
+            ],
+
             //穴あけ_外観検査_ドアインナ
             [
                 'process'       => 'holing',

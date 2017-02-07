@@ -14,6 +14,13 @@ class FailureTypeRepository
         return FailureType::narrow($p, $i, $d)->get();
     }
 
+    public function narrowedIds($p, $i, $d)
+    {
+        return $this->narrow($p, $i, $d)->map(function($ft) {
+            return $ft->id;
+        });
+    }
+
     public function sorted($p, $i, $d)
     {
         $failures = $this->narrow($p, $i, $d)
@@ -40,4 +47,9 @@ class FailureTypeRepository
 
         return $failures;
     }
+
+    // public function create($param)
+    // {
+
+    // }
 }

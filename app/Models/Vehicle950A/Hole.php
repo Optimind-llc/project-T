@@ -5,27 +5,27 @@ namespace App\Models\Vehicle950A;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Figure
+ * Class Hole
  * @package App\Models
  */
-class Figure extends Model
+class Hole extends Model
 {
     protected $connection = '950A';
     protected $guarded = ['id'];
 
-    public function partType()
+    public function type()
     {
         return $this->belongsTo(
-            'App\Models\Vehicle950A\PartType',
-            'pt_pn',
-            'pn'
+            'App\Models\Vehicle950A\HoleType',
+            'type_id',
+            'id'
         );
     }
 
-    public function holeTypes()
+    public function figure()
     {
-        return $this->hasMany(
-            'App\Models\Vehicle950A\HoleType',
+        return $this->belongsTo(
+            'App\Models\Vehicle950A\Figure',
             'figure_id',
             'id'
         );

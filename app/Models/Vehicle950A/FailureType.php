@@ -21,16 +21,7 @@ class FailureType extends Model
                 ->where('ftr.inspection', '=', $i)
                 ->where('ftr.division', '=', $d);
         })
+        ->where('failure_types.status', '=', 1)
         ->select('failure_types.*', 'ftr.sort', 'ftr.type');
     }
-
-    // public function inspections()
-    // {
-    //     return $this->belongsToMany(
-    //         'App\Models\Inspection',
-    //         'failure_inspection',
-    //         'failure_id',
-    //         'inspection_id'
-    //     )->withPivot('type', 'sort');
-    // }
 }

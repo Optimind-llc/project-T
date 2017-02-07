@@ -48,6 +48,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RelatedFailureTableSeeder::class);
         $this->call(RelatedModificationTableSeeder::class);
         $this->call(RelatedHoleModificationTableSeeder::class);
+        $this->call(RelatedHoleTableSeeder::class);
         $this->call(RelatedInlineTableSeeder::class);
 
         if (env('DB_CONNECTION') == 'mysql') {

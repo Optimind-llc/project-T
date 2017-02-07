@@ -53,7 +53,7 @@ class InspectionController extends Controller
         $this->inspectionResult = $inspectionResult;
     }
 
-    public function getInspection (Request $request)
+    public function getInspection(Request $request)
     {
         $process = $request->process;
         $inspection = $request->inspection;
@@ -67,6 +67,9 @@ class InspectionController extends Controller
             ->with([
                 'figures' => function($q) use ($process, $inspection){
                     $q->where('process', '=', $process)->where('inspection', '=', $inspection);
+                },
+                'figures.holeTypes' => function($q) {
+                    $q->where('hole_types.status', '=', 1);
                 }
             ])
             ->get()
@@ -77,14 +80,23 @@ class InspectionController extends Controller
                     'figures' => $pt->figures->map(function($f) {
                         return [
                             'id' => $f->id,
-                            'name' => $f->name,
                             'path' => '/img/figures/950A/'.$f->path,
                             'sizeX' => $f->size_x,
                             'sizeY' => $f->size_y,
-                            'holes' => []
+                            'holes' => $f->holeTypes->map(function($ht) {
+                                return [
+                                    'id' => $ht->id,
+                                    'x' => $ht->x,
+                                    'y' => $ht->y,
+                                    'label' => $ht->label,
+                                    'direction' => $ht->direction,
+                                    'shape' => $ht->shape,
+                                    'border' => $ht->border,
+                                    'color' => $ht->color
+                                ];
+                            })
                         ];
                     })
-                    
                 ];
             });
 
@@ -99,7 +111,6 @@ class InspectionController extends Controller
 
     public function saveInspection(Request $request)
     {
-        $now = Carbon::now();
         $process = $request->process;
         $inspection = $request->inspection;
         $line = $request->line;
@@ -107,31 +118,13 @@ class InspectionController extends Controller
         $worker = $request->worker;
         $parts = $request->parts;
 
-        // Check duplicate
+        $inspected = [];
+        DB::connection('950A')->beginTransaction();
         foreach ($parts as $part) {
-            $targetPart = Part::where('pn', '=', $part['pn'])
-                ->where('panel_id', '=', $part['panelId'])
-                ->first();
+            $pt = PartType::find($part['pn']);
+            $d1 = $pt->division1;
+            $d2 = $pt->division2;
 
-            if ($targetPart instanceof Part) {
-                $ir = InspectionResult::where('process', '=', $process)
-                    ->where('inspection', '=', $inspection)
-                    ->where('part_id', '=', $targetPart->id)
-                    ->first();
-
-                if ($ir instanceof InspectionResult) {
-                    return \Response::json([
-                        'message' => $part['panelId'].' already be inspected',
-                        'panelId' => $part['panelId'],
-                        'name' => $targetPart->partType->name,
-                        'pn' => $targetPart->partType->pn
-                    ], 400);
-                }
-            }
-        }
-
-        // Save inspection
-        foreach ($parts as $part) {
             $targetPart = Part::where('pn', '=', $part['pn'])
                 ->where('panel_id', '=', $part['panelId'])
                 ->first();
@@ -143,49 +136,62 @@ class InspectionController extends Controller
                 $targetPart->save();
             }
 
-            $newResult = new InspectionResult;
-            $newResult->part_id = $targetPart->id;
-            $newResult->process = $process;
-            $newResult->inspection = $inspection;
-            $newResult->line = $line;
-            $newResult->ft_ids = '';
-            $newResult->created_choku = $choku;
-            $newResult->created_by = $worker;
-            $newResult->status = $part['status'];
-            $newResult->comment = $part['comment'];
-            $newResult->inspected_at = $now;
-            $newResult->created_at = $now;
-            $newResult->updated_at = $now;
-            $newResult->save();
+            // Check duplicate
+            if ($this->inspectionResult->exist($process, $inspection, $targetPart->id)) {
+                $inspected[] = [
+                    'panelId' => $part['panelId'],
+                    'name' => $targetPart->partType->name,
+                    'pn' => $targetPart->partType->pn
+                ];
+            } else {
+                $param = [
+                    'part_id' => $targetPart->id,
+                    'process' => $process,
+                    'inspection' => $inspection,
+                    'line' => $line,
+                    'ft_ids' => $this->failureType->narrowedIds($process, $inspection, $d2),
+                    'created_choku' => $choku,
+                    'created_by' => $worker,
+                    'status' => $part['status'],
+                    'comment' => $part['status']
+                ];
 
-            // Create failure
-            if (array_key_exists('failures', $part) && count($part['failures']) !== 0) {
-                foreach ($part['failures'] as $f) {
-                    $new_f = new Failure;
-                    $new_f->ir_id = $newResult->id;
-                    $new_f->part_id = $targetPart->id;
-                    $new_f->figure_id = $f['figureId'];
-                    $new_f->x = $f['x'];
-                    $new_f->y = $f['y'];
-                    $new_f->type_id = $f['failureTypeId'];
-                    $new_f->save();
-
-                    if (array_key_exists('modificationTypeId', $f) && $f['modificationTypeId'] !== null && $f['modificationTypeId'] !== 0 ) {
-                        $new_m = new Modification;
-                        $new_m->ir_id = $newResult->id;
-                        $new_m->part_id = $targetPart->id;
-                        $new_m->figure_id = $f['figureId'];
-                        $new_m->type_id = $f['modificationTypeId'];
-                        $new_m->failure_id = $new_f->id;
-                        $new_m->save();
-                    }
+                $fs = [];
+                if (array_key_exists('failures', $part)) {
+                    $fs = $part['failures'];
                 }
+
+                $ms = [];
+                if (array_key_exists('modifications', $part)) {
+                    $ms = $part['modifications'];
+                }
+
+                $hs = [];
+                if (array_key_exists('holes', $part)) {
+                    $hs = $part['holes'];
+                }
+
+                $hms = [];
+                if (array_key_exists('holeModifications', $part)) {
+                    $hms = $part['holeModifications'];
+                }
+
+                $this->inspectionResult->create($param, $fs, $ms, $hs, $hms);
             }
         }
 
-        return [
-            'message' => 'Save inspection succeeded'
-        ];
+        if (count($inspected) === 0) {
+            DB::connection('950A')->commit();
+            return [
+                'message' => 'Save inspection succeeded'
+            ];
+        } else {
+            DB::connection('950A')->rollBack();
+            return \Response::json([
+                'message' => 'Some parts already be inspected',
+                'inspected' => $inspected
+            ], 400);
+        }
     }
 
     public function result(Request $request)

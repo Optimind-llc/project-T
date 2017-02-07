@@ -246,14 +246,13 @@ class CreateBaseTablesFor950A extends Migration
             $table->integer('y')->unsigned()->default(0);
             $table->integer('label')->unsigned()->default(1);
             $table->string('direction', 16);                    //ラベルの位置 top bottom left right
-            $table->string('color', 16);                        //FFFFFF RGBの16進数
-            $table->string('border', 16);                       //dotted or solid
             $table->string('shape', 16);                        //square or circle
+            $table->string('border', 16);                       //dotted or solid
+            $table->string('color', 16);                        //FFFFFF RGBの16進数
             $table->bigInteger('pt_pn')->unsigned();
             $table->integer('figure_id')->unsigned();
             $table->tinyInteger('status')->unsigned()->default(1);
             $table->timestamps();
-            $table->softDeletes();
 
             /**
              * Add Foreign
@@ -275,6 +274,7 @@ class CreateBaseTablesFor950A extends Migration
             $table->increments('id');
             $table->string('name', 16);
             $table->integer('label')->unsigned()->default(1);
+            $table->tinyInteger('status')->unsigned()->default(1);
             $table->timestamps();
         });
 

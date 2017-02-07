@@ -667,16 +667,6 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_y'     => 1030,
                 'created_at' => $now,
                 'updated_at' => $now
-            ],[
-                'path'       => 'h_ana_luggageOuterARW_1.png',
-                'process'    => 'jointing',
-                'inspection' => 'kashimego',
-                'pt_pn'      => 6441111020,
-                'page'       => 2,
-                'size_x'     => 1740,
-                'size_y'     => 1030,
-                'created_at' => $now,
-                'updated_at' => $now
             ],
             //接着_外周仕上
             //接着_パテ修復後

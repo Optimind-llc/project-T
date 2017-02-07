@@ -5,6 +5,11 @@ return [
         'inline' => base_path('FailureMapping/Inline'),
         'output' => base_path('FailureMapping/Output'),
         'backup' => base_path('FailureMapping/Backup'),
+        '950A' => [
+            'inline' => base_path('FailureMapping/950A/Inline'),
+            'output' => base_path('FailureMapping/950A/Output'),
+            'backup' => base_path('FailureMapping/950A/Backup')
+        ]
     ],
 
     'akj' => [
