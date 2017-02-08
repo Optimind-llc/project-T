@@ -30,4 +30,13 @@ class Hole extends Model
             'id'
         );
     }
+
+    public function holeModification()
+    {
+        return $this->hasOne(
+            'App\Models\Vehicle950A\HoleModification',
+            'hole_id',
+            'id'
+        );
+    }
 }

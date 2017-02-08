@@ -21,4 +21,10 @@ class ModificationRepository
 
         return $new;
     }
+
+    public function deleteByIds($ids)
+    {
+        $deleted = Modification::whereIn('id', $ids)->delete();
+        return $deleted;
+    }
 }

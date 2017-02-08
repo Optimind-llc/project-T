@@ -80,6 +80,8 @@ class InspectionController extends Controller
                     'figures' => $pt->figures->map(function($f) {
                         return [
                             'id' => $f->id,
+                            'name' => $f->process.'_'.$f->inspection.'_'.$f->pt_pn.'_p'.$f->page,
+                            'page' => $f->page,
                             'path' => '/img/figures/950A/'.$f->path,
                             'sizeX' => $f->size_x,
                             'sizeY' => $f->size_y,
@@ -153,7 +155,7 @@ class InspectionController extends Controller
                     'created_choku' => $choku,
                     'created_by' => $worker,
                     'status' => $part['status'],
-                    'comment' => $part['status']
+                    'comment' => $part['comment']
                 ];
 
                 $fs = [];
@@ -171,12 +173,7 @@ class InspectionController extends Controller
                     $hs = $part['holes'];
                 }
 
-                $hms = [];
-                if (array_key_exists('holeModifications', $part)) {
-                    $hms = $part['holeModifications'];
-                }
-
-                $this->inspectionResult->create($param, $fs, $ms, $hs, $hms);
+                $this->inspectionResult->create($param, $fs, $ms, $hs);
             }
         }
 
@@ -202,7 +199,7 @@ class InspectionController extends Controller
 
         $part = Part::where('panel_id', $panelId)->where('pn', $pn)->first();
 
-        $partId = 0;
+        $partId = -1;
         if ($part instanceof Part) {
             $partId = $part->id;
         }
@@ -226,179 +223,114 @@ class InspectionController extends Controller
                             'x' => $f->x,
                             'y' => $f->y,
                             'typeId' => $f->type_id,
-                            'figureName' => $f->figure->name
+                            'figureId' => $f->figure->id,
+                            'figurePage' => $f->figure->page
                         ];
-                    })->groupBy('figureName')
+                    })->groupBy('figurePage'),
+                    'modifications' => $result['modifications']->map(function($m) {
+                        return [
+                            'id' => $m->id,
+                            'x' => $m->failure->x,
+                            'y' => $m->failure->y,
+                            'typeId' => $m->type_id,
+                            'figureId' => $m->figure->id,
+                            'figurePage' => $m->figure->page
+                        ];
+                    })->groupBy('figurePage'),
+                    'holes' => $result['holes']->map(function($h) {
+                        return [
+                            'id' => $h->id,
+                            'typeId' => $h->type_id,
+                            'status' => $h->status,
+                            'holeModificationType' => $h->holeModification->type_id
+                        ];
+                    }),
                 ];
             } else {
-                $results[$t['process'].'_'.$t['inspection']] = 0;
+                $results[$t['process'].'_'.$t['inspection']] = ['status' => -1];
             }
         }
 
-        return ['inspectionResults' => $results];
+        return [
+            'partId' => $partId,
+            'inspectionResults' => $results
+        ];
     }
 
-    public function updateInspection(Request $request)
+    public function update(Request $request)
     {
-        $family = $request->family;
-        $familyId = $family['familyId'];
+        $process = $request->process;
+        $inspection = $request->inspection;
+        $choku = $request->choku;
+        $worker = $request->worker;
+        $parts = $request->parts;
 
-        $family_odj = InspectionFamily::find($familyId);
-        $family_odj->status = $family['status'];
-        $family_odj->comment = array_key_exists('comment', $family) ? $family['comment'] : null;
-        // $family_odj->inspector_group = $family['choku'];
-        $family_odj->updated_by = $family['updatedBy'];
-        $family_odj->save();
+        $notFound = [];
+        DB::connection('950A')->beginTransaction();
+        foreach ($parts as $part) {
+            $targetPart = Part::with(['partType'])->find($part['partId']);
+            $d2 = $targetPart->partType->division2;
 
-        if (array_key_exists('deletedM', $family) && count($family['deletedM']) !== 0) {
-            foreach ($family['deletedM'] as $fp_id) {
-                $fp = FailurePosition::find($fp_id);
-                if ($fp instanceof FailurePosition) {
-                    $mfp = $fp->modifications();
-                    if (!is_null($mfp)) {
-                        $mfp->delete();
-                    }
-                } 
-            }
-        }
-
-        if (array_key_exists('deletedF', $family) && count($family['deletedF']) !== 0) {
-            foreach ($family['deletedF'] as $fp_id) {
-                $fp = FailurePosition::find($fp_id);
-                if ($fp instanceof FailurePosition) {
-                    $mfp = $fp->modifications();
-                    if (!is_null($mfp)) {
-                        $mfp->delete();
-                    }
-                    $fp->delete();
-                }   
-            }
-        }
-
-        foreach ($family['pages'] as $page) {
-            $pageId = $page['pageId'];
-            $page_odj = Page::find($pageId);
-            $parts_obj = $page_odj->parts()
-                ->get(['id', 'part_type_id'])
-                ->map(function($part) {
-                    return [
-                        'id' => $part->id,
-                        'type_id' => $part->part_type_id
-                    ];
-                })
-                ->keyBy('type_id');
-
-            foreach ($page['parts'] as $part) {
-                DB::table('part_page')->where('page_id', $pageId)
-                    ->where('part_id', $part['partId'])
-                    ->update([
-                        'status' => $part['status'],
-                        'comment' => array_key_exists('comment', $part) ? $part['comment'] : null
-                    ]);
-            }
-
-            // Get divided area from page type
-            $area = $page_odj->pageType->partTypes->map(function($part){
-                return [
-                    'id' => $part->id,
-                    'area' => explode('/', $part->pivot->area)
+            // Check inspection result exist
+            if ($this->inspectionResult->exist($process, $inspection, $part['partId'])) {
+                $param = [
+                    'part_id' => $targetPart->id,
+                    'process' => $process,
+                    'inspection' => $inspection,
+                    'ft_ids' => $this->failureType->narrowedIds($process, $inspection, $d2),
+                    'updated_choku' => $choku,
+                    'updated_by' => $worker,
+                    'status' => $part['status'],
+                    'comment' => $part['comment']
                 ];
-            });
 
-            // Get part_id from point
-            $getPartIdfromArea = function($f) use ($parts_obj, $area) {
-                $exploded = explode(',', $f['point']);
-
-                $x = intval($exploded[0]);
-                $y = intval($exploded[1]);
-
-                $type_id = 0;
-                foreach ($area as $a) {
-                    $x1 = intval($a['area'][0]);
-                    $y1 = intval($a['area'][1]);
-                    $x2 = intval($a['area'][2]);
-                    $y2 = intval($a['area'][3]);
-
-                    if ($x1 <= $x && $x < $x2 && $y1 <= $y && $y < $y2) {
-                        $type_id = $a['id'];
-                    }
+                $fs = [];
+                if (array_key_exists('failures', $part)) {
+                    $fs = $part['failures'];
                 }
 
-                return $parts_obj[$type_id]['id'];
-            };
-
-            // Create failure
-            if (array_key_exists('failures', $page) && count($page['failures']) !== 0) {
-                foreach ($page['failures'] as $f) {
-                    $new_fp = new FailurePosition;
-                    $new_fp->page_id = $pageId;
-                    $new_fp->failure_id = $f['id'];
-                    $new_fp->part_id = $getPartIdfromArea($f);
-                    $new_fp->point = $f['point'];
-                    $new_fp->save();
-
-                    if (array_key_exists('commentId', $f)) {
-                        DB::table('modification_failure_position')->insert([
-                            'page_id' => $pageId,
-                            'fp_id' => $new_fp->id,
-                            'm_id' => $f['commentId'],
-                            'comment' => array_key_exists('comment', $f) ? $f['comment'] : ''
-                        ]);
-                    }
+                $ms = [];
+                if (array_key_exists('modifications', $part)) {
+                    $ms = $part['modifications'];
                 }
-            }
 
-            // Update holes
-            if (array_key_exists('holes', $page) && count($page['holes']) !== 0) {
-                foreach ($page['holes'] as $h) {
-                    $hole_page = HolePage::find($h['holePageId']);
-                    $hole_page->status = $h['status'];
-                    $hole_page->save();
-
-                    DB::table('hole_page_hole_modification')->where('hp_id', '=', $h['holePageId'])->delete();
-
-                    if (array_key_exists('holeModificationId', $h)) {
-                        DB::table('hole_page_hole_modification')->insert([
-                            'page_id' => $pageId,
-                            'hp_id' => $h['holePageId'],
-                            'hm_id' => $h['holeModificationId'],
-                            'comment' => ""
-                        ]);
-                    }
+                $hs = [];
+                if (array_key_exists('holes', $part)) {
+                    $hs = $part['holes'];
                 }
-            }
 
-            // Create comments
-            if (array_key_exists('comments', $page) && count($page['comments']) !== 0) {
-                DB::table('modification_failure_position')->insert(array_map(function($m) use ($pageId) {
-                        return [
-                            'page_id' => $pageId,
-                            'fp_id' => $m['failurePositionId'],
-                            'm_id' => $m['commentId'],
-                            'comment' => array_key_exists('comment', $m) ? $m['comment'] : ''
-                        ];
-                    },
-                    $page['comments'])
-                );
-            }
-        }
+                $dfs = [];
+                if (array_key_exists('deletedF', $part)) {
+                    $dfs = $part['deletedF'];
+                }
 
-        $groupId = $family_odj->inspection_group_id;
-        $export_parts = [];
-        foreach ($family['pages'] as $page) {
-            foreach ($page['parts'] as $part) {
-                $parts_obj = Part::find($part['partId']);
-                $export_parts[$parts_obj->part_type_id] = [
-                    'itionGId' => $groupId,
-                    'partTypeId' => $parts_obj->part_type_id,
-                    'panelId' => $parts_obj->panel_id
+                $dms = [];
+                if (array_key_exists('deletedM', $part)) {
+                    $dms = $part['deletedM'];
+                }
+
+                $this->inspectionResult->update($param, $fs, $ms, $hs, $dfs, $dms);
+
+            } else {
+                $notFound[] = [
+                    'panelId' => $part['panelId'],
+                    'name' => $targetPart->partType->name,
+                    'pn' => $targetPart->partType->pn
                 ];
             }
         }
 
-        foreach ($export_parts as $key => $p) {
-            $export = new Export;
-            $export->exportCSV($p['panelId'], $p['partTypeId'], $p['itionGId']);
+        if (count($notFound) === 0) {
+            DB::connection('950A')->commit();
+            return [
+                'message' => 'Update inspection succeeded'
+            ];
+        } else {
+            DB::connection('950A')->rollBack();
+            return \Response::json([
+                'message' => 'Inspection result not found',
+                'notFound' => $notFound
+            ], 400);
         }
     }
 

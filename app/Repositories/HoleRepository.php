@@ -20,4 +20,14 @@ class HoleRepository
 
         return $new;
     }
+
+    public function update($param)
+    {
+        $update = Hole::find($param['id']);
+        $update->status = $param['status'];
+        $update->save();
+
+        return $update;
+    }
+    
 }

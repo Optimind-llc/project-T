@@ -22,4 +22,10 @@ class FailureRepository
 
         return $new;
     }
+
+    public function deleteByIds($ids)
+    {
+        $deleted = Failure::whereIn('id', $ids)->delete();
+        return $deleted;
+    }
 }

@@ -183,6 +183,8 @@ Route::group(['prefix' => '950A', 'namespace' => 'Vehicle950A'], function () {
 	    Route::post('inspection', 'InspectionController@getInspection');
         Route::post('inspection/save', 'InspectionController@saveInspection');
         Route::post('inspection/result', 'InspectionController@result');
+        Route::post('inspection/update', 'InspectionController@update');
+        Route::post('inspection/delete', 'InspectionController@delete');
 
 		// Associate Parts
 		Route::post('association/check', 'AssociationController@check');

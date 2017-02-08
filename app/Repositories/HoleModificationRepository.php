@@ -20,4 +20,10 @@ class HoleModificationRepository
 
         return $new;
     }
+
+    public function deleteByHoleId($id)
+    {
+        $deleted = HoleModification::where('hole_id', '=', $id)->delete();
+        return $deleted;
+    }
 }

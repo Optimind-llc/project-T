@@ -24,6 +24,24 @@ class InspectionResult extends Model
         );
     }
 
+    public function modifications()
+    {
+        return $this->hasMany(
+            'App\Models\Vehicle950A\Modification',
+            'ir_id',
+            'id'
+        );
+    }
+
+    public function holes()
+    {
+        return $this->hasMany(
+            'App\Models\Vehicle950A\Hole',
+            'ir_id',
+            'id'
+        );
+    }
+
     public function scopeIdentify($query, $p, $i, $partId)
     {
         return $query->where('process', '=', $p)

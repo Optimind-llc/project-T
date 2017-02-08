@@ -74,11 +74,37 @@ class InspectionResultRepository
         }
     }
 
+    protected function updateHoles($ir_id, $part_id, $hs)
+    {
+        foreach ($hs as $h) {
+            $update = $this->hole->update($h);
+
+            $this->holeModification->deleteByHoleId($h['id']);
+            if (array_key_exists('holeModificationTypeId', $h) && $h['holeModificationTypeId'] != null) {
+                $hms = [[
+                    'holeModificationTypeId' => $h['holeModificationTypeId'],
+                    'holeId' => $update->id
+                ]];
+                $this->createHoleModifications($ir_id, $part_id, $hms);
+            }
+        }
+    }
+
     protected function createHoleModifications($ir_id, $part_id, $hms)
     {
         foreach ($hms as $hm) {
             $new = $this->holeModification->create($ir_id, $part_id, $hm);
         }
+    }
+
+    protected function deleteFailures($dfs)
+    {
+        $this->failure->deleteByIds($dfs);
+    }
+
+    protected function deleteModifications($dms)
+    {
+        $this->modification->deleteByIds($dfs);
     }
 
     public function exist($p, $i, $partId)
@@ -95,7 +121,22 @@ class InspectionResultRepository
                     $q->select('id', 'x', 'y', 'type_id', 'ir_id', 'figure_id');
                 },
                 'failures.figure' => function($q) {
-                    $q->select('id', 'name', 'path');
+                    $q->select('id', 'page');
+                },
+                'modifications' => function($q) {
+                    $q->select('id', 'type_id', 'failure_id', 'ir_id', 'figure_id');
+                },
+                'modifications.failure' => function($q) {
+                    $q->select('id', 'x', 'y');
+                },
+                'modifications.figure' => function($q) {
+                    $q->select('id', 'page');
+                },
+                'holes' => function($q) {
+                    $q->select('id', 'type_id', 'ir_id', 'status');
+                },
+                'holes.holeModification' => function($q) {
+                    $q->select('id', 'type_id', 'hole_id');
                 }
             ])
             ->select([
@@ -112,14 +153,14 @@ class InspectionResultRepository
             ->first();
     }
 
-    public function create($param, $fs, $ms, $hs, $hms)
+    public function create($param, $fs, $ms, $hs)
     {
         $new = new InspectionResult;
         $new->part_id = $param['part_id'];
         $new->process = $param['process'];
         $new->inspection = $param['inspection'];
         $new->line = $param['line'];
-        $new->ft_ids = $param['ft_ids'];
+        $new->ft_ids = serialize($param['ft_ids']->toArray());
         $new->created_choku = $param['created_choku'];
         $new->created_by = $param['created_by'];
         $new->status = $param['status'];
@@ -147,8 +188,44 @@ class InspectionResultRepository
         return $new;
     }
 
-    public function update($p, $i, $partId)
+    public function update($param, $fs, $ms, $hs, $dfs, $dms)
     {
-        return true;
+        $ir = InspectionResult::identify($param['process'], $param['inspection'], $param['part_id'])->first();
+        $ft_ids = array_unique(array_merge($param['ft_ids']->toArray(), unserialize($ir->ft_ids)));
+
+        $ir->ft_ids = serialize($ft_ids);
+        $ir->updated_choku = $param['updated_choku'];
+        $ir->updated_by = $param['updated_by'];
+        $ir->status = $param['status'];
+        $ir->comment = $param['comment'];
+        $ir->updated_at = $this->now;
+        $ir->save();
+
+        // Create failures
+        if (count($fs) !== 0) {
+            $this->createFailures($ir->id, $param['part_id'], $fs);
+        }
+
+        // Create modifications
+        if (count($ms) !== 0) {
+            $this->createModifications($ir->id, $param['part_id'], $ms);
+        }
+
+        // Update holes
+        if (count($hs) !== 0) {
+            $this->updateHoles($ir->id, $param['part_id'], $hs);
+        }
+
+        // Delete failures
+        if (count($dfs) !== 0) {
+            $this->deleteFailures($dfs);
+        }
+
+        // Delete modifications
+        if (count($dms) !== 0) {
+            $this->deleteFailures($dms);
+        }
+
+        return $ir;
     }
 }
