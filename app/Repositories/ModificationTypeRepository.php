@@ -14,6 +14,13 @@ class ModificationTypeRepository
         return ModificationType::narrow($p, $i, $d)->get();
     }
 
+    public function narrowedIds($p, $i, $d)
+    {
+        return $this->narrow($p, $i, $d)->map(function($mt) {
+            return $mt->id;
+        });
+    }
+
     public function sorted($p, $i, $d)
     {
         $modifications = $this->narrow($p, $i, $d)

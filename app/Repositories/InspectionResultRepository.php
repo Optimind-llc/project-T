@@ -161,6 +161,8 @@ class InspectionResultRepository
         $new->inspection = $param['inspection'];
         $new->line = $param['line'];
         $new->ft_ids = serialize($param['ft_ids']->toArray());
+        $new->mt_ids = serialize($param['mt_ids']->toArray());
+        $new->hmt_ids = serialize($param['hmt_ids']->toArray());
         $new->created_choku = $param['created_choku'];
         $new->created_by = $param['created_by'];
         $new->status = $param['status'];
@@ -192,8 +194,12 @@ class InspectionResultRepository
     {
         $ir = InspectionResult::identify($param['process'], $param['inspection'], $param['part_id'])->first();
         $ft_ids = array_unique(array_merge($param['ft_ids']->toArray(), unserialize($ir->ft_ids)));
+        $mt_ids = array_unique(array_merge($param['mt_ids']->toArray(), unserialize($ir->mt_ids)));
+        $hmt_ids = array_unique(array_merge($param['hmt_ids']->toArray(), unserialize($ir->hmt_ids)));
 
         $ir->ft_ids = serialize($ft_ids);
+        $ir->mt_ids = serialize($mt_ids);
+        $ir->hmt_ids = serialize($hmt_ids);
         $ir->updated_choku = $param['updated_choku'];
         $ir->updated_by = $param['updated_by'];
         $ir->status = $param['status'];
@@ -227,5 +233,11 @@ class InspectionResultRepository
         }
 
         return $ir;
+    }
+
+    public function delete($p, $i, $partId)
+    {
+        $delete = InspectionResult::identify($p, $i, $partId)->delete();
+        return $delete;
     }
 }

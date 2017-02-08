@@ -14,6 +14,13 @@ class HoleModificationTypeRepository
         return HoleModificationType::narrow($p, $i, $d)->get();
     }
 
+    public function narrowedIds($p, $i, $d)
+    {
+        return $this->narrow($p, $i, $d)->map(function($hmt) {
+            return $hmt->id;
+        });
+    }
+
     public function sorted($p, $i, $d)
     {
         $hModifications = $this->narrow($p, $i, $d)

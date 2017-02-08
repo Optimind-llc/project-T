@@ -145,18 +145,22 @@ class InspectionController extends Controller
                     'name' => $targetPart->partType->name,
                     'pn' => $targetPart->partType->pn
                 ];
-            } else {
+            }
+            else {
                 $param = [
                     'part_id' => $targetPart->id,
                     'process' => $process,
                     'inspection' => $inspection,
                     'line' => $line,
                     'ft_ids' => $this->failureType->narrowedIds($process, $inspection, $d2),
+                    'mt_ids' => $this->modificationType->narrowedIds($process, $inspection, $d2),
+                    'hmt_ids' => $this->holeModificationType->narrowedIds($process, $inspection, $d2),
                     'created_choku' => $choku,
                     'created_by' => $worker,
                     'status' => $part['status'],
                     'comment' => $part['comment']
                 ];
+
 
                 $fs = [];
                 if (array_key_exists('failures', $part)) {
@@ -278,6 +282,8 @@ class InspectionController extends Controller
                     'process' => $process,
                     'inspection' => $inspection,
                     'ft_ids' => $this->failureType->narrowedIds($process, $inspection, $d2),
+                    'mt_ids' => $this->modificationType->narrowedIds($process, $inspection, $d2),
+                    'hmt_ids' => $this->holeModificationType->narrowedIds($process, $inspection, $d2),
                     'updated_choku' => $choku,
                     'updated_by' => $worker,
                     'status' => $part['status'],
@@ -311,7 +317,8 @@ class InspectionController extends Controller
 
                 $this->inspectionResult->update($param, $fs, $ms, $hs, $dfs, $dms);
 
-            } else {
+            }
+            else {
                 $notFound[] = [
                     'panelId' => $part['panelId'],
                     'name' => $targetPart->partType->name,
@@ -336,6 +343,16 @@ class InspectionController extends Controller
 
     public function delete(Request $request)
     {
-        return 'aaa';
+        $process = $request->process;
+        $inspection = $request->inspection;
+        $partIds = $request->partIds;
+
+        foreach ($partIds as $partId) {
+            $this->inspectionResult->delete($process, $inspection, $partId);
+        }
+
+        return [
+            'message' => 'Delete inspection succeeded'
+        ];
     }
 }
