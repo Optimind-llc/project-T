@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use App\Http\Controllers\Vehicle950A\Client\InspectionController;
+use App\Http\Controllers\V2\Client\InspectionController;
 use Illuminate\Http\Request;
 use App\Services\DummyRequest;
 // Repositories
@@ -122,7 +122,7 @@ class Insert950ADummyData extends Command
         $process = 'molding';
         $inspection = 'gaikan';
         $request->setForGet($process, $inspection, ['ドアインナR']);
-        $getted = $controller->getInspection($request);
+        $getted = $controller->getInspection('950A', $request);
 
         for ($i = 1; $i <= 5; $i++) {
             $panelId = 'X'.str_pad($i, 7, 0, STR_PAD_LEFT);
@@ -133,7 +133,7 @@ class Insert950ADummyData extends Command
             $line = 1;
 
             $request->setForSave($choku, $worker, $line, $parts);
-            $controller->saveInspection($request);
+            $controller->saveInspection('950A', $request);
         }
 
         $this->info('ok');

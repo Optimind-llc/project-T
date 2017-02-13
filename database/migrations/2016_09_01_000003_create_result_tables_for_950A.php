@@ -55,13 +55,13 @@ class CreateResultTablesFor950A extends Migration
             $table->tinyInteger('status')->unsigned()->default(1);
             $table->string('comment')->nullable();
             $table->string('table')->nullable();
-            $table->string('ft_ids', 512)->nullable();
-            $table->string('mt_ids', 512)->nullable();
-            $table->string('hmt_ids', 512)->nullable();
             $table->string('created_choku', 8);
             $table->string('updated_choku', 8)->nullable();
             $table->string('created_by', 8);
             $table->string('updated_by', 8)->nullable();
+            $table->string('ft_ids', 512)->nullable();
+            $table->string('mt_ids', 512)->nullable();
+            $table->string('hmt_ids', 512)->nullable();
             $table->tinyInteger('latest')->unsigned()->default(1);
             $table->timestamp('inspected_at')->nullable();
             $table->timestamps();

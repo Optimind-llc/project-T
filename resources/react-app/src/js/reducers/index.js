@@ -25,6 +25,8 @@ import maintFailureData from '../modules/failure/ducks/failure';
 import maintModificationData from '../modules/modification/ducks/modification';
 import maintHoleData from '../modules/hole/ducks/hole';
 
+// 950A
+import ReportData950A from '../modules/Vehicle950A/report/ducks/report';
 
 const rootReducer = combineReducers(Object.assign({
   Application,
@@ -45,6 +47,7 @@ const rootReducer = combineReducers(Object.assign({
   maintFailureData,
   maintModificationData,
   maintHoleData,
+  ReportData950A,
   routing: routerReducer
 }));
 

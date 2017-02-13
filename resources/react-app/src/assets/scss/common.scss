@@ -176,7 +176,8 @@ button {
 
       &:before {
         content: url(/img/icon/serch-w.svg);
-        display: inline-block;
+        display: block;
+        float: left;
         margin-right: 2px;
         height: auto;
         width: 12px;

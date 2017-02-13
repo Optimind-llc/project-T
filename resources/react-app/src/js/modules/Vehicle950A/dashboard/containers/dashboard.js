@@ -44,7 +44,7 @@ class Dashboard extends Component {
 
     return (
       <div id="950Dashboard">
-        <p>aaa</p>
+        <p>Comming soon...</p>
       </div>
     );
   }

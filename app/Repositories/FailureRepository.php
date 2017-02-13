@@ -15,8 +15,16 @@ class FailureRepository
         $new->ir_id = $ir_id;
         $new->part_id = $part_id;
         $new->figure_id = $param['figureId'];
-        $new->x = $param['x'];
-        $new->y = $param['y'];
+        if (array_key_exists('point', $param)) {
+            $exc = explode(',', $param['point']);
+
+            $new->x = $exc[0];
+            $new->y = $exc[1];
+        }
+        else {
+            $new->x = $param['x'];
+            $new->y = $param['y'];
+        }
         $new->type_id = $param['failureTypeId'];
         $new->save();
 

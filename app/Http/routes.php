@@ -178,23 +178,21 @@ Route::post('maintenance/hole/{id}/deactivate', 'Manager\MaintenanceController@d
 /*
  * For 950A
  */
-Route::group(['prefix' => '950A', 'namespace' => 'Vehicle950A'], function () {
-	Route::group(['prefix' => 'client', 'namespace' => 'Client'], function () {
-	    Route::post('inspection', 'InspectionController@getInspection');
-        Route::post('inspection/save', 'InspectionController@saveInspection');
-        Route::post('inspection/result', 'InspectionController@result');
-        Route::post('inspection/update', 'InspectionController@update');
-        Route::post('inspection/delete', 'InspectionController@delete');
+Route::group(['prefix' => '{vehicle}/client', 'namespace' => 'V2\Client'], function () {
+    Route::post('inspection', 'InspectionController@getInspection');
+    Route::post('inspection/save', 'InspectionController@saveInspection');
+    Route::post('inspection/result', 'InspectionController@result');
+    Route::post('inspection/update', 'InspectionController@update');
+    Route::post('inspection/delete', 'InspectionController@delete');
 
-		// Associate Parts
-		Route::post('association/check', 'AssociationController@check');
-		Route::post('association/save', 'AssociationController@save');
-		Route::post('association/family', 'AssociationController@getFamily');
-		Route::post('association/update', 'AssociationController@updateFamily');
-	});
+    // Associate Parts
+    Route::post('association/check', 'AssociationController@check');
+    Route::post('association/save', 'AssociationController@save');
+    Route::post('association/family', 'AssociationController@getFamily');
+    Route::post('association/update', 'AssociationController@updateFamily');
 });
 
-Route::group(['prefix' => 'manager/950A', 'namespace' => 'Vehicle950A\Manager'], function () {
+Route::group(['prefix' => 'manager/{vehicle}', 'namespace' => 'V2\Manager'], function () {
     Route::get('dashboard', 'ShowController@index');
     Route::get('mapping', 'ShowController@index');
     Route::get('reference', 'ShowController@index');
@@ -210,6 +208,9 @@ Route::group(['prefix' => 'manager/950A', 'namespace' => 'Vehicle950A\Manager'],
         Route::get('hole', 'ShowController@index');
         Route::get('inline', 'ShowController@index');
     });
+
+    Route::get('report/check/{date}', 'ReportController@check');
+    Route::get('report/export/{process}/{inspection}/{line}/{part}/{date}/{choku}', 'ReportController@export');
 });
 
 

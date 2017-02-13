@@ -17,6 +17,10 @@ import Navigation from '../components/navigation/navigation';
 class App extends Component {
   constructor(props, context) {
     super(props, context);
+
+    if (props.routes[1].name == '950A') {
+      props.actions.changeVehicle('950A');
+    }
   }
 
   render() {
@@ -78,7 +82,7 @@ class App extends Component {
           pw={'0000'}
           login={() => actions.login()}
           logout={() => actions.logout()}
-          changeVehicle={(v) =>this.props.actions.changeVehicle(v)}
+          changeVehicle={(v) => this.props.actions.changeVehicle(v)}
           push={actions.push}
         />
         <div style={styles.content}>

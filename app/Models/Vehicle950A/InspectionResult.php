@@ -15,6 +15,15 @@ class InspectionResult extends Model
     protected $guarded = ['id'];
     protected $dates = ['inspected_at', 'deleted_at'];
 
+    public function parts()
+    {
+        return $this->belongsTo(
+            'App\Models\Vehicle950A\Part',
+            'part_id',
+            'id'
+        );
+    }
+
     public function failures()
     {
         return $this->hasMany(

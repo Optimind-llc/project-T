@@ -1231,11 +1231,20 @@ class Report
 
                 // foreach ($chunked_part_type[$p]->values() as $row => $part) {
                 foreach ($chunked_part_types[$part_obj->id][$p]->values() as $row => $part) {
-                    $createdBy = explode(',', $part->created_by);
+                    $exc = explode(',', $part->created_by);
+                    $inspectedBy = count($exc) > 1 ? $exc[1] : $exc[0];
+
+                    if ($part->updated_by) {
+                        $exu = explode(',', $part->updated_by);
+                        $inspectedBy = count($exu) > 1 ? $exu[1] : $exu[0];
+                    }
+
+
+                    // $createdBy = explode(',', $part->created_by);
 
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$dL, $A4['y3']+($row)*$A4['th'], $p*50+$row+1);
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$dL, $A4['y3']+($row)*$A4['th'], $part->panel_id);
-                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$dL, $A4['y3']+($row)*$A4['th'], array_key_exists(1, $createdBy) ? $createdBy[1] : $createdBy[0]);
+                    $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$dL, $A4['y3']+($row)*$A4['th'], $inspectedBy);
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$dL, $A4['y3']+($row)*$A4['th'], $part->status == 1 ? '○' : '×');
                     $tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$dL, $A4['y3']+($row)*$A4['th'], $part->created_at->format('H:i'));
                 }
@@ -1264,7 +1273,7 @@ class Report
                 $inspectedBy = count($exc) > 1 ? $exc[1] : $exc[0];
 
                 if ($part->updated_by) {
-                    $exu = explode(',', $part->first()->updated_by);
+                    $exu = explode(',', $part->updated_by);
                     $inspectedBy = count($exu) > 1 ? $exu[1] : $exu[0];
                 }
 
