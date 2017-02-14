@@ -121,7 +121,7 @@ class Insert950ADummyData extends Command
         //成型_外観検査_ドア_ドアインナーR
         $process = 'molding';
         $inspection = 'gaikan';
-        $request->setForGet($process, $inspection, ['ドアインナR']);
+        $request->setForGet($process, $inspection, ['リンフォースR']);
         $getted = $controller->getInspection('950A', $request);
 
         for ($i = 1; $i <= 5; $i++) {

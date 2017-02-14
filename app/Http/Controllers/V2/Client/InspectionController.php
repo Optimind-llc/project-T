@@ -195,67 +195,133 @@ class InspectionController extends Controller
 
     public function result($vehicle, Request $request)
     {
-        $pn = $request->pn;
-        $panelId = $request->panelId;
-        $targets = $request->targets;
+        // $pn = $request->pn;
+        // $panelId = $request->panelId;
+        // $targets = $request->targets;
 
-        $part = Part::where('panel_id', $panelId)->where('pn', $pn)->first();
+        // $part = Part::where('panel_id', $panelId)->where('pn', $pn)->first();
 
-        $partId = -1;
-        if ($part instanceof Part) {
-            $partId = $part->id;
-        }
+        // $partId = -1;
+        // if ($part instanceof Part) {
+        //     $partId = $part->id;
+        // }
 
-        $results = [];
-        foreach ($targets as $t) {
-            $result = $this->inspectionResult->all($t['process'], $t['inspection'], $partId);
+        // $results = [];
+        // foreach ($targets as $t) {
+        //     $result = $this->inspectionResult->all($t['process'], $t['inspection'], $partId);
 
-            if ($result) {
-                $results[$t['process'].'_'.$t['inspection']] = [
-                    'id' => $result['id'],
-                    'line' => $result['line'],
-                    'status' => $result['status'],
-                    'comment' => $result['comment'],
-                    'choku' => $result['created_choku'],
-                    'createdBy' => $result['created_by'],
-                    'createdAt' => $result['created_at']->format('m月d日'),
-                    'failures' => $result['failures']->map(function($f) {
-                        return [
-                            'id' => $f->id,
-                            'x' => $f->x,
-                            'y' => $f->y,
-                            'typeId' => $f->type_id,
-                            'figureId' => $f->figure->id,
-                            'figurePage' => $f->figure->page
-                        ];
-                    })->groupBy('figurePage'),
-                    'modifications' => $result['modifications']->map(function($m) {
-                        return [
-                            'id' => $m->id,
-                            'x' => $m->failure->x,
-                            'y' => $m->failure->y,
-                            'typeId' => $m->type_id,
-                            'figureId' => $m->figure->id,
-                            'figurePage' => $m->figure->page
-                        ];
-                    })->groupBy('figurePage'),
-                    'holes' => $result['holes']->map(function($h) {
-                        return [
-                            'id' => $h->id,
-                            'typeId' => $h->type_id,
-                            'status' => $h->status,
-                            'holeModificationType' => $h->holeModification->type_id
-                        ];
-                    }),
-                ];
-            } else {
-                $results[$t['process'].'_'.$t['inspection']] = ['status' => -1];
+        //     if ($result) {
+        //         $results[$t['process'].'_'.$t['inspection']] = [
+        //             'id' => $result['id'],
+        //             'line' => $result['line'],
+        //             'status' => $result['status'],
+        //             'comment' => $result['comment'],
+        //             'choku' => $result['created_choku'],
+        //             'createdBy' => $result['created_by'],
+        //             'createdAt' => $result['created_at']->format('m月d日'),
+        //             'failures' => $result['failures']->map(function($f) {
+        //                 return [
+        //                     'id' => $f->id,
+        //                     'x' => $f->x,
+        //                     'y' => $f->y,
+        //                     'typeId' => $f->type_id,
+        //                     'figureId' => $f->figure->id,
+        //                     'figurePage' => $f->figure->page
+        //                 ];
+        //             })->groupBy('figurePage'),
+        //             'modifications' => $result['modifications']->map(function($m) {
+        //                 return [
+        //                     'id' => $m->id,
+        //                     'x' => $m->failure->x,
+        //                     'y' => $m->failure->y,
+        //                     'typeId' => $m->type_id,
+        //                     'figureId' => $m->figure->id,
+        //                     'figurePage' => $m->figure->page
+        //                 ];
+        //             })->groupBy('figurePage'),
+        //             'holes' => $result['holes']->map(function($h) {
+        //                 return [
+        //                     'id' => $h->id,
+        //                     'typeId' => $h->type_id,
+        //                     'status' => $h->status,
+        //                     'holeModificationType' => $h->holeModification->type_id
+        //                 ];
+        //             }),
+        //         ];
+        //     } else {
+        //         $results[$t['process'].'_'.$t['inspection']] = ['status' => -1];
+        //     }
+        // }
+
+        $parts = $request->parts;
+        $inspections = $request->inspections;
+
+        $p_results = [];
+        foreach ($parts as $part) {
+            $part_obj = Part::where('panel_id', $part['panelId'])->where('pn', $part['pn'])->first();
+
+            $partId = -1;
+            if ($part_obj instanceof Part) {
+                $partId = $part_obj->id;
             }
+
+            $i_results = [];
+            foreach ($inspections as $i) {
+                $result = $this->inspectionResult->all($i['process'], $i['inspection'], $partId);
+
+                if ($result) {
+                    $i_results[$i['process'].'_'.$i['inspection']] = [
+                        'id' => $result['id'],
+                        'line' => $result['line'],
+                        'status' => $result['status'],
+                        'comment' => $result['comment'],
+                        'choku' => $result['created_choku'],
+                        'createdBy' => $result['created_by'],
+                        'createdAt' => $result['created_at']->format('m月d日'),
+                        'failures' => $result['failures']->map(function($f) {
+                            return [
+                                'id' => $f->id,
+                                'x' => $f->x,
+                                'y' => $f->y,
+                                'typeId' => $f->type_id,
+                                'figureId' => $f->figure->id,
+                                'figurePage' => $f->figure->page
+                            ];
+                        })->groupBy('figurePage'),
+                        'modifications' => $result['modifications']->map(function($m) {
+                            return [
+                                'id' => $m->id,
+                                'x' => $m->failure->x,
+                                'y' => $m->failure->y,
+                                'typeId' => $m->type_id,
+                                'figureId' => $m->figure->id,
+                                'figurePage' => $m->figure->page
+                            ];
+                        })->groupBy('figurePage'),
+                        'holes' => $result['holes']->map(function($h) {
+                            return [
+                                'id' => $h->id,
+                                'typeId' => $h->type_id,
+                                'status' => $h->status,
+                                'holeModificationType' => $h->holeModification->type_id
+                            ];
+                        }),
+                    ];
+                } else {
+                    $i_results[$i['process'].'_'.$i['inspection']] = ['status' => -1];
+                }
+            }
+
+            $p_results[] = [
+                'pn' => $part['pn'],
+                'panelId' => $part['panelId'],
+                'partId' => $partId,
+                'inspections' => $i_results
+            ];
         }
 
         return [
-            'partId' => $partId,
-            'inspectionResults' => $results
+            'results' => $p_results
         ];
     }
 
