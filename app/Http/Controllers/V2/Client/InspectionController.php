@@ -145,6 +145,7 @@ class InspectionController extends Controller
                 ];
             }
             else {
+                $comment = array_key_exists('comment', $part) ? $part['comment'] : null;
                 $param = [
                     'part_id' => $targetPart->id,
                     'process' => $process,
@@ -156,9 +157,8 @@ class InspectionController extends Controller
                     'created_choku' => $choku,
                     'created_by' => $worker,
                     'status' => $part['status'],
-                    'comment' => $part['comment']
+                    'comment' => $comment
                 ];
-
 
                 $fs = [];
                 if (array_key_exists('failures', $part)) {
@@ -195,64 +195,6 @@ class InspectionController extends Controller
 
     public function result($vehicle, Request $request)
     {
-        // $pn = $request->pn;
-        // $panelId = $request->panelId;
-        // $targets = $request->targets;
-
-        // $part = Part::where('panel_id', $panelId)->where('pn', $pn)->first();
-
-        // $partId = -1;
-        // if ($part instanceof Part) {
-        //     $partId = $part->id;
-        // }
-
-        // $results = [];
-        // foreach ($targets as $t) {
-        //     $result = $this->inspectionResult->all($t['process'], $t['inspection'], $partId);
-
-        //     if ($result) {
-        //         $results[$t['process'].'_'.$t['inspection']] = [
-        //             'id' => $result['id'],
-        //             'line' => $result['line'],
-        //             'status' => $result['status'],
-        //             'comment' => $result['comment'],
-        //             'choku' => $result['created_choku'],
-        //             'createdBy' => $result['created_by'],
-        //             'createdAt' => $result['created_at']->format('m月d日'),
-        //             'failures' => $result['failures']->map(function($f) {
-        //                 return [
-        //                     'id' => $f->id,
-        //                     'x' => $f->x,
-        //                     'y' => $f->y,
-        //                     'typeId' => $f->type_id,
-        //                     'figureId' => $f->figure->id,
-        //                     'figurePage' => $f->figure->page
-        //                 ];
-        //             })->groupBy('figurePage'),
-        //             'modifications' => $result['modifications']->map(function($m) {
-        //                 return [
-        //                     'id' => $m->id,
-        //                     'x' => $m->failure->x,
-        //                     'y' => $m->failure->y,
-        //                     'typeId' => $m->type_id,
-        //                     'figureId' => $m->figure->id,
-        //                     'figurePage' => $m->figure->page
-        //                 ];
-        //             })->groupBy('figurePage'),
-        //             'holes' => $result['holes']->map(function($h) {
-        //                 return [
-        //                     'id' => $h->id,
-        //                     'typeId' => $h->type_id,
-        //                     'status' => $h->status,
-        //                     'holeModificationType' => $h->holeModification->type_id
-        //                 ];
-        //             }),
-        //         ];
-        //     } else {
-        //         $results[$t['process'].'_'.$t['inspection']] = ['status' => -1];
-        //     }
-        // }
-
         $parts = $request->parts;
         $inspections = $request->inspections;
 
@@ -341,6 +283,7 @@ class InspectionController extends Controller
 
             // Check inspection result exist
             if ($this->inspectionResult->exist($process, $inspection, $part['partId'])) {
+                $comment = array_key_exists('comment', $part) ? $part['comment'] : null;
                 $param = [
                     'part_id' => $targetPart->id,
                     'process' => $process,
@@ -351,7 +294,7 @@ class InspectionController extends Controller
                     'updated_choku' => $choku,
                     'updated_by' => $worker,
                     'status' => $part['status'],
-                    'comment' => $part['comment']
+                    'comment' => $comment
                 ];
 
                 $fs = [];
