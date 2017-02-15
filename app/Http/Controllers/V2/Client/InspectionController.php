@@ -59,53 +59,60 @@ class InspectionController extends Controller
 
         $first_pt = PartType::where('name', '=', $pt_names[0])->first();
         $d1 = $first_pt->division1;
-        $d2 = $first_pt->division2;
 
-        $pt = PartType::whereIn('name', $pt_names)
-            ->with([
-                'figures' => function($q) use ($process, $inspection){
-                    $q->where('process', '=', $process)->where('inspection', '=', $inspection);
-                },
-                'figures.holeTypes' => function($q) {
-                    $q->where('hole_types.status', '=', 1);
-                }
-            ])
-            ->get()
-            ->map(function($pt) {
-                return [
-                    'pn' => $pt->pn,
-                    'name' => $pt->name,
-                    'figures' => $pt->figures->map(function($f) {
-                        return [
-                            'id' => $f->id,
-                            'name' => $f->process.'_'.$f->inspection.'_'.$f->pt_pn.'_p'.$f->page,
-                            'page' => $f->page,
-                            'path' => '/img/figures/950A/'.$f->path,
-                            'sizeX' => $f->size_x,
-                            'sizeY' => $f->size_y,
-                            'holes' => $f->holeTypes->map(function($ht) {
-                                return [
-                                    'id' => $ht->id,
-                                    'x' => $ht->x,
-                                    'y' => $ht->y,
-                                    'label' => $ht->label,
-                                    'direction' => $ht->direction,
-                                    'shape' => $ht->shape,
-                                    'border' => $ht->border,
-                                    'color' => $ht->color
-                                ];
-                            })
-                        ];
-                    })
-                ];
-            });
+        $partTypes = [];
+        foreach ($pt_names as $pt_name) {
+            $d2 = PartType::where('name', '=', $pt_name)->first()->division2;
+            $pt = PartType::where('name', '=', $pt_name)
+                ->with([
+                    'figures' => function($q) use ($process, $inspection){
+                        $q->where('process', '=', $process)->where('inspection', '=', $inspection);
+                    },
+                    'figures.holeTypes' => function($q) {
+                        $q->where('hole_types.status', '=', 1);
+                    }
+                ])
+                ->get()
+                ->map(function($pt) {
+                    return [
+                        'pn' => $pt->pn,
+                        'name' => $pt->name,
+                        'figures' => $pt->figures->map(function($f) {
+                            return [
+                                'id' => $f->id,
+                                'name' => $f->process.'_'.$f->inspection.'_'.$f->pt_pn.'_p'.$f->page,
+                                'page' => $f->page,
+                                'path' => '/img/figures/950A/'.$f->path,
+                                'sizeX' => $f->size_x,
+                                'sizeY' => $f->size_y,
+                                'holes' => $f->holeTypes->map(function($ht) {
+                                    return [
+                                        'id' => $ht->id,
+                                        'x' => $ht->x,
+                                        'y' => $ht->y,
+                                        'label' => $ht->label,
+                                        'direction' => $ht->direction,
+                                        'shape' => $ht->shape,
+                                        'border' => $ht->border,
+                                        'color' => $ht->color
+                                    ];
+                                })
+                            ];
+                        })
+                    ];
+                });
+
+            $partTypes[] = [
+                'failures' => $this->failureType->sorted($process, $inspection, $d2),
+                'modifications' => $this->modificationType->sorted($process, $inspection, $d2),
+                'hModifications' => $this->holeModificationType->sorted($process, $inspection, $d2),
+                'partType' => $pt
+            ];
+        }
 
         return [
             'workers' => $this->worker->formated($process, $inspection, $d1),
-            'failures' => $this->failureType->sorted($process, $inspection, $d2),
-            'modifications' => $this->modificationType->sorted($process, $inspection, $d2),
-            'hModifications' => $this->holeModificationType->sorted($process, $inspection, $d2),
-            'partTypes' => $pt,
+            'partTypes' => $partTypes
         ];
     }
 
