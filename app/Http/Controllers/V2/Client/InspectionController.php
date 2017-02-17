@@ -223,7 +223,7 @@ class InspectionController extends Controller
                         'id' => $result['id'],
                         'line' => $result['line'],
                         'status' => $result['status'],
-                        'comment' => $result['comment'],
+                        'comment' => $result['comment'] !== null ? $result['comment'] : '',
                         'choku' => $result['created_choku'],
                         'createdBy' => $result['created_by'],
                         'createdAt' => $result['created_at']->format('m月d日'),
