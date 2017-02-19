@@ -219,15 +219,9 @@ class InspectionController extends Controller
                 $result = $this->inspectionResult->all($i['process'], $i['inspection'], $partId);
 
                 if ($result) {
-                    $i_results[$i['process'].'_'.$i['inspection']] = [
-                        'id' => $result['id'],
-                        'line' => $result['line'],
-                        'status' => $result['status'],
-                        'comment' => $result['comment'] !== null ? $result['comment'] : '',
-                        'choku' => $result['created_choku'],
-                        'createdBy' => $result['created_by'],
-                        'createdAt' => $result['created_at']->format('m月d日'),
-                        'failures' => $result['failures']->map(function($f) {
+                    $failures = (object)array();
+                    if ($result['failures']->count() > 0) {
+                        $failures = $result['failures']->map(function($f) {
                             return [
                                 'id' => $f->id,
                                 'x' => $f->x,
@@ -236,17 +230,38 @@ class InspectionController extends Controller
                                 'figureId' => $f->figure->id,
                                 'figurePage' => $f->figure->page
                             ];
-                        })->groupBy('figurePage'),
-                        'modifications' => $result['modifications']->map(function($m) {
+                        })
+                        ->groupBy('figurePage');
+                    }
+
+                    $modifications = (object)array();
+                    if ($result['modifications']->count() > 0) {
+                        $modifications = $result['modifications']->map(function($m) {
                             return [
                                 'id' => $m->id,
+                                'failureId' => $m->failure->id,
                                 'x' => $m->failure->x,
                                 'y' => $m->failure->y,
                                 'typeId' => $m->type_id,
                                 'figureId' => $m->figure->id,
                                 'figurePage' => $m->figure->page
                             ];
-                        })->groupBy('figurePage'),
+                        })
+                        ->groupBy('figurePage');
+                    }
+
+
+
+                    $i_results[$i['process'].'_'.$i['inspection']] = [
+                        'id' => $result['id'],
+                        'line' => $result['line'],
+                        'status' => $result['status'],
+                        'comment' => $result['comment'] !== null ? $result['comment'] : '',
+                        'choku' => $result['created_choku'],
+                        'createdBy' => $result['created_by'],
+                        'createdAt' => $result['created_at']->format('m月d日'),
+                        'failures' => $failures,
+                        'modifications' => $modifications,
                         'holes' => $result['holes']->map(function($h) {
                             return [
                                 'id' => $h->id,
