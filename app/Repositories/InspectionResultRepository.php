@@ -107,6 +107,11 @@ class InspectionResultRepository
         $this->modification->deleteByIds($dfs);
     }
 
+    protected function deleteModificationsByFailureId($dmbfs)
+    {
+        $this->modification->deleteByFailureId($dmbfs);
+    }
+
     public function exist($p, $i, $partId)
     {
         $ir = InspectionResult::identify($p, $i, $partId)->first();
@@ -190,7 +195,7 @@ class InspectionResultRepository
         return $new;
     }
 
-    public function update($param, $fs, $ms, $hs, $dfs, $dms)
+    public function update($param, $fs, $ms, $hs, $dfs, $dms, $dmbfs)
     {
         $ir = InspectionResult::identify($param['process'], $param['inspection'], $param['part_id'])->first();
         $ft_ids = array_unique(array_merge($param['ft_ids']->toArray(), unserialize($ir->ft_ids)));
@@ -229,7 +234,10 @@ class InspectionResultRepository
 
         // Delete modifications
         if (count($dms) !== 0) {
-            $this->deleteFailures($dms);
+            $this->deleteModifications($dms);
+        }
+        if (count($dmbfs) !== 0) {
+            $this->deleteModificationsByFailureId($dmbfs);
         }
 
         return $ir;

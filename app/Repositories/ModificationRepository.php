@@ -27,4 +27,10 @@ class ModificationRepository
         $deleted = Modification::whereIn('id', $ids)->delete();
         return $deleted;
     }
+
+    public function deleteByFailureId($fIds)
+    {
+        $deleted = Modification::whereIn('failure_id', $fIds)->delete();
+        return $deleted;
+    }
 }

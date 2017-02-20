@@ -250,8 +250,6 @@ class InspectionController extends Controller
                         ->groupBy('figurePage');
                     }
 
-
-
                     $i_results[$i['process'].'_'.$i['inspection']] = [
                         'id' => $result['id'],
                         'line' => $result['line'],
@@ -344,7 +342,12 @@ class InspectionController extends Controller
                     $dms = $part['deletedM'];
                 }
 
-                $this->inspectionResult->update($param, $fs, $ms, $hs, $dfs, $dms);
+                $dmbfs = [];
+                if (array_key_exists('deletedMByF', $part)) {
+                    $dmbfs = $part['deletedMByF'];
+                }
+
+                $this->inspectionResult->update($param, $fs, $ms, $hs, $dfs, $dms, $dmbfs);
 
             }
             else {
