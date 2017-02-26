@@ -116,7 +116,7 @@ class Export
         $choku = new Choku($now);
         $choku_num = $choku->getChoku();
 
-        $dir_path = config('path.'.env('SERVER').'.output');
+        $dir_path = config('path.'.config('app.server_place').'.output');
 
         switch ($itionGId) {
             case 1:

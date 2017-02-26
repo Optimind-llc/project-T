@@ -60,6 +60,10 @@ class ReportController extends Controller
             ->values()
             ->sortBy('created_at');
 
+            // $countLast3 = $parts->filter(function($p) use ($date) {
+            //     return $p->inspector_group !== '不明' && $p->created_at->gte($date->copy()->addHours(2)) && $p->created_at->lte($date->copy()->addHours(6));
+            // })->count();
+
             $count1 = $parts->filter(function($p) use ($date) {
                 return $p->created_at->gte($date->copy()->addHours(9)) && $p->created_at->lte($date->copy()->addHours(13));
             })->count();
@@ -82,7 +86,8 @@ class ReportController extends Controller
                     return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(6)->addMinutes(30)));
                 });
             }
-            elseif ($count3 > 0) {
+            // elseif ($count3 > 0 || $countLast3 > 0 ) {
+            elseif ($count3 > 0 ) {
                 $parts = $parts->filter(function($p) use ($date) {
                     return ($p->inspector_group == '不明' && $p->created_at->gte($date->copy()->addHours(6)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay(1)->addHours(8)->addMinutes(30))) || ($p->created_at->gte($date->copy()->addHours(8)->addMinutes(30)) && $p->created_at->lt($date->copy()->addDay()->addHours(8)->addMinutes(30)));
                 });

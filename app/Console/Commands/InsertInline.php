@@ -822,10 +822,8 @@ class InsertInline extends Command
      */
     public function handle()
     {
-        // $dirPath = config('path.inline');
-
-        $dirPath = config('path.'.env('SERVER').'.inline');
-        $backupPath = config('path.'.env('SERVER').'.backup');
+        $dirPath = config('path.'.config('app.server_place').'.inline');
+        $backupPath = config('path.'.config('app.server_place').'.backup');
 
         $files = scandir($dirPath);
 
