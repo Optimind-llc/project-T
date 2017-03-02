@@ -261,11 +261,15 @@ class InspectionController extends Controller
                         'failures' => $failures,
                         'modifications' => $modifications,
                         'holes' => $result['holes']->map(function($h) {
+                            $holeModificationType = 0;
+                            if ($h->holeModification) {
+                                $holeModificationType = $h->holeModification->type_id;
+                            }
                             return [
                                 'id' => $h->id,
                                 'typeId' => $h->type_id,
                                 'status' => $h->status,
-                                'holeModificationType' => $h->holeModification->type_id
+                                'holeModificationType' => $holeModificationType
                             ];
                         }),
                     ];

@@ -102,7 +102,7 @@ class RelatedModificationTableSeeder extends Seeder
 
         //成型_外観検査_ドアインナ
         $m_gaikan_doorInner_failures = [
-            [1,  1], [9, 1]
+            [1,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -119,7 +119,7 @@ class RelatedModificationTableSeeder extends Seeder
 
         //成型_外観検査_ラゲージインナ
         $m_gaikan_luggageInner_failures = [
-            [1,  1], [9, 1]
+            [1,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -134,10 +134,46 @@ class RelatedModificationTableSeeder extends Seeder
         }, array_keys($m_gaikan_luggageInner_failures), $m_gaikan_luggageInner_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
+        //穴あけ_外観検査_ドアインナ
+        $h_gaikan_doorInner_failures = [
+            [1,  2], [9, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'gaikan',
+                'division'      => 'doorInner',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_gaikan_doorInner_failures), $h_gaikan_doorInner_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴あけ_外観検査_ラゲージインナ
+        $h_gaikan_luggageInner_failures = [
+            [1,  2], [9, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'gaikan',
+                'division'      => 'luggageInner',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_gaikan_luggageInner_failures), $h_gaikan_luggageInner_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+
+
         //かしめ_外周仕上_ラゲージアウタ
         $j_gaishushiage_luggageOuter_failures = [
-            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
-            [9, 1]
+            [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
+            [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -154,8 +190,8 @@ class RelatedModificationTableSeeder extends Seeder
 
         //かしめ_パテ修復後_ラゲージアウタ
         $j_pateshufukugo_luggageOuter_failures = [
-            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
-            [9, 1]
+            [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
+            [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -172,8 +208,8 @@ class RelatedModificationTableSeeder extends Seeder
 
         //かしめ_水検後_ラゲージアウタ
         $j_suikengo_luggageOuter_failures = [
-            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
-            [9, 1]
+            [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
+            [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -191,8 +227,8 @@ class RelatedModificationTableSeeder extends Seeder
 
         //接着_外観検査_ドアASSY
         $j_gaikan_doorASSY_failures = [
-            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
-            [9, 1]
+            [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
+            [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -209,8 +245,8 @@ class RelatedModificationTableSeeder extends Seeder
 
         //接着_外観検査_ラゲージASSY
         $j_gaikan_luggageASSY_failures = [
-            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
-            [9, 1]
+            [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
+            [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -227,8 +263,8 @@ class RelatedModificationTableSeeder extends Seeder
 
         //接着_手直_ドアASSY
         $j_tenaoshi_doorASSY_failures = [
-            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
-            [9, 1]
+            [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
+            [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -245,8 +281,8 @@ class RelatedModificationTableSeeder extends Seeder
 
         //接着_手直_ラゲージASSY
         $j_tenaoshi_luggageASSY_failures = [
-            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
-            [9, 1]
+            [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
+            [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
