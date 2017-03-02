@@ -22,14 +22,14 @@ class RelatedInlineTableSeeder extends Seeder
             DB::connection('950A')->statement('SET FOREIGN_KEY_CHECKS=0;');
         }
 
-        if (env('DB_CONNECTION') == 'mysql') {
-            DB::connection('950A')->table($table_name)->truncate();
-        } elseif (env('DB_CONNECTION') == 'sqlite') {
-            DB::connection('950A')->statement('DELETE FROM ' . $table_name);
-        } else {
-            //For PostgreSQL or anything else
-            DB::connection('950A')->statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
-        }
+        // if (env('DB_CONNECTION') == 'mysql') {
+        //     DB::connection('950A')->table($table_name)->truncate();
+        // } elseif (env('DB_CONNECTION') == 'sqlite') {
+        //     DB::connection('950A')->statement('DELETE FROM ' . $table_name);
+        // } else {
+        //     //For PostgreSQL or anything else
+        //     DB::connection('950A')->statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
+        // }
 
         $figures = collect(DB::connection('950A')
             ->table('figures')

@@ -22,24 +22,34 @@ class RelatedHoleModificationTableSeeder extends Seeder
             DB::connection('950A')->statement('SET FOREIGN_KEY_CHECKS=0;');
         }
 
-        if (env('DB_CONNECTION') == 'mysql') {
-            DB::connection('950A')->table($table_name)->truncate();
-        } elseif (env('DB_CONNECTION') == 'sqlite') {
-            DB::connection('950A')->statement('DELETE FROM ' . $table_name);
-        } else {
-            //For PostgreSQL or anything else
-            DB::connection('950A')->statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
-        }
+        // if (env('DB_CONNECTION') == 'mysql') {
+        //     DB::connection('950A')->table($table_name)->truncate();
+        // } elseif (env('DB_CONNECTION') == 'sqlite') {
+        //     DB::connection('950A')->statement('DELETE FROM ' . $table_name);
+        // } else {
+        //     //For PostgreSQL or anything else
+        //     DB::connection('950A')->statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
+        // }
 
         $data = [
             [
-                'name'       => '穴径修正',
+                'name'       => '削り',
                 'label'      => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'トリム部修正',
+                'name'       => '除去',
                 'label'      => 2,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '樹脂盛り',
+                'label'      => 3,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '伸縮防止',
+                'label'      => 4,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -61,14 +71,14 @@ class RelatedHoleModificationTableSeeder extends Seeder
             DB::connection('950A')->statement('SET FOREIGN_KEY_CHECKS=0;');
         }
 
-        if (env('DB_CONNECTION') == 'mysql') {
-            DB::connection('950A')->table($table_name)->truncate();
-        } elseif (env('DB_CONNECTION') == 'sqlite') {
-            DB::connection('950A')->statement('DELETE FROM ' . $table_name);
-        } else {
-            //For PostgreSQL or anything else
-            DB::connection('950A')->statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
-        }
+        // if (env('DB_CONNECTION') == 'mysql') {
+        //     DB::connection('950A')->table($table_name)->truncate();
+        // } elseif (env('DB_CONNECTION') == 'sqlite') {
+        //     DB::connection('950A')->statement('DELETE FROM ' . $table_name);
+        // } else {
+        //     //For PostgreSQL or anything else
+        //     DB::connection('950A')->statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
+        // }
 
         $data = [
             //穴あけ_外観検査_ドアインナ
@@ -93,6 +103,20 @@ class RelatedHoleModificationTableSeeder extends Seeder
                 'inspection'    => 'ana',
                 'division'      => 'doorInner',
                 'type_id'       => 3,
+                'type'          => 2,
+                'sort'          => 1
+            ],[
+                'process'       => 'holing',
+                'inspection'    => 'ana',
+                'division'      => 'doorInner',
+                'type_id'       => 4,
+                'type'          => 2,
+                'sort'          => 1
+            ],[
+                'process'       => 'holing',
+                'inspection'    => 'ana',
+                'division'      => 'doorInner',
+                'type_id'       => 5,
                 'type'          => 2,
                 'sort'          => 1
             ],
@@ -130,7 +154,7 @@ class RelatedHoleModificationTableSeeder extends Seeder
                 'process'       => 'holing',
                 'inspection'    => 'ana',
                 'division'      => 'luggageInner',
-                'type_id'       => 9,
+                'type_id'       => 5,
                 'type'          => 2,
                 'sort'          => 1
             ],
@@ -168,7 +192,7 @@ class RelatedHoleModificationTableSeeder extends Seeder
                 'process'       => 'holing',
                 'inspection'    => 'ana',
                 'division'      => 'luggageOuter',
-                'type_id'       => 9,
+                'type_id'       => 5,
                 'type'          => 2,
                 'sort'          => 1
             ],
