@@ -669,10 +669,94 @@ class RelatedFigureTableSeeder extends Seeder
                 'updated_at' => $now
             ],
             //接着_外周仕上
+            [
+                'path'       => 'j_luggageOuterSTD.png',
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'pt_pn'      => 6441111010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_luggageOuterARW.png',
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'pt_pn'      => 6441111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
             //接着_パテ修復後
-            //接着_
-            //接着_
-            //接着_
+            [
+                'path'       => 'j_luggageOuterSTD.png',
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'pt_pn'      => 6441111010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_luggageOuterARW.png',
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'pt_pn'      => 6441111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //接着_水検後
+            [
+                'path'       => 'j_luggageOuterSTD.png',
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'pt_pn'      => 6441111010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_luggageOuterARW.png',
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'pt_pn'      => 6441111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //接着_塗装受入後
+            [
+                'path'       => 'j_luggageOuterSTD.png',
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'pt_pn'      => 6441111010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_luggageOuterARW.png',
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'pt_pn'      => 6441111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+
             //接着_精度検査
             [
                 'path'       => 'j_inline_doorAssyL_1.png',
@@ -716,18 +800,89 @@ class RelatedFigureTableSeeder extends Seeder
                 'updated_at' => $now
             ],
             //接着_外観検査
+            [
+                'path'       => 'j_doorAssyR_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'pt_pn'      => 6701511020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_doorAssyL_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'pt_pn'      => 6701611020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_luggageAssySTD_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'pt_pn'      => 6440111010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_luggageAssyARW_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'pt_pn'      => 6440111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
             //接着_手直
-            // [
-            //     'path'       => '.png',
-            //     'process'    => 'jointing',
-            //     'inspection' => 'kashimego',
-            //     'pt_pn'      => ,
-            //     'page'       => 1,
-            //     'size_x'     => 1740,
-            //     'size_y'     => 1030,
-            //     'created_at' => $now,
-            //     'updated_at' => $now
-            // ],
+            [
+                'path'       => 'j_doorAssyR_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6701511020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_doorAssyL_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6701611020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_luggageAssySTD_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6440111010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_luggageAssyARW_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6440111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
 
 
         ];

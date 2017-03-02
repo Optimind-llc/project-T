@@ -100,204 +100,165 @@ class RelatedModificationTableSeeder extends Seeder
         //     DB::connection('950A')->statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
         // }
 
-        $data = [
-            //成形_外観検査_ドアインナ
-            [
-                'process'       => 'molding',
-                'inspection'    => 'gaikan',
-                'division'      => 'doorInner',
-                'type_id'       => 1,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'molding',
-                'inspection'    => 'gaikan',
-                'division'      => 'doorInner',
-                'type_id'       => 9,
-                'type'          => 2,
-                'sort'          => 1
-            ],
-
-            //成形_外観検査_ラゲージインナ
-            [
-                'process'       => 'molding',
-                'inspection'    => 'gaikan',
-                'division'      => 'luggageInner',
-                'type_id'       => 1,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'molding',
-                'inspection'    => 'gaikan',
-                'division'      => 'luggageInner',
-                'type_id'       => 9,
-                'type'          => 2,
-                'sort'          => 1
-            ],
-
-            //穴あけ_外観検査_ドアインナ
-            [
-                'process'       => 'holing',
-                'inspection'    => 'gaikan',
-                'division'      => 'doorInner',
-                'type_id'       => 1,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'gaikan',
-                'division'      => 'doorInner',
-                'type_id'       => 9,
-                'type'          => 2,
-                'sort'          => 1
-            ],
-
-            //穴あけ_外観検査_ラゲージインナ
-            [
-                'process'       => 'holing',
-                'inspection'    => 'gaikan',
-                'division'      => 'luggageInner',
-                'type_id'       => 1,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'gaikan',
-                'division'      => 'luggageInner',
-                'type_id'       => 9,
-                'type'          => 2,
-                'sort'          => 1
-            ],
-
-            //穴あけ_穴検査_ドアインナ
-            [
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'doorInner',
-                'type_id'       => 1,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'doorInner',
-                'type_id'       => 2,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'doorInner',
-                'type_id'       => 3,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'doorInner',
-                'type_id'       => 4,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'doorInner',
-                'type_id'       => 9,
-                'type'          => 2,
-                'sort'          => 1
-            ],
-
-            //穴あけ_穴検査_ラゲージインナ
-            [
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'luggageInner',
-                'type_id'       => 1,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'luggageInner',
-                'type_id'       => 2,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'luggageInner',
-                'type_id'       => 3,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'luggageInner',
-                'type_id'       => 4,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'luggageInner',
-                'type_id'       => 9,
-                'type'          => 2,
-                'sort'          => 1
-            ],
-
-            //穴あけ_穴検査_ラゲージアウタ
-            [
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'luggageOuter',
-                'type_id'       => 1,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'luggageOuter',
-                'type_id'       => 2,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'luggageOuter',
-                'type_id'       => 3,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'luggageOuter',
-                'type_id'       => 4,
-                'type'          => 2,
-                'sort'          => 1
-            ],[
-                'process'       => 'holing',
-                'inspection'    => 'ana',
-                'division'      => 'luggageOuter',
-                'type_id'       => 9,
-                'type'          => 2,
-                'sort'          => 1
-            ],
-
-            //かしめ/接着_かしめ後検査_ドアインナ
-            //かしめ/接着_かしめ後検査_ラゲージインナ
-            //かしめ/接着_かしめ後検査_ラゲージアウタ
-
-            //かしめ/接着_外周仕上_ラゲージインナ
-            //かしめ/接着_パテ修復後_ラゲージインナ
-            //かしめ/接着_水検後_ラゲージインナ
-            //かしめ/接着_塗装受入後_ラゲージインナ
-
-            //かしめ/接着_外観検査_ドアASSY
-            //かしめ/接着_外観検査_ラゲージASSY
-            //かしめ/接着_手直_ドアASSY
-            //かしめ/接着_手直_ラゲージASSY
+        //成型_外観検査_ドアインナ
+        $m_gaikan_doorInner_failures = [
+            [1,  1], [9, 1]
         ];
 
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'molding',
+                'inspection'    => 'gaikan',
+                'division'      => 'doorInner',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($m_gaikan_doorInner_failures), $m_gaikan_doorInner_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //成型_外観検査_ラゲージインナ
+        $m_gaikan_luggageInner_failures = [
+            [1,  1], [9, 1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'molding',
+                'inspection'    => 'gaikan',
+                'division'      => 'luggageInner',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($m_gaikan_luggageInner_failures), $m_gaikan_luggageInner_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //かしめ_外周仕上_ラゲージアウタ
+        $j_gaishushiage_luggageOuter_failures = [
+            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
+            [9, 1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'jointing',
+                'inspection'    => 'gaishushiage',
+                'division'      => 'luggageOuter',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($j_gaishushiage_luggageOuter_failures), $j_gaishushiage_luggageOuter_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //かしめ_パテ修復後_ラゲージアウタ
+        $j_pateshufukugo_luggageOuter_failures = [
+            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
+            [9, 1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'jointing',
+                'inspection'    => 'pateshufukugo',
+                'division'      => 'luggageOuter',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($j_pateshufukugo_luggageOuter_failures), $j_pateshufukugo_luggageOuter_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //かしめ_水検後_ラゲージアウタ
+        $j_suikengo_luggageOuter_failures = [
+            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
+            [9, 1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'jointing',
+                'inspection'    => 'suikengo',
+                'division'      => 'luggageOuter',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($j_suikengo_luggageOuter_failures), $j_suikengo_luggageOuter_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+
+        //接着_外観検査_ドアASSY
+        $j_gaikan_doorASSY_failures = [
+            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
+            [9, 1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'jointing',
+                'inspection'    => 'gaikan',
+                'division'      => 'doorASSY',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($j_gaikan_doorASSY_failures), $j_gaikan_doorASSY_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //接着_外観検査_ラゲージASSY
+        $j_gaikan_luggageASSY_failures = [
+            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
+            [9, 1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'jointing',
+                'inspection'    => 'gaikan',
+                'division'      => 'luggageASSY',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($j_gaikan_luggageASSY_failures), $j_gaikan_luggageASSY_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //接着_手直_ドアASSY
+        $j_tenaoshi_doorASSY_failures = [
+            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
+            [9, 1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'jointing',
+                'inspection'    => 'tenaoshi',
+                'division'      => 'doorASSY',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($j_tenaoshi_doorASSY_failures), $j_tenaoshi_doorASSY_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //接着_手直_ラゲージASSY
+        $j_tenaoshi_luggageASSY_failures = [
+            [1,  1], [2, 1], [3,  1], [5,  1], [6, 1], [7, 1], [8, 1],
+            [9, 1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'jointing',
+                'inspection'    => 'tenaoshi',
+                'division'      => 'luggageASSY',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($j_tenaoshi_luggageASSY_failures), $j_tenaoshi_luggageASSY_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
         if (env('DB_CONNECTION') == 'mysql') {
