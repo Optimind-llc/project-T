@@ -212,6 +212,14 @@ class InspectionResultRepository
         $ir->updated_at = $this->now;
         $ir->save();
 
+        // Delete modifications
+        if (count($dms) !== 0) {
+            $this->deleteModifications($dms);
+        }
+        if (count($dmbfs) !== 0) {
+            $this->deleteModificationsByFailureId($dmbfs);
+        }
+
         // Create failures
         if (count($fs) !== 0) {
             $this->createFailures($ir->id, $param['part_id'], $fs);
@@ -230,14 +238,6 @@ class InspectionResultRepository
         // Delete failures
         if (count($dfs) !== 0) {
             $this->deleteFailures($dfs);
-        }
-
-        // Delete modifications
-        if (count($dms) !== 0) {
-            $this->deleteModifications($dms);
-        }
-        if (count($dmbfs) !== 0) {
-            $this->deleteModificationsByFailureId($dmbfs);
         }
 
         return $ir;
