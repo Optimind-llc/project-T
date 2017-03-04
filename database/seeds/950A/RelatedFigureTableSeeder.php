@@ -286,7 +286,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerL_1.png',
+                'path'       => 'h_ana_doorInnerL_2.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714211020,
@@ -296,7 +296,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerL_1.png',
+                'path'       => 'h_ana_doorInnerL_3.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714211020,
@@ -306,7 +306,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerL_1.png',
+                'path'       => 'h_ana_doorInnerL_4.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714211020,
@@ -316,7 +316,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerL_1.png',
+                'path'       => 'h_ana_doorInnerL_5.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714211020,
@@ -326,7 +326,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerL_1.png',
+                'path'       => 'h_ana_doorInnerL_6.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714211020,
@@ -336,7 +336,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerL_1.png',
+                'path'       => 'h_ana_doorInnerL_7.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714211020,
@@ -376,7 +376,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerR_1.png',
+                'path'       => 'h_ana_doorInnerR_2.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714111020,
@@ -386,7 +386,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerR_1.png',
+                'path'       => 'h_ana_doorInnerR_3.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714111020,
@@ -396,7 +396,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerR_1.png',
+                'path'       => 'h_ana_doorInnerR_4.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714111020,
@@ -406,7 +406,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerR_1.png',
+                'path'       => 'h_ana_doorInnerR_5.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714111020,
@@ -416,7 +416,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerR_1.png',
+                'path'       => 'h_ana_doorInnerR_6.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714111020,
@@ -426,7 +426,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerR_1.png',
+                'path'       => 'h_ana_doorInnerR_7.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'pt_pn'      => 6714111020,

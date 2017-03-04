@@ -31,6 +31,15 @@ class Part extends Model
         );
     }
 
+    public function family()
+    {
+        return $this->belongsTo(
+            'App\Models\Vehicle950A\PartFamily',
+            'family_id',
+            'id'
+        );
+    }
+
     // public function pages()
     // {
     //     return $this->belongsToMany(
@@ -41,14 +50,7 @@ class Part extends Model
     //     )->withPivot('status', 'comment');
     // }
 
-    // public function family()
-    // {
-    //     return $this->belongsTo(
-    //         'App\Models\Client\PartFamily',
-    //         'family_id',
-    //         'id'
-    //     );
-    // }
+
 
     // public function failurePositions()
     // {

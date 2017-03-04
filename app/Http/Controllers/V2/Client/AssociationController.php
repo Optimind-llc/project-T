@@ -74,10 +74,10 @@ class AssociationController extends Controller
         $parts = $request->parts;
 
         switch ($type) {
-            case 'doorR': $parts['1'] = $parts['6714111020']; break;
-            case 'doorL': $parts['2'] = $parts['6714211020']; break;
-            case 'luggageSTD': $parts['3'] = $parts['6441211010']; break;
-            case 'luggageARW': $parts['4'] = $parts['6441211020']; break;
+            case 'doorR': $parts['6701511020'] = $parts['6714111020']; break;
+            case 'doorL': $parts['6701611020'] = $parts['6714211020']; break;
+            case 'luggageSTD': $parts['6440111010'] = $parts['6441211010']; break;
+            case 'luggageARW': $parts['6440111020'] = $parts['6441211020']; break;
             default:
                 return \Response::json([
                     'message' => 'Incorrect type given',
@@ -127,28 +127,19 @@ class AssociationController extends Controller
 
     public function getFamily($vehicle, Request $request)
     {
-        $validator = app('validator')->make(
-            $request->all(),
-            [
-                'partTypeId' => ['required', 'alpha_num'],
-                'panelId' => ['required', 'alpha_num']
-            ]
-        );
+        $pn = $request->pn;
+        $panelId = $request->panelId;
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Bad structure JSON in Request body'
-            ], 400);
-        }
-
-        $part = Part::where('part_type_id', '=', $request->partTypeId)
-            ->where('panel_id', '=', $request->panelId)
+        $part = Part::where('pn', '=', $pn)
+            ->where('panel_id', '=', $panelId)
             ->first();
 
         if (is_null($part)) {
             return response()->json([
-                'message' => 'Not be inspected',
-                'panelId' => $request->panelId
+                'associated' => false,                
+                'message' => 'Not be associated',
+                'pn' => $pn,
+                'panelId' => $panelId
             ], 200);
         }
 
@@ -158,85 +149,50 @@ class AssociationController extends Controller
 
         if (is_null($family)) {
             return response()->json([
+                'associated' => false,    
                 'message' => 'Not be associated',
-                'panelId' => $request->panelId
+                'pn' => $pn,
+                'panelId' => $panelId
             ], 200);
         }
 
         return [
-            'message' => 'success',
+            'associated' => true,
+            'familyType' => $family->type,
             'familyId' => $family->id,
             'parts' => $family->parts->map(function($p) {
                 return [
-                    'vehicle' => $p->partType->vehicle_num,
                     'name' => $p->partType->name,
                     'pn' => $p->partType->pn,
-                    'pn2' => $p->partType->pn2,
                     'panelId' => $p->panel_id
                 ];
-            })
+            }),
+            'message' => 'success'
         ];
     }
 
     public function updateFamily($vehicle, Request $request)
     {
-        $validator = app('validator')->make(
-            $request->all(),
-            [
-                'id' => ['required', 'alpha_num'],
-                'parts' => ['required']
-            ]
-        );
+        $familyId = $request->familyId;
+        $parts = $request->parts;
+        $partInspections = collect(config('part.950A'));
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'JSON in Request body should contain key "association"'
-            ], 400);
+        $family = PartFamily::find($familyId);
+        $familyType = $family->type;
+
+        switch ($familyType) {
+            case 'doorR': $parts['6701511020'] = $parts['6714111020']; break;
+            case 'doorL': $parts['6701611020'] = $parts['6714211020']; break;
+            case 'luggageSTD': $parts['6440111010'] = $parts['6441211010']; break;
+            case 'luggageARW': $parts['6440111020'] = $parts['6441211020']; break;
+            default:
+                return \Response::json([
+                    'message' => 'Incorrect type given',
+                    'yourRequestBody' => $request->all()
+                ], 400);
         }
 
-        $familyId = $request->id;
-        $parts = collect($request->parts);
-
-        $innerPanelId = $parts->first(function ($key, $value) {
-            return $value['partTypeId'] === 1;
-        })['panelId'];
-
-        $parts->push([
-            'partTypeId' => 7,
-            'panelId' => $innerPanelId
-        ]);
-
-        // Check
-        $associated = [];
-        foreach ($parts as $part) {
-            $part_obj = Part::where('part_type_id', '=', $part['partTypeId'])
-                ->where('panel_id', '=', $part['panelId'])
-                ->first();
-
-            if (!is_null($part_obj)) {
-                $part_obj_family_id = $part_obj->family_id;
-                if (!is_null($part_obj_family_id) && $part_obj_family_id != $familyId) {
-                    $associated[] = [
-                        'pn' => $part_obj->partType->pn,
-                        'name' => $part_obj->partType->name,
-                        'partTypeId' => $part_obj->part_type_id,
-                        'panelId' => $part_obj->panel_id
-                    ];
-                }
-            }
-        }
-
-        if (count($associated) > 0) {
-            return response()->json([
-                'message' => 'Already be associated others',
-                'parts' => collect($associated)->filter(function($p) {
-                    return $p['partTypeId'] != 7;
-                })
-            ], 200);
-        }
-
-        DB::beginTransaction();
-
+        DB::connection('950A')->beginTransaction();
         $toBeReleasedParts = Part::where('family_id', '=', $familyId)->get();
 
         if ($toBeReleasedParts->count() > 0) {
@@ -246,46 +202,45 @@ class AssociationController extends Controller
             }
         }
 
-        foreach ($parts as $key => $part) {
-            if ($part['panelId'] != '') {
-                $part_obj = Part::where('part_type_id', '=', $part['partTypeId'])
-                    ->where('panel_id', '=', $part['panelId'])
-                    ->first();
+        $associated = [];
+        foreach ($parts as $pn => $panelId) {
+            $targetPart = Part::where('pn', '=', $pn)
+                ->where('panel_id', '=', $panelId)
+                ->first();
 
-                if (is_null($part_obj)) {
-                    $part_obj = new Part;
-                    $part_obj->panel_id = $part['panelId'];
-                    $part_obj->part_type_id = $part['partTypeId'];
-                    $part_obj->save();
-                }
-
-                $part_obj_family_id = $part_obj->family_id;
-                if (!is_null($part_obj_family_id) && $part_obj_family_id != $familyId) {
-                    DB::rollBack();
-                    return response()->json([
-                        'message' => 'Already be associated others',
-                        'parts' => [
-                            'pn' => $part_obj->partType->pn,
-                            'name' => $part_obj->partType->name,
-                            'partTypeId' => $part['partTypeId'],
-                            'panelId' => $part['panelId']
-                        ]
-                    ], 200);
-                }
+            if (is_null($targetPart)) {
+                $targetPart = new Part;
+                $targetPart->pn = $pn;
+                $targetPart->panel_id = $panelId;
+                $targetPart->save();
             }
 
-            $part_obj->family_id = $familyId;
-            $part_obj->save();
+            $target_family_id = $targetPart->family_id;
+            if (!is_null($target_family_id) && $target_family_id != $familyId) {
+                $associated[] = [
+                    'pn' => $targetPart->pn,
+                    'panelId' => $targetPart->panel_id
+                ];
+            }
+            else {
+                $targetPart->family_id = $familyId;
+                $targetPart->save();
+            }
         }
 
-        DB::commit();
+        if (count($associated) > 0) {
+            DB::connection('950A')->rollBack();
+            return response()->json([
+                'hasAssociated' => true,
+                'message' => 'Include the part already be associated others',
+                'parts' => $associated
+            ], 200);
+        }
 
-        $family = PartFamily::find($familyId);
-        $family->updated_at = Carbon::now();
-        $family->save();
-
-        return [
-            'message' => 'success'
-        ];
+        DB::connection('950A')->commit();
+        return response()->json([
+            'hasAssociated' => false,
+            'message' => 'Update associated family succeed'
+        ], 200);
     }
 }
