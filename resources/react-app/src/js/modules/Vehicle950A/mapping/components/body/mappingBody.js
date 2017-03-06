@@ -338,8 +338,8 @@ class MappingBody extends Component {
                         return (
                           <g>
                             <circle
-                              cx={f.x/2 + (870/split)*((page+2)%3)}
-                              cy={f.y/2 + (515/split)*(Math.ceil(page/3)-1)}
+                              cx={f.x/2/split + (870/split)*((page+(split-1))%split)}
+                              cy={f.y/2/split + (515/split)*(Math.ceil(page/split)-1)}
                               r={5}
                               fill="red"
                             />
@@ -350,8 +350,8 @@ class MappingBody extends Component {
                         return (
                           <g>
                             <circle
-                              cx={f.x/2 + (870/split)*((page+2)%3)}
-                              cy={f.y/2 + (515/split)*(Math.ceil(page/3)-1)}
+                              cx={f.x/2/split + (870/split)*((page+(split-1))%split)}
+                              cy={f.y/2/split + (515/split)*(Math.ceil(page/split)-1)}
                               r={5}
                               fill="#C6B700"
                             />
@@ -362,8 +362,8 @@ class MappingBody extends Component {
                         return (
                           <g>
                             <circle
-                              cx={f.x/2 + (870/split)*((page+2)%3)}
-                              cy={f.y/2 + (515/split)*(Math.ceil(page/3)-1)}
+                              cx={f.x/2/split + (870/split)*((page+(split-1))%split)}
+                              cy={f.y/2/split + (515/split)*(Math.ceil(page/split)-1)}
                               r={5}
                               fill="blue"
                             />
@@ -386,8 +386,8 @@ class MappingBody extends Component {
                         return (
                           <g>
                             <circle
-                              cx={m.x/2 + (870/split)*((page+2)%3)}
-                              cy={m.y/2 + (515/split)*(Math.ceil(page/3)-1)}
+                              cx={m.x/2/split + (870/split)*((page+2)%3)}
+                              cy={m.y/2/split + (515/split)*(Math.ceil(page/3)-1)}
                               r={5}
                               fill="red"
                             />
@@ -398,8 +398,8 @@ class MappingBody extends Component {
                         return (
                           <g>
                             <circle
-                              cx={m.x/2 + (870/split)*((page+2)%3)}
-                              cy={m.y/2 + (515/split)*(Math.ceil(page/3)-1)}
+                              cx={m.x/2/split + (870/split)*((page+2)%3)}
+                              cy={m.y/2/split + (515/split)*(Math.ceil(page/3)-1)}
                               r={5}
                               fill="#C6B700"
                             />
@@ -410,8 +410,8 @@ class MappingBody extends Component {
                         return (
                           <g>
                             <circle
-                              cx={m.x/2 + (870/split)*((page+2)%3)}
-                              cy={m.y/2 + (515/split)*(Math.ceil(page/3)-1)}
+                              cx={m.x/2/split + (870/split)*((page+2)%3)}
+                              cy={m.y/2/split + (515/split)*(Math.ceil(page/3)-1)}
                               r={5}
                               fill="blue"
                             />
@@ -483,7 +483,7 @@ class MappingBody extends Component {
 
                   const x = ht.x/2/split + (870/split)*((page+2)%3);
                   const y = ht.y/2/split + (515/split)*(Math.ceil(page/3)-1);
-console.log(hmFilter);
+
                   let lx = 0;
                   let ly = 0;
                   switch (ht.d) {
