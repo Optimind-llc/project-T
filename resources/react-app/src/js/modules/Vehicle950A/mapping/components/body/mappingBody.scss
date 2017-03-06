@@ -115,11 +115,11 @@
         .collection {
           display: flex;
           flex-flow: row nowrap;
-          // justify-content: center;
           margin: 10px;
           font-size: 12px;
 
           > div {
+            flex-shrink: 0;
             ul {
               margin: 0;
               padding: 0;
@@ -186,41 +186,81 @@
           }
         }
 
-        .responsibility .collection {
+        .hole .collection {
           > div {
-            &.has-check-box {
-              width: 80px;
-              border-right: 1px solid #BFBFBF;
-              border-left: 1px solid #BFBFBF;
+            width: 50px;
+            border-right: 1px solid #BFBFBF;
+            border-left: 1px solid #BFBFBF;
 
-              ul li span {
-                &:nth-child(1) {
-                  border: 1px solid #BBB;
-                  border-radius: 4px;
-                  margin: 3px 3px 3px 0;
-                  height: 12px;
-                  width: 12px;
+            ul li:nth-child(1) span {
+              &:nth-child(1) {
+                border: 1px solid #BBB;
+                border-radius: 4px;
+                margin: 3px 3px 3px 0;
+                height: 12px;
+                width: 12px;
+                font-size: 10px;
+
+                p {
+                  display: block;
                   font-size: 10px;
+                  margin: -1px 0 0 2px;
+                  padding: 0;
+                  width: 12px;
 
-                  p {
-                    display: block;
-                    font-size: 10px;
-                    margin: -1px 0 0 2px;
-                    padding: 0;
-                    width: 12px;
-
-                  }
                 }
-                
-                &:nth-child(2) {
-                  min-width: 114px;
-                }
+              }
+              
+              &:nth-child(2) {
+                min-width: 114px;
               }
             }
 
-            &.not-has-check-box {
-              width: 40px;
-              border-right: 1px solid #BFBFBF;
+            &:nth-child(2), &:nth-child(3), &:nth-child(4) {
+              width: 60px;
+              border-left: none;
+            }
+
+            &:nth-child(5) {
+              width: 60px;
+              border-left: none;
+            }
+          }
+        }
+
+        .holeModification .collection {
+          > div {
+            width: 50px;
+            border-right: 1px solid #BFBFBF;
+            border-left: 1px solid #BFBFBF;
+
+            ul li:nth-child(1) span {
+              &:nth-child(1) {
+                border: 1px solid #BBB;
+                border-radius: 4px;
+                margin: 3px 3px 3px 0;
+                height: 12px;
+                width: 12px;
+                font-size: 10px;
+
+                p {
+                  display: block;
+                  font-size: 10px;
+                  margin: -1px 0 0 2px;
+                  padding: 0;
+                  width: 12px;
+
+                }
+              }
+              
+              &:nth-child(2) {
+                min-width: 114px;
+              }
+            }
+
+            &:nth-child(2), &:nth-child(3), &:nth-child(4), &:nth-child(5), &:nth-child(6) {
+              width: 90px;
+              border-left: none;
             }
           }
         }

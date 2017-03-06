@@ -302,14 +302,15 @@ class InspectionResultRepository
                             'fig' => $m->figure_id
                         ];
                     }),
-                    'hs' => $ir->holes->keyBy('type_id')->map(function($h) {
+                    'hs' => $ir->holes->map(function($h) {
                         $hm = -1;
                         if ($h->holeModification) {
                             $hm = $h->holeModification->type_id;
                         }
 
                         return [
-                            'status' => $h->status,
+                            'id' => $h->type_id,
+                            's' => $h->status,
                             'hm' =>  $hm
                         ];
                     })

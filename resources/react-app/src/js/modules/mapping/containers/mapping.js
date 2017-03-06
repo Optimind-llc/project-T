@@ -616,9 +616,9 @@ class Mapping extends Component {
                         fill={disable ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
                         textAnchor="middle"
                         fontWeight="bold"
-                        >
-                          {h.l}
-                        </text>
+                      >
+                        {h.l}
+                      </text>
                     </g>
                   )
                 })

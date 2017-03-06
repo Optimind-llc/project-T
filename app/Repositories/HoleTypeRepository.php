@@ -27,11 +27,8 @@ class HoleTypeRepository
                     'id' => $ht->id,
                     'x' => $ht->x,
                     'y' => $ht->y,
-                    'label' => $ht->label,
-                    'direction' => $ht->direction,
-                    'shape' => $ht->shape,
-                    'border' => $ht->border,
-                    'color' => $ht->color,
+                    'l' => $ht->label,
+                    'd' => $ht->direction,
                     'fig' => $ht->figure_id
                 ];
             });
