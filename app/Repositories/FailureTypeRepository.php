@@ -48,8 +48,11 @@ class FailureTypeRepository
         return $failures;
     }
 
-    // public function create($param)
-    // {
-
-    // }
+    public function getByIds($ids)
+    {
+        return FailureType::whereIn('id', $ids)
+            ->orderBy('label')
+            ->select(['id', 'name'])
+            ->get();
+    }
 }

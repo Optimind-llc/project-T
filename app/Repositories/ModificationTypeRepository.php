@@ -46,4 +46,12 @@ class ModificationTypeRepository
 
         return $modifications;
     }
+
+    public function getByIds($ids)
+    {
+        return ModificationType::whereIn('id', $ids)
+            ->orderBy('label')
+            ->select(['id', 'name'])
+            ->get();
+    }
 }

@@ -17,10 +17,13 @@ import Navigation from '../components/navigation/navigation';
 class App extends Component {
   constructor(props, context) {
     super(props, context);
+    const { get950AInitial } = this.props.actions;
 
     if (props.routes[1].name == '950A') {
       props.actions.changeVehicle('950A');
     }
+
+    get950AInitial();
   }
 
   render() {

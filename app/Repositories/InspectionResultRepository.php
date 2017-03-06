@@ -249,6 +249,96 @@ class InspectionResultRepository
         return $delete;
     }
 
+    public function forMappingByDate($p, $i, $line, $pn, $start, $end, $chokus)
+    {
+        $irs = InspectionResult::with([
+                'failures' => function($q) {
+                    return $q->select('ir_id', 'type_id', 'x', 'y', 'figure_id');
+                },
+                'modifications' => function($q) {
+                    return $q->select('ir_id', 'type_id', 'failure_id', 'figure_id');
+                },
+                'modifications.failure' => function($q) {
+                    return $q->select('id', 'x', 'y');
+                },
+                'holes' => function($q) {
+                    return $q->where('status', '!=', 1)->select('id', 'ir_id', 'type_id', 'status');
+                },
+                'holes.holeModification' => function($q) {
+                    return $q->select('hole_id', 'type_id');
+                },
+            ])
+            ->where('latest', '=', 1)
+            ->where('process', '=', $p)
+            ->where('inspection', '=', $i)
+            ->where('line', '=', $line)
+            ->where('inspected_at', '>=', $start)
+            ->where('inspected_at', '<', $end)
+            ->whereIn('created_choku', $chokus)
+            ->whereHas('parts', function($q) use($pn) {
+                $q->where('pn', '=', $pn);
+            })
+            ->select(['id', 'part_id', 'ft_ids', 'mt_ids', 'hmt_ids', 'created_choku', 'inspected_at'])
+            ->get()
+            ->map(function($ir) {
+                return [
+                    'ft_ids' => unserialize($ir->ft_ids),
+                    'mt_ids' => unserialize($ir->mt_ids),
+                    'hmt_ids' => unserialize($ir->hmt_ids),
+                    'c' => $ir->created_choku,
+                    'fs' => $ir->failures->map(function($f) {
+                        return [
+                            'id' => $f->type_id,
+                            'x' => $f->x,
+                            'y' => $f->y,
+                            'fig' => $f->figure_id
+                        ];
+                    }),
+                    'ms' => $ir->modifications->map(function($m) {
+                        return [
+                            'id' => $m->type_id,
+                            'x' => $m->failure->x,
+                            'y' => $m->failure->y,
+                            'fig' => $m->figure_id
+                        ];
+                    }),
+                    'hs' => $ir->holes->keyBy('type_id')->map(function($h) {
+                        $hm = -1;
+                        if ($h->holeModification) {
+                            $hm = $h->holeModification->type_id;
+                        }
+
+                        return [
+                            'status' => $h->status,
+                            'hm' =>  $hm
+                        ];
+                    })
+                ];
+            });
+
+        $count = $irs->count();
+
+        $ft_ids = $irs->map(function($ir){
+            return $ir['ft_ids'];
+        })->flatten()->unique();
+
+        $mt_ids = $irs->map(function($ir){
+            return $ir['mt_ids'];
+        })->flatten()->unique();
+
+        $hmt_ids = $irs->map(function($ir){
+            return $ir['hmt_ids'];
+        })->flatten()->unique();
+
+        return [
+            'count' => $count,
+            'result' => $irs,
+            'ft_ids' => $ft_ids,
+            'mt_ids' => $mt_ids,
+            'hmt_ids' => $hmt_ids
+        ];
+    }
+
     public function listForReport($p, $i, $line, $pn, $start, $end, $choku)
     {
         $chokus = [$choku, 'NA'];
@@ -317,5 +407,5 @@ class InspectionResultRepository
             });
 
         return $ir;
-    }   
+    }
 }

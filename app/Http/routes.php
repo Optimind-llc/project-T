@@ -193,21 +193,31 @@ Route::group(['prefix' => '{vehicle}/client', 'namespace' => 'V2\Client'], funct
 });
 
 Route::group(['prefix' => 'manager/{vehicle}', 'namespace' => 'V2\Manager'], function () {
-    Route::get('dashboard', 'ShowController@index');
-    Route::get('mapping', 'ShowController@index');
-    Route::get('reference', 'ShowController@index');
-    Route::get('report', 'ShowController@index');
-    Route::get('association', 'ShowController@index');
+    Route::get('dashboard', 'InitialController@index');
+    Route::get('mapping', 'InitialController@index');
+    Route::get('reference', 'InitialController@index');
+    Route::get('report', 'InitialController@index');
+    Route::get('association', 'InitialController@index');
 
     // Maintenance
     Route::group(['prefix' => 'maintenance'], function () {
-        Route::get('worker', 'ShowController@index');
-        Route::get('failure', 'ShowController@index');
-        Route::get('modification', 'ShowController@index');
-        Route::get('holeModification', 'ShowController@index');
-        Route::get('hole', 'ShowController@index');
-        Route::get('inline', 'ShowController@index');
+        Route::get('worker', 'InitialController@index');
+        Route::get('failure', 'InitialController@index');
+        Route::get('modification', 'InitialController@index');
+        Route::get('holeModification', 'InitialController@index');
+        Route::get('hole', 'InitialController@index');
+        Route::get('inline', 'InitialController@index');
     });
+
+    Route::get('initial', 'InitialController@all');
+
+    Route::post('mapping/realtime', 'MappingController@realtime');
+    Route::post('mapping/date', 'MappingController@byDate');
+    Route::post('mapping/panelId', 'MappingController@byPanelId');
+
+
+    Route::get('/check/{date}', 'ReportController@check');
+
 
     Route::get('report/check/{date}', 'ReportController@check');
     Route::get('report/export/{process}/{inspection}/{line}/{part}/{date}/{choku}', 'ReportController@export');

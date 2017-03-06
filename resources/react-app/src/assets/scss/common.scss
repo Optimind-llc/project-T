@@ -35,10 +35,11 @@ ul, ol, dl {
 
 input {
   box-sizing: border-box;
+  padding: 0 10px;
   height: 30px;
   border: 1px solid rgb(204, 204, 204); 
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 *:focus {
@@ -202,6 +203,40 @@ button {
   }
 }
 
+div.selectable {
+  border-radius: 4px;
+  background-color: #FFF;          
+  border: 1px solid #BBB;
+  cursor: pointer;
+  opacity: 0.5;
+
+  &:hover {
+    box-shadow: 0 0 3px #000;
+  }
+
+  p {
+    color: #000;
+  }
+
+  &:active {
+    box-shadow: none;
+  }
+
+  &.selected {
+    background-color: #4A4A4A;
+    border: 1px solid #4A4A4A;
+    cursor: default;
+    opacity: 1;
+
+    &:hover, :active {
+      box-shadow: none;
+    }
+
+    p {
+      color: #FFF;
+    }
+  }
+}
 
 div.divider {
   margin: 8px 20px;

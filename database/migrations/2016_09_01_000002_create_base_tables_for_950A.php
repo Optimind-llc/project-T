@@ -26,6 +26,7 @@ class CreateBaseTablesFor950A extends Migration
         Schema::connection('950A')->create('inspections', function (Blueprint $table) {
             $table->string('en', 16);
             $table->string('name', 16)->unique();
+            $table->integer('sort')->unsigned()->default(1);
             $table->timestamps();
 
             /**

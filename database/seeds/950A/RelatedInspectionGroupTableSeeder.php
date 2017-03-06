@@ -77,46 +77,55 @@ class RelatedInspectionGroupTableSeeder extends Seeder
             [
                 'name'       => '外観検査',
                 'en'         => 'gaikan',
+                'sort'       => 7,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '精度検査',
                 'en'         => 'inline',
+                'sort'       => 6,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '穴検査',
                 'en'         => 'ana',
+                'sort'       => 9,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'かしめ後検査',
                 'en'         => 'kashimego',
+                'sort'       => 1,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '外周仕上',
                 'en'         => 'gaishushiage',
+                'sort'       => 2,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => 'パテ修復後',
                 'en'         => 'pateshufukugo',
+                'sort'       => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '水検後',
                 'en'         => 'suikengo',
+                'sort'       => 4,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '塗装受入後',
                 'en'         => 'tosoukeirego',
+                'sort'       => 5,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '手直',
                 'en'         => 'tenaoshi',
+                'sort'       => 8,
                 'created_at' => $now,
                 'updated_at' => $now
             ],

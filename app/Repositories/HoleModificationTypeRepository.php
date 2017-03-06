@@ -46,4 +46,12 @@ class HoleModificationTypeRepository
 
         return $hModifications;
     }
+
+    public function getByIds($ids)
+    {
+        return HoleModificationType::whereIn('id', $ids)
+            ->orderBy('label')
+            ->select(['id', 'name'])
+            ->get();
+    }
 }
