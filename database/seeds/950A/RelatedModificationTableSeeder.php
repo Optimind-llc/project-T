@@ -151,6 +151,24 @@ class RelatedModificationTableSeeder extends Seeder
         }, array_keys($h_gaikan_doorInner_failures), $h_gaikan_doorInner_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
+        //穴あけ_外観検査_リンフォース
+        $h_gaikan_reinforce_failures = [
+            [1,  2], [9, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'gaikan',
+                'division'      => 'reinforce',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_gaikan_reinforce_failures), $h_gaikan_reinforce_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+
         //穴あけ_外観検査_ラゲージインナ
         $h_gaikan_luggageInner_failures = [
             [1,  2], [9, 2]

@@ -46,7 +46,7 @@ class ReportController extends Controller
         $start = $choku_obj->getDayStart();
         $end = $choku_obj->getDayEnd();
 
-        $irs = $this->inspectionResult->listForReport($process, $inspection, $line, $pn, $start, $end, $choku)->toArray();
+        $irs = $this->inspectionResult->listForReport($process, $inspection, $line, $pn, $start, $end, $choku);
 
         $pdf_path = 'report_'.$line.'_'.$date.'_'.$choku;
         $pdf = new GeneratePDF($date, $line, $choku);

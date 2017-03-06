@@ -13,9 +13,19 @@ class GeneratePDF
     protected $reportDate;
     protected $line;
     protected $choku = '';
-    // protected $chokuType;
+    protected $positions = [
+        'A4' => [
+            'xmax' => 210,
+            'x0' => 8,
+            'y0' => 8,
+            'x1' => 106,
+            'y1' => 16,
+            'y2' => 28,
+            'y3' => 36
+        ]
+    ];
 
-    public function __construct($reportDate, $line, $choku) {
+    public function __construct($vehicle, $process, $reportDate, $line, $choku) {
         $this->now = Carbon::now();
         $this->reportDate = str_replace('-', '/', $reportDate);
         $this->line = $line;
@@ -48,23 +58,25 @@ class GeneratePDF
 
     protected function renderTitle($tcpdf)
     {
-        $A3 = config('report.A3');
+        $A4 = $this->positions['A4'];
 
         $title = '直レポート　'.$this->line.'　'.$this->reportDate.'　'.$this->choku.'　印刷日時：'.$this->now->toDateTimeString();
 
-        $tcpdf->SetFont('kozgopromedium', '', 8);
-        $tcpdf->Text($A3['x0'], $A3['y0'], $title);
-        $tcpdf->Cell(100,100,'社員コード',1,0,'L');
+        $title = '車種：'.$this->line.
 
+        $tcpdf->SetFont('kozgopromedium', '', 10);
+        $tcpdf->Text($A4['x0'], $A4['y0'], $title);
     }
 
     public function generate($irs)
     {
         $tcpdf = $this->createTCPDF();
-        $A3 = config('report.A3');
+        $A4 = config('report.A4');
 
-        $tcpdf->AddPage('P', 'A3');
+        $tcpdf->AddPage('P', 'A4');
         $this->renderTitle($tcpdf);
+
+return $tcpdf;
 
         $allCount = $irs->count();
         $all_vehicle_sum = $irs->map(function($ir) {
