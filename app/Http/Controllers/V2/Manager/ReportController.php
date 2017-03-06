@@ -11,6 +11,8 @@ use App\Services\Vehicle950A\Choku;
 use App\Models\Vehicle950A\Worker;
 // Repositories
 use App\Repositories\InspectionResultRepository;
+// Services
+use App\Services\Vehicle950A\GeneratePDF;
 // Exceptions
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -37,13 +39,19 @@ class ReportController extends Controller
         ];
     }
 
-    public function export($process, $inspection, $line, $pn, $date, $choku)
+    public function export($vehicle, $process, $inspection, $line, $pn, $date, $choku)
     {
         $date_obj = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
         $choku_obj = new Choku($date_obj);
         $start = $choku_obj->getDayStart();
         $end = $choku_obj->getDayEnd();
 
-        return $this->inspectionResult->listForReport($process, $inspection, $line, $pn, $start, $end, $choku)->toArray();
+        $irs = $this->inspectionResult->listForReport($process, $inspection, $line, $pn, $start, $end, $choku)->toArray();
+
+        $pdf_path = 'report_'.$line.'_'.$date.'_'.$choku;
+        $pdf = new GeneratePDF($date, $line, $choku);
+
+        // return $pdf->generate($irs);
+        $pdf->generate($irs)->output($pdf_path, 'I');
     }
 }

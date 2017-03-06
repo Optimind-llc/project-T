@@ -27,23 +27,23 @@ class MappingController extends Controller
 {
     protected $inspectionResult;
     protected $failureType;
-    protected $modificationTypes;
-    protected $holeModificationTypes;
+    protected $modificationType;
+    protected $holeModificationType;
     protected $holeType;
 
 
     public function __construct (
         InspectionResultRepository $inspectionResult,
         FailureTypeRepository $failureType,
-        ModificationTypeRepository $modificationTypes,
-        HoleModificationTypeRepository $holeModificationTypes,
+        ModificationTypeRepository $modificationType,
+        HoleModificationTypeRepository $holeModificationType,
         HoleTypeRepository $holeType
     )
     {
         $this->inspectionResult = $inspectionResult;
         $this->failureType = $failureType;
-        $this->modificationTypes = $modificationTypes;
-        $this->holeModificationTypes = $holeModificationTypes;
+        $this->modificationType = $modificationType;
+        $this->holeModificationType = $holeModificationType;
         $this->holeType = $holeType;
     }
 
@@ -63,8 +63,8 @@ class MappingController extends Controller
         $irs = $this->inspectionResult->forMappingByDate($p, $i, $line, $pn, $start, $end, $chokus);
 
         $failureTypes = $this->failureType->getByIds($irs['ft_ids']);
-        $modificationTypes = $this->failureType->getByIds($irs['mt_ids']);
-        $holeModificationTypes = $this->failureType->getByIds($irs['hmt_ids']);
+        $modificationTypes = $this->modificationType->getByIds($irs['mt_ids']);
+        $holeModificationTypes = $this->holeModificationType->getByIds($irs['hmt_ids']);
 
         $figures = Figure::where('process', '=', $p)
             ->where('inspection', '=', $i)
