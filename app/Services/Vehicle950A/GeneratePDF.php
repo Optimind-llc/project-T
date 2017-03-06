@@ -71,7 +71,7 @@ class GeneratePDF
     {
         $A4 = $this->positions['A4'];
 
-        $title = '車種：'.$this->vehicle.'　'.$this->process.'工程　'.$this->inspection.'　'.$this->partName.'　'.$this->reportDate.'　'.$this->choku;
+        $title = '車種：'.$this->vehicle.'　　'.$this->process.'工程　'.$this->inspection.'　　'.$this->partName.'　　'.$this->reportDate.'　　'.$this->choku;
         $printDate = '印刷日時：'.$this->now->toDateTimeString();
 
         $tcpdf->SetFont('kozgopromedium', '', 10);
@@ -80,13 +80,46 @@ class GeneratePDF
         $tcpdf->Text($A4['x0']+154, $A4['y0']+1, $printDate);
     }
 
+    protected function renderAggregate($tcpdf, $count1, $count0)
+    {
+        $A4 = $this->positions['A4'];
+
+        $dhj = 36;
+        $dhj1 = 5;
+        $dhj2 = $dhj/2 - $dhj1;
+        $hhj = 4;
+
+        $tcpdf->MultiCell($dhj, $hhj, $this->partName, 1, 'C', 0, 1, $A4['x0'], $A4['y1']);
+        $tcpdf->MultiCell($dhj1, $hhj, '○', 1, 'C', 0, 1, $A4['x0'], $A4['y1']+$hhj);
+        $tcpdf->MultiCell($dhj2, $hhj, $count1, 1, 'C', 0, 1, $A4['x0']+$dhj1, $A4['y1']+$hhj);
+        $tcpdf->MultiCell($dhj1, $hhj, '×', 1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2, $A4['y1']+$hhj);
+        $tcpdf->MultiCell($dhj2, $hhj, $count0, 1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2+$dhj1, $A4['y1']+$hhj);
+    }
+
+    protected function renderAggregate($tcpdf, $count1, $count0)
+    {
+    }
+
     public function generate($irs)
     {
         $tcpdf = $this->createTCPDF();
-        $A4 = config('report.A4');
+        $A4 = $this->positions['A4'];
 
         $tcpdf->AddPage('P', 'A4');
         $this->renderTitle($tcpdf);
+
+        $countAll = $irs->count();
+        $count0 = $irs->filter(function($ir) {
+            return $ir['status'] === 0;
+        })->count();
+
+        $this->renderAggregate($tcpdf, $countAll - $count0, $count0);
+
+
+        foreach ($formated_families->chunk(100) as $p => $families100) {
+
+
+        }
 
 return $tcpdf;
 

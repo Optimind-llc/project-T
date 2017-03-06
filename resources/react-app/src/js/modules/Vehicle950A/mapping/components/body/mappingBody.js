@@ -391,8 +391,8 @@ class MappingBody extends Component {
                     disable = count === data.count;
                   }
 
-                  const x = ht.x/2/split + (870/split)*((page+2)%3);
-                  const y = ht.y/2/split + (515/split)*(Math.ceil(page/3)-1);
+                  const x = ht.x/2/split + (870/split)*((page+(split-1))%split);
+                  const y = ht.y/2/split + (515/split)*(Math.ceil(page/split)-1);
 
                   let lx = 0;
                   let ly = 0;
