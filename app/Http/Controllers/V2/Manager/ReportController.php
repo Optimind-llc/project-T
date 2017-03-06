@@ -49,7 +49,7 @@ class ReportController extends Controller
         $irs = $this->inspectionResult->listForReport($process, $inspection, $line, $pn, $start, $end, $choku);
 
         $pdf_path = 'report_'.$line.'_'.$date.'_'.$choku;
-        $pdf = new GeneratePDF($date, $line, $choku);
+        $pdf = new GeneratePDF($vehicle, $process, $inspection, $pn, $line, $date, $choku);
 
         // return $pdf->generate($irs);
         $pdf->generate($irs)->output($pdf_path, 'I');

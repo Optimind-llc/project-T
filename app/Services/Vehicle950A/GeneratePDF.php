@@ -5,12 +5,18 @@ namespace App\Services\Vehicle950A;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use TCPDF;
-use App\Models\Press\FailureType;
+// Models
+use App\Models\Vehicle950A\Process;
+use App\Models\Vehicle950A\Inspection;
+use App\Models\Vehicle950A\PartType;
 
 class GeneratePDF
 {
     protected $now;
     protected $reportDate;
+    protected $process;
+    protected $inspection;
+    protected $partName;
     protected $line;
     protected $choku = '';
     protected $positions = [
@@ -18,16 +24,21 @@ class GeneratePDF
             'xmax' => 210,
             'x0' => 8,
             'y0' => 8,
-            'x1' => 106,
+            'x1' => 160,
             'y1' => 16,
             'y2' => 28,
             'y3' => 36
         ]
     ];
 
-    public function __construct($vehicle, $process, $reportDate, $line, $choku) {
+    public function __construct($vehicle, $process, $inspection, $pn, $line, $reportDate, $choku) {
         $this->now = Carbon::now();
         $this->reportDate = str_replace('-', '/', $reportDate);
+
+        $this->vehicle = $vehicle;
+        $this->process = Process::find($process)->name;
+        $this->inspection = Inspection::find($inspection)->name;
+        $this->partName = PartType::find($pn)->name;
         $this->line = $line;
 
         switch ($choku) {
@@ -60,12 +71,13 @@ class GeneratePDF
     {
         $A4 = $this->positions['A4'];
 
-        $title = '直レポート　'.$this->line.'　'.$this->reportDate.'　'.$this->choku.'　印刷日時：'.$this->now->toDateTimeString();
-
-        $title = '車種：'.$this->line.
+        $title = '車種：'.$this->vehicle.'　'.$this->process.'工程　'.$this->inspection.'　'.$this->partName.'　'.$this->reportDate.'　'.$this->choku;
+        $printDate = '印刷日時：'.$this->now->toDateTimeString();
 
         $tcpdf->SetFont('kozgopromedium', '', 10);
         $tcpdf->Text($A4['x0'], $A4['y0'], $title);
+        $tcpdf->SetFont('kozgopromedium', '', 8);
+        $tcpdf->Text($A4['x0']+154, $A4['y0']+1, $printDate);
     }
 
     public function generate($irs)

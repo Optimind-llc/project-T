@@ -333,44 +333,21 @@ class MappingBody extends Component {
                     const split = Math.ceil(Math.sqrt(data.figures.length));
                     const page = data.figures.find(fig => fig.id == f.fig).page;
 
+                    const x = f.x/2/split + (870/split)*((page+(split-1))%split);
+                    const y = f.y/2/split + (515/split)*(Math.ceil(page/split)-1);
+
+                    let fill='red';
                     switch (r.c) {
-                      case 'W':
-                        return (
-                          <g>
-                            <circle
-                              cx={f.x/2/split + (870/split)*((page+(split-1))%split)}
-                              cy={f.y/2/split + (515/split)*(Math.ceil(page/split)-1)}
-                              r={5}
-                              fill="red"
-                            />
-                          </g>
-                        );
-                        break;
-                      case 'Y':
-                        return (
-                          <g>
-                            <circle
-                              cx={f.x/2/split + (870/split)*((page+(split-1))%split)}
-                              cy={f.y/2/split + (515/split)*(Math.ceil(page/split)-1)}
-                              r={5}
-                              fill="#C6B700"
-                            />
-                          </g>
-                        );
-                        break;
-                      case 'B':
-                        return (
-                          <g>
-                            <circle
-                              cx={f.x/2/split + (870/split)*((page+(split-1))%split)}
-                              cy={f.y/2/split + (515/split)*(Math.ceil(page/split)-1)}
-                              r={5}
-                              fill="blue"
-                            />
-                          </g>
-                        );
-                        break;
+                      case 'W': fill = 'red'; break;
+                      case 'Y': fill = '#C6B700'; break;
+                      case 'B': fill = 'blue'; break;
                     }
+
+                    return (
+                      <g>
+                        <circle cx={x} cy={y} r={5} fill={fill}/>
+                      </g>
+                    );
                   })
                 )
               }{
@@ -381,44 +358,22 @@ class MappingBody extends Component {
                   ).map(m => {
                     const split = Math.ceil(Math.sqrt(data.figures.length));
                     const page = data.figures.find(fig => fig.id == m.fig).page;
+
+                    const x = m.x/2/split + (870/split)*((page+(split-1))%split);
+                    const y = m.y/2/split + (515/split)*(Math.ceil(page/split)-1);
+
+                    let fill='red';
                     switch (r.c) {
-                      case 'W':
-                        return (
-                          <g>
-                            <circle
-                              cx={m.x/2/split + (870/split)*((page+2)%3)}
-                              cy={m.y/2/split + (515/split)*(Math.ceil(page/3)-1)}
-                              r={5}
-                              fill="red"
-                            />
-                          </g>
-                        );
-                        break;
-                      case 'Y':
-                        return (
-                          <g>
-                            <circle
-                              cx={m.x/2/split + (870/split)*((page+2)%3)}
-                              cy={m.y/2/split + (515/split)*(Math.ceil(page/3)-1)}
-                              r={5}
-                              fill="#C6B700"
-                            />
-                          </g>
-                        );
-                        break;
-                      case 'B':
-                        return (
-                          <g>
-                            <circle
-                              cx={m.x/2/split + (870/split)*((page+2)%3)}
-                              cy={m.y/2/split + (515/split)*(Math.ceil(page/3)-1)}
-                              r={5}
-                              fill="blue"
-                            />
-                          </g>
-                        );
-                        break;
+                      case 'W': fill = 'red'; break;
+                      case 'Y': fill = '#C6B700'; break;
+                      case 'B': fill = 'blue'; break;
                     }
+
+                    return (
+                      <g>
+                        <rect x={x-6} y={y-6} width="12" height="12" fill={fill}/>
+                      </g>
+                    );
                   })
                 )
               }{
