@@ -254,7 +254,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_gaikan_luggage_innerSTD_1.png',
+                'path'       => 'h_gaikan_luggageInnerSTD_1.png',
                 'process'    => 'holing',
                 'inspection' => 'gaikan',
                 'pt_pn'      => 6441211010,
@@ -264,7 +264,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_gaikan_luggage_innerARW_1.png',
+                'path'       => 'h_gaikan_luggageInnerARW_1.png',
                 'process'    => 'holing',
                 'inspection' => 'gaikan',
                 'pt_pn'      => 6441211020,
