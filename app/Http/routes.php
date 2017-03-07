@@ -219,7 +219,7 @@ Route::group(['prefix' => 'manager/{vehicle}', 'namespace' => 'V2\Manager'], fun
     Route::get('/check/{date}', 'ReportController@check');
 
 
-    Route::get('report/check/{date}', 'ReportController@check');
+    Route::post('report/check', 'ReportController@check');
     Route::get('report/export/{process}/{inspection}/{line}/{part}/{date}/{choku}', 'ReportController@export');
 });
 

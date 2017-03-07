@@ -43,7 +43,7 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export function getReportData(date) {
+export function getReportData(p, date, choku) {
   return {
     [CALL_API]: {
       types: [
@@ -51,9 +51,9 @@ export function getReportData(date) {
         REDUEST_REPORT_DATA_SUCCESS,
         REDUEST_REPORT_DATA_FAIL
       ],
-      endpoint: `manager/950A/report/check/${date}`,
-      method: 'GET',
-      body: null
+      endpoint: 'manager/950A/report/check',
+      method: 'POST',
+      body: { p, date, choku}
     }
   };
 }

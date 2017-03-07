@@ -1,0 +1,72 @@
+#report-950A-wrap .report-body {
+  margin: 10px 0 0 0;
+  padding: 60px 10px;
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: stretch;
+
+  .report-panel {
+    margin: 0 30px;
+    padding: 4px;
+    width: 160px;
+    background-color: #4A4A4A;
+    border: 1px solid #4A4A4A;
+    border-radius: 4px;
+    cursor: pointer;
+
+    p.report-line-name {
+      margin: 0 0 4px 0;
+      text-align: center;
+      color: #FFF;
+      font-size: 20px;
+      font-weight: 600;
+      border-bottom: 1px solid #FFF;
+    }
+
+    p.report-vehicle-head {
+      margin: 0 6px;
+      font-size: 12px;
+      color: #EEE;
+    }
+
+    div.report-vehicle-body {
+      display: flex;
+      flex-flow: wrap;
+      justify-content: flex-start;
+      margin: 0 6px;
+
+      p {
+        margin: 0 8px 0 0;
+        color: #EEE;
+      }
+    }
+
+    &:hover {
+      box-shadow: 0 0 5px #4A4A4A;
+    }
+
+    &:active {
+      box-shadow: none;
+    }
+
+    &.disabled {
+      cursor: default;
+      pointer-events : none;
+      background-color: #FFF;          
+      border: 1px solid #BBB;
+      &:hover, :active {
+        box-shadow: none;
+      }
+
+      p.report-line-name, p.report-vehicle-head, div.report-vehicle-body > p {
+        color: #BBB;
+      }
+
+      p.report-line-name {
+        border-color: #BBB;
+      }
+    }
+  }
+}

@@ -119,7 +119,7 @@ class Mapping extends Component {
     ).map(pt => { return {label: pt.name, value: pt.pn} });
 
     return (
-      <div id="press-mapping-wrap">
+      <div id="mapping-950A-wrap">
         <div className="bg-white mapping-header">
           <div className="select-wrap">
             <div className="row">

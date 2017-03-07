@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import Select from 'react-select';
 import { vehicles, processes, inspections, inspectionGroups } from '../../../../utils/Processes';
 // Actions
 import { push } from 'react-router-redux';
@@ -12,23 +11,28 @@ import './report.scss';
 // Components
 // import Loading from '../../../components/loading/loading';
 // import RangeCalendar from '../components/rangeCalendar/rangeCalendar';
-// import Mapping from '../../mapping/containers/mapping';
+// Components
+import Select from 'react-select';
+import CustomCalendar from '../components/calendar/calendar';
+import ReportBody from '../components/body/reportBody';
+import Modal from '../components/modal/modal';
 
 class Report extends Component {
   constructor(props, context) {
     super(props, context);
 
     const { getReportData } = props.actions;
-    const now = moment();
-    getReportData(now.format("YYYY-MM-DD"));
+    const date = moment();
+    const choku = {label: '白直', value: ['W']};
+
+    getReportData('molding', date.format('YYYY-MM-DD'), choku.value);
 
     this.state = ({
+      date,
+      choku,
+      p: {label: '成型', value: 'molding'},
       modal: false,
       path: '',
-      vehicle: null,
-      date: now,
-      inspectorG: null,
-      process: null,
     });
   }
 
@@ -36,25 +40,94 @@ class Report extends Component {
     this.props.actions.clearReportData();
   }
 
+  serchReport(date, choku) {
+    const { getReportData } = this.props.actions;
+
+    getReportData(date.format('YYYY-MM-DD'), choku.value);
+  }
+
+  openModal(i, partTypeEn) {
+    const { p, date, choku } = this.state;
+    const { partTypes } = this.props.InitialData;
+console.log(partTypes);
+    const pn = partTypes.find(pt => pt.en === partTypeEn).pn;
+
+    this.setState({
+      modal: true,
+      path: `/manager/950A/report/export/${p.value}/${i}/1/${pn}/${date.format("YYYY-MM-DD")}/${choku.value}`
+    });
+  }
+
   render() {
-    const { date } = this.state;
-    const { reportData, actions } = this.props;
+    const { date, choku, p } = this.state;
+    const { InitialData, ReportData, actions } = this.props;
+
+    const processes = InitialData.processes.map(p => { return {label: p.name, value: p.en} });
 
     return (
-      <div id="950Report">
-        <p>Comming soon...</p>
+      <div id="report-950A-wrap">
+        <div className="bg-white report-header">
+          <p>日付*</p>
+          <CustomCalendar
+            defaultDate={date}
+            disabled={false}
+            changeDate={d => this.setState({date: d})}
+          />
+          <p>直*</p>
+          <Select
+            name="直"
+            placeholder="直を選択"
+            clearable={false}
+            Searchable={true}
+            value={choku}
+            options={[
+              {label: '白直', value: ['W']},
+              {label: '黄直', value: ['Y']},
+              {label: '黒直', value: ['B'], disabled: true}
+            ]}
+            onChange={value => changeChoku(value)}
+          />
+          <p>工程*：</p>
+          <Select
+            name="ライン"
+            placeholder="全てのライン"
+            clearable={false}
+            Searchable={true}
+            value={p}
+            options={processes}
+            onChange={p => this.setState({p})}
+          />
+        </div>
+        {
+          !InitialData.idFetching && !ReportData.idFetching && ReportData.data !== null &&
+          <ReportBody
+            p={p.value}
+            inspections={InitialData.inspections}
+            combination={InitialData.combination}
+            data={ReportData.data}
+            openModal={(i, pt) => this.openModal(i, pt)}
+          />
+        }{
+          this.state.modal &&
+          <Modal
+            path={this.state.path}
+            close={() => this.setState({modal: false})}
+          />
+        }
       </div>
     );
   }
 }
 
 Report.propTypes = {
-  reportData: PropTypes.object.isRequired
+  InitialData: PropTypes.object.isRequired,
+  ReportData: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    reportData: state.ReportData950A
+    InitialData: state.Application.vehicle950A,
+    ReportData: state.ReportData950A
   };
 }
 

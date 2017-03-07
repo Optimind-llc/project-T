@@ -4,19 +4,16 @@ import moment from 'moment';
 import DatePicker from 'rc-calendar/lib/Picker';
 import jaJP from './ja_JP';
 import 'rc-calendar/assets/index.css';
-import './rangeCalendar.css';
+import './calendar.css';
 import TimePickerPanel from 'rc-time-picker/lib/Panel';
 import 'rc-time-picker/assets/index.css';
 
-class RangeCalendar extends Component {
+class CustomCalendar extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
       format: 'YYYY年MM月DD日',
-      showTime: false,
-      showDateInput: true,
-      disabled: props.disabled,
-      value: props.defaultValue,
+      disabled: props.disabled
     };
   }
 
@@ -27,36 +24,20 @@ class RangeCalendar extends Component {
     this.props.setState(value);
   }
 
-  onShowTimeChange(e) {
-    this.setState({
-      showTime: e.target.checked,
-    });
-  }
-
   onShowDateInputChange(e) {
     this.setState({
       showDateInput: e.target.checked,
     });
   }
 
-  toggleDisabled() {
-    this.setState({
-      disabled: !this.state.disabled,
-    });
-  }
-
   render() {
-    const now = moment();
-    const defaultCalendarValue = now.clone();
-    defaultCalendarValue.add(-1, 'month');
-
-    const timePickerElement = <TimePickerPanel />;
+    const { defaultDate, disabled, changeDate } = this.props;
 
     function disabledDate(current) {
       if (!current) {
-        // allow empty select
         return false;
       }
+
       const date = moment();
       return !date.isAfter(current);
     }
@@ -66,22 +47,22 @@ class RangeCalendar extends Component {
     const calendar = (<Calendar
       locale={jaJP}
       style={{ zIndex: 1000 }}
-      dateInputPlaceholder="please input"
+      dateInputPlaceholder="YYYY年MM月DD日で入力"
       formatter={state.format}
-      timePicker={state.showTime ? timePickerElement : null}
-      defaultValue={this.props.defaultCalendarValue}
-      showDateInput={state.showDateInput}
+      timePicker={null}
+      defaultValue={defaultDate}
+      showToday={false}
+      showDateInput={false}
       disabledDate={disabledDate}
     />);
 
     return (
         <DatePicker
           animation="slide-up"
-          disabled={state.disabled}
           calendar={calendar}
-          value={state.value}
-          onChange={(value) => this.onChange(value)}
-          disabled={this.props.disabled}
+          value={defaultDate}
+          onChange={value => changeDate(value)}
+          disabled={disabled}
         >
           {
             ({ value }) => {
@@ -97,10 +78,10 @@ class RangeCalendar extends Component {
                     width: 196,
                     height: 30,
                     borderRadius: 4,
-                    color: state.disabled ? '#BBB' : '#000',
+                    color: disabled ? '#BBB' : '#000',
                     lineHeight: '34px',
                   }}
-                  disabled={state.disabled}
+                  disabled={disabled}
                   readOnly
                   tabIndex="-1"
                   className="ant-calendar-picker-input ant-input"
@@ -115,11 +96,10 @@ class RangeCalendar extends Component {
   }
 };
 
-RangeCalendar.propTypes = {
-  defaultValue: PropTypes.object,
-  defaultCalendarValue: PropTypes.object,
-  setState: PropTypes.func,
-  disabled: PropTypes.bool
+CustomCalendar.propTypes = {
+  defaultDate: PropTypes.object.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  changeDate: PropTypes.func.isRequired
 };
 
-export default RangeCalendar;
+export default CustomCalendar;
