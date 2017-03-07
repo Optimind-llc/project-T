@@ -263,7 +263,7 @@ class MappingBody extends Component {
                         </li>
                         {
                           data.holeTypes.map(ht => {
-                            const sum = hStatus.filter(h => h.hm === hmt.id).length;
+                            const sum = hStatus.filter(h => h.hm === hmt.id && h.id === ht.id).length;
                             return (
                               <li>{sum ? sum : '-'}</li>
                             )
@@ -433,7 +433,7 @@ class MappingBody extends Component {
                   const page = data.figures.find(fig => fig.id == ht.fig).page;
 
                   let disable = false;
-                  const count = hStatus.filter(h => hmFilter.indexOf(h.hm) == -1).length;
+                  const count = hStatus.filter(h => hmFilter.indexOf(h.hm) === -1 && h.hm !== -1 &&h.id === ht.id).length;
                   disable = count === 0;
 
                   const x = ht.x/2/split + (870/split)*((page+2)%3);

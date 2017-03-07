@@ -102,6 +102,7 @@ class Report extends Component {
           !InitialData.idFetching && !ReportData.idFetching && ReportData.data !== null &&
           <ReportBody
             p={p.value}
+            partTypes={InitialData.partTypes}
             inspections={InitialData.inspections}
             combination={InitialData.combination}
             data={ReportData.data}

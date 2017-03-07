@@ -9,7 +9,7 @@ class reportBody extends Component {
   }
 
   render() {
-    const { p, inspections, combination, data, openModal } = this.props;
+    const { p, inspections, partTypes, combination, data, openModal } = this.props;
 
     const fillterdInspections = combination.filter(
       c => c.process === p
@@ -23,8 +23,8 @@ class reportBody extends Component {
       <div className="bg-white report-body">
         {
           fillterdInspections.map((i, ii) =>
-            <div key={ii}>
-              <p>{i}</p>
+            <div key={ii} className="inspection-wrap">
+              <p>{inspections.find(ins => ins.en === i).name}</p>
               {
                 combination.filter(
                   c => c.process === p && c.inspection === i
@@ -38,7 +38,7 @@ class reportBody extends Component {
                     className={`report-panel ${data.filter(d => d.process === p && d.inspection === i && d.partEn === pt).length > 0 ? '' : 'disabled'}`}
                     onClick={() => openModal(i, pt)}
                   >
-                    <p className="report-line-name">{pt}</p>
+                    <p className="report-line-name">{partTypes.find(partType => partType.en === pt).name}</p>
                   </div>
                 )
               }
@@ -53,6 +53,7 @@ class reportBody extends Component {
 reportBody.propTypes = {
   p: PropTypes.string,
   inspections: PropTypes.array.isRequired,
+  partTypes: PropTypes.array.isRequired,
   combination: PropTypes.array.isRequired,
   data: PropTypes.object.isRequired,
   openModal: PropTypes.func.isRequired
