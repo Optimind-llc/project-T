@@ -99,5 +99,6 @@ export function clearMappingData() {
 export const pageActions = {
   getMappingDataRealtime,
   getMappingDataByDate,
-  getMappingDataByPanelId
+  getMappingDataByPanelId,
+  clearMappingData
 };

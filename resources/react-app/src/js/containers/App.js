@@ -37,11 +37,10 @@ class App extends Component {
         { en: 'association', name: 'パネルID検索', disable: false }
       ],
       '950A': [
-        { en: '950A/dashboard', name: 'ダッシュボード', disable: false},
         { en: '950A/mapping', name: 'マッピング', disable: false},
-        { en: '950A/reference', name: '検査結果検索', disable: false },
+        { en: '950A/reference', name: '検査結果検索', disable: true },
         { en: '950A/report', name: '直レポート印刷', disable: false },
-        { en: '950A/association', name: 'パネルID検索', disable: false }
+        { en: '950A/association', name: 'パネルID検索', disable: true }
       ]
     };
 

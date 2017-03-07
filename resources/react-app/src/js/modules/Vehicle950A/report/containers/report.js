@@ -40,16 +40,16 @@ class Report extends Component {
     this.props.actions.clearReportData();
   }
 
-  serchReport(date, choku) {
+  serchReport() {
     const { getReportData } = this.props.actions;
+    const { p, date, choku } = this.state;
 
-    getReportData(date.format('YYYY-MM-DD'), choku.value);
+    getReportData(p.value, date.format('YYYY-MM-DD'), choku.value);
   }
 
   openModal(i, partTypeEn) {
     const { p, date, choku } = this.state;
     const { partTypes } = this.props.InitialData;
-console.log(partTypes);
     const pn = partTypes.find(pt => pt.en === partTypeEn).pn;
 
     this.setState({
@@ -71,7 +71,7 @@ console.log(partTypes);
           <CustomCalendar
             defaultDate={date}
             disabled={false}
-            changeDate={d => this.setState({date: d})}
+            changeDate={date => this.setState({date}, () => this.serchReport())}
           />
           <p>直*</p>
           <Select
@@ -81,11 +81,11 @@ console.log(partTypes);
             Searchable={true}
             value={choku}
             options={[
-              {label: '白直', value: ['W']},
-              {label: '黄直', value: ['Y']},
-              {label: '黒直', value: ['B'], disabled: true}
+              {label: '白直', value: 'W'},
+              {label: '黄直', value: 'Y'},
+              {label: '黒直', value: 'B', disabled: true}
             ]}
-            onChange={value => changeChoku(value)}
+            onChange={choku => this.setState({choku}, () => this.serchReport())}
           />
           <p>工程*：</p>
           <Select
@@ -95,7 +95,7 @@ console.log(partTypes);
             Searchable={true}
             value={p}
             options={processes}
-            onChange={p => this.setState({p})}
+            onChange={p => this.setState({p}, () => this.serchReport())}
           />
         </div>
         {

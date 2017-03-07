@@ -255,167 +255,291 @@ class RelatedHoleTableSeeder extends Seeder
         DB::connection('950A')->table($table_name)->insert($data);
 
 
+        //穴検査_リンフォースR
+        $reinforceR_holes = [
+            [1, 1,  137,  500, 'top',   'square', 'solid', '95CDDC'],
+            [1, 2,  269,  501, 'top',   'square', 'solid', '95CDDC'],
+            [1, 3,  514,  486, 'top',   'square', 'solid', '95CDDC'],
+            [1, 4,  772,  471, 'top',   'square', 'solid', '95CDDC'],
+            [1, 5,  1010, 462, 'top',   'square', 'solid', '95CDDC'],
+            [1, 6,  1233, 447, 'top',   'square', 'solid', '95CDDC'],
+            [1, 7,  1451, 437, 'top',   'square', 'solid', '95CDDC'],
+            [1, 8,  1610, 430, 'top',   'square', 'solid', '95CDDC'],
+            [1, 9,  128,  699, 'bottom','square', 'solid', '95CDDC'],
+            [1, 10, 327,  686, 'bottom','square', 'solid', '95CDDC'],
+            [1, 11, 582,  667, 'bottom','square', 'solid', '95CDDC'],
+            [1, 12, 743,  656, 'bottom','square', 'solid', '95CDDC'],
+            [1, 13, 940,  643, 'bottom','square', 'solid', '95CDDC'],
+            [1, 14, 1205, 629, 'bottom','square', 'solid', '95CDDC'],
+            [1, 15, 1394, 621, 'bottom','square', 'solid', '95CDDC'],
+            [1, 16, 1616, 617, 'bottom','square', 'solid', '95CDDC'],
 
-        $data = [
-            [
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6715111020,
-                'figure_id'  => $getFigureId(6715111020, 'holing', 'ana', 1),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6715111020,
-                'figure_id'  => $getFigureId(6715111020, 'holing', 'ana', 2),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6715211020,
-                'figure_id'  => $getFigureId(6715211020, 'holing', 'ana', 1),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6715211020,
-                'figure_id'  => $getFigureId(6715211020, 'holing', 'ana', 2),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6441211010,
-                'figure_id'  => $getFigureId(6441211010, 'holing', 'ana', 1),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6441211010,
-                'figure_id'  => $getFigureId(6441211010, 'holing', 'ana', 2),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6441211010,
-                'figure_id'  => $getFigureId(6441211010, 'holing', 'ana', 3),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6441211020,
-                'figure_id'  => $getFigureId(6441211020, 'holing', 'ana', 1),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6441211020,
-                'figure_id'  => $getFigureId(6441211020, 'holing', 'ana', 2),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6441211020,
-                'figure_id'  => $getFigureId(6441211020, 'holing', 'ana', 3),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6441111010,
-                'figure_id'  => $getFigureId(6441111010, 'holing', 'ana', 1),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6441111020,
-                'figure_id'  => $getFigureId(6441111020, 'holing', 'ana', 1),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'x'          => 200,
-                'y'          => 200,
-                'label'      => 1,
-                'direction'  => 'left',
-                'shape'      => 'square',
-                'border'     => 'solid',
-                'color'      => '000000',
-                'pt_pn'      => 6441111020,
-                'figure_id'  => $getFigureId(6441111020, 'holing', 'ana', 2),
-                'created_at' => $now,
-                'updated_at' => $now
-            ],
+            [1, 17, 1635, 441, 'bottom','square', 'solid', 'DB0B17'],
+            [1, 18, 1652, 441, 'right', 'square', 'solid', '000000'],
+
+            [2, 19, 662,  346, 'bottom','square', 'solid', 'FFFD38'],
+            [2, 20, 739,  339, 'bottom','square', 'solid', 'FFFD38'],
+            [2, 21, 781,  185, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 22, 324,  718, 'bottom','square', 'solid', 'FFFD38'],
+            [2, 23, 391,  732, 'bottom','square', 'solid', 'FFFD38'],
+            [2, 24, 1450, 656, 'bottom','square', 'solid', 'FFFD38'],
+            [2, 25, 1515, 674, 'bottom','square', 'solid', 'FFFD38'],
+            [2, 26, 1681, 680, 'right', 'square', 'solid', 'FFFD38'],
+            [2, 27, 1681, 745, 'right', 'square', 'solid', 'FFFD38'],
+
+            [2, 28, 741,  225, 'top',   'square', 'solid', 'C3D59E'],
+
+            [2, 29, 685,  298, 'top',   'square', 'solid', 'B3A3C6'],
+
+            [2, 30, 646,  281, 'left',  'square', 'solid', 'DB0B17'],
+            [2, 31, 756,  266, 'right', 'square', 'solid', 'DB0B17'],
+
+            [2, 32, 168,  767, 'bottom', 'square', 'solid', '36859A'],
+            [2, 33, 922,  626, 'top',   'square', 'solid', '36859A'],
+            [2, 34, 1085, 618, 'top',   'square', 'solid', '36859A'],
+            [2, 35, 1636, 639, 'top',   'square', 'solid', '36859A'],
         ];
 
+        //穴検査_リンフォースR
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6715111020,
+                'figure_id'  => $getFigureId(6715111020, 'holing', 'ana', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$reinforceR_holes);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴検査_リンフォースL
+        $data = array_map(function($h) use($getFigureId, $now) {
+            if ($h[4] === 'left') {
+                $direction = 'right';
+            } elseif ($h[4] === 'right') {
+                $direction = 'left';
+            } else {
+                $direction = $h[4];
+            }
+
+            return [
+                'label'      => $h[1],
+                'x'          => 1740 - $h[2],
+                'y'          => $h[3],
+                'direction'  => $direction,
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6715211020,
+                'figure_id'  => $getFigureId(6715211020, 'holing', 'ana', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$reinforceR_holes);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴検査_ラゲージインナSTD
+        $luggageInnerSTD_holes = [
+            [1, 1,  1005, 365, 'top',   'square', 'solid', 'F5964F'],
+            [1, 2,  737,  365, 'top',   'square', 'solid', 'F5964F'],
+            [1, 3,  1078, 713, 'top',   'square', 'solid', 'F5964F'],
+            [1, 4,  1029, 714, 'top',   'square', 'solid', 'F5964F'],
+            [1, 5,  1063, 773, 'bottom','square', 'solid', 'F5964F'],
+
+            [1, 6,  1500, 254, 'right', 'square', 'solid', '95CDDC'],
+            [1, 7,  1521, 383, 'right', 'square', 'solid', '95CDDC'],
+            [1, 8,  239,  257, 'left',  'square', 'solid', '95CDDC'],
+            [1, 9,  218,  386, 'left',  'square', 'solid', '95CDDC'],
+            [1, 10, 955,  874, 'bottom','square', 'solid', '95CDDC'],
+            [1, 11, 783,  861, 'bottom','square', 'solid', '95CDDC'],
+
+            [1, 12, 1498, 299, 'right', 'square', 'solid', 'B3A3C'],
+            [1, 13, 1528, 444, 'right', 'square', 'solid', 'B3A3C6'],
+            [1, 14, 240,  303, 'left',  'square', 'solid', 'B3A3C6'],
+            [1, 15, 211,  447, 'left',  'square', 'solid', 'B3A3C6'],
+
+            [1, 16, 895,  874, 'top',   'square', 'solid', 'DB0B17'],
+            [1, 17, 845,  874, 'top',   'square', 'solid', 'DB0B17'],
+
+            [1, 18, 1401, 335, 'top',   'square', 'solid', 'C3D59E'],
+            [1, 19, 1047, 357, 'bottom','square', 'solid', 'C3D59E'],
+            [1, 20, 692,  359, 'bottom','square', 'solid', 'C3D59E'],
+            [1, 21, 338,  338, 'top',   'square', 'solid', 'C3D59E'],
+            [1, 22, 1416, 653, 'bottom','square', 'solid', 'C3D59E'],
+            [1, 23, 1088, 819, 'bottom','square', 'solid', 'C3D59E'],
+            [1, 24, 1015, 843, 'bottom','square', 'solid', 'C3D59E'],
+            [1, 25, 725,  843, 'bottom','square', 'solid', 'C3D59E'],
+            [1, 26, 654,  819, 'bottom','square', 'solid', 'C3D59E'],
+            [1, 27, 325,  656, 'bottom','square', 'solid', 'C3D59E'],
+
+            [2, 28, 1580, 624, 'bottom','square', 'solid', 'D89695'],
+            [2, 29, 1089, 818, 'bottom','square', 'solid', 'D89695'],
+            [2, 30, 652,  818, 'bottom','square', 'solid', 'D89695'],
+            [2, 31, 161,  629, 'bottom','square', 'solid', 'D89695'],
+
+            [2, 32, 913,  513, 'top',   'square', 'solid', 'C7DAF0'],
+            [2, 33, 826,  513, 'top',   'square', 'solid', 'C7DAF0'],
+            [2, 34, 913,  599, 'bottom','square', 'solid', 'C7DAF0'],
+            [2, 35, 827,  599, 'bottom','square', 'solid', 'C7DAF0'],
+
+            [2, 36, 1117, 639, 'right','square', 'solid', 'D9D9D9'],
+            [2, 37, 1022, 666, 'right','square', 'solid', 'D9D9D9'],
+            [2, 38, 1126, 768, 'right','square', 'solid', 'D9D9D9'],
+            [2, 39, 999,  794, 'right','square', 'solid', 'D9D9D9'],
+            [2, 40, 720,  666, 'left','square', 'solid', 'D9D9D9'],
+            [2, 41, 626,  640, 'left','square', 'solid', 'D9D9D9'],
+            [2, 42, 741,  794, 'left','square', 'solid', 'D9D9D9'],
+            [2, 43, 615,  770, 'left','square', 'solid', 'D9D9D9'],
+
+            [3, 44, 1374, 482, 'top',  'square', 'solid', 'E26C22'],
+            [3, 45, 1294, 538, 'top',  'square', 'solid', 'E26C22'],
+            [3, 46, 1090, 582, 'top',  'square', 'solid', 'E26C22'],
+            [3, 47, 983,  632, 'top',  'square', 'solid', 'E26C22'],
+            [3, 48, 913,  659, 'top',  'square', 'solid', 'E26C22'],
+            [3, 49, 823,  649, 'top',  'square', 'solid', 'E26C22'],
+            [3, 50, 651,  586, 'top',  'square', 'solid', 'E26C22'],
+            [3, 51, 447,  539, 'top',  'square', 'solid', 'E26C22'],
+            [3, 52, 366,  484, 'top',  'square', 'solid', 'E26C22'],
+
+            [3, 53, 1123, 899, 'bottom','square', 'solid', 'C7DAF0'],
+            [3, 54, 619,  901, 'bottom','square', 'solid', 'C7DAF0'],
+
+            [3, 55, 1160, 867, 'top',  'square', 'solid', 'FFFD38'],
+            [3, 56, 581,  870, 'top',  'square', 'solid', 'FFFD38'],
+
+            [3, 57, 1383, 675, 'bottom','square', 'solid', 'B3A3C6'],
+            [3, 58, 358,  678, 'bottom','square', 'solid', 'B3A3C6']
+        ];
+
+        //穴検査_ラゲージインナSTD
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6441211010,
+                'figure_id'  => $getFigureId(6441211010, 'holing', 'ana', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$luggageInnerSTD_holes);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+
+        //穴検査_ラゲージインナARW
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6441211020,
+                'figure_id'  => $getFigureId(6441211020, 'holing', 'ana', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$luggageInnerSTD_holes);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴検査_ラゲージアウタSTD
+        $luggageOuterSTD_holes = [
+            [1, 1,  403,  264, 'top',   'square', 'solid', 'C3D59E'],
+            [1, 2,  871,  332, 'top',   'square', 'solid', 'C3D59E'],
+            [1, 3,  1336, 259, 'top',   'square', 'solid', 'C3D59E'],
+
+            [1, 4,  626,  343, 'top',   'square', 'solid', 'C7DAF0'],
+            [1, 5,  1115, 340, 'top',   'square', 'solid', 'C7DAF0'],
+
+            [1, 6,  742,  356, 'top',   'square', 'solid', 'FDBF2D'],
+            [1, 7,  999,  354, 'top',   'square', 'solid', 'FDBF2D'],
+
+            [1, 8,  871,  872, 'top',   'square', 'solid', 'FD7D82'],
+
+            [1, 9,  821,  897, 'left',  'square', 'solid', 'D9D9D9'],
+            [1, 10, 931,  901, 'right', 'square', 'solid', 'D9D9D9']
+        ];
+
+        //穴検査_ラゲージアウタSTD
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6441111010,
+                'figure_id'  => $getFigureId(6441111010, 'holing', 'ana', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$luggageOuterSTD_holes);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴検査_ラゲージインナARW
+        $luggageOuterARW_holes = [
+            [1, 1,  403,  264, 'top',   'square', 'solid', 'C3D59E'],
+            [1, 2,  871,  332, 'top',   'square', 'solid', 'C3D59E'],
+            [1, 3,  1336, 259, 'top',   'square', 'solid', 'C3D59E'],
+
+            [1, 4,  626,  343, 'top',   'square', 'solid', 'C7DAF0'],
+            [1, 5,  1115, 340, 'top',   'square', 'solid', 'C7DAF0'],
+
+            [1, 6,  742,  356, 'top',   'square', 'solid', 'FDBF2D'],
+            [1, 7,  999,  354, 'top',   'square', 'solid', 'FDBF2D'],
+
+            [1, 8,  871,  872, 'top',   'square', 'solid', 'FD7D82'],
+
+            [1, 9,  821,  897, 'left',  'square', 'solid', 'D9D9D9'],
+            [1, 10, 931,  901, 'right', 'square', 'solid', 'D9D9D9'],
+
+            [2, 11, 336,  598, 'left',  'square', 'solid', 'D9D9D9'],
+            [2, 12, 727,  651, 'top',   'square', 'solid', 'D9D9D9'],
+            [2, 13, 750,  772, 'bottom','square', 'solid', 'D9D9D9'],
+            [2, 14, 1017, 651, 'top',   'square', 'solid', 'D9D9D9'],
+            [2, 15, 996,  772, 'bottom','square', 'solid', 'D9D9D9'],
+            [2, 16, 1407, 597, 'right', 'square', 'solid', 'D9D9D9'],
+
+            [2, 17, 459,  595, 'top',   'square', 'solid', '1EB1ED'],
+            [2, 18, 444,  695, 'bottom','square', 'solid', '1EB1ED'],
+            [2, 19, 636,  629, 'top',   'square', 'solid', '1EB1ED'],
+            [2, 20, 627,  752, 'bottom','square', 'solid', '1EB1ED'],
+            [2, 21, 1108, 628, 'top',   'square', 'solid', '1EB1ED'],
+            [2, 22, 1118, 750, 'bottom','square', 'solid', '1EB1ED'],
+            [2, 23, 1285, 594, 'top',   'square', 'solid', '1EB1ED'],
+            [2, 24, 1300, 694, 'bottom','square', 'solid', '1EB1ED']
+        ];
+
+        //穴検査_ラゲージアウタARW
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6441111020,
+                'figure_id'  => $getFigureId(6441111020, 'holing', 'ana', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$luggageOuterARW_holes);
         DB::connection('950A')->table($table_name)->insert($data);
 
         if (env('DB_CONNECTION') == 'mysql') {

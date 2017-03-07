@@ -436,7 +436,8 @@ class InspectionResultRepository
             ->where('line', '=', $line)
             ->where('inspected_at', '>=', $start)
             ->where('inspected_at', '<', $end)
-            ->select(['id', 'part_id', 'process', 'inspection', 'line', 'inspected_at', 'latest'])
+            ->whereIn('created_choku', $chokus)
+            ->select(['id', 'part_id', 'process', 'inspection', 'line', 'inspected_at', 'created_choku', 'latest'])
             ->get()
             ->map(function($ir) {
                 return [
