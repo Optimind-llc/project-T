@@ -175,10 +175,10 @@ class AssociationController extends Controller
     {
         $familyId = $request->familyId;
         $parts = $request->parts;
+        $familyType = $request->type;
         $partInspections = collect(config('part.950A'));
 
         $family = PartFamily::find($familyId);
-        $familyType = $family->type;
 
         switch ($familyType) {
             case 'doorR': $parts['6701511020'] = $parts['6714111020']; break;
@@ -236,6 +236,9 @@ class AssociationController extends Controller
                 'parts' => $associated
             ], 200);
         }
+
+        $family->type = $familyType;
+        $family->save();
 
         DB::connection('950A')->commit();
         return response()->json([
