@@ -52,10 +52,10 @@ class RelatedHoleTableSeeder extends Seeder
             [1, 2,  183,  542, 'right', 'square', 'solid', '95CDDC'],
             [1, 3,  273,  267, 'top',   'square', 'solid', '95CDDC'],
             [1, 4,  137,  307, 'left',  'square', 'solid', '95CDDC'],
-            [1, 5,  134,  483, 'left',  'square', 'solid', '95CDDC'],
+            [1, 5,  134,  483, 'top',   'square', 'solid', '95CDDC'],
             [1, 6,  127,  518, 'left',  'square', 'solid', '95CDDC'],
             [1, 7,  127,  595, 'left',  'square', 'solid', '95CDDC'],
-            [1, 8,  133,  627, 'left',  'square', 'solid', '95CDDC'],
+            [1, 8,  133,  627, 'bottom','square', 'solid', '95CDDC'],
             [1, 9,  185,  852, 'bottom','square', 'solid', '95CDDC'],
             [1, 10, 453,  875, 'bottom','square', 'solid', '95CDDC'],
             [1, 11, 727,  869, 'bottom','square', 'solid', '95CDDC'],
@@ -66,7 +66,7 @@ class RelatedHoleTableSeeder extends Seeder
             [1, 16, 1581, 361, 'right', 'square', 'solid', '95CDDC'],
             [1, 17, 1581, 247, 'right', 'square', 'solid', '95CDDC'],
 
-            [2, 18, 217,  297, 'right', 'square', 'solid', 'B3A3C6'],
+            [2, 18, 217,  297, 'top',   'square', 'solid', 'B3A3C6'],
             [2, 19, 208,  315, 'right', 'square', 'solid', 'B3A3C6'],
             [2, 20, 1418, 239, 'top',   'square', 'solid', 'B3A3C6'],
             [2, 21, 1590, 218, 'top',   'square', 'solid', 'B3A3C6'],
@@ -155,7 +155,7 @@ class RelatedHoleTableSeeder extends Seeder
             [5, 92, 945,  756, 'bottom','square', 'solid', '1AAF54'],
 
             [5, 93, 1510, 424, 'right', 'square', 'solid', 'DB0B17'],
-            [5, 94, 1494, 489, 'right', 'square', 'solid', 'DB0B17'],
+            [5, 94, 1494, 489, 'bottom','square', 'solid', 'DB0B17'],
             [5, 95, 1519, 489, 'right', 'square', 'solid', 'DB0B17'],
 
             [5, 96, 1446, 519, 'bottom','square', 'solid', 'FFFFFF'],
@@ -274,7 +274,7 @@ class RelatedHoleTableSeeder extends Seeder
             [1, 15, 1394, 621, 'bottom','square', 'solid', '95CDDC'],
             [1, 16, 1616, 617, 'bottom','square', 'solid', '95CDDC'],
 
-            [1, 17, 1635, 441, 'bottom','square', 'solid', 'DB0B17'],
+            [1, 17, 1635, 471, 'bottom','square', 'solid', 'DB0B17'],
             [1, 18, 1652, 441, 'right', 'square', 'solid', '000000'],
 
             [2, 19, 662,  346, 'bottom','square', 'solid', 'FFFD38'],
