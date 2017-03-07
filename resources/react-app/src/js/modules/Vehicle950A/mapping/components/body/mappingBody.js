@@ -298,10 +298,12 @@ class MappingBody extends Component {
               <div className="circle-yellow"></div>
               <p>黄直</p>
             </div>
+            {/*
             <div>
               <div className="circle-blue"></div>
               <p>黒直</p>
             </div>
+            */}
           </div>
           <div className="figure-wrap">
             <div style={{width: 870}}>

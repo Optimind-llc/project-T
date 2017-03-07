@@ -123,7 +123,7 @@ class Mapping extends Component {
         <div className="bg-white mapping-header">
           <div className="select-wrap">
             <div className="row">
-              <p>工程*：</p>
+              <p>工程*</p>
               <Select
                 name="ライン"
                 placeholder="全てのライン"
@@ -133,7 +133,7 @@ class Mapping extends Component {
                 options={processes}
                 onChange={p => this.setState({p})}
               />
-              <p>検査*：</p>
+              <p>検査*</p>
               <Select
                 name="車種"
                 placeholder="全ての車種"
@@ -143,7 +143,7 @@ class Mapping extends Component {
                 options={inspections}
                 onChange={i => this.setState({i})}
               />
-              <p>部品*：</p>
+              <p>部品*</p>
               <Select
                 name="品番"
                 placeholder="品番を選択"
@@ -165,7 +165,7 @@ class Mapping extends Component {
                 className={`row selectable ${narrowedBy === 'date' ? 'selected' : ''}`}
                 onClick={() => this.setState({narrowedBy: 'date'})}
               >
-                <p>直：</p>
+                <p>直</p>
                 <Select
                   name="直"
                   className="width140"
@@ -176,11 +176,12 @@ class Mapping extends Component {
                   options={[
                     {label: '白直', value: ['W']},
                     {label: '黄直', value: ['Y']},
-                    {label: '両直', value: ['W', 'Y']}
+                    {label: '黒直', value: ['B'], disabled: true},
+                    {label: '全直', value: ['W', 'Y']}
                   ]}
                   onChange={value => this.setState({choku: value})}
                 />
-                <p>期間：</p>
+                <p>期間</p>
                 <CustomCalendar
                   defaultDate={startDate}
                   changeDate={d => this.setState({startDate: d})}
@@ -197,7 +198,7 @@ class Mapping extends Component {
                 className={`row selectable ${narrowedBy === 'panelId' ? 'selected' : ''}`}
                 onClick={() => this.setState({narrowedBy: 'panelId'})}
               >
-                <p>パネルID：</p>
+                <p>パネルID</p>
                 <input
                   type="text"
                   value={panelId}

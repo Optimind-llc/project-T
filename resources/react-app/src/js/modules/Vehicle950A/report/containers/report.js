@@ -87,7 +87,7 @@ class Report extends Component {
             ]}
             onChange={choku => this.setState({choku}, () => this.serchReport())}
           />
-          <p>工程*：</p>
+          <p>工程*</p>
           <Select
             name="ライン"
             placeholder="全てのライン"

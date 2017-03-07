@@ -221,6 +221,10 @@ Route::group(['prefix' => 'manager/{vehicle}', 'namespace' => 'V2\Manager'], fun
 
     Route::post('report/check', 'ReportController@check');
     Route::get('report/export/{process}/{inspection}/{line}/{part}/{date}/{choku}', 'ReportController@export');
+
+    Route::post('association/family/date', 'AssociationController@getFamilyByDate');
+
+    
 });
 
 

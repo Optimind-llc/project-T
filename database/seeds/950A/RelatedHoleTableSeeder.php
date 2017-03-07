@@ -156,9 +156,9 @@ class RelatedHoleTableSeeder extends Seeder
 
             [5, 93, 1510, 424, 'right', 'square', 'solid', 'DB0B17'],
             [5, 94, 1494, 489, 'bottom','square', 'solid', 'DB0B17'],
-            [5, 95, 1519, 489, 'right', 'square', 'solid', 'DB0B17'],
+            [5, 95, 1519, 469, 'right', 'square', 'solid', 'DB0B17'],
 
-            [5, 96, 1446, 519, 'bottom','square', 'solid', 'FFFFFF'],
+            [5, 96, 1446, 519, 'right','square', 'solid', 'FFFFFF'],
 
             [5, 97, 1406, 379, 'top',   'square', 'solid', '90E941'],
 
@@ -264,7 +264,7 @@ class RelatedHoleTableSeeder extends Seeder
             [1, 5,  1010, 462, 'top',   'square', 'solid', '95CDDC'],
             [1, 6,  1233, 447, 'top',   'square', 'solid', '95CDDC'],
             [1, 7,  1451, 437, 'top',   'square', 'solid', '95CDDC'],
-            [1, 8,  1610, 430, 'top',   'square', 'solid', '95CDDC'],
+            [1, 8,  1590, 430, 'top',   'square', 'solid', '95CDDC'],
             [1, 9,  128,  699, 'bottom','square', 'solid', '95CDDC'],
             [1, 10, 327,  686, 'bottom','square', 'solid', '95CDDC'],
             [1, 11, 582,  667, 'bottom','square', 'solid', '95CDDC'],
@@ -274,12 +274,12 @@ class RelatedHoleTableSeeder extends Seeder
             [1, 15, 1394, 621, 'bottom','square', 'solid', '95CDDC'],
             [1, 16, 1616, 617, 'bottom','square', 'solid', '95CDDC'],
 
-            [1, 17, 1635, 471, 'bottom','square', 'solid', 'DB0B17'],
-            [1, 18, 1652, 441, 'right', 'square', 'solid', '000000'],
+            [1, 17, 1635, 441, 'bottom','square', 'solid', 'DB0B17'],
+            [1, 18, 1677, 441, 'right', 'square', 'solid', '000000'],
 
             [2, 19, 662,  346, 'bottom','square', 'solid', 'FFFD38'],
             [2, 20, 739,  339, 'bottom','square', 'solid', 'FFFD38'],
-            [2, 21, 781,  185, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 21, 781,  185, 'left',   'square', 'solid', 'FFFD38'],
             [2, 22, 324,  718, 'bottom','square', 'solid', 'FFFD38'],
             [2, 23, 391,  732, 'bottom','square', 'solid', 'FFFD38'],
             [2, 24, 1450, 656, 'bottom','square', 'solid', 'FFFD38'],

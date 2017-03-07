@@ -19,6 +19,7 @@ import Hole from '../modules/hole/containers/hole';
 import Dashboard950A from '../modules/Vehicle950A/dashboard/containers/dashboard';
 import Mapping950A from '../modules/Vehicle950A/mapping/containers/mapping';
 import Report950A from '../modules/Vehicle950A/report/containers/report';
+import Association950A from '../modules/Vehicle950A/association/containers/association';
 
 class Root extends Component {
   render() {
@@ -40,7 +41,7 @@ class Root extends Component {
               <Route name="マッピング" path="mapping" component={Mapping950A}/>
               <Route name="検査結果照会" path="reference" component={Dashboard950A}/>
               <Route name="直レポート" path="report" component={Report950A}/>
-              <Route name="マッピング" path="association" component={Dashboard950A}/>
+              <Route name="マッピング" path="association" component={Association950A}/>
               <Route path="maintenance">
                 <Route name="マッピング" path="worker" component={Dashboard950A}/>
                 <Route name="マッピング" path="failure" component={Dashboard950A}/>

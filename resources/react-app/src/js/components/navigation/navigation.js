@@ -51,7 +51,7 @@ class Navigation extends Component {
                 this.setState({opened: !opened});
                 if (vehicle === '680A') {
                   changeVehicle('950A');
-                  push('/manager/950A/dashboard');
+                  push('/manager/950A/mapping');
                 }
                 else if (vehicle === '950A'){
                   changeVehicle('680A');
