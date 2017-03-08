@@ -118,6 +118,14 @@ class Mapping extends Component {
       filterdPt.indexOf(pt.en) >= 0
     ).map(pt => { return {label: pt.name, value: pt.pn} });
 
+    let defaultActiveTab = 'failure';
+    // if (MappingData.data !== null && MappingData.data.holeModificationTypes.length > 0) {
+    //   defaultActiveTab = 'hole';
+    // }
+    // else if (MappingData.data !== null && MappingData.data.inlineTypes.length > 0) {
+    //   defaultActiveTab = 'inline';
+    // }
+
     return (
       <div id="mapping-950A-wrap">
         <div className="bg-white mapping-header">
@@ -229,6 +237,7 @@ class Mapping extends Component {
             isFetching={MappingData.isFetching}
             didInvalidate={MappingData.didInvalidate}
             narrowedBy={narrowedBy}
+            defaultActive={defaultActiveTab}
           />
         }
       </div>

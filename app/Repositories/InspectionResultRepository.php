@@ -249,7 +249,7 @@ class InspectionResultRepository
         return $delete;
     }
 
-    public function forMappingByDate($p, $i, $line, $pn, $start, $end, $chokus)
+    public function forMappingByDate($p, $i, $line, $pns, $start, $end, $chokus)
     {
         $irs = InspectionResult::with([
                 'failures' => function($q) {
@@ -267,6 +267,9 @@ class InspectionResultRepository
                 'holes.holeModification' => function($q) {
                     return $q->select('hole_id', 'type_id');
                 },
+                'inlines' => function($q) {
+                    return $q->select('id', 'ir_id', 'type_id', 'status');
+                }
             ])
             ->where('latest', '=', 1)
             ->where('process', '=', $p)
@@ -275,8 +278,8 @@ class InspectionResultRepository
             ->where('inspected_at', '>=', $start)
             ->where('inspected_at', '<', $end)
             ->whereIn('created_choku', $chokus)
-            ->whereHas('part', function($q) use($pn) {
-                $q->where('pn', '=', $pn);
+            ->whereHas('part', function($q) use($pns) {
+                $q->whereIn('pn', $pns);
             })
             ->select(['id', 'part_id', 'ft_ids', 'mt_ids', 'hmt_ids', 'created_choku', 'inspected_at'])
             ->get()
@@ -312,6 +315,13 @@ class InspectionResultRepository
                             'id' => $h->type_id,
                             's' => $h->status,
                             'hm' =>  $hm
+                        ];
+                    }),
+                    'is' => $ir->inlines->map(function($i) {
+                        return [
+                            'id' => $i->type_id,
+                            's' => $i->status,
+                            'fig' => $i->figure_id
                         ];
                     })
                 ];
@@ -472,6 +482,9 @@ class InspectionResultRepository
                 'holes.holeModification' => function($q) {
                     return $q->select('hole_id', 'type_id');
                 },
+                'inlines' => function($q) {
+                    return $q->select('id', 'ir_id', 'type_id', 'status');
+                }
             ])
             ->where('latest', '=', 1)
             ->where('process', '=', $p)
@@ -489,6 +502,7 @@ class InspectionResultRepository
             ->map(function($ir) {
                 return [
                     'panel_id' => $ir->part->panel_id,
+                    'part_id' => $ir->part_id,
                     'status' => $ir->status,
                     'comment' => $ir->comment,
                     'ft_ids' => unserialize($ir->ft_ids),
@@ -521,10 +535,32 @@ class InspectionResultRepository
                             'status' => $h->status,
                             'hm' =>  $hm
                         ];
+                    }),
+                    'is' => $ir->inlines->keyBy('type_id')->map(function($i) {
+                        return [
+                            'id' => $i->type_id,
+                            'status' => $i->status,
+                        ];
                     })
                 ];
             });
 
         return $ir;
+    }
+
+    public function getInlineStatusByPartIds($partIds) {
+        $irs = InspectionResult::where('latest', '=', 1)
+            ->where('process', '=', 'molding')
+            ->where('inspection', '=', 'inline')
+            ->whereIn('part_id', $partIds)
+            ->get(['process', 'inspection', 'part_id', 'status', 'latest'])
+            ->map(function($ir){
+                return [
+                    'part_id' => $ir->part_id,
+                    'status' => $ir->status
+                ];
+            });
+
+        return $irs;
     }
 }

@@ -15,6 +15,7 @@ use App\Repositories\FailureTypeRepository;
 use App\Repositories\ModificationTypeRepository;
 use App\Repositories\HoleModificationTypeRepository;
 use App\Repositories\HoleTypeRepository;
+use App\Repositories\InlineTypeRepository;
 // Services
 use App\Services\Vehicle950A\GeneratePDF;
 // Exceptions
@@ -31,13 +32,15 @@ class ReportController extends Controller
     protected $modificationType;
     protected $holeModificationType;
     protected $holeType;
+    protected $inlineType;
 
     public function __construct (
         InspectionResultRepository $inspectionResult,
         FailureTypeRepository $failureType,
         ModificationTypeRepository $modificationType,
         HoleModificationTypeRepository $holeModificationType,
-        HoleTypeRepository $holeType
+        HoleTypeRepository $holeType,
+        InlineTypeRepository $inlineType
     )
     {
         $this->inspectionResult = $inspectionResult;
@@ -45,6 +48,7 @@ class ReportController extends Controller
         $this->modificationType = $modificationType;
         $this->holeModificationType = $holeModificationType;
         $this->holeType = $holeType;
+        $this->inlineType = $inlineType;
     }
 
     public function check($vehicle, Request $request)
@@ -90,15 +94,36 @@ class ReportController extends Controller
         })->flatten()->unique();
         $holeModificationTypes = $this->holeModificationType->getByIds($hmt_ids);
 
-        $holeTypes = $this->holeType->getAllByPn($pn);
+        $holeTypes = [];
+        if ($inspection === 'ana' || $inspection === 'kashimego') {
+            $holeTypes = $this->holeType->getAllByPns([$pn]);
+        }
+
+        $inlineTypes = [];
+        if ($inspection === 'inline') {
+            $inlineTypes = $this->inlineType->getAllByPns([$pn]);
+        }
 
         $pdf_path = 'report_'.$line.'_'.$date.'_'.$choku;
         $pdf = new GeneratePDF($vehicle, $process, $inspection, $pn, $line, $date, $choku);
-        $pdf->setFailures($failureTypes, $modificationTypes, $holeModificationTypes, $holeTypes);
+        $pdf->setFailures($failureTypes, $modificationTypes, $holeModificationTypes, $holeTypes, $inlineTypes);
 
-        if ($inspection == 'ana' || $inspection == 'kashimego') {
+        if ($process == 'molding' && $inspection == 'gaikan') {
+            $partIds = $irs->map(function($ir) {
+                return $ir['part_id'];
+            });
+            $inlineStatus = $this->inspectionResult->getInlineStatusByPartIds($partIds);
+
+            // return $pdf->generateGaikanWithInline($irs, $inlineStatus);
+            $pdf->generateGaikanWithInline($irs, $inlineStatus)->output($pdf_path, 'I');
+        }
+        else if ($inspection == 'ana' || $inspection == 'kashimego') {
             // return $pdf->generateForHole($irs);
             $pdf->generateForHole($irs)->output($pdf_path, 'I');
+        }
+        else if ($inspection == 'inline') {
+            // return $pdf->generateForInline($irs);
+            $pdf->generateForInline($irs)->output($pdf_path, 'I');
         }
         else {
             $pdf->generate($irs)->output($pdf_path, 'I');

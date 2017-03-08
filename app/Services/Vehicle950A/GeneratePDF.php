@@ -44,6 +44,8 @@ class GeneratePDF
     protected $failureTypes;
     protected $modificationTypes;
     protected $holeModificationTypes;
+    protected $holeTypes;
+    protected $inlineTypes;
 
     public function __construct($vehicle, $process, $inspection, $pn, $line, $reportDate, $choku) {
         $this->tcpdf = $this->createTCPDF();
@@ -63,12 +65,14 @@ class GeneratePDF
         }
     }
 
-    public function setFailures($failureTypes, $modificationTypes, $holeModificationTypes, $holeTypes)
+    public function setFailures($failureTypes, $modificationTypes, $holeModificationTypes, $holeTypes, $inlineTypes)
     {
         $this->failureTypes = $failureTypes;
         $this->modificationTypes = $modificationTypes;
         $this->holeModificationTypes = $holeModificationTypes;
         $this->holeTypes = $holeTypes;
+        $this->inlineTypes = $inlineTypes;
+
     }
 
     protected function createTCPDF()
@@ -127,6 +131,9 @@ class GeneratePDF
         $count0 = $irs->filter(function($ir) {
             return $ir['status'] === 0;
         })->count();
+        $count1 = $irs->filter(function($ir) {
+            return $ir['status'] === 1;
+        })->count();
 
         $d = [8, 18, 20, 38];
         $th = 5;
@@ -136,7 +143,7 @@ class GeneratePDF
             $this->renderTitle();
 
             if ($page === 0) {
-                $this->renderAggregate($countAll - $count0, $count0);
+                $this->renderAggregate($count1, $countAll - $count1);
             }
 
             foreach ($irs100->values()->chunk(50) as $col => $irs50) {
@@ -160,6 +167,7 @@ class GeneratePDF
                     switch ($ir['status']) {
                         case 0: $status = '×'; break;
                         case 1: $status = '○'; break;
+                        case 2: $status = '△'; break;
                     }
 
                     $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x0'], $A4['y3']+($row)*$th, $status);
@@ -180,7 +188,7 @@ class GeneratePDF
          * Render A3
          */
         $A3 = $this->positions['A3'];
-        $d = [6, 18, 20, 26, 26];
+        $d = [6, 18, 20, 26];
         $d_comment = 20;
         $d_date = 14;
 
@@ -195,8 +203,7 @@ class GeneratePDF
             $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y1'], 'No.');
             $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y1'], 'パネルID');
             $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,2)), $A3['y1'], '検査者');
-            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y1'], '精度出荷判定');
-            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4)), $A3['y1'], '外観出荷判定');
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y1'], '出荷判定');
 
             foreach ($this->failureTypes as $fi => $f) {
                 $this->tcpdf->Text($A3['x0']+array_sum($d)+($fd*$fi), $A3['y1'], $f['name']);
@@ -222,9 +229,9 @@ class GeneratePDF
                 switch ($ir['status']) {
                     case 0: $status = '×'; break;
                     case 1: $status = '○'; break;
+                    case 2: $status = '△'; break;
                 }
-                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y2']+($row)*$A3['th'], '-');
-                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4)), $A3['y2']+($row)*$A3['th'], $status);
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y2']+($row)*$A3['th'], $status);
 
                 foreach ($this->failureTypes as $fi => $ft) {
                     $sum = $ir['fs']->filter(function($f) use ($ft) {
@@ -296,6 +303,262 @@ class GeneratePDF
             $collected = collect($chunk);
 
             return collect([
+                's' => [
+                    0 => $collected->pluck('s')->filter(function($s) {
+                        // return $s === 0;
+                        return $s === 0 || $s === 2;
+                    })->count(),
+                    1 => $collected->pluck('s')->filter(function($s) {
+                        return $s === 1;
+                    })->count()
+                ],
+                'fs' => array_count_values($collected->pluck('fs')->flatten()->toArray()),
+                'ms' => array_count_values($collected->pluck('ms')->flatten()->toArray())
+            ]);
+        });
+
+        $fd = ($A3['xmax'] - $A3['x0']*2 - 48)/$fn;
+
+        $this->tcpdf->AddPage('L', 'A3');
+        $this->renderTitle();
+
+        $this->tcpdf->SetFont('kozgopromedium', '', 7);
+        $this->tcpdf->Text($A3['x0']+24, $A3['y1'], '出荷判定');
+
+        foreach ($this->failureTypes as $fi => $ft) {
+            $this->tcpdf->Text($A3['x0']+48+$fd*$fi, $A3['y1'], $ft['name']);
+        }
+
+        foreach ($this->modificationTypes as $mi => $mt) {
+            $this->tcpdf->Text($A3['x0']+48+$fd*($fi+1+$mi), $A3['y1'], $mt['name']);
+        }
+
+        $n = 0;
+        foreach ($timeChunksSum as $key => $sum) {
+            $this->tcpdf->Text($A3['x0'], $A3['y2']+$n*$th, $key);
+
+            if (count($sum) != 0) {
+                $ip = 0;
+
+                $this->tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th-1.5, '×');
+                $this->tcpdf->Text($A3['x0']+20-0.4, $A3['y2']+$n*$th+1.5, '○');
+
+                $this->tcpdf->Text($A3['x0']+24, $A3['y2']+$n*$th-1.5, $sum['s'][0]);
+                $this->tcpdf->Text($A3['x0']+24, $A3['y2']+$n*$th+1.5, $sum['s'][1]);
+
+                foreach ($this->failureTypes as $fi => $ft) {
+                    if (!array_key_exists($ft['id'], $sum['fs'])) {
+                        $f_sum = 0;
+                    }
+                    else {
+                        $f_sum = $sum['fs'][$ft['id']];
+                    }
+
+                    $this->tcpdf->Text($A3['x0']+48+$fd*$fi, $A3['y2']+$n*$th, $f_sum);
+                }
+
+                foreach ($this->modificationTypes as $mi => $mt) {
+                    if (!array_key_exists($mt['id'], $sum['ms'])) {
+                        $f_sum = 0;
+                    }
+                    else {
+                        $f_sum = $sum['ms'][$mt['id']];
+                    }
+
+                    $this->tcpdf->Text($A3['x0']+48+$fd*($fi+1+$mi), $A3['y2']+$n*$th, $f_sum);
+                }
+            }
+
+            $n = $n+1;
+        }
+
+        $this->tcpdf->Line($A3['x0'], 110, $A3['xmax'] - $A3['x0'], 110, array('dash' => '3,1'));
+        $this->tcpdf->Line($A3['x0'], 190, $A3['xmax'] - $A3['x0'], 190, array('dash' => '3,1'));
+        $this->tcpdf->Line($A3['x0']+48+$fd*($fi+1)-3, 20, $A3['x0']+48+$fd*($fi+1)-4, 196, array('dash' => '2'));
+
+        return $this->tcpdf;
+    }
+
+    public function generateGaikanWithInline($irs, $inlineStatus)
+    {
+        $irs = $irs->map(function($ir) use($inlineStatus) {
+            $gStatus = $ir['status'];
+
+            $iStatusArr = $inlineStatus->first(function($k, $iS) use($ir) {
+                return $iS['part_id'] == $ir['part_id'];
+            });
+
+
+            if (is_null($iStatusArr)) {
+                $status = $gStatus;
+                $iStatus = -1;
+            }
+            else {
+                $iStatus = $iStatusArr['status'];
+                if ($gStatus === 1 &&  $iStatus === 1) {
+                    $status = 1;
+                }
+                elseif ($gStatus === 2 &&  $iStatus === 1) {
+                    $status = 2;
+                }
+                else {
+                    $status = 0;
+                }
+            }
+
+            $statusArray = [
+                'status' => $status,
+                'gStatus' => $gStatus,
+                'iStatus' => $iStatus
+            ];
+
+            return array_merge($ir, $statusArray);
+        });
+
+        $this->renderA4($irs);
+
+        /*
+         * Render A3
+         */
+        $A3 = $this->positions['A3'];
+        $d = [6, 18, 20, 26, 26];
+        $d_comment = 20;
+        $d_date = 14;
+
+        $fn = $this->failureTypes->count() + $this->modificationTypes->count();
+        $fd = ($A3['xmax'] - $A3['x0']*2 - array_sum($d) - $d_comment - $d_date)/$fn;
+
+        foreach ($irs->chunk(40) as $page => $irs40) {
+            $this->tcpdf->AddPage('L', 'A3');
+            $this->renderTitle();
+
+            $this->tcpdf->SetFont('kozgopromedium', '', 7);
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y1'], 'No.');
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y1'], 'パネルID');
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,2)), $A3['y1'], '検査者');
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y1'], '精度出荷判定');
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4)), $A3['y1'], '外観出荷判定');
+
+            foreach ($this->failureTypes as $fi => $f) {
+                $this->tcpdf->Text($A3['x0']+array_sum($d)+($fd*$fi), $A3['y1'], $f['name']);
+            }
+
+            foreach ($this->modificationTypes as $mi => $m) {
+                $this->tcpdf->Text($A3['x0']+array_sum($d)+$fd*($fi+1+$mi), $A3['y1'], $m['name']);
+            }
+
+            $this->tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd, $A3['y1'], 'コメント');
+            $this->tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$d_comment, $A3['y1'], '登録時間');
+
+            foreach ($irs40->values() as $row => $ir) {
+                $panelId = $ir['panel_id'];
+                $inspectedBy = $ir['created_by'];
+                $time = $ir['inspected_at']->format('d/H:i');
+
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y2']+($row)*$A3['th'], $row+($page*40)+1);
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y2']+($row)*$A3['th'], $panelId);
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,2)), $A3['y2']+($row)*$A3['th'], $inspectedBy);
+
+                // $status = '';
+                // switch ($ir['status']) {
+                //     case 0: $status = '×'; break;
+                //     case 1: $status = '○'; break;
+                //     case 2: $status = '△'; break;
+                // }
+                $gStatus = '';
+                switch ($ir['gStatus']) {
+                    case 0: $gStatus = '×'; break;
+                    case 1: $gStatus = '○'; break;
+                    case 2: $gStatus = '△'; break;
+                }
+                $iStatus = '';
+                switch ($ir['iStatus']) {
+                    case 0: $iStatus = '×'; break;
+                    case 1: $iStatus = '○'; break;
+                    case -1: $iStatus = '-'; break;
+                }
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y2']+($row)*$A3['th'], $iStatus);
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4)), $A3['y2']+($row)*$A3['th'], $gStatus);
+
+                foreach ($this->failureTypes as $fi => $ft) {
+                    $sum = $ir['fs']->filter(function($f) use ($ft) {
+                        return $f == $ft['id'];
+                    })->count();
+
+                    $this->tcpdf->Text($A3['x0']+array_sum($d)+($fi*$fd), $A3['y2']+($row)*$A3['th'], $sum);
+                }
+
+                foreach ($this->modificationTypes as $mi => $mt) {
+                    $sum = $ir['ms']->filter(function($m) use ($mt) {
+                        return $m == $mt['id'];
+                    })->count();
+
+                    $this->tcpdf->Text($A3['x0']+array_sum($d)+$fd*($fi+1+$mi), $A3['y2']+($row)*$A3['th'], $sum);
+                }
+
+                if ($ir['comment']) {
+                    $comment = mb_substr($ir['comment'], 0, 4, 'UTF-8').'..';
+                } else {
+                    $comment = '';
+                }
+                $this->tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd, $A3['y2']+($row)*$A3['th'], $comment);                   
+                $this->tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd+$d_comment, $A3['y2']+($row)*$A3['th'], $time);
+            }
+
+            $this->tcpdf->Line($A3['x0']+array_sum($d)+$fd*($fi+1)-3, 20, $A3['x0']+array_sum($d)+$fd*($fi+1)-4, 286, array('dash' => '2'));
+            $this->tcpdf->Text(210, 286, 'page '.($page+1));
+        }
+
+        /*
+         * Render A3 Aggregation
+         */
+        $th = 10;
+        $timeChunks = config('report.950A.2choku.timeChunks');
+        $base = $timeChunks[0]['start'];
+
+        // Divide families to time Chunk
+        $timeChunkedIrs = [];
+        foreach ($irs as $ir) {
+            $time = $ir['inspected_at']->subHours($base['H'])->subMinutes($base['i']);
+
+            $minutes = $time->hour*60 + $time->minute;
+            if ($time->gte(Carbon::createFromFormat('Y/m/d H:i:s', $this->reportDate.' 00:00:00')->addDay())) {
+                $minutes = $minutes + 60*24;
+            }
+
+            foreach ($timeChunks as $tc) {
+                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
+                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']);
+
+                if (!array_key_exists($tc['label'], $timeChunkedIrs)) {
+                    $timeChunkedIrs[$tc['label']] = [];
+                }
+
+                if ($minutes >= $min && $minutes < $max) {
+                    $timeChunkedIrs[$tc['label']][] = [
+                        's' => $ir['status'],
+                        'iS' => $ir['iStatus'],
+                        'gS' => $ir['gStatus'],
+                        'fs' => $ir['fs'],
+                        'ms' => $ir['ms']
+                    ];
+                }
+            }
+        }
+
+        $timeChunksSum = collect($timeChunkedIrs)->map(function($chunk) {
+            $collected = collect($chunk);
+
+            return collect([
+                's' => [
+                    0 => $collected->pluck('s')->filter(function($s) {
+                        // return $s === 0;
+                        return $s === 0 || $s === 2;
+                    })->count(),
+                    1 => $collected->pluck('s')->filter(function($s) {
+                        return $s === 1;
+                    })->count()
+                ],
                 'iS' => [
                     0 => $collected->pluck('iS')->filter(function($s) {
                         return $s === 0;
@@ -306,17 +569,10 @@ class GeneratePDF
                 ],
                 'gS' => [
                     0 => $collected->pluck('gS')->filter(function($s) {
-                        return $s === 0;
+                        // return $s === 0;
+                        return $s === 0 || $s === 2;
                     })->count(),
                     1 => $collected->pluck('gS')->filter(function($s) {
-                        return $s === 1;
-                    })->count()
-                ],
-                's' => [
-                    0 => $collected->pluck('s')->filter(function($s) {
-                        return $s === 0;
-                    })->count(),
-                    1 => $collected->pluck('s')->filter(function($s) {
                         return $s === 1;
                     })->count()
                 ],
@@ -448,7 +704,12 @@ class GeneratePDF
             $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin+($fd*$fn)+$d_comment, $A3['y1_ana'], '登録時間');
 
             foreach ($irs40->values() as $row => $ir) {
-                $status = $ir['status'] == 1 ? '○' : '×';
+                $status = '';
+                switch ($ir['status']) {
+                    case 0: $status = '×'; break;
+                    case 1: $status = '○'; break;
+                    case 2: $status = '△'; break;
+                }
 
                 $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y2']+($row)*$A3['th'], $page*40+$row+1);
                 $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y2']+($row)*$A3['th'], $ir['panel_id']);
@@ -462,7 +723,7 @@ class GeneratePDF
                         case 2: $status = '△'; break;
                     }
 
-                    if ($ir['hs'][$ht['id']]['hm'] == -1) {
+                    if ($ir['hs'][$ht['id']]['hm'] !== -1) {
                         $this->tcpdf->SetFont('kozgopromedium', '', 4);
                         $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($hi*$d_hole)+2, $A3['y2']+($row)*$A3['th']-1.5, '※');
                         $this->tcpdf->SetFont('kozgopromedium', '', 6);
@@ -605,6 +866,163 @@ class GeneratePDF
 
                 foreach ($this->failureTypes as $i => $f) {
                     $this->tcpdf->Text($A3['x0']+24+($d_hole*$hn)+$margin+($i*$fd), $A3['y2']+$n*$th, 0);
+                }
+            }
+
+            $n = $n+1;
+        }
+
+        $this->tcpdf->Line($A3['x0'], 112.6, $A3['xmax'] - $A3['x0'], 112.6, array('dash' => '3,1'));
+        $this->tcpdf->Line($A3['x0'], 192.6, $A3['xmax'] - $A3['x0'], 192.6, array('dash' => '3,1'));
+
+        return $this->tcpdf;
+    }
+
+    public function generateForInline($irs)
+    {
+        $this->renderA4($irs);
+
+        /*
+         * Render A3
+         */
+        $A3 = $this->positions['A3'];
+
+        $d = [5, 12, 14, 11];
+        $margin = 2;
+        $d_date = 8;
+
+        $hn = $this->inlineTypes->count();
+        $d_hole_max = 16;
+        $d_hole = ($A3['xmax'] - $A3['x0']*2 - array_sum($d) - $margin - $d_date)/$hn;
+
+        foreach ($irs->chunk(40) as $page => $irs40) {
+            $this->tcpdf->AddPage('L', 'A3');
+            $this->renderTitle();
+
+            $this->tcpdf->SetFont('kozgopromedium', '', 6);
+            if ($page === 0) {
+                // $this->tcpdf->Text($A3['x0'], $A3['y1'], '○ : 公差内　× : 穴径大　△ : 穴径小　* : 手直し');
+            }
+
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y1_ana'], 'No.');
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y1_ana'], 'パネルID');
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,2)), $A3['y1_ana'], '検査者');
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y1_ana'], '出荷判定');
+
+            foreach ($this->inlineTypes as $ii => $it) {
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$ii), $A3['y1_ana'], 'P-'.$it['l']);
+            }
+
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin, $A3['y1_ana'], 'コメント');
+            $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin, $A3['y1_ana'], '登録時間');
+
+            foreach ($irs40->values() as $row => $ir) {
+                $status = $ir['status'] == 1 ? '○' : '×';
+
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y2']+($row)*$A3['th'], $page*40+$row+1);
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y2']+($row)*$A3['th'], $ir['panel_id']);
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,2)), $A3['y2']+($row)*$A3['th'], $ir['created_by']);
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y2']+($row)*$A3['th'], $status);
+
+                foreach ($this->inlineTypes as $ii => $it) {
+                    $status = '-';
+                    $status = $ir['is'][$it['id']]['status'];
+
+                    $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($ii*$d_hole), $A3['y2']+($row)*$A3['th'], $status);
+                }
+
+                $time = $ir['inspected_at']->format('d/H:i');
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin, $A3['y2']+($row)*$A3['th'], $time);
+            }
+
+            $this->tcpdf->Text(210, 286, 'page '.($page+1));
+        }
+
+        /*
+         * Render A3 Aggregation
+         */
+        $th = 10;
+        $timeChunks = config('report.950A.2choku.timeChunks');
+        $base = $timeChunks[0]['start'];
+
+        // Divide families to time Chunk
+        $timeChunkedIrs = [];
+        foreach ($irs as $ir) {
+            $time = $ir['inspected_at']->subHours($base['H'])->subMinutes($base['i']);
+
+            $minutes = $time->hour*60 + $time->minute;
+            if ($time->gte(Carbon::createFromFormat('Y/m/d H:i:s', $this->reportDate.' 00:00:00')->addDay())) {
+                $minutes = $minutes + 60*24;
+            }
+
+            foreach ($timeChunks as $tc) {
+                $min = ($tc['start']['H'] - $base['H'])*60 + ($tc['start']['i'] - $base['i']);
+                $max = ($tc['end']['H'] - $base['H'])*60 + ($tc['end']['i'] - $base['i']);
+
+                if (!array_key_exists($tc['label'], $timeChunkedIrs)) {
+                    $timeChunkedIrs[$tc['label']] = [];
+                }
+
+                if ($minutes >= $min && $minutes < $max) {
+                    $timeChunkedIrs[$tc['label']][] = [
+                        's' => $ir['status'],
+                        'is' => $ir['is']
+                    ];
+                }
+            }
+        }
+
+        $inlineTypes = $this->inlineTypes;
+        $timeChunksSum = collect($timeChunkedIrs)->map(function($chunk) use($inlineTypes) {
+            $collected = collect($chunk);
+
+            $result['is'] = $collected->pluck('is')
+                ->flatten(1)
+                ->groupBy('id')
+                ->map(function($in) use($inlineTypes) {
+                    $sum0 = $in->filter(function($i) use($inlineTypes) {
+                        $iType = $inlineTypes->first(function ($key, $value) use ($i){
+                            return $value['id'] == $i['id'];
+                        });
+                        $min = $iType['min'];
+                        $max = $iType['max'];
+
+                        return $i['status'] < $min || $i['status'] > $max;
+                    })->count();
+                    $sum1 = $in->count() - $sum0;
+                    return [
+                        'sum0' => $sum0,
+                        'sum1' => $sum1
+                    ];
+                });
+
+            return collect($result);
+        });
+
+        $this->tcpdf->AddPage('L', 'A3');
+        $this->renderTitle();
+
+        $this->tcpdf->SetFont('kozgopromedium', '', 8);
+
+        $n = 0;
+        foreach ($timeChunksSum as $key => $sum) {
+            $this->tcpdf->Text($A3['x0'], $A3['y2']+$n*$th, $key);
+            $this->tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th, '×');
+            $this->tcpdf->Text($A3['x0']+20, $A3['y2']+$n*$th+4, '○');
+
+            if (count($sum['is']) != 0) {
+                foreach ($this->inlineTypes as $ii => $it) {
+                    $sum0 = $sum['is'][$it['id']]['sum0'];
+                    $sum1 = $sum['is'][$it['id']]['sum1'];
+
+                    $this->tcpdf->Text($A3['x0']+24+($ii*$d_hole), $A3['y2']+$n*$th, $sum0);
+                    $this->tcpdf->Text($A3['x0']+24+($ii*$d_hole), $A3['y2']+$n*$th+4, $sum1);
+                }
+            }
+            else {
+                foreach ($this->inlineTypes as $ii => $it) {
+                    $this->tcpdf->Text($A3['x0']+24+($ii*$d_hole), $A3['y2']+$n*$th, 0);
+                    $this->tcpdf->Text($A3['x0']+24+($ii*$d_hole), $A3['y2']+$n*$th+4, 0);
                 }
             }
 

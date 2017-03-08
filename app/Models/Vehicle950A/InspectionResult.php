@@ -51,6 +51,15 @@ class InspectionResult extends Model
         );
     }
 
+    public function inlines()
+    {
+        return $this->hasMany(
+            'App\Models\Vehicle950A\Inline',
+            'ir_id',
+            'id'
+        );
+    }
+
     public function scopeIdentify($query, $p, $i, $partId)
     {
         return $query->where('process', '=', $p)

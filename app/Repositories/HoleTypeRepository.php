@@ -17,9 +17,9 @@ class HoleTypeRepository
             ->get();
     }
 
-    public function getAllByPn($pn)
+    public function getAllByPns($pns)
     {
-        return HoleType::where('pt_pn', '=', $pn)
+        return HoleType::whereIn('pt_pn', $pns)
             ->orderBy('label')
             ->get()
             ->map(function($ht) {

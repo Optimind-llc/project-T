@@ -31,8 +31,6 @@ class RelatedHoleTableSeeder extends Seeder
         //     DB::connection('950A')->statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
         // }
 
-        $partTypes = 
-
         $figures = collect(DB::connection('950A')
             ->table('figures')
             ->whereIn('inspection', ['ana', 'kashimego'])
@@ -66,8 +64,8 @@ class RelatedHoleTableSeeder extends Seeder
             [1, 16, 1581, 361, 'right', 'square', 'solid', '95CDDC'],
             [1, 17, 1581, 247, 'right', 'square', 'solid', '95CDDC'],
 
-            [2, 18, 217,  297, 'top',   'square', 'solid', 'B3A3C6'],
-            [2, 19, 208,  315, 'right', 'square', 'solid', 'B3A3C6'],
+            [2, 18, 217,  274, 'right', 'square', 'solid', 'B3A3C6'],
+            [2, 19, 208,  325, 'right', 'square', 'solid', 'B3A3C6'],
             [2, 20, 1418, 239, 'top',   'square', 'solid', 'B3A3C6'],
             [2, 21, 1590, 218, 'top',   'square', 'solid', 'B3A3C6'],
 
@@ -158,7 +156,7 @@ class RelatedHoleTableSeeder extends Seeder
             [5, 94, 1494, 489, 'bottom','square', 'solid', 'DB0B17'],
             [5, 95, 1519, 469, 'right', 'square', 'solid', 'DB0B17'],
 
-            [5, 96, 1446, 519, 'right','square', 'solid', 'FFFFFF'],
+            [5, 96, 1446, 519, 'left',  'square', 'solid', 'FFFFFF'],
 
             [5, 97, 1406, 379, 'top',   'square', 'solid', '90E941'],
 
@@ -257,47 +255,47 @@ class RelatedHoleTableSeeder extends Seeder
 
         //穴検査_リンフォースR
         $reinforceR_holes = [
-            [1, 1,  137,  500, 'top',   'square', 'solid', '95CDDC'],
-            [1, 2,  269,  501, 'top',   'square', 'solid', '95CDDC'],
-            [1, 3,  514,  486, 'top',   'square', 'solid', '95CDDC'],
-            [1, 4,  772,  471, 'top',   'square', 'solid', '95CDDC'],
-            [1, 5,  1010, 462, 'top',   'square', 'solid', '95CDDC'],
-            [1, 6,  1233, 447, 'top',   'square', 'solid', '95CDDC'],
-            [1, 7,  1451, 437, 'top',   'square', 'solid', '95CDDC'],
-            [1, 8,  1590, 430, 'top',   'square', 'solid', '95CDDC'],
-            [1, 9,  128,  699, 'bottom','square', 'solid', '95CDDC'],
-            [1, 10, 327,  686, 'bottom','square', 'solid', '95CDDC'],
-            [1, 11, 582,  667, 'bottom','square', 'solid', '95CDDC'],
-            [1, 12, 743,  656, 'bottom','square', 'solid', '95CDDC'],
-            [1, 13, 940,  643, 'bottom','square', 'solid', '95CDDC'],
-            [1, 14, 1205, 629, 'bottom','square', 'solid', '95CDDC'],
-            [1, 15, 1394, 621, 'bottom','square', 'solid', '95CDDC'],
-            [1, 16, 1616, 617, 'bottom','square', 'solid', '95CDDC'],
+            [8, 1,  137,  500, 'top',   'square', 'solid', '95CDDC'],
+            [8, 2,  269,  501, 'top',   'square', 'solid', '95CDDC'],
+            [8, 3,  514,  486, 'top',   'square', 'solid', '95CDDC'],
+            [8, 4,  772,  471, 'top',   'square', 'solid', '95CDDC'],
+            [8, 5,  1010, 462, 'top',   'square', 'solid', '95CDDC'],
+            [8, 6,  1233, 447, 'top',   'square', 'solid', '95CDDC'],
+            [8, 7,  1451, 437, 'top',   'square', 'solid', '95CDDC'],
+            [8, 8,  1590, 430, 'top',   'square', 'solid', '95CDDC'],
+            [8, 9,  128,  699, 'bottom','square', 'solid', '95CDDC'],
+            [8, 10, 327,  686, 'bottom','square', 'solid', '95CDDC'],
+            [8, 11, 582,  667, 'bottom','square', 'solid', '95CDDC'],
+            [8, 12, 743,  656, 'bottom','square', 'solid', '95CDDC'],
+            [8, 13, 940,  643, 'bottom','square', 'solid', '95CDDC'],
+            [8, 14, 1205, 629, 'bottom','square', 'solid', '95CDDC'],
+            [8, 15, 1394, 621, 'bottom','square', 'solid', '95CDDC'],
+            [8, 16, 1616, 617, 'bottom','square', 'solid', '95CDDC'],
 
-            [1, 17, 1635, 441, 'bottom','square', 'solid', 'DB0B17'],
-            [1, 18, 1677, 441, 'right', 'square', 'solid', '000000'],
+            [8, 17, 1635, 441, 'bottom','square', 'solid', 'DB0B17'],
+            [8, 18, 1677, 441, 'right', 'square', 'solid', '000000'],
 
-            [2, 19, 662,  346, 'bottom','square', 'solid', 'FFFD38'],
-            [2, 20, 739,  339, 'bottom','square', 'solid', 'FFFD38'],
-            [2, 21, 781,  185, 'left',   'square', 'solid', 'FFFD38'],
-            [2, 22, 324,  718, 'bottom','square', 'solid', 'FFFD38'],
-            [2, 23, 391,  732, 'bottom','square', 'solid', 'FFFD38'],
-            [2, 24, 1450, 656, 'bottom','square', 'solid', 'FFFD38'],
-            [2, 25, 1515, 674, 'bottom','square', 'solid', 'FFFD38'],
-            [2, 26, 1681, 680, 'right', 'square', 'solid', 'FFFD38'],
-            [2, 27, 1681, 745, 'right', 'square', 'solid', 'FFFD38'],
+            [9, 19, 662,  346, 'bottom','square', 'solid', 'FFFD38'],
+            [9, 20, 739,  339, 'bottom','square', 'solid', 'FFFD38'],
+            [9, 21, 781,  185, 'top',   'square', 'solid', 'FFFD38'],
+            [9, 22, 324,  718, 'bottom','square', 'solid', 'FFFD38'],
+            [9, 23, 391,  732, 'bottom','square', 'solid', 'FFFD38'],
+            [9, 24, 1450, 656, 'bottom','square', 'solid', 'FFFD38'],
+            [9, 25, 1515, 674, 'bottom','square', 'solid', 'FFFD38'],
+            [9, 26, 1681, 680, 'right', 'square', 'solid', 'FFFD38'],
+            [9, 27, 1681, 745, 'right', 'square', 'solid', 'FFFD38'],
 
-            [2, 28, 741,  225, 'top',   'square', 'solid', 'C3D59E'],
+            [9, 28, 741,  225, 'top',   'square', 'solid', 'C3D59E'],
 
-            [2, 29, 685,  298, 'top',   'square', 'solid', 'B3A3C6'],
+            [9, 29, 685,  298, 'top',   'square', 'solid', 'B3A3C6'],
 
-            [2, 30, 646,  281, 'left',  'square', 'solid', 'DB0B17'],
-            [2, 31, 756,  266, 'right', 'square', 'solid', 'DB0B17'],
+            [9, 30, 646,  281, 'left',  'square', 'solid', 'DB0B17'],
+            [9, 31, 756,  266, 'right', 'square', 'solid', 'DB0B17'],
 
-            [2, 32, 168,  767, 'bottom', 'square', 'solid', '36859A'],
-            [2, 33, 922,  626, 'top',   'square', 'solid', '36859A'],
-            [2, 34, 1085, 618, 'top',   'square', 'solid', '36859A'],
-            [2, 35, 1636, 639, 'top',   'square', 'solid', '36859A'],
+            [9, 32, 168,  767, 'bottom', 'square', 'solid', '36859A'],
+            [9, 33, 922,  626, 'top',   'square', 'solid', '36859A'],
+            [9, 34, 1085, 618, 'top',   'square', 'solid', '36859A'],
+            [9, 35, 1636, 639, 'top',   'square', 'solid', '36859A'],
         ];
 
         //穴検査_リンフォースR

@@ -7,19 +7,20 @@ import Loading from '../../../../../components/loading/loading';
 class MappingBody extends Component {
   constructor(props, context) {
     super(props, context);
-
+console.log(props.defaultActive);
     this.state = {
-      active: 'failure',
+      active: props.defaultActive,
       fFilter: [],
       mFilter: [],
       hmFilter: [],
-      hFilter: 0
+      hFilter: 0,
+      iFilter: 0
     };
   }
 
   renderContent() {
     const { data } = this.props;
-    const { active, fFilter, mFilter, hmFilter, hFilter } = this.state;
+    const { active, fFilter, mFilter, hmFilter, hFilter, iFilter } = this.state;
 
     const fIds = Array.prototype.concat.apply([], data.result.map(r => r.fs)).map(ft =>
       ft.id
@@ -30,6 +31,7 @@ class MappingBody extends Component {
     );
 
     const hStatus = Array.prototype.concat.apply([], data.result.map(r => r.hs));
+    const iStatus = Array.prototype.concat.apply([], data.result.map(r => r.is));
 
     switch (active) {
       case 'failure':
@@ -277,6 +279,61 @@ class MappingBody extends Component {
             </div>
           </div>
         );
+      case 'inline':
+        return (
+          <div className="hole">
+            <div className="collection">
+              <div className="">
+                <ul>
+                  <li>{'番号'}</li>
+                  {
+                    data.inlineTypes.map(it => <li>{it.l}</li>)
+                  }
+                </ul>
+              </div>
+              <div>
+                <ul>
+                  <li
+                    onClick={() => this.setState({ iFilter: 0 })}
+                  >
+                    {/*<span>{iFilter === 0 && <p>{'✔'}︎</p>}</span>*/}
+                    {'×'}
+                  </li>
+                  {data.inlineTypes.map(it => {
+                    let percentage = 0;
+                    const sum = data.count/data.figures.length;
+                    const sum0 = iStatus.filter(i => i.id == it.id && i.s >= it.min && i.s <= it.max).length;
+                    if (sum !== 0) percentage = Math.round(1000*sum0/sum)/10;
+
+                    return (
+                      <li>{`${percentage}%`}<span>({sum !== 0 ? sum0 : '-'})</span></li>
+                    )
+                  })}
+                </ul>
+              </div>
+              <div>
+                <ul>
+                  <li
+                    onClick={() => this.setState({ iFilter: 2 })}
+                  >
+                    {/*<span>{iFilter === 2 && <p>{'✔'}︎</p>}</span>*/}
+                    {'○'}
+                  </li>
+                  {data.inlineTypes.map(it => {
+                    let percentage = 0;
+                    const sum = data.count/data.figures.length;
+                    const sum1 = iStatus.filter(i => i.id == it.id && (i.s < it.min || i.s > it.max)).length;
+                    if (sum !== 0) percentage = Math.round(1000*sum1/sum)/10;
+
+                    return (
+                      <li>{`${percentage}%`}<span>({sum !== 0 ? sum1 : '-'})</span></li>
+                    )
+                  })}
+                </ul>
+              </div>
+            </div>
+          </div>
+        );
     }
   }
 
@@ -308,6 +365,7 @@ class MappingBody extends Component {
           <div className="figure-wrap">
             <div style={{width: 870}}>
               {
+                data.inlineTypes.length === 0 &&
                 data.figures.map((fig, i, self) =>
                   <div
                     style={{
@@ -315,6 +373,40 @@ class MappingBody extends Component {
                       float: 'left',
                       width: 870/Math.ceil(Math.sqrt(self.length)),
                       height: 515/Math.ceil(Math.sqrt(self.length)),
+                      backgroundImage: `url(${fig.path})`,
+                      backgroundSize: 'contain',
+                      backgroundPosition: 'center top',
+                      backgroundRepeat: 'no-repeat'
+                    }}
+                  >
+                  </div>
+                )
+              }{
+                data.inlineTypes.length > 0 && data.figures.length > 1 &&
+                data.figures.map((fig, i, self) =>
+                  <div
+                    style={{
+                      position: 'relative',
+                      float: 'left',
+                      width: 870,
+                      height: i === 0 ? 185 : 330,
+                      backgroundImage: `url(${fig.path})`,
+                      backgroundSize: 'contain',
+                      backgroundPosition: 'center top',
+                      backgroundRepeat: 'no-repeat'
+                    }}
+                  >
+                  </div>
+                )
+              }{
+                data.inlineTypes.length > 0 && data.figures.length === 1 &&
+                data.figures.map((fig, i, self) =>
+                  <div
+                    style={{
+                      position: 'relative',
+                      float: 'left',
+                      width: 870,
+                      height: 515,
                       backgroundImage: `url(${fig.path})`,
                       backgroundSize: 'contain',
                       backgroundPosition: 'center top',
@@ -399,8 +491,8 @@ class MappingBody extends Component {
                   let lx = 0;
                   let ly = 0;
                   switch (ht.d) {
-                    case 'left':   lx = x-(34/split); ly = y - 2; break;
-                    case 'right':  lx = x+(34/split); ly = y - 2; break;
+                    case 'left':   lx = x-(34/split); ly = y - 3; break;
+                    case 'right':  lx = x+(34/split); ly = y - 3; break;
                     case 'top':    ly = y-(30/split) - 2; lx = x; break;
                     case 'bottom': ly = y+(30/split) - 2; lx = x; break;
                     default: break;
@@ -418,7 +510,7 @@ class MappingBody extends Component {
                         x={lx}
                         y={ly}
                         dy="6"
-                        fontSize="10"
+                        fontSize="8"
                         fill={disable ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
                         textAnchor="middle"
                         fontWeight="bold"
@@ -444,10 +536,55 @@ class MappingBody extends Component {
                   let lx = 0;
                   let ly = 0;
                   switch (ht.d) {
-                    case 'left':   lx = x-(34/split); ly = y - 2; break;
-                    case 'right':  lx = x+(34/split); ly = y - 2; break;
+                    case 'left':   lx = x-(34/split); ly = y - 3; break;
+                    case 'right':  lx = x+(34/split); ly = y - 3; break;
                     case 'top':    ly = y-(30/split) - 2; lx = x; break;
                     case 'bottom': ly = y+(30/split) - 2; lx = x; break;
+                    default: break;
+                  }
+
+                  return (
+                    <g>
+                      <circle
+                        cx={x}
+                        cy={y}
+                        r={disable ? 3 : 4}
+                        fill={disable ? 'rgba(255,0,0,0.4)' : 'rgba(255,0,0,1)'} 
+                      />
+                      <text
+                        x={lx}
+                        y={ly}
+                        dy="6"
+                        fontSize="8"
+                        fill={disable ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
+                        textAnchor="middle"
+                        fontWeight="bold"
+                      >
+                        {ht.l}
+                      </text>
+                    </g>
+                  );
+                })
+              }{
+                active === 'inline' &&
+                data.inlineTypes.map((it, i, self) => {
+                  let x = it.x/2;
+                  let y = it.y/2;
+
+                  const page = data.figures.find(fig => fig.id == it.fig).page;
+                  if (page === 2) {
+                    y = y + 185;
+                  }
+
+                  let disable = false;
+                  // const count = hStatus.filter(h => h.s === hFilter && h.id === ht.id).length;
+                  // disable = count === 0;
+
+                  let lx = 0;
+                  let ly = 0;
+                  switch (it.s) {
+                    case 'left':   lx = x - 18; ly = y - 3; break;
+                    case 'right':  lx = x + 18; ly = y - 3; break;
                     default: break;
                   }
 
@@ -468,7 +605,7 @@ class MappingBody extends Component {
                         textAnchor="middle"
                         fontWeight="bold"
                       >
-                        {ht.l}
+                        {it.l}
                       </text>
                     </g>
                   );
@@ -479,6 +616,14 @@ class MappingBody extends Component {
           <div className="control-panel">
             <div className="control-tab">
               {
+                data.inlineTypes.length > 0 &&
+                <button
+                  className={active == 'inline' ? '' : 'disable'}
+                  onClick={() => this.setState({ active: 'inline', fFilter: []})}
+                >
+                  精度検査
+                </button>
+              }{
                 data.failureTypes.length > 0 &&
                 <button
                   className={active == 'failure' ? '' : 'disable'}
@@ -519,14 +664,14 @@ class MappingBody extends Component {
           {
             isFetching && <Loading/>
           }{
-            !isFetching && data.failureTypes.length == 0 && narrowedBy !== 'realtime' &&
+            !isFetching && data.count == 0 &&
             <div className="cover">
-              <p>検査結果が見つかりませんでした</p>
+              <p>検査結果が見つかりません</p>
             </div>
           }{
             didInvalidate && narrowedBy !== 'realtime' &&
             <div className="cover">
-              <p>検査結果が見つかりませんでした</p>
+              <p>検査結果が見つかりません</p>
             </div>
           }
         </div>
@@ -539,7 +684,8 @@ MappingBody.propTypes = {
   data: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   didInvalidate: PropTypes.bool.isRequired,
-  narrowedBy: PropTypes.string.isRequired
+  narrowedBy: PropTypes.string.isRequired,
+  defaultActive: PropTypes.string.isRequired
 };
 
 export default MappingBody;
