@@ -142,6 +142,7 @@ class MappingController extends Controller
         $line = 1;
         $pn = $request->pt;
         $chokus = $request->c;
+        $chokus[] = 'NA';
 
         $pns = [$pn];
         if ($p === 'holing' || $i === 'inline') {

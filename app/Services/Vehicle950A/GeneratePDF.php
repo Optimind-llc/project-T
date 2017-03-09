@@ -725,7 +725,7 @@ class GeneratePDF
 
                     if ($ir['hs'][$ht['id']]['hm'] !== -1) {
                         $this->tcpdf->SetFont('kozgopromedium', '', 4);
-                        $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($hi*$d_hole)+2, $A3['y2']+($row)*$A3['th']-1.5, '※');
+                        $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($hi*$d_hole)+0.5, $A3['y2']+($row)*$A3['th']-1.5, '※');
                         $this->tcpdf->SetFont('kozgopromedium', '', 6);
                     }
                     $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($hi*$d_hole), $A3['y2']+($row)*$A3['th'], $status);
