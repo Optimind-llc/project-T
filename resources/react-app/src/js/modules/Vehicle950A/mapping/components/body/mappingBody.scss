@@ -176,11 +176,11 @@
               }
             }
             &:nth-child(2) {
-              width: 50px;
+              width: 86px;
               border-right: 1px solid #BFBFBF;
             }
             &:nth-child(3) {
-              width: 50px;
+              width: 86px;
               border-right: 1px solid #BFBFBF;
             }
           }
@@ -216,13 +216,8 @@
               }
             }
 
-            &:nth-child(2), &:nth-child(3), &:nth-child(4) {
-              width: 60px;
-              border-left: none;
-            }
-
-            &:nth-child(5) {
-              width: 60px;
+            &:nth-child(2), &:nth-child(3), &:nth-child(4), &:nth-child(5) {
+              width: 80px;
               border-left: none;
             }
           }

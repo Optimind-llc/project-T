@@ -289,6 +289,7 @@ class InspectionResultRepository
                     'mt_ids' => unserialize($ir->mt_ids),
                     'hmt_ids' => unserialize($ir->hmt_ids),
                     'c' => $ir->created_choku,
+                    'pn' => $ir->part->pn,
                     'fs' => $ir->failures->map(function($f) {
                         return [
                             'id' => $f->type_id,
@@ -342,8 +343,8 @@ class InspectionResultRepository
         })->flatten()->unique();
 
         return [
-            'count' => $count,
-            'result' => $irs,
+            'count' => $irs->sortBy('pn')->groupBy('pn')->map(function($ptResult) {return $ptResult->count();}),
+            'result' => $irs->sortBy('pn')->groupBy('pn')->values(),
             'ft_ids' => $ft_ids,
             'mt_ids' => $mt_ids,
             'hmt_ids' => $hmt_ids
@@ -368,6 +369,9 @@ class InspectionResultRepository
                 'holes.holeModification' => function($q) {
                     return $q->select('hole_id', 'type_id');
                 },
+                'inlines' => function($q) {
+                    return $q->select('id', 'ir_id', 'type_id', 'status');
+                }
             ])
             ->where('latest', '=', 1)
             ->where('process', '=', $p)
@@ -383,6 +387,7 @@ class InspectionResultRepository
                     'mt_ids' => unserialize($ir->mt_ids),
                     'hmt_ids' => unserialize($ir->hmt_ids),
                     'c' => $ir->created_choku,
+                    'pn' => $ir->part->pn,
                     'fs' => $ir->failures->map(function($f) {
                         return [
                             'id' => $f->type_id,
@@ -410,6 +415,13 @@ class InspectionResultRepository
                             's' => $h->status,
                             'hm' =>  $hm
                         ];
+                    }),
+                    'is' => $ir->inlines->map(function($i) {
+                        return [
+                            'id' => $i->type_id,
+                            's' => $i->status,
+                            'fig' => $i->figure_id
+                        ];
                     })
                 ];
             });
@@ -429,8 +441,8 @@ class InspectionResultRepository
         })->flatten()->unique();
 
         return [
-            'count' => $count,
-            'result' => $irs,
+            'count' => $irs->sortBy('pn')->groupBy('pn')->map(function($ptResult) {return $ptResult->count();}),
+            'result' => $irs->sortBy('pn')->groupBy('pn')->values(),
             'ft_ids' => $ft_ids,
             'mt_ids' => $mt_ids,
             'hmt_ids' => $hmt_ids

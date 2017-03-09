@@ -20,11 +20,13 @@ class HoleTypeRepository
     public function getAllByPns($pns)
     {
         return HoleType::whereIn('pt_pn', $pns)
+            ->orderBy('pt_pn')
             ->orderBy('label')
             ->get()
             ->map(function($ht) {
                 return [
                     'id' => $ht->id,
+                    'pn' => $ht->pt_pn,
                     'x' => $ht->x,
                     'y' => $ht->y,
                     'l' => $ht->label,

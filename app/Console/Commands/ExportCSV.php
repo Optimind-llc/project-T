@@ -48,7 +48,6 @@ class ExportCSV extends Command
                 return $ir->id;
             })
             ->toArray();
-var_dump($ir);
 
         $this->info('ok');
     }

@@ -25,6 +25,7 @@ class InlineTypeRepository
             ->map(function($it) {
                 return [
                     'id' => $it->id,
+                    'pn' => $it->pt_pn,
                     'x' => $it->x,
                     'y' => $it->y,
                     'lx' => $it->lx,

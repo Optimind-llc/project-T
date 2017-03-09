@@ -33,7 +33,11 @@ class Mapping extends Component {
       endDate: moment(),
       panelId: '',
       intervalId: null,
-      interval: 30000,
+      interval: 15000,
+      defaultActiveTab: {
+        name: 'failure',
+        time: new Date().getTime()
+      }
     };
   }
 
@@ -60,7 +64,6 @@ class Mapping extends Component {
     const { actions } = this.props;
 
     const format = 'YYYY-MM-DD';
-
     if (narrowedBy === 'realtime') {
       actions.getMappingDataRealtime(
         p.value,
@@ -89,7 +92,7 @@ class Mapping extends Component {
   }
 
   render() {
-    const { p, i, pt, narrowedBy, choku, startDate, endDate, panelId, intervalId } = this.state;
+    const { p, i, pt, narrowedBy, choku, startDate, endDate, panelId, intervalId, defaultActiveTab } = this.state;
     const { InitialData, MappingData, actions } = this.props;
 
     const filterdI = InitialData.combination.filter(c => 
@@ -117,14 +120,6 @@ class Mapping extends Component {
     const partTypes = InitialData.partTypes.filter(pt =>
       filterdPt.indexOf(pt.en) >= 0
     ).map(pt => { return {label: pt.name, value: pt.pn} });
-
-    let defaultActiveTab = 'failure';
-    // if (MappingData.data !== null && MappingData.data.holeModificationTypes.length > 0) {
-    //   defaultActiveTab = 'hole';
-    // }
-    // else if (MappingData.data !== null && MappingData.data.inlineTypes.length > 0) {
-    //   defaultActiveTab = 'inline';
-    // }
 
     return (
       <div id="mapping-950A-wrap">
@@ -219,9 +214,21 @@ class Mapping extends Component {
           <button
             className={`show ${pt === null ? 'disabled' : ''}`}
             onClick={() => {
+              if(i.value === 'inline') {
+                name = 'inline';
+              }
+              else if(i.value === 'ana') {
+                name = 'hole';
+              }
+              else {
+                name = 'failure';
+              }
+
+              const time = new Date().getTime();
+              this.setState({ defaultActiveTab: { name, time }});
+
               this.requestMappingData();
               clearInterval(intervalId);
-
               if (narrowedBy === 'realtime') {
                 this.startInterval();
               }

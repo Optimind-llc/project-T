@@ -7,9 +7,9 @@ import Loading from '../../../../../components/loading/loading';
 class MappingBody extends Component {
   constructor(props, context) {
     super(props, context);
-console.log(props.defaultActive);
+
     this.state = {
-      active: props.defaultActive,
+      active: props.defaultActive.name,
       fFilter: [],
       mFilter: [],
       hmFilter: [],
@@ -18,20 +18,45 @@ console.log(props.defaultActive);
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.defaultActive.time !== nextProps.defaultActive.time) {
+      this.setState({
+        active: nextProps.defaultActive.name,
+        fFilter: [],
+        cFilter: [],
+        hmFilter: [],
+        hFilter: 0,
+        iFilter: 0
+      });
+    }
+  }
+
   renderContent() {
     const { data } = this.props;
     const { active, fFilter, mFilter, hmFilter, hFilter, iFilter } = this.state;
 
-    const fIds = Array.prototype.concat.apply([], data.result.map(r => r.fs)).map(ft =>
-      ft.id
+    const fIds = data.result.map(ptResult => 
+      Array.prototype.concat.apply([], ptResult.map(r => r.fs)).map(ft => ft.id)
     );
 
-    const mIds = Array.prototype.concat.apply([], data.result.map(r => r.ms)).map(mt =>
-      mt.id
+    const mIds = data.result.map(ptResult => 
+      Array.prototype.concat.apply([], ptResult.map(r => r.ms)).map(mt => mt.id)
     );
 
-    const hStatus = Array.prototype.concat.apply([], data.result.map(r => r.hs));
-    const iStatus = Array.prototype.concat.apply([], data.result.map(r => r.is));
+    const hStatus = Array.prototype.concat.apply([], 
+      data.result.map(ptResult => 
+        Array.prototype.concat.apply([], ptResult.map(r => r.hs))
+      )
+    );
+
+    const iStatus = Array.prototype.concat.apply([], 
+      data.result.map(ptResult => 
+        Array.prototype.concat.apply([], ptResult.map(r => r.is))
+      )
+    );
+
+    // const hStatus = Array.prototype.concat.apply([], data.result.map(r => r.hs));
+    // const iStatus = Array.prototype.concat.apply([], data.result.map(r => r.is));
 
     switch (active) {
       case 'failure':
@@ -71,20 +96,22 @@ console.log(props.defaultActive);
                 </ul>
               </div>
               {
-                <div>
-                  <ul className="parts">
-                    <li>{''}</li>
-                    {
-                      data.failureTypes.map(ft => 
-                        <li>
-                          {
-                            fIds.filter(f => f == ft.id).length
-                          }
-                        </li>
-                      )
-                    }
-                  </ul>
-                </div>
+                data.result.map((ptResult, i) =>
+                  <div>
+                    <ul className="parts">
+                      <li>{ptResult[0].pn}</li>
+                      {
+                        data.failureTypes.map(ft => 
+                          <li>
+                            {
+                              fIds[i].filter(f => f == ft.id).length
+                            }
+                          </li>
+                        )
+                      }
+                    </ul>
+                  </div>
+                )
               }
             </div>
           </div>
@@ -126,20 +153,22 @@ console.log(props.defaultActive);
                 </ul>
               </div>
               {
-                <div>
-                  <ul className="parts">
-                    <li>{''}</li>
-                    {
-                      data.modificationTypes.map(mt => 
-                        <li>
-                          {
-                            mIds.filter(m => m == mt.id).length
-                          }
-                        </li>
-                      )
-                    }
-                  </ul>
-                </div>
+                data.result.map((ptResult, i) =>
+                  <div>
+                    <ul className="parts">
+                      <li>{ptResult[0].pn}</li>
+                      {
+                        data.modificationTypes.map(mt => 
+                          <li>
+                            {
+                              mIds[i].filter(m => m == mt.id).length
+                            }
+                          </li>
+                        )
+                      }
+                    </ul>
+                  </div>
+                )
               }
             </div>
           </div>
@@ -166,7 +195,11 @@ console.log(props.defaultActive);
                   </li>
                   {data.holeTypes.map(ht => {
                     let percentage = 0;
-                    const sum = data.count;
+                    let sum = data.count[ht.pn];
+                    if(!sum) {
+                      sum = 0;
+                    }
+
                     const sum0 = hStatus.filter(h => h.id == ht.id && h.s == 0).length;
                     if (sum !== 0) percentage = Math.round(1000*sum0/sum)/10;
 
@@ -186,7 +219,11 @@ console.log(props.defaultActive);
                   </li>
                   {data.holeTypes.map(ht => {
                     let percentage = 0;
-                    const sum = data.count;
+                    let sum = data.count[ht.pn];
+                    if(!sum) {
+                      sum = 0;
+                    }
+
                     const sum0 = hStatus.filter(h => h.id == ht.id && h.s == 2).length;
                     if (sum !== 0) percentage = Math.round(1000*sum0/sum)/10;
 
@@ -206,7 +243,11 @@ console.log(props.defaultActive);
                   </li>
                   {data.holeTypes.map(ht => {
                     let percentage = 0;
-                    const sum = data.count;
+                    let sum = data.count[ht.pn];
+                    if(!sum) {
+                      sum = 0;
+                    }
+
                     const sum1 = sum - hStatus.filter(h => h.id == ht.id).length;
                     if (sum !== 0) percentage = Math.round(1000*sum1/sum)/10;
 
@@ -225,7 +266,6 @@ console.log(props.defaultActive);
                   </li>
                   {data.holeTypes.map(ht => {
                     const sum = hStatus.filter(h => h.id == ht.id && h.hm != -1).length;
-
                     return (
                       <li>{sum !== 0 ? sum : '-'}</li>
                     )
@@ -301,7 +341,11 @@ console.log(props.defaultActive);
                   </li>
                   {data.inlineTypes.map(it => {
                     let percentage = 0;
-                    const sum = data.count/data.figures.length;
+                    let sum = data.count[it.pn];
+                    if(!sum) {
+                      sum = 0;
+                    }
+
                     const sum0 = iStatus.filter(i => i.id == it.id && i.s >= it.min && i.s <= it.max).length;
                     if (sum !== 0) percentage = Math.round(1000*sum0/sum)/10;
 
@@ -321,7 +365,11 @@ console.log(props.defaultActive);
                   </li>
                   {data.inlineTypes.map(it => {
                     let percentage = 0;
-                    const sum = data.count/data.figures.length;
+                    let sum = data.count[it.pn];
+                    if(!sum) {
+                      sum = 0;
+                    }
+
                     const sum1 = iStatus.filter(i => i.id == it.id && (i.s < it.min || i.s > it.max)).length;
                     if (sum !== 0) percentage = Math.round(1000*sum1/sum)/10;
 
@@ -341,7 +389,12 @@ console.log(props.defaultActive);
     const { data, isFetching, didInvalidate, narrowedBy } = this.props;
     const { active, fFilter, mFilter, hmFilter, hFilter } = this.state;
 
-    const hStatus = Array.prototype.concat.apply([], data.result.map(r => r.hs));
+    // const hStatus = Array.prototype.concat.apply([], data.result.map(r => r.hs));
+    const hStatus = Array.prototype.concat.apply([], 
+      data.result.map(ptResult => 
+        Array.prototype.concat.apply([], ptResult.map(r => r.hs))
+      )
+    );
 
     return (
       <div className="mapping-body-wrap">
@@ -420,55 +473,59 @@ console.log(props.defaultActive);
             <svg>
               {
                 active === 'failure' &&
-                data.result.map((r, i, self) =>
-                  r.fs.filter(f =>
-                    fFilter.indexOf(f.id) == -1
-                  ).map(f => {
-                    const split = Math.ceil(Math.sqrt(data.figures.length));
-                    const page = data.figures.find(fig => fig.id == f.fig).page;
+                data.result.map(ptResult => 
+                  ptResult.map((r, i, self) =>
+                    r.fs.filter(f =>
+                      fFilter.indexOf(f.id) == -1
+                    ).map(f => {
+                      const split = Math.ceil(Math.sqrt(data.figures.length));
+                      const page = data.figures.find(fig => fig.id == f.fig).page;
 
-                    const x = f.x/2/split + (870/split)*((page+(split-1))%split);
-                    const y = f.y/2/split + (515/split)*(Math.ceil(page/split)-1);
+                      const x = f.x/2/split + (870/split)*((page+(split-1))%split);
+                      const y = f.y/2/split + (515/split)*(Math.ceil(page/split)-1);
 
-                    let fill='red';
-                    switch (r.c) {
-                      case 'W': fill = 'red'; break;
-                      case 'Y': fill = '#C6B700'; break;
-                      case 'B': fill = 'blue'; break;
-                    }
+                      let fill='red';
+                      switch (r.c) {
+                        case 'W': fill = 'red'; break;
+                        case 'Y': fill = '#C6B700'; break;
+                        case 'B': fill = 'blue'; break;
+                      }
 
-                    return (
-                      <g>
-                        <circle cx={x} cy={y} r={5} fill={fill}/>
-                      </g>
-                    );
-                  })
+                      return (
+                        <g>
+                          <circle cx={x} cy={y} r={5} fill={fill}/>
+                        </g>
+                      );
+                    })
+                  )
                 )
               }{
                 active === 'modification' &&
-                data.result.map((r, i, self) =>
-                  r.ms.filter(m =>
-                    mFilter.indexOf(m.id) == -1
-                  ).map(m => {
-                    const split = Math.ceil(Math.sqrt(data.figures.length));
-                    const page = data.figures.find(fig => fig.id == m.fig).page;
+                data.result.map(ptResult =>
+                  ptResult.map((r, i, self) =>
+                    r.ms.filter(m =>
+                      mFilter.indexOf(m.id) == -1
+                    ).map(m => {
+                      const split = Math.ceil(Math.sqrt(data.figures.length));
+                      const page = data.figures.find(fig => fig.id == m.fig).page;
 
-                    const x = m.x/2/split + (870/split)*((page+(split-1))%split);
-                    const y = m.y/2/split + (515/split)*(Math.ceil(page/split)-1);
+                      const x = m.x/2/split + (870/split)*((page+(split-1))%split);
+                      const y = m.y/2/split + (515/split)*(Math.ceil(page/split)-1);
 
-                    let fill='red';
-                    switch (r.c) {
-                      case 'W': fill = 'red'; break;
-                      case 'Y': fill = '#C6B700'; break;
-                      case 'B': fill = 'blue'; break;
-                    }
+                      let fill='red';
+                      switch (r.c) {
+                        case 'W': fill = 'red'; break;
+                        case 'Y': fill = '#C6B700'; break;
+                        case 'B': fill = 'blue'; break;
+                      }
 
-                    return (
-                      <g>
-                        <rect x={x-6} y={y-6} width="12" height="12" fill={fill}/>
-                      </g>
-                    );
-                  })
+                      return (
+                        <g>
+                          <rect x={x-6} y={y-6} width="12" height="12" fill={fill}/>
+                        </g>
+                      );
+                    })
+                  )
                 )
               }{
                 active === 'hole' &&
@@ -685,7 +742,7 @@ MappingBody.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   didInvalidate: PropTypes.bool.isRequired,
   narrowedBy: PropTypes.string.isRequired,
-  defaultActive: PropTypes.string.isRequired
+  defaultActive: PropTypes.object.isRequired
 };
 
 export default MappingBody;

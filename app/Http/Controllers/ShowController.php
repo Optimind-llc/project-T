@@ -1138,8 +1138,8 @@ class ShowController extends Controller
         $count = $parts->count();
         $data = [];
 
-        if ($count > 1000) {
-            for ($i=0; $i < 1000; $i++) {
+        if ($count > 100) {
+            for ($i=0; $i < 100; $i++) {
                 $detail = new PartResult($parts[$i], $partTypeId, $itionGId);
                 $formated = $detail->setDetails()->formatForRerefence()->get();
                 $data[] = $formated;

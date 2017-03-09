@@ -610,10 +610,10 @@ class RelatedInlineTableSeeder extends Seeder
             ],
             //成形：精度検査：ラゲージインナSTD
             [
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 255,
+                'y'          => 260,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 1,
                 'position'   => 'W5L+50',
@@ -624,10 +624,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 175,
+                'y'          => 360,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 2,
                 'position'   => 'L42',
@@ -638,10 +638,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 105,
+                'y'          => 480,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 3,
                 'position'   => 'L44+80',
@@ -652,10 +652,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 435,
+                'y'          => 710,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 4,
                 'position'   => 'W3L',
@@ -666,10 +666,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 805,
+                'y'          => 750,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 5,
                 'position'   => 'W0',
@@ -680,10 +680,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 1199,
+                'y'          => 730,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 6,
                 'position'   => 'W3R',
@@ -694,10 +694,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 1609,
+                'y'          => 560,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 7,
                 'position'   => 'L44+80',
@@ -708,8 +708,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 1629,
+                'y'          => 420,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -722,8 +722,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 1619,
+                'y'          => 310,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -736,10 +736,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 909,
+                'y'          => 310,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 10,
                 'position'   => 'W0',
@@ -750,8 +750,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 259,
+                'y'          => 540,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -764,10 +764,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 813,
+                'y'          => 693,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 12,
                 'position'   => 'W0',
@@ -778,10 +778,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 1443,
+                'y'          => 623,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 13,
                 'position'   => 'W5R',
@@ -792,10 +792,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 105,
+                'y'          => 580,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 14,
                 'position'   => 'H16+40',
@@ -806,10 +806,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 1599,
+                'y'          => 630,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 15,
                 'position'   => 'H16+40',
@@ -820,10 +820,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 255,
+                'y'          => 438,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 16,
                 'position'   => 'L44',
@@ -834,10 +834,10 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
-                'lx'         => 10,
-                'ly'         => 10,
+                'x'          => 1531,
+                'y'          => 487,
+                'lx'         => 0,
+                'ly'         => 0,
                 'side'       => 'left',
                 'label'      => 17,
                 'position'   => 'L44',
@@ -850,8 +850,8 @@ class RelatedInlineTableSeeder extends Seeder
             ],
             //成形：精度検査：ラゲージインナSTD
             [
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 255,
+                'y'          => 260,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -864,8 +864,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 175,
+                'y'          => 360,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -878,8 +878,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 105,
+                'y'          => 480,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -892,8 +892,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 435,
+                'y'          => 710,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -906,8 +906,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 805,
+                'y'          => 750,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -920,8 +920,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 1199,
+                'y'          => 730,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -934,8 +934,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 1609,
+                'y'          => 560,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -948,8 +948,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 1629,
+                'y'          => 420,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -962,8 +962,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 1619,
+                'y'          => 310,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -976,8 +976,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 909,
+                'y'          => 310,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -990,8 +990,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 259,
+                'y'          => 540,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -1004,8 +1004,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 813,
+                'y'          => 693,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -1018,8 +1018,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 1443,
+                'y'          => 623,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -1032,8 +1032,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 105,
+                'y'          => 580,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -1046,8 +1046,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 1599,
+                'y'          => 630,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -1060,8 +1060,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 255,
+                'y'          => 438,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
@@ -1074,8 +1074,8 @@ class RelatedInlineTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'x'          => 10,
-                'y'          => 10,
+                'x'          => 1531,
+                'y'          => 487,
                 'lx'         => 10,
                 'ly'         => 10,
                 'side'       => 'left',
