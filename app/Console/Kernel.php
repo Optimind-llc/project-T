@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\InsertDummyData',
         'App\Console\Commands\Insert950ADummyData',
         'App\Console\Commands\Insert950AInline',
+        'App\Console\Commands\Update950AInline',
         'App\Console\Commands\ExportCSV',
         'App\Console\Commands\PrintPDF'
     ];

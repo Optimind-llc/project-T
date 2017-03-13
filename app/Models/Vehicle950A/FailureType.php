@@ -22,6 +22,7 @@ class FailureType extends Model
                 ->where('ftr.division', '=', $d);
         })
         ->where('failure_types.status', '=', 1)
+        ->orderBy('ftr.sort')
         ->select('failure_types.*', 'ftr.sort', 'ftr.type');
     }
 }

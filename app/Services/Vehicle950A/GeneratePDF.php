@@ -107,20 +107,37 @@ class GeneratePDF
         $this->tcpdf->Text($A4['x0']+154, $A4['y0']+1, $printDate);
     }
 
-    protected function renderAggregate($count1, $count0)
+    protected function renderAggregate($count1, $count0, $count2 = null)
     {
         $A4 = $this->positions['A4'];
 
-        $dhj = 36;
-        $dhj1 = 5;
-        $dhj2 = $dhj/2 - $dhj1;
-        $hhj = 4;
+        if ($count2 !== null) {
+            $dhj = 54;
+            $dhj1 = 5;
+            $dhj2 = $dhj/3 - $dhj1;
+            $hhj = 4;
 
-        $this->tcpdf->MultiCell($dhj, $hhj, $this->partName, 1, 'C', 0, 1, $A4['x0'], $A4['y1']);
-        $this->tcpdf->MultiCell($dhj1, $hhj, '○', 1, 'C', 0, 1, $A4['x0'], $A4['y1']+$hhj);
-        $this->tcpdf->MultiCell($dhj2, $hhj, $count1, 1, 'C', 0, 1, $A4['x0']+$dhj1, $A4['y1']+$hhj);
-        $this->tcpdf->MultiCell($dhj1, $hhj, '×', 1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2, $A4['y1']+$hhj);
-        $this->tcpdf->MultiCell($dhj2, $hhj, $count0, 1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2+$dhj1, $A4['y1']+$hhj);
+            $this->tcpdf->MultiCell($dhj,  $hhj, $this->partName, 1, 'C', 0, 1, $A4['x0'], $A4['y1']);
+            $this->tcpdf->MultiCell($dhj1, $hhj, '○',             1, 'C', 0, 1, $A4['x0'], $A4['y1']+$hhj);
+            $this->tcpdf->MultiCell($dhj2, $hhj, $count1,         1, 'C', 0, 1, $A4['x0']+$dhj1, $A4['y1']+$hhj);
+            $this->tcpdf->MultiCell($dhj1, $hhj, '×',             1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2, $A4['y1']+$hhj);
+            $this->tcpdf->MultiCell($dhj2, $hhj, $count0,         1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2+$dhj1, $A4['y1']+$hhj);
+            $this->tcpdf->MultiCell($dhj1, $hhj, '△',             1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2+$dhj1+$dhj2, $A4['y1']+$hhj);
+            $this->tcpdf->MultiCell($dhj2, $hhj, $count2,         1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2+$dhj1+$dhj2+$dhj1, $A4['y1']+$hhj);
+        }
+        else {
+            $dhj = 36;
+            $dhj1 = 5;
+            $dhj2 = $dhj/2 - $dhj1;
+            $hhj = 4;
+
+            $this->tcpdf->MultiCell($dhj, $hhj, $this->partName, 1, 'C', 0, 1, $A4['x0'], $A4['y1']);
+            $this->tcpdf->MultiCell($dhj1, $hhj, '○', 1, 'C', 0, 1, $A4['x0'], $A4['y1']+$hhj);
+            $this->tcpdf->MultiCell($dhj2, $hhj, $count1, 1, 'C', 0, 1, $A4['x0']+$dhj1, $A4['y1']+$hhj);
+            $this->tcpdf->MultiCell($dhj1, $hhj, '×', 1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2, $A4['y1']+$hhj);
+            $this->tcpdf->MultiCell($dhj2, $hhj, $count0, 1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2+$dhj1, $A4['y1']+$hhj);
+        }
+
     }
 
     protected function renderA4($irs)
@@ -134,6 +151,9 @@ class GeneratePDF
         $count1 = $irs->filter(function($ir) {
             return $ir['status'] === 1;
         })->count();
+        $count2 = $irs->filter(function($ir) {
+            return $ir['status'] === 2;
+        })->count();
 
         $d = [8, 18, 20, 38];
         $th = 5;
@@ -143,7 +163,12 @@ class GeneratePDF
             $this->renderTitle();
 
             if ($page === 0) {
-                $this->renderAggregate($count1, $countAll - $count1);
+                if ($this->inspection === '穴検査') {
+                    $this->renderAggregate($count1, $count0, $count2);
+                }
+                else {
+                    $this->renderAggregate($count1, $countAll - $count1);
+                }
             }
 
             foreach ($irs100->values()->chunk(50) as $col => $irs50) {
@@ -157,7 +182,7 @@ class GeneratePDF
                 foreach ($irs50->values() as $row => $ir) {
                     $panelId = $ir['panel_id'];
                     $inspectedBy = $ir['created_by'];
-                    $time = $ir['inspected_at']->format('d/H:i');
+                    $time = $ir['inspected_at']->format('H:i');
 
                     $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x0'], $A4['y3']+($row)*$th, $page*100+$col*50+$row+1);
                     $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x0'], $A4['y3']+($row)*$th, $panelId);
@@ -219,7 +244,7 @@ class GeneratePDF
             foreach ($irs40->values() as $row => $ir) {
                 $panelId = $ir['panel_id'];
                 $inspectedBy = $ir['created_by'];
-                $time = $ir['inspected_at']->format('d/H:i');
+                $time = $ir['inspected_at']->format('H:i');
 
                 $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y2']+($row)*$A3['th'], $row+($page*40)+1);
                 $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y2']+($row)*$A3['th'], $panelId);
@@ -453,7 +478,7 @@ class GeneratePDF
             foreach ($irs40->values() as $row => $ir) {
                 $panelId = $ir['panel_id'];
                 $inspectedBy = $ir['created_by'];
-                $time = $ir['inspected_at']->format('d/H:i');
+                $time = $ir['inspected_at']->format('H:i');
 
                 $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,0)), $A3['y2']+($row)*$A3['th'], $row+($page*40)+1);
                 $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,1)), $A3['y2']+($row)*$A3['th'], $panelId);
@@ -744,7 +769,7 @@ class GeneratePDF
                 if ($ir['comment']) {
                     $comment = mb_substr($ir['comment'], 0, 4, 'UTF-8').'..';
                 }
-                $time = $ir['inspected_at']->format('d/H:i');
+                $time = $ir['inspected_at']->format('H:i');
 
                 $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin+($fd*$fn), $A3['y2']+($row)*$A3['th'], $comment);
                 $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin+($fd*$fn)+$d_comment, $A3['y2']+($row)*$A3['th'], $time);
@@ -931,7 +956,7 @@ class GeneratePDF
                     $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($ii*$d_hole), $A3['y2']+($row)*$A3['th'], $status);
                 }
 
-                $time = $ir['inspected_at']->format('d/H:i');
+                $time = $ir['inspected_at']->format('H:i');
                 $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin, $A3['y2']+($row)*$A3['th'], $time);
             }
 

@@ -153,7 +153,8 @@ class Insert950AInline extends Command
                     $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
                     \Log::error($message);
                     $this->error($message);
-                    rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
+                    $file = null;
+                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
                     return 0;
                 }
 
@@ -180,7 +181,8 @@ class Insert950AInline extends Command
                     $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
                     \Log::error($message);
                     $this->error($message);
-                    rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
+                    $file = null;
+                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
                     return 0;
                 }
 
@@ -217,7 +219,8 @@ class Insert950AInline extends Command
                     $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
                     \Log::error($message);
                     $this->error($message);
-                    rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
+                    $file = null;
+                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
                     return 0;
                 }
 
@@ -244,7 +247,8 @@ class Insert950AInline extends Command
                     $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
                     \Log::error($message);
                     $this->error($message);
-                    rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
+                    $file = null;
+                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
                     return 0;
                 }
 
@@ -273,167 +277,74 @@ class Insert950AInline extends Command
 
                 $this->saveInspection($pn, $panel_id, $inspected_at, $status, $doorInnerL_inlines);
             }
+            elseif ($filepath['head']  === 'M001' && $row === 0 && count($data) === 23) {
+                $inspected_at = Carbon::createFromFormat('Y/m/d H:i:s', $data[0]);
+                $pn = substr($data[1], 0, 10);
+
+                if ($pn !== '6441211010' && $pn !== '6441211020') {
+                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
+                    \Log::error($message);
+                    $this->error($message);
+                    $file = null;
+                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
+                    return 0;
+                }
+
+                $this->info('M001 0 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
+
+                $panel_id = $data[3].$data[4];
+                $status = $data[5] == 'OK' ? 1 : 0;
+
+                if ($pn == '6441211010') {
+                    $luggageInner_inlines = [
+                        [41,$data[6] ],
+                        [42,$data[7] ],
+                        [43,$data[8] ],
+                        [44,$data[9] ],
+                        [45,$data[10]],
+                        [46,$data[11]],
+                        [47,$data[12]],
+                        [48,$data[13]],
+                        [49,$data[14]],
+                        [50,$data[15]],
+                        [51,$data[16]],
+                        [52,$data[17]],
+                        [53,$data[18]],
+                        [54,$data[19]],
+                        [55,$data[20]],
+                        [56,$data[21]],
+                        [57,$data[22]]
+                    ];
+                }
+                elseif ($pn == '6441211020') {
+                    $luggageInner_inlines = [
+                        [58,$data[6] ],
+                        [59,$data[7] ],
+                        [60,$data[8] ],
+                        [61,$data[9] ],
+                        [62,$data[10]],
+                        [63,$data[11]],
+                        [64,$data[12]],
+                        [65,$data[13]],
+                        [66,$data[14]],
+                        [67,$data[15]],
+                        [68,$data[16]],
+                        [69,$data[17]],
+                        [70,$data[18]],
+                        [71,$data[19]],
+                        [72,$data[20]],
+                        [73,$data[21]],
+                        [74,$data[22]]
+                    ];
+                }
+
+                $this->saveInspection($pn, $panel_id, $inspected_at, $status, $luggageInner_inlines);
+            }
         }
 
         $file = null;
         unlink($filepath['path']);
         return 1;
-
-        foreach ($file as $key => $raw) {
-            if ($key == 0) {
-                /*
-                 * Chack svg data structure.
-                 */
-                if (count($raw) > 27) {
-                    $message = 'CSV structure error: '.count($raw).' columns is contained in "'.$filepath['path'].'"';
-                    \Log::error($message);
-                    $this->info($message);
-                    return 0;
-                }
-                /*
-                 * If svg data collect.
-                 */
-                if (count($raw) < 27) {
-                    $inspected_at = Carbon::createFromFormat('Y/m/d H:i:s', $raw[0]);
-                    $pn = substr($raw[1], 0, 10);
-
-                    $this->info($pn);
-                    /*
-                     * If inspected part is inner
-                     */
-                    if ($pn == '6714111020' && $filepath['process'] == 'M') {
-                        $this->info($filepath['line']);
-
-                        $panel_id = $raw[3].$raw[4];
-                        $status = $raw[5] == 'OK' ? 1 : 0;
-
-                        $doorInnerR_inlines = [
-                            [1, $raw[6] ],
-                            [2, $raw[7] ],
-                            [3, $raw[8] ],
-                            [4, $raw[9] ],
-                            [5, $raw[10]],
-                            [6, $raw[11]],
-                            [7, $raw[12]],
-                            [8, $raw[13]],
-                            [9, $raw[14]],
-                            [15,$raw[20]],
-                            [16,$raw[21]],
-                            [17,$raw[22]],
-                            [18,$raw[23]],
-                            [19,$raw[24]],
-                            [20,$raw[25]]
-                        ];
-
-                        $this->saveInspection($pn, $panel_id, $inspected_at, $status, $doorInnerR_inlines);
-
-                        // For reinforceR
-                        $reinforceR_inlines = [
-                            [10,$raw[15]],
-                            [11,$raw[16]],
-                            [12,$raw[17]],
-                            [13,$raw[18]],
-                            [14,$raw[19]]
-                        ];
-
-                        $this->saveInspection('6715111020', $panel_id, $inspected_at, $status, $reinforceR_inlines);
-                    }
-                    elseif ($pn == '6714211020' && $filepath['process'] == 'M') {
-                        $this->info($filepath['line']);
-
-                        $panel_id = $raw[3].$raw[4];
-                        $status = $raw[5] == 'OK' ? 1 : 0;
-
-                        $doorInnerR_inlines = [
-                            [21,$raw[6] ],
-                            [22,$raw[7] ],
-                            [23,$raw[8] ],
-                            [24,$raw[9] ],
-                            [25,$raw[10]],
-                            [26,$raw[11]],
-                            [27,$raw[12]],
-                            [28,$raw[13]],
-                            [29,$raw[14]],
-                            [35,$raw[20]],
-                            [36,$raw[21]],
-                            [37,$raw[22]],
-                            [38,$raw[23]],
-                            [39,$raw[24]],
-                            [40,$raw[25]]
-                        ];
-
-                        $this->saveInspection($pn, $panel_id, $inspected_at, $status, $doorInnerR_inlines);
-
-                        // For reinforceR
-                        $reinforceR_inlines = [
-                            [20,$raw[15]],
-                            [21,$raw[16]],
-                            [22,$raw[17]],
-                            [23,$raw[18]],
-                            [24,$raw[19]]
-                        ];
-
-                        $this->saveInspection('6715211020', $panel_id, $inspected_at, $status, $reinforceR_inlines);
-                    }
-                    elseif ($pn == '6441211010' && $filepath['process'] == 'M') {
-                        $this->info($filepath['line']);
-
-                        $panel_id = $raw[3].$raw[4];
-                        $status = $raw[5] == 'OK' ? 1 : 0;
-
-                        $luggageInnerSTD_inlines = [
-                            [41,$raw[6] ],
-                            [42,$raw[7] ],
-                            [43,$raw[8] ],
-                            [44,$raw[9] ],
-                            [45,$raw[10]],
-                            [46,$raw[11]],
-                            [47,$raw[12]],
-                            [48,$raw[13]],
-                            [49,$raw[14]],
-                            [50,$raw[15]],
-                            [51,$raw[16]],
-                            [52,$raw[17]],
-                            [53,$raw[18]],
-                            [54,$raw[19]],
-                            [55,$raw[20]],
-                            [56,$raw[21]],
-                            [57,$raw[22]]
-                        ];
-
-                        $this->saveInspection($pn, $panel_id, $inspected_at, $status, $luggageInnerSTD_inlines);
-                    }
-                    elseif ($pn == '6441211020' && $filepath['process'] == 'M') {
-                        $this->info($filepath['line']);
-
-                        $panel_id = $raw[3].$raw[4];
-                        $status = $raw[5] == 'OK' ? 1 : 0;
-
-                        $luggageInnerARW_inlines = [
-                            [58,$raw[6] ],
-                            [59,$raw[7] ],
-                            [60,$raw[8] ],
-                            [61,$raw[9] ],
-                            [62,$raw[10]],
-                            [63,$raw[11]],
-                            [64,$raw[12]],
-                            [65,$raw[13]],
-                            [66,$raw[14]],
-                            [67,$raw[15]],
-                            [68,$raw[16]],
-                            [69,$raw[17]],
-                            [70,$raw[18]],
-                            [71,$raw[19]],
-                            [72,$raw[20]],
-                            [73,$raw[21]],
-                            [74,$raw[22]]
-                        ];
-
-                        $this->saveInspection($pn, $panel_id, $inspected_at, $status, $luggageInnerARW_inlines);
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -469,7 +380,7 @@ class Insert950AInline extends Command
 
         $results = [];
         foreach ($lists as $list) {
-            if ($list['head'] === 'M011' || $list['head'] === 'M021') {
+            if ($list['head'] === 'M011' || $list['head'] === 'M021' || $list['head'] === 'M001') {
                 $results[] = $this->insertFile($list);
             }
             else {

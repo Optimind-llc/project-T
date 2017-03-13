@@ -13,7 +13,25 @@ class InspectionResult extends Model
 {
     protected $connection = '950A';
     protected $guarded = ['id'];
-    protected $dates = ['inspected_at', 'deleted_at'];
+    protected $dates = ['inspected_at', 'exported_at'];
+
+    public function process()
+    {
+        return $this->belongsTo(
+            'App\Models\Vehicle950A\Process',
+            'process',
+            'en'
+        );
+    }
+
+    public function inspection()
+    {
+        return $this->belongsTo(
+            'App\Models\Vehicle950A\Inspection',
+            'inspection',
+            'en'
+        );
+    }
 
     public function part()
     {

@@ -291,6 +291,167 @@ class InspectionController extends Controller
         ];
     }
 
+    public function resultWithChildren($vehicle, Request $request)
+    {
+        $pn = $request->pn;
+        $panelId = $request->panelId;
+        $iSelf = $request->inspections['self'];
+        $iChildren = $request->inspections['children'];
+
+        // Find the part by PN and panelId
+        $targetPart = Part::where('panel_id', '=', $panelId)
+            ->where('pn', '=', $pn)
+            ->first();
+
+        if (is_null($targetPart)) {
+            $targetPart = new Part;
+            $targetPart->panel_id = $panelId;
+            $targetPart->pn = $pn;
+            $targetPart->save();
+        }
+
+        $iSelf_results = [];
+        foreach ($iSelf as $is) {
+            $result = $this->inspectionResult->all($is['process'], $is['inspection'], $targetPart->id);
+
+            if ($result) {
+                $failures = (object)array();
+                if ($result['failures']->count() > 0) {
+                    $failures = $result['failures']->map(function($f) {
+                        return [
+                            'id' => $f->id,
+                            'x' => $f->x,
+                            'y' => $f->y,
+                            'typeId' => $f->type_id,
+                            'figureId' => $f->figure->id,
+                            'figurePage' => $f->figure->page
+                        ];
+                    })
+                    ->groupBy('figurePage');
+                }
+
+                $modifications = (object)array();
+                if ($result['modifications']->count() > 0) {
+                    $modifications = $result['modifications']->map(function($m) {
+                        return [
+                            'id' => $m->id,
+                            'failureId' => $m->failure->id,
+                            'x' => $m->failure->x,
+                            'y' => $m->failure->y,
+                            'typeId' => $m->type_id,
+                            'figureId' => $m->figure->id,
+                            'figurePage' => $m->figure->page
+                        ];
+                    })
+                    ->groupBy('figurePage');
+                }
+
+                $iSelf_results[$is['process'].'_'.$is['inspection']] = [
+                    'id' => $result['id'],
+                    'line' => $result['line'],
+                    'status' => $result['status'],
+                    'comment' => $result['comment'] !== null ? $result['comment'] : '',
+                    'choku' => $result['created_choku'],
+                    'createdBy' => $result['created_by'],
+                    'createdAt' => $result['created_at']->format('m月d日'),
+                    'failures' => $failures,
+                    'modifications' => $modifications,
+                    'holes' => $result['holes']->map(function($h) {
+                        $holeModificationType = 0;
+                        if ($h->holeModification) {
+                            $holeModificationType = $h->holeModification->type_id;
+                        }
+                        return [
+                            'id' => $h->id,
+                            'typeId' => $h->type_id,
+                            'status' => $h->status,
+                            'holeModificationType' => $holeModificationType
+                        ];
+                    }),
+                ];
+            }
+            else {
+                $iSelf_results[$is['process'].'_'.$is['inspection']] = ['status' => -1];
+            }
+        }
+
+        $associated = true;
+        if (is_null($targetPart->family)) {
+            $associated = false;
+            
+            switch ($pn) {
+                case 6701511020: $childPn1 = 6714111020; $childPn2 = 6715111020; break;
+                case 6701611020: $childPn1 = 6714211020; $childPn2 = 6715211020; break;
+                case 6440111010: $childPn1 = 6441211010; $childPn2 = 6441111010; break;
+                case 6440111020: $childPn1 = 6441211020; $childPn2 = 6441111020; break;
+            }
+
+            $childPart = Part::where('panel_id', '=', $panelId)
+                ->where('pn', '=', $childPn1)
+                ->first();
+
+            $childPartId = is_null($childPart) ? -1 : $childPart->id;
+
+            $childrenParts = [
+                [
+                    'id' => $childPartId,
+                    'pn' => $childPn1,
+                    'panelId' => $panelId
+                ],[
+                    'id' => -1,
+                    'pn' => $childPn2,
+                    'panelId' => -1
+                ]
+            ];
+        }
+        else {
+            $childrenParts = $targetPart->family->parts->filter(function($p) use($pn) {
+                return $p->pn !== $pn;
+            })->map(function($p) {
+                return [
+                    'id' => $p->id,
+                    'pn' => $p->pn,
+                    'panelId' => $p->panel_id
+                ];
+            });
+        }
+
+
+        $iChildren_results = [];
+        foreach ($childrenParts as $cp) {
+            $iChildren_inspections = [];
+            foreach ($iChildren as $ic) {
+                $result = $this->inspectionResult->simple($ic['process'], $ic['inspection'], $cp['id']);
+
+                if ($result) {
+                    $iChildren_inspections[$ic['process'].'_'.$ic['inspection']] = [
+                        'id' => $result['id'],
+                        'line' => $result['line'],
+                        'status' => $result['status'],
+                        'failures' => $result['failures']->count(),
+                        'defectiveHoles' => $result['holes']->count()
+                    ];
+                }
+                else {
+                    $iChildren_inspections[$ic['process'].'_'.$ic['inspection']] = ['status' => -1];
+                }
+            }
+
+            $iChildren_results[] = [
+                'pn' => $cp['pn'],
+                'panelId' => $cp['panelId'],
+                'inspections' => $iChildren_inspections
+            ];
+        }
+
+        return [
+            'associated' => $associated,
+            'self' => $iSelf_results,
+            'children' => $iChildren_results
+        ];
+
+    }
+
     public function update($vehicle, Request $request)
     {
         $process = $request->process;

@@ -22,6 +22,7 @@ class HoleModificationType extends Model
                 ->where('hmtr.division', '=', $d);
         })
         ->where('hole_modification_types.status', '=', 1)
+        ->orderBy('hmtr.sort')
         ->select('hole_modification_types.*', 'hmtr.sort', 'hmtr.type');
     }
 }

@@ -68,4 +68,16 @@ class Choku
 
         return $start_at;
     }
+
+    public function getChokuNum() {
+        $Hi = $this->date->format('Hi');
+
+        if ($Hi > 650 && $Hi < 1615) {
+            $choku = 1;
+        } else {
+            $choku = 2;
+        }
+
+        return $choku;
+    }
 }

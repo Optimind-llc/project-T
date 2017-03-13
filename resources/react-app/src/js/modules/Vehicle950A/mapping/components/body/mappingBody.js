@@ -55,9 +55,6 @@ class MappingBody extends Component {
       )
     );
 
-    // const hStatus = Array.prototype.concat.apply([], data.result.map(r => r.hs));
-    // const iStatus = Array.prototype.concat.apply([], data.result.map(r => r.is));
-
     switch (active) {
       case 'failure':
         return (
@@ -389,7 +386,6 @@ class MappingBody extends Component {
     const { data, isFetching, didInvalidate, narrowedBy } = this.props;
     const { active, fFilter, mFilter, hmFilter, hFilter } = this.state;
 
-    // const hStatus = Array.prototype.concat.apply([], data.result.map(r => r.hs));
     const hStatus = Array.prototype.concat.apply([], 
       data.result.map(ptResult => 
         Array.prototype.concat.apply([], ptResult.map(r => r.hs))
@@ -429,7 +425,8 @@ class MappingBody extends Component {
                       backgroundImage: `url(${fig.path})`,
                       backgroundSize: 'contain',
                       backgroundPosition: 'center top',
-                      backgroundRepeat: 'no-repeat'
+                      backgroundRepeat: 'no-repeat',
+                      opacity: 0.6
                     }}
                   >
                   </div>
@@ -446,7 +443,8 @@ class MappingBody extends Component {
                       backgroundImage: `url(${fig.path})`,
                       backgroundSize: 'contain',
                       backgroundPosition: 'center top',
-                      backgroundRepeat: 'no-repeat'
+                      backgroundRepeat: 'no-repeat',
+                      opacity: 0.6
                     }}
                   >
                   </div>
@@ -463,7 +461,8 @@ class MappingBody extends Component {
                       backgroundImage: `url(${fig.path})`,
                       backgroundSize: 'contain',
                       backgroundPosition: 'center top',
-                      backgroundRepeat: 'no-repeat'
+                      backgroundRepeat: 'no-repeat',
+                      opacity: 0.6
                     }}
                   >
                   </div>

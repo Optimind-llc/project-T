@@ -158,6 +158,28 @@ class InspectionResultRepository
             ->first();
     }
 
+    public function simple($p, $i, $partId)
+    {
+        return $ir = InspectionResult::identify($p, $i, $partId)
+            ->with([
+                'failures' => function($q) {
+                    $q->select('id', 'ir_id');
+                },
+                'holes' => function($q) {
+                    $q->where('status', '!=', 1)->select('id', 'ir_id', 'status');
+                }
+            ])
+            ->select([
+                'id',
+                'process',
+                'inspection',
+                'line',
+                'status'
+            ])
+            ->first();
+    }
+    
+
     public function create($param, $fs, $ms, $hs)
     {
         $new = new InspectionResult;

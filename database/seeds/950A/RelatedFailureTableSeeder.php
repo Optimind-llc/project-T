@@ -242,6 +242,11 @@ class RelatedFailureTableSeeder extends Seeder
                 'label'      => 41,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => 'シワ',
+                'label'      => 42,
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ];
 
@@ -308,7 +313,7 @@ class RelatedFailureTableSeeder extends Seeder
         $m_gaikan_luggageInner_failures = [
             [1,  1], [2,  1], [3,  1], [4,  1], [5,  1], [6,  1], [7,  1],
             [8,  2], [9,  2], [10, 2], [11, 2], [12, 2], [13, 2], [14, 2],
-            [15, 2], [16, 2], [41, 2]
+            [15, 2], [16, 2], [43, 2], [41, 2]
         ];
 
         $data = array_map(function($i, $f) {

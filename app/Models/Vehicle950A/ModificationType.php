@@ -22,6 +22,7 @@ class ModificationType extends Model
                 ->where('mtr.division', '=', $d);
         })
         ->where('modification_types.status', '=', 1)
+        ->orderBy('mtr.sort')
         ->select('modification_types.*', 'mtr.sort', 'mtr.type');
     }
 }

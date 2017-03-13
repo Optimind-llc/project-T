@@ -182,6 +182,7 @@ Route::group(['prefix' => '{vehicle}/client', 'namespace' => 'V2\Client'], funct
     Route::post('inspection', 'InspectionController@getInspection');
     Route::post('inspection/save', 'InspectionController@saveInspection');
     Route::post('inspection/result', 'InspectionController@result');
+    Route::post('inspection/resultWithChildren', 'InspectionController@resultWithChildren');
     Route::post('inspection/update', 'InspectionController@update');
     Route::post('inspection/delete', 'InspectionController@delete');
 
