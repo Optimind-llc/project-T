@@ -25,7 +25,6 @@ class GeneratePDF
             'xmax' => 210,
             'x0' => 8,
             'y0' => 8,
-            'x1' => 160,
             'y1' => 16,
             'y2' => 28,
             'y3' => 36
@@ -155,7 +154,7 @@ class GeneratePDF
             return $ir['status'] === 2;
         })->count();
 
-        $d = [8, 18, 20, 38];
+        $d = [8, 18, 20, 30];
         $th = 5;
 
         foreach ($irs->chunk(100) as $page => $irs100) {
@@ -173,20 +172,20 @@ class GeneratePDF
 
             foreach ($irs100->values()->chunk(50) as $col => $irs50) {
                 $this->tcpdf->SetFont('kozgopromedium', '', 8);
-                $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x0'], $A4['y2'], 'No.');
-                $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x0'], $A4['y2'], 'パネルID');
-                $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x0'], $A4['y2'], '検査者');
-                $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x0'], $A4['y2'], '出荷判定');
-                $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x0'], $A4['y2'], '登録時間');
+                $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['xmax']/2, $A4['y2'], 'No.');
+                $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['xmax']/2, $A4['y2'], 'パネルID');
+                $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['xmax']/2, $A4['y2'], '検査者');
+                $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['xmax']/2, $A4['y2'], '出荷判定');
+                $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['xmax']/2, $A4['y2'], '登録時間');
 
                 foreach ($irs50->values() as $row => $ir) {
                     $panelId = $ir['panel_id'];
                     $inspectedBy = $ir['created_by'];
                     $time = $ir['inspected_at']->format('H:i');
 
-                    $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['x0'], $A4['y3']+($row)*$th, $page*100+$col*50+$row+1);
-                    $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['x0'], $A4['y3']+($row)*$th, $panelId);
-                    $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['x0'], $A4['y3']+($row)*$th, $inspectedBy);
+                    $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,0))+$col*$A4['xmax']/2, $A4['y3']+($row)*$th, $page*100+$col*50+$row+1);
+                    $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,1))+$col*$A4['xmax']/2, $A4['y3']+($row)*$th, $panelId);
+                    $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,2))+$col*$A4['xmax']/2, $A4['y3']+($row)*$th, $inspectedBy);
 
                     $status = '';
                     switch ($ir['status']) {
@@ -195,12 +194,12 @@ class GeneratePDF
                         case 2: $status = '△'; break;
                     }
 
-                    $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['x0'], $A4['y3']+($row)*$th, $status);
-                    $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['x0'], $A4['y3']+($row)*$th, $time);
+                    $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,3))+$col*$A4['xmax']/2, $A4['y3']+($row)*$th, $status);
+                    $this->tcpdf->Text($A4['x0']+array_sum(array_slice($d,0,4))+$col*$A4['xmax']/2, $A4['y3']+($row)*$th, $time);
                 }
             }
 
-            $this->tcpdf->Line(106, 28, 106, 286);
+            $this->tcpdf->Line($A4['xmax']/2, 28, $A4['xmax']/2, 286);
             $this->tcpdf->Text(103, 287, 'page '.($page+1));
         }
     }
@@ -912,9 +911,9 @@ class GeneratePDF
          */
         $A3 = $this->positions['A3'];
 
-        $d = [5, 12, 14, 11];
+        $d = [8, 16, 16, 16];
         $margin = 2;
-        $d_date = 8;
+        $d_date = 12;
 
         $hn = $this->inlineTypes->count();
         $d_hole_max = 16;
@@ -924,7 +923,7 @@ class GeneratePDF
             $this->tcpdf->AddPage('L', 'A3');
             $this->renderTitle();
 
-            $this->tcpdf->SetFont('kozgopromedium', '', 6);
+            $this->tcpdf->SetFont('kozgopromedium', '', 8);
             if ($page === 0) {
                 // $this->tcpdf->Text($A3['x0'], $A3['y1'], '○ : 公差内　× : 穴径大　△ : 穴径小　* : 手直し');
             }
@@ -935,8 +934,13 @@ class GeneratePDF
             $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y1_ana'], '出荷判定');
 
             foreach ($this->inlineTypes as $ii => $it) {
+                $this->tcpdf->SetFont('kozgopromedium', '', 8);
                 $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$ii), $A3['y1_ana'], 'P-'.$it['l']);
+                $tolerance = number_format($it['min'],2).'〜'.number_format($it['max'],2);
+                $this->tcpdf->SetFont('kozgopromedium', '', 6);
+                $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$ii), $A3['y1_ana']+3, $tolerance);
             }
+            $this->tcpdf->SetFont('kozgopromedium', '', 8);
 
             $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin, $A3['y1_ana'], 'コメント');
             $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($d_hole*$hn)+$margin, $A3['y1_ana'], '登録時間');
@@ -950,10 +954,14 @@ class GeneratePDF
                 $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y2']+($row)*$A3['th'], $status);
 
                 foreach ($this->inlineTypes as $ii => $it) {
-                    $status = '-';
                     $status = $ir['is'][$it['id']]['status'];
+                    $judge = '';
+                    if ($status > $it['max'] || $status < $it['min']) {
+                        $judge = '×';
+                    }
 
                     $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($ii*$d_hole), $A3['y2']+($row)*$A3['th'], $status);
+                    $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,4))+($ii*$d_hole)+9, $A3['y2']+($row)*$A3['th'], $judge);
                 }
 
                 $time = $ir['inspected_at']->format('H:i');

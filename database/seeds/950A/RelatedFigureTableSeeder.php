@@ -486,6 +486,16 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
+                'path'       => 'h_ana_luggageInnerSTD_1.png',
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'pt_pn'      => 6441211010,
+                'page'       => 4,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
                 'path'       => 'h_ana_luggageInnerARW_1.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
@@ -511,6 +521,16 @@ class RelatedFigureTableSeeder extends Seeder
                 'inspection' => 'ana',
                 'pt_pn'      => 6441211020,
                 'page'       => 3,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_ana_luggageInnerARW_1.png',
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'pt_pn'      => 6441211020,
+                'page'       => 4,
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'created_at' => $now,

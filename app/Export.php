@@ -118,56 +118,66 @@ class Export
 
         $dir_path = config('path.'.config('app.server_place').'.output');
 
+        $pIdHead = substr($panelId, 0,1);
+        $pIdBody = substr($panelId, 1,7);
+
+        $mDir = 'Seikei';
+        $jDir = 'Setchaku';
+        if (config('app.server_place') === 'motomachi') {
+            $mDir = 'Molding';
+            $jDir = 'Jointing';
+        }
+
         switch ($itionGId) {
             case 1:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成形','001','680A'];
+                $export = [$part_type->pn,$part_type->pn2,$pIdHead,$pIdBody,'成形','001','680A'];
                 $file_name = 'M001_'.$part_type->pn.'_'.$now->format('Ymd_His');
-                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.$mDir.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 2:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成形','002','680A'];
+                $export = [$part_type->pn,$part_type->pn2,$pIdHead,$pIdBody,'成形','002','680A'];
                 $file_name = 'M002_'.$part_type->pn.'_'.$now->format('Ymd_His');
-                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.$mDir.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 5:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成形','001','680A'];
+                $export = [$part_type->pn,$part_type->pn2,$pIdHead,$pIdBody,'成形','001','680A'];
                 $file_name = 'M001_'.$part_type->pn.'_'.$now->format('Ymd_His');
-                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.$mDir.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 6:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'成形','002','680A'];
+                $export = [$part_type->pn,$part_type->pn2,$pIdHead,$pIdBody,'成形','002','680A'];
                 $file_name = 'M002_'.$part_type->pn.'_'.$now->format('Ymd_His');
-                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Seikei'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.$mDir.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 10:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','止水','680A'];
+                $export = [$part_type->pn,$part_type->pn2,$pIdHead,$pIdBody,'接着','止水','680A'];
                 $file_name = 'J_shisui_'.$part_type->pn.'_'.$now->format('Ymd_His');
-                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.$jDir.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 11:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','仕上','680A'];
+                $export = [$part_type->pn,$part_type->pn2,$pIdHead,$pIdBody,'接着','仕上','680A'];
                 $file_name = 'J_shiage_'.$part_type->pn.'_'.$now->format('Ymd_His');
-                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.$jDir.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 12:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','検査','680A'];
+                $export = [$part_type->pn,$part_type->pn2,$pIdHead,$pIdBody,'接着','検査','680A'];
                 $file_name = 'J_kensa_'.$part_type->pn.'_'.$now->format('Ymd_His');
-                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.$jDir.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 13:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','特検','680A'];
+                $export = [$part_type->pn,$part_type->pn2,$pIdHead,$pIdBody,'接着','特検','680A'];
                 $file_name = 'J_tokken_'.$part_type->pn.'_'.$now->format('Ymd_His');
-                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.$jDir.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 14:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','手直し','680A'];
+                $export = [$part_type->pn,$part_type->pn2,$pIdHead,$pIdBody,'接着','手直し','680A'];
                 $file_name = 'J_tenaoshi_'.$part_type->pn.'_'.$now->format('Ymd_His');
-                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.$jDir.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
             case 16:
-                $export = [$part_type->pn,$part_type->pn2,'A',substr($panelId, 1,7),'接着','簡易CF','680A'];
+                $export = [$part_type->pn,$part_type->pn2,$pIdHead,$pIdBody,'接着','簡易CF','680A'];
                 $file_name = 'J_kanicf_'.$part_type->pn.'_'.$now->format('Ymd_His');
-                $file_path = $dir_path.DIRECTORY_SEPARATOR.'Setchaku'.DIRECTORY_SEPARATOR.$file_name.'.csv';
+                $file_path = $dir_path.DIRECTORY_SEPARATOR.$jDir.DIRECTORY_SEPARATOR.$file_name.'.csv';
                 break;
         }
 

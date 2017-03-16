@@ -89,7 +89,7 @@ class RelatedInspectionGroupTableSeeder extends Seeder
             ],[
                 'name'       => '穴検査',
                 'en'         => 'ana',
-                'sort'       => 9,
+                'sort'       => 11,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -126,6 +126,18 @@ class RelatedInspectionGroupTableSeeder extends Seeder
                 'name'       => '手直',
                 'en'         => 'tenaoshi',
                 'sort'       => 8,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '洗浄前外観検査',
+                'en'         => 'maegaikan',
+                'sort'       => 8,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '塗装後外観検査',
+                'en'         => 'atogaikan',
+                'sort'       => 9,
                 'created_at' => $now,
                 'updated_at' => $now
             ],

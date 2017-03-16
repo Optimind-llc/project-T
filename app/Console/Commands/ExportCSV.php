@@ -75,77 +75,75 @@ class ExportCSV extends Command
                     $query->whereColumn('exported_at', '<', 'updated_at');
                 });
             })
-            ->get()
-            ->map(function($ir) {
-                $pn = $ir->part->pn;
-                $panelId = $ir->part->panel_id;
+            ->get();
 
-                $chokuCode = $ir->created_choku;
-                $choku_obj = new Choku($ir->inspected_at);
-                $chokuNum = $choku_obj->getChokuNum();
 
-                $s = 0;
-                if ($ir->status === 0) {
-                    $s = 1;
-                }
-
-                return [
-                    'v' => '950A',
-                    'pn1' => substr($pn, 0, 5),
-                    'pn2' => substr($pn, 5, 5),
-                    'panelIdHead' => substr($panelId, 0, 1),
-                    'panelIdBody' => substr($panelId, 1, 7),
-                    'p' => $ir->process,
-                    'l' => str_pad($ir->line, 3, 0, STR_PAD_LEFT),
-                    'i' => $ir->inspection,
-                    'chokuCode' => $chokuCode,
-                    'chokuNum' => $chokuNum,
-                    'by' => $ir->created_by,
-                    's' => $s,
-                    'ftIds' => unserialize($ir->ft_ids),
-                    'mtIds' => unserialize($ir->mt_ids),
-                    'at' => $ir->inspected_at->toDateTimeString(),
-                    'fs' => array_count_values($ir->failures->map(function($f) {
-                        return $f->type_id;
-                    })->toArray()),
-                    'ms' => array_count_values($ir->failures->map(function($m) {
-                        return $m->type_id;
-                    })->toArray())
-                ];
-            });
-
+        $this->info($irs->count());
 
         $dirPath = config('path.'.config('app.server_place').'.950A.output');
 
         foreach ($irs as $ir) {
-            $data = [
-                $ir['v'], $ir['pn1'], $ir['pn2'], $ir['panelIdHead'], $ir['panelIdBody'],
-                $ir['p'], $ir['l'], $ir['i'], $ir['chokuCode'], $ir['chokuNum'], $ir['by'], $ir['s']
-            ];
+            $pn = $ir->part->pn;
+            $pn1 = substr($pn, 0, 5);
+            $pn2 = substr($pn, 5, 5);
 
-            foreach ($ir['ftIds'] as $ftId) {
+            $panelId = $ir->part->panel_id;
+            $idHead = substr($panelId, 0, 1);
+            $idBody = substr($panelId, 1, 7);
+
+            $p = $ir->process;
+            $l = str_pad($ir->line, 3, 0, STR_PAD_LEFT);
+            $i = $ir->inspection;
+
+            $chokuCode = $ir->created_choku;
+            $choku_obj = new Choku($ir->inspected_at);
+            $chokuNum = $choku_obj->getChokuNum();
+
+            $by = $ir->created_by;
+            $at = $ir->inspected_at;
+
+            $s = 0;
+            if ($ir->status === 0) { $s = 1; }
+
+            $data = ['950A', $pn1, $pn2, $idHead, $idBody, $p, $l, $i, $chokuCode, $chokuNum, $by, $s];
+
+            $fs = array_count_values($ir->failures->map(function($f) {
+                return $f->type_id;
+            })->toArray());
+
+            $ftIds = unserialize($ir->ft_ids);
+            foreach ($ftIds as $ftId) {
                 $count = null;
                 $count = 0;
-                if (array_key_exists($ftId, $ir['fs'])) {
-                    $count = $ir['fs'][$ftId];
+                if (array_key_exists($ftId, $fs)) {
+                    $count = $fs[$ftId];
                 }
                 array_push($data, $count);
             }
 
-            foreach ($ir['mtIds'] as $mtId) {
+            $ms = array_count_values($ir->failures->map(function($m) {
+                return $m->type_id;
+            })->toArray());
+
+            $mtIds = unserialize($ir->mt_ids);
+            foreach ($mtIds as $mtId) {
                 $count = null;
                 $count = 0;
-                if (array_key_exists($mtId, $ir['ms'])) {
-                    $count = $ir['ms'][$mtId];
+                if (array_key_exists($mtId, $ms)) {
+                    $count = $ms[$mtId];
                 }
                 array_push($data, $count);
             }
 
-            array_push($data, $ir['at']);
+            array_push($data, $at->toDateTimeString());
 
-            $fileName = strtoupper(substr($ir['p'], 0, 1)).$ir['l'].'_'.$ir['pn1'].$ir['pn2'].'_'.$now->format('Ymd_His');
-            $filePath = $dirPath.DIRECTORY_SEPARATOR.ucfirst($ir['p']).DIRECTORY_SEPARATOR.$fileName.'.csv';
+            $fileName = strtoupper(substr($p, 0, 1)).$l.'_'.$pn1.$pn2.'_'.$at->format('Ymd_His');
+            $filePath = $dirPath.DIRECTORY_SEPARATOR.ucfirst($p).DIRECTORY_SEPARATOR.$fileName.'.csv';
             $this->exportCSV($filePath, $data);
+
+            $ir->exported_at = $now;
+            $ir->updated_at = $now;
+            $ir->save();
         }
 
         $this->info('success');
