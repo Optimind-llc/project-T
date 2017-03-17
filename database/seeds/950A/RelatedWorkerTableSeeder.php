@@ -1508,8 +1508,102 @@ class RelatedWorkerTableSeeder extends Seeder
                 'sort'      => 8
             ],
 
-
             //穴あけ_穴検査_ラゲージ_白
+            [
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 17,
+                'sort'      => 1
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 18,
+                'sort'      => 2
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 19,
+                'sort'      => 3
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 20,
+                'sort'      => 4
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 21,
+                'sort'      => 5
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 22,
+                'sort'      => 6
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 23,
+                'sort'      => 7
+            ],
+            //穴あけ_穴検査_ラゲージ_黄
+            [
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 16,
+                'sort'      => 1
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 24,
+                'sort'      => 2
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 25,
+                'sort'      => 3
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 26,
+                'sort'      => 4
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 27,
+                'sort'      => 5
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 28,
+                'sort'      => 6
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 29,
+                'sort'      => 7
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 55,
+                'sort'      => 8
+            ],
+
+            //穴あけ_手直検査_ラゲージ_白
             [
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
