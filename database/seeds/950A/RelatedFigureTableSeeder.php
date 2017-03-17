@@ -172,11 +172,11 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],
-            //穴あけ_外観検査
+            //穴あけ_洗浄前外観検査
             [
                 'path'       => 'h_gaikan_doorInnerL_1.png',
                 'process'    => 'holing',
-                'inspection' => 'gaikan',
+                'inspection' => 'maegaikan',
                 'pt_pn'      => 6714211020,
                 'page'       => 1,
                 'size_x'     => 1740,
@@ -186,7 +186,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_doorInnerL_2.png',
                 'process'    => 'holing',
-                'inspection' => 'gaikan',
+                'inspection' => 'maegaikan',
                 'pt_pn'      => 6714211020,
                 'page'       => 2,
                 'size_x'     => 1740,
@@ -196,7 +196,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_doorInnerL_3.png',
                 'process'    => 'holing',
-                'inspection' => 'gaikan',
+                'inspection' => 'maegaikan',
                 'pt_pn'      => 6714211020,
                 'page'       => 3,
                 'size_x'     => 1740,
@@ -206,7 +206,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_reinforceL_1.png',
                 'process'    => 'holing',
-                'inspection' => 'gaikan',
+                'inspection' => 'maegaikan',
                 'pt_pn'      => 6715211020,
                 'page'       => 4,
                 'size_x'     => 1740,
@@ -216,7 +216,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_doorInnerR_1.png',
                 'process'    => 'holing',
-                'inspection' => 'gaikan',
+                'inspection' => 'maegaikan',
                 'pt_pn'      => 6714111020,
                 'page'       => 1,
                 'size_x'     => 1740,
@@ -226,7 +226,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_doorInnerR_2.png',
                 'process'    => 'holing',
-                'inspection' => 'gaikan',
+                'inspection' => 'maegaikan',
                 'pt_pn'      => 6714111020,
                 'page'       => 2,
                 'size_x'     => 1740,
@@ -236,7 +236,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_doorInnerR_3.png',
                 'process'    => 'holing',
-                'inspection' => 'gaikan',
+                'inspection' => 'maegaikan',
                 'pt_pn'      => 6714111020,
                 'page'       => 3,
                 'size_x'     => 1740,
@@ -246,7 +246,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_reinforceR_1.png',
                 'process'    => 'holing',
-                'inspection' => 'gaikan',
+                'inspection' => 'maegaikan',
                 'pt_pn'      => 6715111020,
                 'page'       => 4,
                 'size_x'     => 1740,
@@ -256,7 +256,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_luggageInnerSTD_1.png',
                 'process'    => 'holing',
-                'inspection' => 'gaikan',
+                'inspection' => 'maegaikan',
                 'pt_pn'      => 6441211010,
                 'page'       => 1,
                 'size_x'     => 1740,
@@ -266,8 +266,130 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_luggageInnerARW_1.png',
                 'process'    => 'holing',
-                'inspection' => 'gaikan',
+                'inspection' => 'maegaikan',
                 'pt_pn'      => 6441211020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //穴あけ_洗浄後外観検査
+            [
+                'path'       => 'h_gaikan_doorInnerL_1.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6714211020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_doorInnerL_2.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6714211020,
+                'page'       => 2,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_doorInnerL_3.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6714211020,
+                'page'       => 3,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_reinforceL_1.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6715211020,
+                'page'       => 4,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_doorInnerR_1.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6714111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_doorInnerR_2.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6714111020,
+                'page'       => 2,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_doorInnerR_3.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6714111020,
+                'page'       => 3,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_reinforceR_1.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6715111020,
+                'page'       => 4,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_luggageInnerSTD_1.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6441211010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_luggageInnerARW_1.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6441211020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_luggageOuterSTD_1.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6441111010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_luggageOuterARW_1.png',
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'pt_pn'      => 6441111020,
                 'page'       => 1,
                 'size_x'     => 1740,
                 'size_y'     => 980,
@@ -559,6 +681,128 @@ class RelatedFigureTableSeeder extends Seeder
                 'path'       => 'h_ana_luggageOuterARW_1.png',
                 'process'    => 'holing',
                 'inspection' => 'ana',
+                'pt_pn'      => 6441111020,
+                'page'       => 2,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            //穴あけ_手直検査
+            [
+                'path'       => 'h_ana_doorInnerL_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6714211020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_ana_doorInnerR_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6714111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_tenaoshi_reinforceL_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6715211020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_tenaoshi_reinforceR_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6715111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_luggageInnerSTD_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6441211010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_ana_luggageInnerSTD_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6441211010,
+                'page'       => 2,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_luggageInnerARW_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6441211020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_ana_luggageInnerARW_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6441211020,
+                'page'       => 2,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_luggageOuterSTD_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6441111010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_ana_luggageOuterSTD_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6441111010,
+                'page'       => 2,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_luggageOuterARW_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6441111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_ana_luggageOuterARW_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
                 'pt_pn'      => 6441111020,
                 'page'       => 2,
                 'size_x'     => 1740,

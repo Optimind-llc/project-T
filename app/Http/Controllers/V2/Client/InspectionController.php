@@ -65,8 +65,15 @@ class InspectionController extends Controller
             $d2 = PartType::where('name', '=', $pt_name)->first()->division2;
             $pt = PartType::where('name', '=', $pt_name)
                 ->with([
-                    'figures' => function($q) use ($process, $inspection){
-                        $q->where('process', '=', $process)->where('inspection', '=', $inspection);
+                    'figures' => function($q) use ($process, $inspection) {
+                        if ($process === 'holing' && $inspection === 'tenaoshi') {
+                            $q->where('process', '=', $process)
+                                ->whereIn('inspection', ['maegaikan', 'atogaikan', 'ana', 'tenaoshi']);
+                        }
+                        else {
+                            $q->where('process', '=', $process)
+                                ->where('inspection', '=', $inspection);
+                        }
                     },
                     'figures.holeTypes' => function($q) {
                         $q->where('hole_types.status', '=', 1);

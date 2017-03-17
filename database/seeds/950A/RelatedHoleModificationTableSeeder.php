@@ -153,6 +153,76 @@ class RelatedHoleModificationTableSeeder extends Seeder
         }, array_keys($h_ana_luggageOuter_failures), $h_ana_luggageOuter_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
+
+        //穴あけ_手直検査_ドアインナ
+        $h_tenaoshi_doorInner_failures = [
+            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'tenaoshi',
+                'division'      => 'doorInner',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_tenaoshi_doorInner_failures), $h_tenaoshi_doorInner_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴あけ_手直検査_リンフォース
+        $h_tenaoshi_reinforce_failures = [
+            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'tenaoshi',
+                'division'      => 'reinforce',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_tenaoshi_reinforce_failures), $h_tenaoshi_reinforce_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴あけ_手直検査_ラゲージインナ
+        $h_tenaoshi_luggageInner_failures = [
+            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'tenaoshi',
+                'division'      => 'luggageInner',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_tenaoshi_luggageInner_failures), $h_tenaoshi_luggageInner_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴あけ_手直検査_ラゲージアウタ
+        $h_tenaoshi_luggageOuter_failures = [
+            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'tenaoshi',
+                'division'      => 'luggageOuter',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_tenaoshi_luggageOuter_failures), $h_tenaoshi_luggageOuter_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+
         //かしめ/接着_かしめ後検査_ドアインナ
         $j_kashimego_doorInner_failures = [
             [5,  1], [6,  1]

@@ -134,59 +134,203 @@ class RelatedModificationTableSeeder extends Seeder
         }, array_keys($m_gaikan_luggageInner_failures), $m_gaikan_luggageInner_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
-        //穴あけ_外観検査_ドアインナ
-        $h_gaikan_doorInner_failures = [
+        /*
+         * 　穴あけ工程
+         */
+
+        // //穴あけ_洗浄前外観検査_ドアインナ
+        // $h_maegaikan_doorInner_failures = [
+        //     [1,  2], [9, 2]
+        // ];
+
+        // $data = array_map(function($i, $f) {
+        //     return [
+        //         'process'       => 'holing',
+        //         'inspection'    => 'maegaikan',
+        //         'division'      => 'doorInner',
+        //         'type_id'       => $f[0],
+        //         'type'          => $f[1],
+        //         'sort'          => $i+1
+        //     ];
+        // }, array_keys($h_maegaikan_doorInner_failures), $h_maegaikan_doorInner_failures);
+        // DB::connection('950A')->table($table_name)->insert($data);
+
+        // //穴あけ_洗浄前外観検査_リンフォース
+        // $h_maegaikan_reinforce_failures = [
+        //     [1,  2], [9, 2]
+        // ];
+
+        // $data = array_map(function($i, $f) {
+        //     return [
+        //         'process'       => 'holing',
+        //         'inspection'    => 'maegaikan',
+        //         'division'      => 'reinforce',
+        //         'type_id'       => $f[0],
+        //         'type'          => $f[1],
+        //         'sort'          => $i+1
+        //     ];
+        // }, array_keys($h_maegaikan_reinforce_failures), $h_maegaikan_reinforce_failures);
+        // DB::connection('950A')->table($table_name)->insert($data);
+
+        // //穴あけ_洗浄前外観検査_ラゲージインナ
+        // $h_maegaikan_luggageInner_failures = [
+        //     [1,  2], [9, 2]
+        // ];
+
+        // $data = array_map(function($i, $f) {
+        //     return [
+        //         'process'       => 'holing',
+        //         'inspection'    => 'maegaikan',
+        //         'division'      => 'luggageInner',
+        //         'type_id'       => $f[0],
+        //         'type'          => $f[1],
+        //         'sort'          => $i+1
+        //     ];
+        // }, array_keys($h_maegaikan_luggageInner_failures), $h_maegaikan_luggageInner_failures);
+        // DB::connection('950A')->table($table_name)->insert($data);
+
+
+        // //穴あけ_洗浄後外観検査_ドアインナ
+        // $h_atogaikan_doorInner_failures = [
+        //     [1,  2], [9, 2]
+        // ];
+
+        // $data = array_map(function($i, $f) {
+        //     return [
+        //         'process'       => 'holing',
+        //         'inspection'    => 'atogaikan',
+        //         'division'      => 'doorInner',
+        //         'type_id'       => $f[0],
+        //         'type'          => $f[1],
+        //         'sort'          => $i+1
+        //     ];
+        // }, array_keys($h_atogaikan_doorInner_failures), $h_atogaikan_doorInner_failures);
+        // DB::connection('950A')->table($table_name)->insert($data);
+
+        // //穴あけ_洗浄後外観検査_リンフォース
+        // $h_atogaikan_reinforce_failures = [
+        //     [1,  2], [9, 2]
+        // ];
+
+        // $data = array_map(function($i, $f) {
+        //     return [
+        //         'process'       => 'holing',
+        //         'inspection'    => 'atogaikan',
+        //         'division'      => 'reinforce',
+        //         'type_id'       => $f[0],
+        //         'type'          => $f[1],
+        //         'sort'          => $i+1
+        //     ];
+        // }, array_keys($h_atogaikan_reinforce_failures), $h_atogaikan_reinforce_failures);
+        // DB::connection('950A')->table($table_name)->insert($data);
+
+        // //穴あけ_洗浄後外観検査_ラゲージインナ
+        // $h_atogaikan_luggageInner_failures = [
+        //     [1,  2], [9, 2]
+        // ];
+
+        // $data = array_map(function($i, $f) {
+        //     return [
+        //         'process'       => 'holing',
+        //         'inspection'    => 'atogaikan',
+        //         'division'      => 'luggageInner',
+        //         'type_id'       => $f[0],
+        //         'type'          => $f[1],
+        //         'sort'          => $i+1
+        //     ];
+        // }, array_keys($h_atogaikan_luggageInner_failures), $h_atogaikan_luggageInner_failures);
+        // DB::connection('950A')->table($table_name)->insert($data);
+
+        // //穴あけ_洗浄後外観検査_ラゲージアウタ
+        // $h_atogaikan_luggageOuter_failures = [
+        //     [1,  2], [9, 2]
+        // ];
+
+        // $data = array_map(function($i, $f) {
+        //     return [
+        //         'process'       => 'holing',
+        //         'inspection'    => 'atogaikan',
+        //         'division'      => 'luggageOuter',
+        //         'type_id'       => $f[0],
+        //         'type'          => $f[1],
+        //         'sort'          => $i+1
+        //     ];
+        // }, array_keys($h_atogaikan_luggageOuter_failures), $h_atogaikan_luggageOuter_failures);
+        // DB::connection('950A')->table($table_name)->insert($data);
+
+
+        //穴あけ_手直検査_ドアインナ
+        $h_tenaoshi_doorInner_failures = [
             [1,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
             return [
                 'process'       => 'holing',
-                'inspection'    => 'gaikan',
+                'inspection'    => 'tenaoshi',
                 'division'      => 'doorInner',
                 'type_id'       => $f[0],
                 'type'          => $f[1],
                 'sort'          => $i+1
             ];
-        }, array_keys($h_gaikan_doorInner_failures), $h_gaikan_doorInner_failures);
+        }, array_keys($h_tenaoshi_doorInner_failures), $h_tenaoshi_doorInner_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
-        //穴あけ_外観検査_リンフォース
-        $h_gaikan_reinforce_failures = [
+        //穴あけ_手直検査_リンフォース
+        $h_tenaoshi_reinforce_failures = [
             [1,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
             return [
                 'process'       => 'holing',
-                'inspection'    => 'gaikan',
+                'inspection'    => 'tenaoshi',
                 'division'      => 'reinforce',
                 'type_id'       => $f[0],
                 'type'          => $f[1],
                 'sort'          => $i+1
             ];
-        }, array_keys($h_gaikan_reinforce_failures), $h_gaikan_reinforce_failures);
+        }, array_keys($h_tenaoshi_reinforce_failures), $h_tenaoshi_reinforce_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
-
-        //穴あけ_外観検査_ラゲージインナ
-        $h_gaikan_luggageInner_failures = [
+        //穴あけ_手直検査_ラゲージインナ
+        $h_tenaoshi_luggageInner_failures = [
             [1,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
             return [
                 'process'       => 'holing',
-                'inspection'    => 'gaikan',
+                'inspection'    => 'tenaoshi',
                 'division'      => 'luggageInner',
                 'type_id'       => $f[0],
                 'type'          => $f[1],
                 'sort'          => $i+1
             ];
-        }, array_keys($h_gaikan_luggageInner_failures), $h_gaikan_luggageInner_failures);
+        }, array_keys($h_tenaoshi_luggageInner_failures), $h_tenaoshi_luggageInner_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴あけ_手直検査_ラゲージアウタ
+        $h_tenaoshi_luggageOuter_failures = [
+            [1,  2], [9, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'tenaoshi',
+                'division'      => 'luggageOuter',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_tenaoshi_luggageOuter_failures), $h_tenaoshi_luggageOuter_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
 
+        /*
+         * 　かしめ工程
+         */
 
         //かしめ_外周仕上_ラゲージアウタ
         $j_gaishushiage_luggageOuter_failures = [
