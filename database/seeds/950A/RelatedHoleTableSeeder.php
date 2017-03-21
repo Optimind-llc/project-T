@@ -705,6 +705,186 @@ class RelatedHoleTableSeeder extends Seeder
         },$luggageOuterARW_holes);
         DB::connection('950A')->table($table_name)->insert($data);
 
+        /*
+         * かしめ/接着工程　かしめ検査
+         */
+
+        //かしめ後検査_ドアインナR
+        $doorinnerR_kashimeHoles = [
+            [1, 1,  181,  479, 'right', 'square', 'solid', '95CDDC'],
+            [1, 2,  183,  539, 'right', 'square', 'solid', '95CDDC'],
+            [1, 3,  273,  268, 'right', 'square', 'solid', '95CDDC'],
+            [1, 4,  246,  279, 'top',   'square', 'solid', '95CDDC'],
+            [1, 5,  138,  299, 'left',  'square', 'solid', '95CDDC'],
+            [1, 6,  135,  483, 'left',  'square', 'solid', '95CDDC'],
+            [1, 7,  128,  518, 'left',  'square', 'solid', '95CDDC'],
+            [1, 8,  128,  595, 'left',  'square', 'solid', '95CDDC'],
+            [1, 9,  135,  627, 'left',  'square', 'solid', '95CDDC'],
+            [1, 10, 210,  646, 'right', 'square', 'solid', '95CDDC'],
+            [1, 11, 186,  852, 'bottom','square', 'solid', '95CDDC'],
+            [1, 12, 454,  875, 'bottom','square', 'solid', '95CDDC'],
+            [1, 13, 728,  870, 'bottom','square', 'solid', '95CDDC'],
+            [1, 14, 1003, 864, 'bottom','square', 'solid', '95CDDC'],
+            [1, 15, 1331, 795, 'bottom','square', 'solid', '95CDDC'],
+            [1, 16, 1459, 679, 'right', 'square', 'solid', '95CDDC'],
+            [1, 17, 1548, 531, 'right', 'square', 'solid', '95CDDC'],
+            [1, 18, 1581, 362, 'right', 'square', 'solid', '95CDDC'],
+            [1, 19, 1582, 249, 'right', 'square', 'solid', '95CDDC'],
+            [1, 20, 1572, 209, 'top',   'square', 'solid', '95CDDC'],
+            [1, 21, 757,  756, 'top',   'square', 'solid', '95CDDC'],
+            [1, 22, 946,  756, 'top',   'square', 'solid', '95CDDC'],
+            [1, 23, 459,  510, 'top',   'square', 'solid', '95CDDC'],
+            [1, 24, 556,  481, 'top',   'square', 'solid', '95CDDC'],
+            [1, 25, 561,  557, 'bottom','square', 'solid', '95CDDC'],
+
+            [2, 26, 251,  243, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 27, 360,  244, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 28, 558,  233, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 29, 767,  221, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 30, 960,  212, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 31, 1141, 202, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 32, 1318, 192, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 33, 1447, 188, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 34, 1535, 251, 'right', 'square', 'solid', 'FFFD38'],
+            [2, 35, 1415, 427, 'right', 'square', 'solid', 'FFFD38'],
+            [2, 36, 1394, 474, 'right', 'square', 'solid', 'FFFD38'],
+            [2, 37, 1452, 337, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 38, 1271, 342, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 39, 1118, 348, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 40, 903,  359, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 41, 743,  369, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 42, 613,  378, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 43, 405,  393, 'top',   'square', 'solid', 'FFFD38'],
+            [2, 44, 244,  404, 'left',  'square', 'solid', 'FFFD38'],
+            [2, 45, 217,  436, 'left',  'square', 'solid', 'FFFD38'],
+            [2, 46, 217,  527, 'left',  'square', 'solid', 'FFFD38'],
+        ];
+
+        //かしめ後検査_ドアインナR
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6714111020,
+                'figure_id'  => $getFigureId(6714111020, 'jointing', 'kashimego', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$doorinnerR_kashimeHoles);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //かしめ後検査_ドアインナL
+        $data = array_map(function($h) use($getFigureId, $now) {
+            if ($h[4] === 'left') {
+                $direction = 'right';
+            } elseif ($h[4] === 'right') {
+                $direction = 'left';
+            } else {
+                $direction = $h[4];
+            }
+
+            return [
+                'label'      => $h[1],
+                'x'          => 1740 - $h[2],
+                'y'          => $h[3],
+                'direction'  => $direction,
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6714211020,
+                'figure_id'  => $getFigureId(6714211020, 'jointing', 'kashimego', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$doorinnerR_kashimeHoles);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+
+        //かしめ後検査_ドアインナR
+        $reinforceR_kashimeHoles = [
+            [1, 1,  137,  247, 'top',   'square', 'solid', 'FFFD38'],
+            [1, 2,  269,  248, 'top',   'square', 'solid', 'FFFD38'],
+            [1, 3,  514,  233, 'top',   'square', 'solid', 'FFFD38'],
+            [1, 4,  772,  218, 'top',   'square', 'solid', 'FFFD38'],
+            [1, 5,  1010, 209, 'top',   'square', 'solid', 'FFFD38'],
+            [1, 6,  1233, 194, 'top',   'square', 'solid', 'FFFD38'],
+            [1, 7,  1451, 184, 'top',   'square', 'solid', 'FFFD38'],
+            [1, 8,  1590, 177, 'top',   'square', 'solid', 'FFFD38'],
+            [1, 9,  128,  446, 'bottom','square', 'solid', 'FFFD38'],
+            [1, 10, 327,  433, 'bottom','square', 'solid', 'FFFD38'],
+            [1, 11, 582,  414, 'bottom','square', 'solid', 'FFFD38'],
+            [1, 12, 743,  403, 'bottom','square', 'solid', 'FFFD38'],
+            [1, 13, 940,  390, 'bottom','square', 'solid', 'FFFD38'],
+            [1, 14, 1205, 376, 'bottom','square', 'solid', 'FFFD38'],
+            [1, 15, 1394, 368, 'bottom','square', 'solid', 'FFFD38'],
+            [1, 16, 1616, 364, 'bottom','square', 'solid', 'FFFD38'],
+
+            [2, 17, 801,  840, 'bottom','square', 'solid', '95CDDC'],
+            [2, 18, 878,  833, 'bottom','square', 'solid', '95CDDC'],
+            [2, 19, 920,  679, 'top',   'square', 'solid', '95CDDC'],
+            [2, 20, 324,  300, 'top',   'square', 'solid', '95CDDC'],
+            [2, 21, 391,  314, 'top',   'square', 'solid', '95CDDC'],
+            [2, 22, 1450, 238, 'top',   'square', 'solid', '95CDDC'],
+            [2, 23, 1515, 256, 'top',   'square', 'solid', '95CDDC'],
+            [2, 24, 1681, 262, 'right', 'square', 'solid', '95CDDC'],
+            [2, 25, 1681, 327, 'right', 'square', 'solid', '95CDDC'],
+            [2, 26, 168,  349, 'top',   'square', 'solid', '95CDDC'],
+            [2, 27, 922,  208, 'top',   'square', 'solid', '95CDDC'],
+            [2, 28, 1085, 200, 'top',   'square', 'solid', '95CDDC'],
+            [2, 29, 1636, 221, 'top',   'square', 'solid', '95CDDC'],
+            [2, 30, 880,  720, 'left',  'square', 'solid', '95CDDC'],
+        ];
+
+        //かしめ後検査_リンフォースR
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6715111020,
+                'figure_id'  => $getFigureId(6715111020, 'jointing', 'kashimego', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$reinforceR_kashimeHoles);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //かしめ後検査_リンフォースL
+        $data = array_map(function($h) use($getFigureId, $now) {
+            if ($h[4] === 'left') {
+                $direction = 'right';
+            } elseif ($h[4] === 'right') {
+                $direction = 'left';
+            } else {
+                $direction = $h[4];
+            }
+
+            return [
+                'label'      => $h[1],
+                'x'          => 1740 - $h[2],
+                'y'          => $h[3],
+                'direction'  => $direction,
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6715211020,
+                'figure_id'  => $getFigureId(6715211020, 'jointing', 'kashimego', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$reinforceR_kashimeHoles);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+
         if (env('DB_CONNECTION') == 'mysql') {
             DB::connection('950A')->statement('SET FOREIGN_KEY_CHECKS=1;');
         }

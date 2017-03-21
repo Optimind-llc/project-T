@@ -64,6 +64,10 @@ class Report extends Component {
 
     const processes = InitialData.processes.map(p => { return {label: p.name, value: p.en} });
 
+    const chokus = InitialData.chokus.map(c => {
+      return { label: c.name, value: [c.code], disabled: c.status === 0 };
+    });
+
     return (
       <div id="report-950A-wrap">
         <div className="bg-white report-header">
@@ -80,11 +84,7 @@ class Report extends Component {
             clearable={false}
             Searchable={true}
             value={choku}
-            options={[
-              {label: '白直', value: 'W'},
-              {label: '黄直', value: 'Y'},
-              {label: '黒直', value: 'B', disabled: true}
-            ]}
+            options={chokus}
             onChange={choku => this.setState({choku}, () => this.serchReport())}
           />
           <p>工程*</p>

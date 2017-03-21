@@ -12,11 +12,8 @@ import './mapping.scss';
 // Components
 import CustomCalendar from '../components/calendar/calendar';
 import MappingBody from '../components/body/mappingBody';
-
 import SearchButton from '../../../../components/buttons/search/searchButton';
 import SaveButton from '../../../../components/buttons/save/saveButton';
-// import Loading from '../../../components/loading/loading';
-// import RangeCalendar from '../components/rangeCalendar/rangeCalendar';
 
 class Mapping extends Component {
   constructor(props, context) {
@@ -26,9 +23,9 @@ class Mapping extends Component {
     this.state = {
       p: {label: '成型', value: 'molding'},
       i: {label: '外観検査', value: 'gaikan'},
-      pt: {label: 'ドアインナL', value: 6714211020},
+      pt: {label: 'ドアL', value: [6714211020, 6715211020]},
       narrowedBy: 'realtime',
-      choku: {label: '白直', value: ['W']},
+      choku: {label: '全直', value: ['W','Y','B']},
       startDate: moment(),
       endDate: moment(),
       panelId: '',
@@ -95,18 +92,10 @@ class Mapping extends Component {
     const { p, i, pt, narrowedBy, choku, startDate, endDate, panelId, intervalId, defaultActiveTab } = this.state;
     const { InitialData, MappingData, actions } = this.props;
 
-    const filterdI = InitialData.combination.filter(c => 
+    const filterdI = InitialData.combination2.filter(c => 
       c.process === p.value
     ).map(c => 
       c.inspection
-    ).filter((c, i, self) =>
-      self.indexOf(c) === i
-    );
-
-    const filterdPt = InitialData.combination.filter(c => 
-      c.process === p.value && c.inspection === i.value
-    ).map(c => 
-      c.part
     ).filter((c, i, self) =>
       self.indexOf(c) === i
     );
@@ -117,9 +106,16 @@ class Mapping extends Component {
       filterdI.indexOf(i.en) >= 0
     ).map(i => { return {label: i.name, value: i.en} });
 
-    const partTypes = InitialData.partTypes.filter(pt =>
-      filterdPt.indexOf(pt.en) >= 0
-    ).map(pt => { return {label: pt.name, value: pt.pn} });
+    const partTypes = InitialData.combination2.filter(c => 
+      c.process === p.value && c.inspection === i.value
+    ).map(c => {
+      return { label: c.label, value: c.parts };
+    });
+
+    const chokus = InitialData.chokus.slice().reverse().reduce((pre, cur, i, self) => {
+      pre.unshift({ label: cur.name, value: [cur.code], disabled: cur.status === 0 });
+      return pre;
+    }, [{ label: '全直', value: ['W','Y','B'] }]);
 
     return (
       <div id="mapping-950A-wrap">
@@ -176,12 +172,7 @@ class Mapping extends Component {
                   clearable={false}
                   Searchable={true}
                   value={choku}
-                  options={[
-                    {label: '白直', value: ['W']},
-                    {label: '黄直', value: ['Y']},
-                    {label: '黒直', value: ['B'], disabled: true},
-                    {label: '全直', value: ['W', 'Y']}
-                  ]}
+                  options={chokus}
                   onChange={value => this.setState({choku: value})}
                 />
                 <p>期間</p>

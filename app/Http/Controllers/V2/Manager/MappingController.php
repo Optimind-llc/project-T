@@ -55,35 +55,7 @@ class MappingController extends Controller
         $p = $request->p;
         $i = $request->i;
         $line = 1;
-        $pn = $request->pt;
-
-        $pns = [$pn];
-        if ($p === 'holing' || $i === 'inline') {
-            switch ($pn) {
-                case 6714111020:
-                case 6715111020:
-                    $pns = [6714111020, 6715111020];
-                    break;
-
-                case 6714211020:
-                case 6715211020:
-                    $pns = [6714211020, 6715211020];
-                    break;
-            }
-        }
-        if ($p === 'molding' && $i === 'gaikan') {
-            switch ($pn) {
-                case 6714111020:
-                case 6715111020:
-                    $pns = [6714111020, 6715111020];
-                    break;
-
-                case 6714211020:
-                case 6715211020:
-                    $pns = [6714211020, 6715211020];
-                    break;
-            }
-        }
+        $pns = $request->pt;
 
         $choku = new Choku(Carbon::today());
         $start = $choku->getLastChokuStart();
@@ -140,38 +112,9 @@ class MappingController extends Controller
         $p = $request->p;
         $i = $request->i;
         $line = 1;
-        $pn = $request->pt;
+        $pns = $request->pt;
         $chokus = $request->c;
         $chokus[] = 'NA';
-
-        $pns = [$pn];
-        if ($p === 'holing' || $i === 'inline') {
-            switch ($pn) {
-                case 6714111020:
-                case 6715111020:
-                    $pns = [6714111020, 6715111020];
-                    break;
-
-                case 6714211020:
-                case 6715211020:
-                    $pns = [6714211020, 6715211020];
-                    break;
-            }
-        }
-        if ($p === 'molding' && $i === 'gaikan') {
-            switch ($pn) {
-                case 6714111020:
-                case 6715111020:
-                    $pns = [6714111020, 6715111020];
-                    break;
-
-                case 6714211020:
-                case 6715211020:
-                    $pns = [6714211020, 6715211020];
-                    break;
-            }
-        }
-
 
         $start = Carbon::createFromFormat('Y-m-d H:i:s', $request->s.' 00:00:00')->addHours(3);
         $end = Carbon::createFromFormat('Y-m-d H:i:s', $request->e.' 00:00:00')->addHours(27);
@@ -224,36 +167,8 @@ class MappingController extends Controller
     {
         $p = $request->p;
         $i = $request->i;
-        $pn = $request->pt;
+        $pns = $request->pt;
         $panelId = $request->panelId;
-        $pns = [$pn];
-        if ($p === 'holing' || $i === 'inline') {
-            switch ($pn) {
-                case 6714111020:
-                case 6715111020:
-                    $pns = [6714111020, 6715111020];
-                    break;
-
-                case 6714211020:
-                case 6715211020:
-                    $pns = [6714211020, 6715211020];
-                    break;
-            }
-        }
-        if ($p === 'molding' && $i === 'gaikan') {
-            switch ($pn) {
-                case 6714111020:
-                case 6715111020:
-                    $pns = [6714111020, 6715111020];
-                    break;
-
-                case 6714211020:
-                case 6715211020:
-                    $pns = [6714211020, 6715211020];
-                    break;
-            }
-        }
-
 
         $irs = $this->inspectionResult->forMappingByPanelId($p, $i, $pn, $panelId);
 

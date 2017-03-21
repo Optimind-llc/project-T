@@ -700,6 +700,26 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
+                'path'       => 'h_gaikan_doorInnerL_2.png',
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'pt_pn'      => 6714211020,
+                'page'       => 2,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_doorInnerL_3.png',
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'pt_pn'      => 6714211020,
+                'page'       => 3,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
                 'path'       => 'h_ana_doorInnerR_1.png',
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
@@ -707,6 +727,26 @@ class RelatedFigureTableSeeder extends Seeder
                 'page'       => 1,
                 'size_x'     => 1740,
                 'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_doorInnerR_2.png',
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'pt_pn'      => 6714111020,
+                'page'       => 2,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_doorInnerR_3.png',
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'pt_pn'      => 6714111020,
+                'page'       => 3,
+                'size_x'     => 1740,
+                'size_y'     => 980,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[

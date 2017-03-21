@@ -88,5 +88,79 @@ return [
         ['process' => 'jointing', 'inspection' => 'tenaoshi', 'part' => 'doorASSY RH'],
         ['process' => 'jointing', 'inspection' => 'tenaoshi', 'part' => 'luggageASSY STD'],
         ['process' => 'jointing', 'inspection' => 'tenaoshi', 'part' => 'luggageASSY ARW'],
+    ],
+    '950AMapping' => [
+        ['process' => 'molding',  'inspection' => 'gaikan', 'label' => 'ドアL', 'parts' => [6714211020, 6715211020]],
+        ['process' => 'molding',  'inspection' => 'gaikan', 'label' => 'ドアR', 'parts' => [6714111020, 6715111020]],
+        ['process' => 'molding',  'inspection' => 'gaikan', 'label' => 'ラゲージインナSTD', 'parts' => [6441211010]],
+        ['process' => 'molding',  'inspection' => 'gaikan', 'label' => 'ラゲージインナARW', 'parts' => [6441211020]],
+        ['process' => 'molding',  'inspection' => 'gaikan', 'label' => 'ラゲージアウタSTD', 'parts' => [6441111010]],
+        ['process' => 'molding',  'inspection' => 'gaikan', 'label' => 'ラゲージアウタARW', 'parts' => [6441111020]],
+
+        ['process' => 'molding',  'inspection' => 'inline', 'label' => 'ドアL', 'parts' => [6714211020, 6715211020]],
+        ['process' => 'molding',  'inspection' => 'inline', 'label' => 'ドアR', 'parts' => [6714111020, 6715111020]],
+        ['process' => 'molding',  'inspection' => 'inline', 'label' => 'ラゲージインナSTD', 'parts' => [6441211010]],
+        ['process' => 'molding',  'inspection' => 'inline', 'label' => 'ラゲージインナARW', 'parts' => [6441211020]],
+
+        ['process' => 'holing', 'inspection' => 'maegaikan', 'label' => 'ドアL', 'parts' => [6714211020, 6715211020]],
+        ['process' => 'holing', 'inspection' => 'maegaikan', 'label' => 'ドアR', 'parts' => [6714111020, 6715111020]],
+        ['process' => 'holing', 'inspection' => 'maegaikan', 'label' => 'ラゲージインナSTD', 'parts' => [6441211010]],
+        ['process' => 'holing', 'inspection' => 'maegaikan', 'label' => 'ラゲージインナARW', 'parts' => [6441211020]],
+
+        ['process' => 'holing', 'inspection' => 'atogaikan', 'label' => 'ドアL', 'parts' => [6714211020, 6715211020]],
+        ['process' => 'holing', 'inspection' => 'atogaikan', 'label' => 'ドアR', 'parts' => [6714111020, 6715111020]],
+        ['process' => 'holing', 'inspection' => 'atogaikan', 'label' => 'ラゲージインナSTD', 'parts' => [6441211010]],
+        ['process' => 'holing', 'inspection' => 'atogaikan', 'label' => 'ラゲージインナARW', 'parts' => [6441211020]],
+        ['process' => 'holing', 'inspection' => 'atogaikan', 'label' => 'ラゲージアウタSTD', 'parts' => [6441111010]],
+        ['process' => 'holing', 'inspection' => 'atogaikan', 'label' => 'ラゲージアウタARW', 'parts' => [6441111020]],
+
+        ['process' => 'holing', 'inspection' => 'ana', 'label' => 'ドアL', 'parts' => [6714211020, 6715211020]],
+        ['process' => 'holing', 'inspection' => 'ana', 'label' => 'ドアR', 'parts' => [6714111020, 6715111020]],
+        ['process' => 'holing', 'inspection' => 'ana', 'label' => 'ラゲージインナSTD', 'parts' => [6441211010]],
+        ['process' => 'holing', 'inspection' => 'ana', 'label' => 'ラゲージインナARW', 'parts' => [6441211020]],
+        ['process' => 'holing', 'inspection' => 'ana', 'label' => 'ラゲージアウタSTD', 'parts' => [6441111010]],
+        ['process' => 'holing', 'inspection' => 'ana', 'label' => 'ラゲージアウタARW', 'parts' => [6441111020]],
+
+        ['process' => 'holing', 'inspection' => 'tenaoshi', 'label' => 'ドアL', 'parts' => [6714211020, 6715211020]],
+        ['process' => 'holing', 'inspection' => 'tenaoshi', 'label' => 'ドアR', 'parts' => [6714111020, 6715111020]],
+        ['process' => 'holing', 'inspection' => 'tenaoshi', 'label' => 'ラゲージインナSTD', 'parts' => [6441211010]],
+        ['process' => 'holing', 'inspection' => 'tenaoshi', 'label' => 'ラゲージインナARW', 'parts' => [6441211020]],
+        ['process' => 'holing', 'inspection' => 'tenaoshi', 'label' => 'ラゲージアウタSTD', 'parts' => [6441111010]],
+        ['process' => 'holing', 'inspection' => 'tenaoshi', 'label' => 'ラゲージアウタARW', 'parts' => [6441111020]],
+
+
+        ['process' => 'jointing', 'inspection' => 'kashimego', 'label' => 'ドアL', 'parts' => [6714211020, 6715211020]],
+        ['process' => 'jointing', 'inspection' => 'kashimego', 'label' => 'ドアR', 'parts' => [6714111020, 6715111020]],
+        ['process' => 'jointing', 'inspection' => 'kashimego', 'label' => 'ラゲージインナSTD', 'parts' => [6441211010]],
+        ['process' => 'jointing', 'inspection' => 'kashimego', 'label' => 'ラゲージインナARW', 'parts' => [6441211020]],
+        ['process' => 'jointing', 'inspection' => 'kashimego', 'label' => 'ラゲージアウタSTD', 'parts' => [6441111010]],
+        ['process' => 'jointing', 'inspection' => 'kashimego', 'label' => 'ラゲージアウタARW', 'parts' => [6441111020]],
+
+        ['process' => 'jointing', 'inspection' => 'gaishushiage', 'label' => 'ラゲージアウタSTD', 'parts' => [6441111010]],
+        ['process' => 'jointing', 'inspection' => 'gaishushiage', 'label' => 'ラゲージアウタARW', 'parts' => [6441111020]],
+
+        ['process' => 'jointing', 'inspection' => 'pateshufukugo', 'label' => 'ラゲージアウタSTD', 'parts' => [6441111010]],
+        ['process' => 'jointing', 'inspection' => 'pateshufukugo', 'label' => 'ラゲージアウタARW', 'parts' => [6441111020]],
+
+        ['process' => 'jointing', 'inspection' => 'suikengo', 'label' => 'ラゲージアウタSTD', 'parts' => [6441111010]],
+        ['process' => 'jointing', 'inspection' => 'suikengo', 'label' => 'ラゲージアウタARW', 'parts' => [6441111020]],
+
+        ['process' => 'jointing', 'inspection' => 'tosoukeirego', 'label' => 'ラゲージアウタSTD', 'parts' => [6441111010]],
+        ['process' => 'jointing', 'inspection' => 'tosoukeirego', 'label' => 'ラゲージアウタARW', 'parts' => [6441111020]],
+
+        ['process' => 'jointing', 'inspection' => 'inline', 'label' => 'ドアASSY LH', 'parts' => [6701611020]],
+        ['process' => 'jointing', 'inspection' => 'inline', 'label' => 'ドアASSY RH', 'parts' => [6701511020]],
+        ['process' => 'jointing', 'inspection' => 'inline', 'label' => 'ラゲージASSY STD', 'parts' => [6440111010]],
+        ['process' => 'jointing', 'inspection' => 'inline', 'label' => 'ラゲージASSY ARW', 'parts' => [6440111020]],
+
+        ['process' => 'jointing', 'inspection' => 'gaikan', 'label' => 'ドアASSY LH', 'parts' => [6701611020]],
+        ['process' => 'jointing', 'inspection' => 'gaikan', 'label' => 'ドアASSY RH', 'parts' => [6701511020]],
+        ['process' => 'jointing', 'inspection' => 'gaikan', 'label' => 'ラゲージASSY STD', 'parts' => [6440111010]],
+        ['process' => 'jointing', 'inspection' => 'gaikan', 'label' => 'ラゲージASSY ARW', 'parts' => [6440111020]],
+
+        ['process' => 'jointing', 'inspection' => 'tenaoshi', 'label' => 'ドアASSY LH', 'parts' => [6701611020]],
+        ['process' => 'jointing', 'inspection' => 'tenaoshi', 'label' => 'ドアASSY RH', 'parts' => [6701511020]],
+        ['process' => 'jointing', 'inspection' => 'tenaoshi', 'label' => 'ラゲージASSY STD', 'parts' => [6440111010]],
+        ['process' => 'jointing', 'inspection' => 'tenaoshi', 'label' => 'ラゲージASSY ARW', 'parts' => [6440111020]],
     ]
 ];

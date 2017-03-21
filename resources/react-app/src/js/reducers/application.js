@@ -17,7 +17,8 @@ const initialState = {
     processes: [],
     inspections: [],
     partTypes: [],
-    combination: []
+    combination: [],
+    combination2: []
   },
   isFetching: false,
   didInvalidate: false
