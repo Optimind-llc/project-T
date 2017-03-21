@@ -885,6 +885,123 @@ class RelatedHoleTableSeeder extends Seeder
         DB::connection('950A')->table($table_name)->insert($data);
 
 
+        //かしめ後検査_ラゲージインナSTD
+        $luggageInnerSTD_kashimeHoles = [
+            [1, 1,  735,  366, 'top',   'square', 'solid', 'F5964F'],
+            [1, 2,  1003, 366, 'top',   'square', 'solid', 'F5964F'],
+            [1, 3,  711,  714, 'top',   'square', 'solid', 'F5964F'],
+            [1, 4,  665,  714, 'top',   'square', 'solid', 'F5964F'],
+            [1, 5,  678,  772, 'bottom','square', 'solid', 'F5964F'],
+            [1, 6,  439,  603, 'top',   'square', 'solid', 'F5964F'],
+            [1, 7,  624,  639, 'top',   'square', 'solid', 'F5964F'],
+            [1, 8,  1117, 640, 'top',   'square', 'solid', 'F5964F'],
+            [1, 9,  1302, 601, 'top',   'square', 'solid', 'F5964F'],
+            [1, 10, 423,  709, 'bottom','square', 'solid', 'F5964F'],
+            [1, 11, 614,  768, 'bottom','square', 'solid', 'F5964F'],
+            [1, 12, 1127, 768, 'bottom','square', 'solid', 'F5964F'],
+            [1, 13, 1318, 706, 'bottom','square', 'solid', 'F5964F'],
+        ];
+
+        //かしめ後検査_ラゲージインナSTD
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6441211010,
+                'figure_id'  => $getFigureId(6441211010, 'jointing', 'kashimego', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$luggageInnerSTD_kashimeHoles);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //かしめ後検査_ラゲージインナARW
+        $luggageInnerARW_kashimeHoles = [
+            [1, 1,  735,  366, 'top',   'square', 'solid', 'F5964F'],
+            [1, 2,  1003, 366, 'top',   'square', 'solid', 'F5964F'],
+            [1, 3,  711,  714, 'top',   'square', 'solid', 'F5964F'],
+            [1, 4,  665,  714, 'top',   'square', 'solid', 'F5964F'],
+            [1, 5,  678,  772, 'bottom','square', 'solid', 'F5964F'],
+            [1, 6,  439,  603, 'top',   'square', 'solid', 'F5964F'],
+        ];
+
+        //かしめ後検査_ラゲージインナARW
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6441211020,
+                'figure_id'  => $getFigureId(6441211020, 'jointing', 'kashimego', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$luggageInnerARW_kashimeHoles);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //かしめ後検査_ラゲージアウタSTD
+        $luggageOuterSTD_kashimeHoles = [
+            [1, 1,  626,  343, 'top',   'square', 'solid', '36859A'],
+            [1, 2,  1115, 340, 'top',   'square', 'solid', '36859A'],
+        ];
+
+        //かしめ後検査_ラゲージアウタSTD
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6441111010,
+                'figure_id'  => $getFigureId(6441111010, 'jointing', 'kashimego', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$luggageOuterSTD_kashimeHoles);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //かしめ後検査_ラゲージインナARW
+        $luggageOuterARW_kashimeHoles = [
+            [1, 1, 626,  343, 'top',   'square', 'solid', '36859A'],
+            [1, 2, 1115, 340, 'top',   'square', 'solid', '36859A'],
+            [1, 3, 336,  598, 'left',  'square', 'solid', '36859A'],
+            [1, 4, 727,  651, 'top',   'square', 'solid', '36859A'],
+            [1, 5, 1017, 651, 'top',   'square', 'solid', '36859A'],
+            [1, 6, 1407, 597, 'right', 'square', 'solid', '36859A'],
+            [1, 7, 750,  772, 'bottom','square', 'solid', '36859A'],
+            [1, 8, 996,  772, 'bottom','square', 'solid', '36859A'],
+        ];
+
+        //かしめ後検査_ラゲージアウタARW
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6441111020,
+                'figure_id'  => $getFigureId(6441111020, 'jointing', 'kashimego', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$luggageOuterARW_kashimeHoles);
+        DB::connection('950A')->table($table_name)->insert($data);
+
         if (env('DB_CONNECTION') == 'mysql') {
             DB::connection('950A')->statement('SET FOREIGN_KEY_CHECKS=1;');
         }
