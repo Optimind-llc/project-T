@@ -189,7 +189,12 @@ class InspectionController extends Controller
                     $hs = $part['holes'];
                 }
 
-                $this->inspectionResult->create($param, $fs, $ms, $hs);
+                $uhs = [];
+                if (array_key_exists('updatedHoles', $part)) {
+                    $uhs = $part['updatedHoles'];
+                }
+
+                $this->inspectionResult->create($param, $fs, $ms, $hs, $uhs);
             }
         }
 

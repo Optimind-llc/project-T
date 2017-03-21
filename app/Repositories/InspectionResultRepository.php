@@ -180,7 +180,7 @@ class InspectionResultRepository
     }
     
 
-    public function create($param, $fs, $ms, $hs)
+    public function create($param, $fs, $ms, $hs, $uhs)
     {
         $new = new InspectionResult;
         $new->part_id = $param['part_id'];
@@ -212,6 +212,11 @@ class InspectionResultRepository
         // Create holes
         if (count($hs) !== 0) {
             $this->createHoles($new->id, $param['part_id'], $hs);
+        }
+
+        // Update holes (for holing tenaoshi)
+        if (count($uhs) !== 0) {
+            $this->updateHoles($new->id, $param['part_id'], $uhs);
         }
 
         return $new;
