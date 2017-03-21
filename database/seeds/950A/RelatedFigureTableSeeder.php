@@ -702,7 +702,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_doorInnerL_2.png',
                 'process'    => 'holing',
-                'inspection' => 'maegaikan',
+                'inspection' => 'tenaoshi',
                 'pt_pn'      => 6714211020,
                 'page'       => 2,
                 'size_x'     => 1740,
@@ -712,7 +712,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_doorInnerL_3.png',
                 'process'    => 'holing',
-                'inspection' => 'maegaikan',
+                'inspection' => 'tenaoshi',
                 'pt_pn'      => 6714211020,
                 'page'       => 3,
                 'size_x'     => 1740,
@@ -732,7 +732,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_doorInnerR_2.png',
                 'process'    => 'holing',
-                'inspection' => 'maegaikan',
+                'inspection' => 'tenaoshi',
                 'pt_pn'      => 6714111020,
                 'page'       => 2,
                 'size_x'     => 1740,
@@ -742,7 +742,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],[
                 'path'       => 'h_gaikan_doorInnerR_3.png',
                 'process'    => 'holing',
-                'inspection' => 'maegaikan',
+                'inspection' => 'tenaoshi',
                 'pt_pn'      => 6714111020,
                 'page'       => 3,
                 'size_x'     => 1740,
