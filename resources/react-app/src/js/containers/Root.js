@@ -18,6 +18,7 @@ import Hole from '../modules/hole/containers/hole';
 
 import Dashboard950A from '../modules/Vehicle950A/dashboard/containers/dashboard';
 import Mapping950A from '../modules/Vehicle950A/mapping/containers/mapping';
+import Reference950A from '../modules/Vehicle950A/reference/containers/reference';
 import Report950A from '../modules/Vehicle950A/report/containers/report';
 import Association950A from '../modules/Vehicle950A/association/containers/association';
 
@@ -39,7 +40,7 @@ class Root extends Component {
             <Route name="950A" path="950A">
               <Route name="ダッシュボード" path="dashboard" component={Dashboard950A}/>
               <Route name="マッピング" path="mapping" component={Mapping950A}/>
-              <Route name="検査結果照会" path="reference" component={Dashboard950A}/>
+              <Route name="検査結果照会" path="reference" component={Reference950A}/>
               <Route name="直レポート" path="report" component={Report950A}/>
               <Route name="マッピング" path="association" component={Association950A}/>
               <Route path="maintenance">

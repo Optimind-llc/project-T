@@ -22,6 +22,7 @@ class Association extends Component {
     this.state = {
       narrowedBy: 'date',
       type: {label: 'ドアL', value: 'doorL'},
+      partType: {label: '全て', value: ['doorInnerL','doorInnerR','reinforceL','reinforceR','luggageInnerSTD','luggageInnerARW','luggageOuterSTD','luggageOuterARW']},
       partTId: null,
       panelId: '',
       startDate: moment(),
@@ -58,7 +59,7 @@ class Association extends Component {
 
   render() {
     const { PartFData, UpdatePartFData, MappingData } = this.props;
-    const { narrowedBy, type, startDate, startHour, endDate, endHour, partTId, panelId } = this.state;
+    const { narrowedBy, type, startDate, startHour, endDate, endHour, partType, partTId, panelId } = this.state;
 
     let table = [];
     if (PartFData.data != null && !PartFData.isFetching) {
@@ -85,7 +86,7 @@ class Association extends Component {
                 className={`row selectable ${narrowedBy === 'date' ? 'selected' : ''}`}
                 onClick={() => this.setState({narrowedBy: 'date'})}
               >
-                <p>種類：</p>
+                <p>種類</p>
                 <Select
                   name="種類"
                   className="width140"
@@ -101,7 +102,7 @@ class Association extends Component {
                   ]}
                   onChange={type => this.setState({type})}
                 />
-                <p style={{marginLeft: 12}}>期間：</p>
+                <p style={{marginLeft: 12}}>期間</p>
                 <CustomCalendar
                   defaultDate={startDate}
                   changeDate={d => this.setState({startDate: d})}
@@ -196,22 +197,44 @@ class Association extends Component {
                 className={`row selectable ${narrowedBy === 'panelId' ? 'selected' : ''}`}
                 onClick={() => this.setState({narrowedBy: 'panelId'})}
               >
-                <p>パネルID：</p>
+                <p>部品</p>
+                <Select
+                  name="種類"
+                  className="width200"
+                  placeholder="種類を選択"
+                  clearable={false}
+                  Searchable={true}
+                  value={partType}
+                  options={[
+                    {label: 'ドアインナL', value: ['doorInnerL']},
+                    {label: 'ドアインナR', value: ['doorInnerR']},
+                    {label: 'リンフォースL', value: ['reinforceL']},
+                    {label: 'リンフォースR', value: ['reinforceR']},
+                    {label: 'ラゲージインナSTD', value: ['luggageInnerSTD']},
+                    {label: 'ラゲージインナARW', value: ['luggageInnerARW']},
+                    {label: 'ラゲージインナSTD', value: ['luggageOuterSTD']},
+                    {label: 'ラゲージインナARW', value: ['luggageOuterARW']},
+                    {label: '全て', value: ['doorInnerL','doorInnerR','reinforceL','reinforceR','luggageInnerSTD','luggageInnerARW','luggageOuterSTD','luggageOuterARW']}
+                  ]}
+                  onChange={partType => this.setState({partType})}
+                />
+                <p>パネルID</p>
                 <input
                   type="text"
                   value={panelId}
-                  style={{width: 140}}
+                  style={{width: 120}}
                   onChange={e => this.setState({panelId: e.target.value})}
                 />
               </div>
             </div>
+            <button
+              className="serch dark"
+              onClick={() => this.serch()}
+            >
+              <p>この条件で検索</p>
+            </button>
           </div>
-          <button
-            className="serch dark"
-            onClick={() => this.serch()}
-          >
-            <p>この条件で検索</p>
-          </button>
+
         </div>
         {
           PartFData.isFetching &&
@@ -220,11 +243,11 @@ class Association extends Component {
           PartFData.data != null && !PartFData.isFetching &&
           <div className="result bg-white">
             {
-              PartFData.data.count < 1000 &&
+              PartFData.data.count < 100 &&
               <p className="result-count">{`${PartFData.data.count}件中 ${PartFData.data.families.length}件表示`}</p>
             }{
-              PartFData.data.count >= 1000 &&
-              <p className="result-count">{`${PartFData.data.count}件中 1000件表示`}</p>
+              PartFData.data.count >= 100 &&
+              <p className="result-count">{`${PartFData.data.count}件中 100件表示`}</p>
             }
             <button className="download dark" onClick={() => handleDownload(table)}>
               <p>CSVをダウンロード</p>
@@ -232,30 +255,17 @@ class Association extends Component {
             <table>
               <thead>
                 <tr>
-                  <th colSpan={1} rowSpan={3}>No.</th>
-                  <th colSpan={1} rowSpan={3}>更新日</th>
-                  <th colSpan={1}>インナー</th>
-                  <th colSpan={5}>アウター</th>
-                  <th colSpan={1}>ASSY</th>
-                  <th colSpan={1} rowSpan={3}>機能</th>
+                  <th colSpan={1} rowSpan={2}>No.</th>
+                  <th colSpan={1} rowSpan={2}>更新日</th>
+                  <th colSpan={1}>ドアインナL</th>
+                  <th colSpan={1}>リンフォースL</th>
+                  <th colSpan={1}>ドアASSY LH</th>
+                  <th colSpan={1} rowSpan={2}>機能</th>
                 </tr>
                 <tr>
-                  <th>バックドアインナー</th>
-                  <th>アッパー</th>
-                  <th>サイドアッパーLH</th>
-                  <th>サイドアッパーRH</th>
-                  <th>サイドロアLH</th>
-                  <th>サイドロアRH</th>
-                  <th>バックドアインナASSY</th>
-                </tr>
-                <tr>
-                  <th>67149 47060 000</th>
-                  <th>67119 47060 000</th>
-                  <th>67176 47060 000</th>
-                  <th>67175 47060 000</th>
-                  <th>67178 47010 000</th>
-                  <th>67177 47050 000</th>
-                  <th>67007 47120 000</th>
+                  <th>6714211020</th>
+                  <th>6715211020</th>
+                  <th>6701611020</th>
                 </tr>
               </thead>
               <tbody>
@@ -378,7 +388,7 @@ class Association extends Component {
                 }{
                   PartFData.data && PartFData.data.families.length == 0 &&
                   <tr className="content">
-                    <td colSpan="10">結果なし</td>
+                    <td colSpan="10">検査結果なし</td>
                   </tr>
                 }
               </tbody>

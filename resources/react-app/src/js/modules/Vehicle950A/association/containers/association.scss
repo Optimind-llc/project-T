@@ -2,17 +2,20 @@
   padding: 4px 4px 0 4px;
 
   .select-wrap {
-    float: left;
+    padding-bottom: 6px;
 
     > div.row {
-      padding: 10px 0 10px 10px;
-
-      &:last-child {
-        padding-top: 0;
-      }
+      padding: 6px;
 
       > div.row {
         padding: 6px;
+
+        &:first-child {
+          margin-right: 2px;
+        }
+        &:last-child {
+          margin-left: 2px;
+        }
       }
     }
 
@@ -22,6 +25,9 @@
       }
 
       > div.Select {
+        &.width200 {
+          width: 200px;
+        }
         &.width140 {
           width: 140px;
         }

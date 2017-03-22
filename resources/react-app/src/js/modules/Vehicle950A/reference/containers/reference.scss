@@ -1,0 +1,94 @@
+#reference-950A-wrap {
+  padding: 4px 4px 0 4px;
+
+  .reference-header {
+    .select-wrap {
+  		padding-bottom: 6px;
+
+      > div.row {
+        margin: 6px;
+
+        &:last-child {
+          margin-top: 0;
+
+
+          > div.column {
+            margin-right: 4px;
+            float: left;
+          }
+        }
+      }
+
+    	div.row, div.column {
+        > div, > span, > p {
+          float: left;
+          margin-right: 12px;
+        }
+
+        > div.Select {
+          width: 260px;
+
+          &.width140 {
+            width: 140px;
+          }
+        }
+
+        > p {
+          margin-right: 4px;
+          height: 30px;
+          line-height: 30px;
+          text-align: right;
+        }
+
+        p.realtime {
+          width: 164px;
+          text-align: center;
+          margin: 0;
+        }
+
+        &::after {
+          content: '';
+          display: block;
+          clear: both;
+        }
+    	}
+    }
+
+    button.show {
+      display: block;
+      float: right;
+      margin: 10px 10px 10px 0;
+      background-color: #4A4A4A;
+      border: 1px solid #4A4A4A;
+      border-radius: 4px;
+      color: #FFF;
+      height: 84px;
+      width: 60px;
+
+      &:hover {
+        box-shadow: 0 0 5px #4A4A4A;
+      }
+
+      &:active {
+        box-shadow: none;
+      }
+
+      &.disabled {
+        cursor: not-allowed;
+        pointer-events : none;
+        background-color: #FFF;          
+        border: 1px solid #BBB;
+        color: #BBB;
+        &:hover, :active {
+          box-shadow: none;
+        }
+      }
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+  }
+}

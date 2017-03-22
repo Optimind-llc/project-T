@@ -125,7 +125,7 @@ class RelatedInspectionGroupTableSeeder extends Seeder
             ],[
                 'name'       => '手直',
                 'en'         => 'tenaoshi',
-                'sort'       => 8,
+                'sort'       => 12,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
