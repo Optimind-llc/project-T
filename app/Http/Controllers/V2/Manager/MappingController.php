@@ -54,6 +54,11 @@ class MappingController extends Controller
     {
         $p = $request->p;
         $i = $request->i;
+        $is = [$request->i];
+        if ($p === 'holing' && $request->i === 'tenaoshi') {
+            $is = ['tenaoshi', 'ana'];
+        }
+
         $line = 1;
         $pns = $request->pt;
 
@@ -70,7 +75,7 @@ class MappingController extends Controller
         $holeModificationTypes = $this->holeModificationType->getByIds($irs['hmt_ids']);
 
         $figures = Figure::where('process', '=', $p)
-            ->where('inspection', '=', $i)
+            ->whereIn('inspection', $is)
             ->whereIn('pt_pn', $pns)
             ->orderBy('page')
             ->select(['id', 'page', 'path'])
@@ -87,6 +92,10 @@ class MappingController extends Controller
         if ($i === 'ana' || $i === 'kashimego') {
             $holeTypes = $this->holeType->getAllByPns($pns);
         }
+        if ($p === 'holing' && $i === 'tenaoshi') {
+            $holeTypes = $this->holeType->getAllByPns($pns);
+        }
+
 
         $inlineTypes = [];
         if ($i === 'inline') {
@@ -111,6 +120,11 @@ class MappingController extends Controller
     {
         $p = $request->p;
         $i = $request->i;
+        $is = [$request->i];
+        if ($p === 'holing' && $request->i === 'tenaoshi') {
+            $is = ['tenaoshi', 'ana'];
+        }
+
         $line = 1;
         $pns = $request->pt;
         $chokus = $request->c;
@@ -126,8 +140,9 @@ class MappingController extends Controller
         $holeModificationTypes = $this->holeModificationType->getByIds($irs['hmt_ids']);
 
         $figures = Figure::where('process', '=', $p)
-            ->where('inspection', '=', $i)
+            ->whereIn('inspection', $is)
             ->whereIn('pt_pn', $pns)
+            ->orderBy('inspection', 'desc')
             ->orderBy('page')
             ->select(['id', 'page', 'path'])
             ->get()
@@ -141,7 +156,10 @@ class MappingController extends Controller
 
         $holeTypes = [];
         if ($i === 'ana' || $i === 'kashimego') {
-            $holeTypes = $this->holeType->getAllByPns($pns);
+            $holeTypes = $this->holeType->getAllByPns($pns, $i);
+        }
+        if ($p === 'holing' && $i === 'tenaoshi') {
+            $holeTypes = $this->holeType->getAllByPns($pns, 'ana');
         }
 
         $inlineTypes = [];
@@ -152,6 +170,7 @@ class MappingController extends Controller
         return [
             'data' => [
                 'count' => $irs['count'],
+                'i' => $i,
                 'result' => $irs['result'],
                 'figures' => $figures,
                 'failureTypes' => $failureTypes,

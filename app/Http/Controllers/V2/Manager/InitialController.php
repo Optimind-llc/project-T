@@ -11,6 +11,8 @@ use App\Models\Vehicle950A\Choku;
 use App\Models\Vehicle950A\Process;
 use App\Models\Vehicle950A\Inspection;
 use App\Models\Vehicle950A\PartType;
+use App\Models\Vehicle950A\FailureType;
+use App\Models\Vehicle950A\ModificationType;
 // Exceptions
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -38,6 +40,8 @@ class InitialController extends Controller
         $partTypes = PartType::select(['pn', 'en', 'name'])->orderBy('sort')->get();
         $combination = collect(config('part.950A'));
         $combination2 = collect(config('part.950AMapping'));
+        $failureTypes = FailureType::select(['id', 'name'])->orderBy('label')->get();
+        $modificationTypes = ModificationType::select(['id', 'name'])->orderBy('label')->get();
 
         return [
             'data' => [
@@ -46,7 +50,9 @@ class InitialController extends Controller
                 'inspections' => $inspections,
                 'partTypes' => $partTypes,
                 'combination' => $combination,
-                'combination2' => $combination2
+                'combination2' => $combination2,
+                'failureTypes' => $failureTypes,
+                'modificationTypes' => $modificationTypes
             ]
         ];
     }

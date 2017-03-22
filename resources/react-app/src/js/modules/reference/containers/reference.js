@@ -145,7 +145,6 @@ class Reference extends Component {
             // let status = '○';
             // if ( value.status > value.max || value.status < value.min ) {status = '×';}
             // result.push(status);
-            console.log(value);
             result.push(value);
           })
         }

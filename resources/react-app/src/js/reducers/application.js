@@ -18,7 +18,9 @@ const initialState = {
     inspections: [],
     partTypes: [],
     combination: [],
-    combination2: []
+    combination2: [],
+    failureTypes: [],
+    modificationTypes: []
   },
   isFetching: false,
   didInvalidate: false

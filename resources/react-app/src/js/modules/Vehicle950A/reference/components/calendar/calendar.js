@@ -75,7 +75,7 @@ class CustomCalendar extends Component {
                     border: '1px solid #ccc',
                     padding: '0 10px',
                     margin: 0,
-                    width: 180,
+                    width: 200,
                     height: 30,
                     borderRadius: 4,
                     color: disabled ? '#BBB' : '#000',

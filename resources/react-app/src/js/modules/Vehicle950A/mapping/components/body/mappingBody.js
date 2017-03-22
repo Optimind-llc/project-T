@@ -530,96 +530,113 @@ class MappingBody extends Component {
                 active === 'hole' &&
                 data.holeTypes.map((ht, i, self) => {
                   const split = Math.ceil(Math.sqrt(data.figures.length));
-                  const page = data.figures.find(fig => fig.id == ht.fig).page;
 
-                  let disable = false;
-                  if (hFilter !== 1) {
-                    const count = hStatus.filter(h => h.s === hFilter && h.id === ht.id).length;
-                    disable = count === 0;
-                  } else {
-                    const count = hStatus.filter(h => h.id === ht.id).length;
-                    disable = count === data.count;
+                  const figure = data.figures.find(fig => fig.id == ht.fig);
+
+                  if(figure) {
+                    let page = figure.page;
+                    if(data.i === 'tenaoshi') {
+                      page = page + 4;
+                    }
+
+                    let disable = false;
+                    if (hFilter !== 1) {
+                      const count = hStatus.filter(h => h.s === hFilter && h.id === ht.id).length;
+                      disable = count === 0;
+                    } else {
+                      const count = hStatus.filter(h => h.id === ht.id).length;
+                      disable = count === data.count;
+                    }
+
+                    const x = ht.x/2/split + (870/split)*((page+(split-1))%split);
+                    const y = ht.y/2/split + (515/split)*(Math.ceil(page/split)-1);
+
+                    let lx = 0;
+                    let ly = 0;
+                    switch (ht.d) {
+                      case 'left':   lx = x-(34/split); ly = y - 3; break;
+                      case 'right':  lx = x+(34/split); ly = y - 3; break;
+                      case 'top':    ly = y-(30/split) - 2; lx = x; break;
+                      case 'bottom': ly = y+(30/split) - 2; lx = x; break;
+                      default: break;
+                    }
+
+                    return (
+                      <g>
+                        <circle
+                          cx={x}
+                          cy={y}
+                          r={disable ? 3 : 4}
+                          fill={disable ? 'rgba(255,0,0,0.4)' : 'rgba(255,0,0,1)'} 
+                        />
+                        <text
+                          x={lx}
+                          y={ly}
+                          dy="6"
+                          fontSize="8"
+                          fill={disable ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
+                          textAnchor="middle"
+                          fontWeight="bold"
+                        >
+                          {ht.l}
+                        </text>
+                      </g>
+                    );
                   }
-
-                  const x = ht.x/2/split + (870/split)*((page+(split-1))%split);
-                  const y = ht.y/2/split + (515/split)*(Math.ceil(page/split)-1);
-
-                  let lx = 0;
-                  let ly = 0;
-                  switch (ht.d) {
-                    case 'left':   lx = x-(34/split); ly = y - 3; break;
-                    case 'right':  lx = x+(34/split); ly = y - 3; break;
-                    case 'top':    ly = y-(30/split) - 2; lx = x; break;
-                    case 'bottom': ly = y+(30/split) - 2; lx = x; break;
-                    default: break;
-                  }
-
-                  return (
-                    <g>
-                      <circle
-                        cx={x}
-                        cy={y}
-                        r={disable ? 3 : 4}
-                        fill={disable ? 'rgba(255,0,0,0.4)' : 'rgba(255,0,0,1)'} 
-                      />
-                      <text
-                        x={lx}
-                        y={ly}
-                        dy="6"
-                        fontSize="8"
-                        fill={disable ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
-                        textAnchor="middle"
-                        fontWeight="bold"
-                      >
-                        {ht.l}
-                      </text>
-                    </g>
-                  );
                 })
               }{
                 active === 'holeModification' &&
                 data.holeTypes.map((ht, i, self) => {
                   const split = Math.ceil(Math.sqrt(data.figures.length));
-                  const page = data.figures.find(fig => fig.id == ht.fig).page;
 
-                  let disable = false;
-                  const count = hStatus.filter(h => hmFilter.indexOf(h.hm) === -1 && h.hm !== -1 &&h.id === ht.id).length;
-                  disable = count === 0;
+                  const figure = data.figures.find(fig => fig.id == ht.fig);
 
-                  const x = ht.x/2/split + (870/split)*((page+2)%3);
-                  const y = ht.y/2/split + (515/split)*(Math.ceil(page/3)-1);
+                  if(figure) {
+                    let page = figure.page;
 
-                  let lx = 0;
-                  let ly = 0;
-                  switch (ht.d) {
-                    case 'left':   lx = x-(34/split); ly = y - 3; break;
-                    case 'right':  lx = x+(34/split); ly = y - 3; break;
-                    case 'top':    ly = y-(30/split) - 2; lx = x; break;
-                    case 'bottom': ly = y+(30/split) - 2; lx = x; break;
-                    default: break;
+                    if(data.i === 'tenaoshi') {
+                      page = page + 4;
+                    }
+
+                    let disable = false;
+                    const count = hStatus.filter(h => hmFilter.indexOf(h.hm) === -1 && h.hm !== -1 &&h.id === ht.id).length;
+                    disable = count === 0;
+
+                    const x = ht.x/2/split + (870/split)*((page+(split-1))%split);
+                    const y = ht.y/2/split + (515/split)*(Math.ceil(page/split)-1);
+
+                    let lx = 0;
+                    let ly = 0;
+                    switch (ht.d) {
+                      case 'left':   lx = x-(34/split); ly = y - 3; break;
+                      case 'right':  lx = x+(34/split); ly = y - 3; break;
+                      case 'top':    ly = y-(30/split) - 2; lx = x; break;
+                      case 'bottom': ly = y+(30/split) - 2; lx = x; break;
+                      default: break;
+                    }
+
+                    return (
+                      <g>
+                        <circle
+                          cx={x}
+                          cy={y}
+                          r={disable ? 3 : 4}
+                          fill={disable ? 'rgba(255,0,0,0.4)' : 'rgba(255,0,0,1)'} 
+                        />
+                        <text
+                          x={lx}
+                          y={ly}
+                          dy="6"
+                          fontSize="8"
+                          fill={disable ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
+                          textAnchor="middle"
+                          fontWeight="bold"
+                        >
+                          {ht.l}
+                        </text>
+                      </g>
+                    );
                   }
-
-                  return (
-                    <g>
-                      <circle
-                        cx={x}
-                        cy={y}
-                        r={disable ? 3 : 4}
-                        fill={disable ? 'rgba(255,0,0,0.4)' : 'rgba(255,0,0,1)'} 
-                      />
-                      <text
-                        x={lx}
-                        y={ly}
-                        dy="6"
-                        fontSize="8"
-                        fill={disable ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,1)'}
-                        textAnchor="middle"
-                        fontWeight="bold"
-                      >
-                        {ht.l}
-                      </text>
-                    </g>
-                  );
                 })
               }{
                 active === 'inline' &&

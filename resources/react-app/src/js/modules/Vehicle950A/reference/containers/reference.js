@@ -78,6 +78,15 @@ class Reference extends Component {
       return pre;
     }, [{ label: '全直', value: ['W','Y','B'] }]);
 
+    const failureTypes = InitialData.failureTypes.map(ft => {
+      return {label: ft.name, value: ft.id};
+    });
+    const modificationTypes = InitialData.modificationTypes.map(mt => {
+      return {label: mt.name, value: mt.id};
+    });
+
+    const SerchedData = {};
+
     return (
       <div id="reference-950A-wrap">
         <div className="bg-white reference-header">
@@ -116,47 +125,80 @@ class Reference extends Component {
             </div>
             <div className="row">
               <div
-                className={`column selectable ${narrowedBy === 'date' ? 'selected' : ''}`}
-                onClick={() => this.setState({narrowedBy: 'date'})}
+                className={`column selectable ${narrowedBy === 'advanced' ? 'selected' : ''}`}
+                onClick={() => this.setState({narrowedBy: 'advanced'})}
               >
-                <p>直</p>
-                <Select
-                  name="直"
-                  className="width140"
-                  placeholder="直を選択"
-                  clearable={false}
-                  Searchable={true}
-                  value={choku}
-                  options={chokus}
-                  onChange={choku => this.setState({choku})}
-                />
-                <p>判定*</p>
-                <Select
-                  name="判定"
-                  placeholder="直を選択"
-                  clearable={false}
-                  Searchable={true}
-                  value={judge}
-                  options={[
-                    {label: '○', value: [1]},
-                    {label: '×', value: [0]},
-                    {label: '△', value: [2]},
-                    {label: '両方', value: [0,1,2]}
-                  ]}
-                  onChange={judge => this.setState({judge})}
-                />
-                <p>期間</p>
-                <CustomCalendar
-                  defaultDate={startDate}
-                  changeDate={startDate => this.setState({startDate})}
-                  disabled={false}
-                />
-                <p>〜</p>
-                <CustomCalendar
-                  defaultDate={endDate}
-                  changeDate={endDate => this.setState({endDate})}
-                  disabled={false}
-                />
+                <div className="row">
+                  <p>直*</p>
+                  <Select
+                    name="直"
+                    className="width140"
+                    placeholder="直を選択"
+                    clearable={false}
+                    Searchable={true}
+                    value={choku}
+                    options={chokus}
+                    onChange={choku => this.setState({choku})}
+                  />
+                  <p>判定*</p>
+                  <Select
+                    name="判定"
+                    placeholder="判定を選択"
+                    className="width140"
+                    clearable={false}
+                    Searchable={true}
+                    value={judge}
+                    options={[
+                      {label: '○', value: [1]},
+                      {label: '×', value: [0]},
+                      {label: '△', value: [2]},
+                      {label: '両方', value: [0,1,2]}
+                    ]}
+                    onChange={judge => this.setState({judge})}
+                  />
+                  <p>期間*</p>
+                  <CustomCalendar
+                    defaultDate={startDate}
+                    changeDate={startDate => this.setState({startDate})}
+                    disabled={false}
+                  />
+                  <p>〜</p>
+                  <CustomCalendar
+                    defaultDate={endDate}
+                    changeDate={endDate => this.setState({endDate})}
+                    disabled={false}
+                  />
+                </div>
+                <div className="row">
+                  <p>不良</p>
+                  <Select
+                    name="不良"
+                    placeholder="不良区分を選択"
+                    className="width454"
+                    clearable={true}
+                    Searchable={false}
+                    multi={true}
+                    value={requiredF}
+                    options={failureTypes}
+                    onChange={f => {
+                      this.setState({requiredF: f, requiredM: []});
+                    }}
+                  />
+                  <p>手直</p>
+                  <Select
+                    name="手直"
+                    placeholder="手直区分を選択"
+                    className="width454"
+                    clearable={false}
+                    Searchable={false}
+                    multi={true}
+                    value={requiredM}
+                    options={modificationTypes}
+                    onChange={m => {
+                      this.setState({requiredF: [], requiredM: m});
+                    }}
+                  />
+                </div>
               </div>
               <div
                 className={`column selectable ${narrowedBy === 'panelId' ? 'selected' : ''}`}
@@ -166,39 +208,37 @@ class Reference extends Component {
                 <input
                   type="text"
                   value={panelId}
-                  style={{width: 140}}
                   onChange={e => this.setState({panelId: e.target.value})}
                 />
               </div>
             </div>
           </div>
           <button
-            className={`show ${pt === null ? 'disabled' : ''}`}
-            onClick={() => {
-              if(i.value === 'inline') {
-                name = 'inline';
-              }
-              else if(i.value === 'ana') {
-                name = 'hole';
-              }
-              else {
-                name = 'failure';
-              }
-
-              const time = new Date().getTime();
-              this.setState({ defaultActiveTab: { name, time }});
-
-              this.requestMappingData();
-              clearInterval(intervalId);
-              if (narrowedBy === 'realtime') {
-                this.startInterval();
-              }
-            }}
+            className="serch dark"
+            onClick={() => this.serch()}
           >
-            表示
+            <p>この条件で検索</p>
           </button>
         </div>
-        <p>reference-950A-wrap</p>
+        <div className="bg-white reference-result">
+          {
+            SerchedData.isFetching &&
+            <p>検索中...</p>
+          }{
+            SerchedData.data != null && !SerchedData.isFetching &&
+            <CustomTable
+              count={SerchedData.data.count}
+              data={SerchedData.data.parts}
+              failures={SerchedData.data.f}
+              holes={SerchedData.data.h}
+              modifications={SerchedData.data.m}
+              hModifications={SerchedData.data.hm}
+              inlines={SerchedData.data.i}
+              download={() => handleDownload(table)}
+            />
+          }
+        </div>
+
       </div>
     );
   }

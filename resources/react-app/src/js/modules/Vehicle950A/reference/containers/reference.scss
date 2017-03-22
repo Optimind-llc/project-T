@@ -2,24 +2,43 @@
   padding: 4px 4px 0 4px;
 
   .reference-header {
-    .select-wrap {
-  		padding-bottom: 6px;
+    padding-bottom: 6px;
 
-      > div.row {
-        margin: 6px;
+    .select-wrap {
+      div.row {
+        padding: 6px;
 
         &:last-child {
-          margin-top: 0;
-
+          padding-top: 0;
 
           > div.column {
-            margin-right: 4px;
             float: left;
+            margin-right: 4px;
+
+            &:first-child {
+              width: 1000px;
+              .Select .Select-menu-outer .Select-option {
+                padding: 3px 10px;
+                font-size: 14px;
+              }
+            }
+
+            &:last-child {
+              margin-right: 0;
+              padding: 10px;
+              height: 78px;
+              width: calc(100% - 1004px);
+              min-width: 165px;
+
+              > input {
+                width: 100%;
+              }
+            }
           }
         }
       }
 
-    	div.row, div.column {
+    	div.row {
         > div, > span, > p {
           float: left;
           margin-right: 12px;
@@ -28,8 +47,18 @@
         > div.Select {
           width: 260px;
 
+          &:last-child {
+            margin-right: 0;
+          }
+
+          &.width454 {
+            width: 454px;
+          }
           &.width140 {
             width: 140px;
+          }
+          &.width100 {
+            width: 100px;
           }
         }
 
@@ -54,35 +83,9 @@
     	}
     }
 
-    button.show {
+    button.serch {
       display: block;
-      float: right;
-      margin: 10px 10px 10px 0;
-      background-color: #4A4A4A;
-      border: 1px solid #4A4A4A;
-      border-radius: 4px;
-      color: #FFF;
-      height: 84px;
-      width: 60px;
-
-      &:hover {
-        box-shadow: 0 0 5px #4A4A4A;
-      }
-
-      &:active {
-        box-shadow: none;
-      }
-
-      &.disabled {
-        cursor: not-allowed;
-        pointer-events : none;
-        background-color: #FFF;          
-        border: 1px solid #BBB;
-        color: #BBB;
-        &:hover, :active {
-          box-shadow: none;
-        }
-      }
+      margin: 0 auto;
     }
 
     &::after {

@@ -17,11 +17,14 @@ class HoleTypeRepository
             ->get();
     }
 
-    public function getAllByPns($pns)
+    public function getAllByPns($pns, $inspection)
     {
-        return HoleType::whereIn('pt_pn', $pns)
-            ->orderBy('pt_pn')
-            ->orderBy('label')
+        return HoleType::join('figures as fig', function($join) use($inspection) {
+                $join->on('fig.id', '=', 'hole_types.figure_id')->where('fig.inspection', '=', $inspection);
+            })
+            ->whereIn('hole_types.pt_pn', $pns)
+            ->orderBy('hole_types.pt_pn')
+            ->orderBy('hole_types.label')
             ->get()
             ->map(function($ht) {
                 return [
@@ -31,7 +34,8 @@ class HoleTypeRepository
                     'y' => $ht->y,
                     'l' => $ht->label,
                     'd' => $ht->direction,
-                    'fig' => $ht->figure_id
+                    'fig' => $ht->figure_id,
+                    'i' => $ht->inspection
                 ];
             });
     }
