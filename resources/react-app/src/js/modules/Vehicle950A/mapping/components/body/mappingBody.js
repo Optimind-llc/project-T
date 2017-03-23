@@ -221,11 +221,11 @@ class MappingBody extends Component {
                       sum = 0;
                     }
 
-                    const sum0 = hStatus.filter(h => h.id == ht.id && h.s == 2).length;
-                    if (sum !== 0) percentage = Math.round(1000*sum0/sum)/10;
+                    const sum2 = hStatus.filter(h => h.id == ht.id && h.s == 2).length;
+                    if (sum !== 0) percentage = Math.round(1000*sum2/sum)/10;
 
                     return (
-                      <li>{`${percentage}%`}<span>({sum !== 0 ? sum0 : '-'})</span></li>
+                      <li>{`${percentage}%`}<span>({sum !== 0 ? sum2 : '-'})</span></li>
                     )
                   })}
                 </ul>
@@ -259,7 +259,7 @@ class MappingBody extends Component {
                   <li
                     onClick={() => this.setState({holeStatus: 3})}
                   >
-                    {'穴手直'}
+                    {'手直数'}
                   </li>
                   {data.holeTypes.map(ht => {
                     const sum = hStatus.filter(h => h.id == ht.id && h.hm != -1).length;
@@ -520,7 +520,7 @@ class MappingBody extends Component {
 
                       return (
                         <g>
-                          <rect x={x-6} y={y-6} width="12" height="12" fill={fill}/>
+                          <rect x={x-4.5} y={y-4.5} width="9" height="9" fill={fill}/>
                         </g>
                       );
                     })
@@ -713,7 +713,7 @@ class MappingBody extends Component {
                   手直検査
                 </button>
               }{
-                data.holeModificationTypes.length > 0 &&
+                data.holeModificationTypes.length > 0 && data.i !== 'tenaoshi' &&
                 <button
                   className={active == 'hole' ? '' : 'disable'}
                   onClick={() => this.setState({ active: 'hole'})}

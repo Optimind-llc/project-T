@@ -273,6 +273,26 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_y'     => 980,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_luggageOuterSTD_1.png',
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'pt_pn'      => 6441111010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_luggageOuterARW_1.png',
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'pt_pn'      => 6441111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             //穴あけ_洗浄後外観検査
             [

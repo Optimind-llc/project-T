@@ -410,6 +410,27 @@ class RelatedFailureTableSeeder extends Seeder
         }, array_keys($h_gaikan_luggageInner_failures), $h_gaikan_luggageInner_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
+        //穴あけ_洗浄前外観検査_ラゲージアウタ
+        $h_gaikan_luggageOuter_failures = [
+            [1,  2], [2,  2], [3,  2], [4,  2], [5,  2], [19, 2], [9,  2],
+            [20, 2], [21, 2], [22, 2], [41, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'maegaikan',
+                'division'      => 'luggageOuter',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_gaikan_luggageOuter_failures), $h_gaikan_luggageOuter_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+
+
+
         //穴あけ_洗浄後外観検査_ドアインナ
         $h_gaikan_doorInner_failures = [
             [1,  2], [2,  2], [3,  2], [4,  2], [5,  2], [19, 2], [9,  2],

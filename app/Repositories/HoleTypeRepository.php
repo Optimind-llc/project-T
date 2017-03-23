@@ -20,11 +20,13 @@ class HoleTypeRepository
     public function getAllByPns($pns, $inspection)
     {
         return HoleType::join('figures as fig', function($join) use($inspection) {
-                $join->on('fig.id', '=', 'hole_types.figure_id')->where('fig.inspection', '=', $inspection);
+                $join->on('fig.id', '=', 'hole_types.figure_id')
+                    ->where('fig.inspection', '=', $inspection);
             })
             ->whereIn('hole_types.pt_pn', $pns)
             ->orderBy('hole_types.pt_pn')
             ->orderBy('hole_types.label')
+            ->select(['fig.id as fig_id', 'fig.inspection', 'hole_types.id', 'hole_types.pt_pn', 'x', 'y', 'label', 'direction'])
             ->get()
             ->map(function($ht) {
                 return [
@@ -34,7 +36,7 @@ class HoleTypeRepository
                     'y' => $ht->y,
                     'l' => $ht->label,
                     'd' => $ht->direction,
-                    'fig' => $ht->figure_id,
+                    'fig' => $ht->fig_id,
                     'i' => $ht->inspection
                 ];
             });

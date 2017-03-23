@@ -294,6 +294,12 @@ class InspectionResultRepository
                 'holes.holeModification' => function($q) {
                     return $q->select('hole_id', 'type_id');
                 },
+                'holeModifications' => function($q) {
+                    return $q->select('ir_id', 'type_id', 'hole_id');
+                },
+                'holeModifications.hole' => function($q) {
+                    return $q->select('id', 'type_id');
+                },
                 'inlines' => function($q) {
                     return $q->select('id', 'ir_id', 'type_id', 'status');
                 }
@@ -343,6 +349,12 @@ class InspectionResultRepository
                             'id' => $h->type_id,
                             's' => $h->status,
                             'hm' =>  $hm
+                        ];
+                    }),
+                    'hms' => $ir->holeModifications->map(function($hm) {
+                        return [
+                            'id' => $hm->hole->type_id,
+                            'hm' => $hm->type_id
                         ];
                     }),
                     'is' => $ir->inlines->map(function($i) {

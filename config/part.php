@@ -24,6 +24,8 @@ return [
         ['process' => 'holing', 'inspection' => 'maegaikan', 'part' => 'reinforceR'],
         ['process' => 'holing', 'inspection' => 'maegaikan', 'part' => 'luggageInnerSTD'],
         ['process' => 'holing', 'inspection' => 'maegaikan', 'part' => 'luggageInnerARW'],
+        ['process' => 'holing', 'inspection' => 'maegaikan', 'part' => 'luggageOuterSTD'],
+        ['process' => 'holing', 'inspection' => 'maegaikan', 'part' => 'luggageOuterARW'],
 
         ['process' => 'holing', 'inspection' => 'atogaikan', 'part' => 'doorInnerL'],
         ['process' => 'holing', 'inspection' => 'atogaikan', 'part' => 'doorInnerR'],
@@ -106,6 +108,8 @@ return [
         ['process' => 'holing', 'inspection' => 'maegaikan', 'label' => 'ドアR', 'parts' => [6714111020, 6715111020]],
         ['process' => 'holing', 'inspection' => 'maegaikan', 'label' => 'ラゲージインナSTD', 'parts' => [6441211010]],
         ['process' => 'holing', 'inspection' => 'maegaikan', 'label' => 'ラゲージインナARW', 'parts' => [6441211020]],
+        ['process' => 'holing', 'inspection' => 'maegaikan', 'label' => 'ラゲージアウタSTD', 'parts' => [6441111010]],
+        ['process' => 'holing', 'inspection' => 'maegaikan', 'label' => 'ラゲージアウタARW', 'parts' => [6441111020]],
 
         ['process' => 'holing', 'inspection' => 'atogaikan', 'label' => 'ドアL', 'parts' => [6714211020, 6715211020]],
         ['process' => 'holing', 'inspection' => 'atogaikan', 'label' => 'ドアR', 'parts' => [6714111020, 6715111020]],

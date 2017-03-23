@@ -238,7 +238,6 @@ class Reference extends Component {
             />
           }
         </div>
-
       </div>
     );
   }
