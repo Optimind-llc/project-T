@@ -286,7 +286,10 @@ class InspectionResultRepository
                     return $q->select('ir_id', 'type_id', 'failure_id', 'figure_id');
                 },
                 'modifications.failure' => function($q) {
-                    return $q->select('id', 'x', 'y');
+                    return $q->select('id', 'x', 'y', 'figure_id');
+                },
+                'modifications.failure.figure' => function($q) {
+                    return $q->select('id', 'inspection');
                 },
                 'holes' => function($q) {
                     return $q->where('status', '!=', 1)->select('id', 'ir_id', 'type_id', 'status');
@@ -336,7 +339,8 @@ class InspectionResultRepository
                             'id' => $m->type_id,
                             'x' => $m->failure->x,
                             'y' => $m->failure->y,
-                            'fig' => $m->figure_id
+                            'fig' => $m->figure_id,
+                            'fFigI' => $m->failure->figure->inspection
                         ];
                     }),
                     'hs' => $ir->holes->map(function($h) {

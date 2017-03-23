@@ -122,7 +122,7 @@ class MappingController extends Controller
         $i = $request->i;
         $is = [$request->i];
         if ($p === 'holing' && $request->i === 'tenaoshi') {
-            $is = ['tenaoshi', 'ana'];
+            $is = ['tenaoshi'];
         }
 
         $line = 1;

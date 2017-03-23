@@ -49,6 +49,12 @@ class MappingBody extends Component {
       )
     );
 
+    const hmStatus = Array.prototype.concat.apply([], 
+      data.result.map(ptResult => 
+        Array.prototype.concat.apply([], ptResult.map(r => r.hms))
+      )
+    );
+
     const iStatus = Array.prototype.concat.apply([], 
       data.result.map(ptResult => 
         Array.prototype.concat.apply([], ptResult.map(r => r.is))
@@ -302,7 +308,7 @@ class MappingBody extends Component {
                         </li>
                         {
                           data.holeTypes.map(ht => {
-                            const sum = hStatus.filter(h => h.hm === hmt.id && h.id === ht.id).length;
+                            const sum = hmStatus.filter(h => h.hm === hmt.id && h.id === ht.id).length;
                             return (
                               <li>{sum ? sum : '-'}</li>
                             )
@@ -389,6 +395,12 @@ class MappingBody extends Component {
     const hStatus = Array.prototype.concat.apply([], 
       data.result.map(ptResult => 
         Array.prototype.concat.apply([], ptResult.map(r => r.hs))
+      )
+    );
+
+    const hmStatus = Array.prototype.concat.apply([], 
+      data.result.map(ptResult => 
+        Array.prototype.concat.apply([], ptResult.map(r => r.hms))
       )
     );
 
@@ -508,8 +520,21 @@ class MappingBody extends Component {
                       const split = Math.ceil(Math.sqrt(data.figures.length));
                       const page = data.figures.find(fig => fig.id == m.fig).page;
 
-                      const x = m.x/2/split + (870/split)*((page+(split-1))%split);
-                      const y = m.y/2/split + (515/split)*(Math.ceil(page/split)-1);
+                      let mx = m.x;
+                      let my = m.y;
+                      if(data.i === 'tenaoshi') {
+                        if(m.fFigI === 'maegaikan' || m.fFigI === 'atogaikan') {
+                          mx = mx*103/152 + 280;
+                          my = my*103/152;
+                        }
+                        else if(m.fFigI === 'ana') {
+                          mx = mx*103/152 + 280;
+                          my = my*103/152 + 490;
+                        }
+                      }
+
+                      const x = mx/2/split + (870/split)*((page+(split-1))%split);
+                      const y = my/2/split + (515/split)*(Math.ceil(page/split)-1);
 
                       let fill='red';
                       switch (r.c) {
@@ -591,15 +616,12 @@ class MappingBody extends Component {
 
                   const figure = data.figures.find(fig => fig.id == ht.fig);
 
+                  let page = 1;
                   if(figure) {
-                    let page = figure.page;
-
-                    if(data.i === 'tenaoshi') {
-                      page = page + 4;
-                    }
+                    page = figure.page;
 
                     let disable = false;
-                    const count = hStatus.filter(h => hmFilter.indexOf(h.hm) === -1 && h.hm !== -1 &&h.id === ht.id).length;
+                    const count = hmStatus.filter(h => hmFilter.indexOf(h.hm) === -1 && h.hm !== -1 &&h.id === ht.id).length;
                     disable = count === 0;
 
                     const x = ht.x/2/split + (870/split)*((page+(split-1))%split);
@@ -636,6 +658,58 @@ class MappingBody extends Component {
                         </text>
                       </g>
                     );
+                  }
+                  else if(data.i === 'tenaoshi') {
+                    let disable = false;
+                    const count = hmStatus.filter(h => hmFilter.indexOf(h.hm) === -1 && h.hm !== -1 && h.id === ht.id).length;
+                    disable = count === 0;
+
+                    let htx = ht.x;
+                    let hty = ht.y;
+                    if(ht.pn === 6714111020 || ht.pn === 6714211020) {
+                      page = 1;
+                    }
+                    else if(ht.pn === 6715111020 || ht.pn === 6715211020) {
+                      page = 4;
+                      htx = htx*103/152 + 280;
+                      hty = (hty + 490)*103/152;
+                    }
+
+                    const x = htx/2/split + (870/split)*((page+(split-1))%split);
+                    const y = hty/2/split + (515/split)*(Math.ceil(page/split)-1);
+
+                    let lx = 0;
+                    let ly = 0;
+                    switch (ht.d) {
+                      case 'left':   lx = x-(20/split); ly = y - 3; break;
+                      case 'right':  lx = x+(20/split); ly = y - 3; break;
+                      case 'top':    ly = y-(18/split) - 2; lx = x; break;
+                      case 'bottom': ly = y+(18/split) - 2; lx = x; break;
+                      default: break;
+                    }
+                    if(ht) {
+                      return (
+                        <g>
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r={disable ? 3 : 4}
+                            fill={disable ? 'rgba(255,0,0,0.3)' : 'rgba(255,0,0,1)'} 
+                          />
+                          <text
+                            x={lx}
+                            y={ly}
+                            dy="6"
+                            fontSize="8"
+                            fill={disable ? 'rgba(0,0,0,0)' : 'rgba(0,0,0,1)'}
+                            textAnchor="middle"
+                            fontWeight="bold"
+                          >
+                            {ht.l}
+                          </text>
+                        </g>
+                      );
+                    }
                   }
                 })
               }{
