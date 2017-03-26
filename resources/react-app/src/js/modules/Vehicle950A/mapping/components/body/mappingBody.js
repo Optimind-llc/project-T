@@ -404,6 +404,14 @@ class MappingBody extends Component {
       )
     );
 
+    const figLength = data.figures.length;
+    const partitions = Math.ceil(Math.sqrt(figLength));
+
+    let figureWrapTopMargin = 20;
+    if(figLength > Math.pow(partitions - 1, 2) && figLength <= Math.pow(partitions, 2) - partitions ) {
+      figureWrapTopMargin = 515/partitions/2;
+    }
+
     return (
       <div className="mapping-body-wrap">
         <div className="bg-white mapping-body">
@@ -423,17 +431,17 @@ class MappingBody extends Component {
             </div>
             */}
           </div>
-          <div className="figure-wrap">
+          <div className="figure-wrap" style={{marginTop: figureWrapTopMargin}}>
             <div style={{width: 870}}>
               {
                 data.inlineTypes.length === 0 &&
-                data.figures.map((fig, i, self) =>
+                data.figures.map((fig, i) => 
                   <div
                     style={{
                       position: 'relative',
                       float: 'left',
-                      width: 870/Math.ceil(Math.sqrt(self.length)),
-                      height: 515/Math.ceil(Math.sqrt(self.length)),
+                      width: 870/partitions,
+                      height: 515/partitions,
                       backgroundImage: `url(${fig.path})`,
                       backgroundSize: 'contain',
                       backgroundPosition: 'center top',

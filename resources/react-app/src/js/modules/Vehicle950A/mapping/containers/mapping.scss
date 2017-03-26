@@ -6,7 +6,7 @@
       float: left;
 
       > div.row {
-        padding: 10px 0 10px 10px;
+        padding: 6px 0 6px 6px;
 
         &:last-child {
           padding-top: 0;
@@ -55,12 +55,12 @@
     button.show {
       display: block;
       float: right;
-      margin: 10px 10px 10px 0;
+      margin: 6px 6px 6px 0;
       background-color: #4A4A4A;
       border: 1px solid #4A4A4A;
       border-radius: 4px;
       color: #FFF;
-      height: 84px;
+      height: 80px;
       width: 60px;
 
       &:hover {

@@ -216,6 +216,9 @@ Route::group(['prefix' => 'manager/{vehicle}', 'namespace' => 'V2\Manager'], fun
     Route::post('mapping/date', 'MappingController@byDate');
     Route::post('mapping/panelId', 'MappingController@byPanelId');
 
+    Route::post('reference/advanced', 'ReferenceController@advanced');
+    Route::post('reference/panelId', 'ReferenceController@byPanelId');
+
 
     Route::get('/check/{date}', 'ReportController@check');
 

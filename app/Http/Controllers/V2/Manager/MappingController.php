@@ -54,10 +54,6 @@ class MappingController extends Controller
     {
         $p = $request->p;
         $i = $request->i;
-        $is = [$request->i];
-        if ($p === 'holing' && $request->i === 'tenaoshi') {
-            $is = ['tenaoshi', 'ana'];
-        }
 
         $line = 1;
         $pns = $request->pt;
@@ -75,7 +71,7 @@ class MappingController extends Controller
         $holeModificationTypes = $this->holeModificationType->getByIds($irs['hmt_ids']);
 
         $figures = Figure::where('process', '=', $p)
-            ->whereIn('inspection', $is)
+            ->where('inspection', '=', $i)
             ->whereIn('pt_pn', $pns)
             ->orderBy('page')
             ->select(['id', 'page', 'path'])
@@ -90,12 +86,11 @@ class MappingController extends Controller
 
         $holeTypes = [];
         if ($i === 'ana' || $i === 'kashimego') {
-            $holeTypes = $this->holeType->getAllByPns($pns);
+            $holeTypes = $this->holeType->getAllByPns($pns, $i);
         }
         if ($p === 'holing' && $i === 'tenaoshi') {
-            $holeTypes = $this->holeType->getAllByPns($pns);
+            $holeTypes = $this->holeType->getAllByPns($pns, 'ana');
         }
-
 
         $inlineTypes = [];
         if ($i === 'inline') {
@@ -105,6 +100,7 @@ class MappingController extends Controller
         return [
             'data' => [
                 'count' => $irs['count'],
+                'i' => $i,
                 'result' => $irs['result'],
                 'figures' => $figures,
                 'failureTypes' => $failureTypes,
@@ -120,10 +116,6 @@ class MappingController extends Controller
     {
         $p = $request->p;
         $i = $request->i;
-        $is = [$request->i];
-        if ($p === 'holing' && $request->i === 'tenaoshi') {
-            $is = ['tenaoshi'];
-        }
 
         $line = 1;
         $pns = $request->pt;
@@ -140,7 +132,7 @@ class MappingController extends Controller
         $holeModificationTypes = $this->holeModificationType->getByIds($irs['hmt_ids']);
 
         $figures = Figure::where('process', '=', $p)
-            ->whereIn('inspection', $is)
+            ->where('inspection', '=', $i)
             ->whereIn('pt_pn', $pns)
             ->orderBy('inspection', 'desc')
             ->orderBy('page')
@@ -189,7 +181,7 @@ class MappingController extends Controller
         $pns = $request->pt;
         $panelId = $request->panelId;
 
-        $irs = $this->inspectionResult->forMappingByPanelId($p, $i, $pn, $panelId);
+        $irs = $this->inspectionResult->forMappingByPanelId($p, $i, $pns, $panelId);
 
         $failureTypes = $this->failureType->getByIds($irs['ft_ids']);
         $modificationTypes = $this->modificationType->getByIds($irs['mt_ids']);
@@ -211,7 +203,10 @@ class MappingController extends Controller
 
         $holeTypes = [];
         if ($i === 'ana' || $i === 'kashimego') {
-            $holeTypes = $this->holeType->getAllByPns($pns);
+            $holeTypes = $this->holeType->getAllByPns($pns, $i);
+        }
+        if ($p === 'holing' && $i === 'tenaoshi') {
+            $holeTypes = $this->holeType->getAllByPns($pns, 'ana');
         }
 
         $inlineTypes = [];
@@ -222,6 +217,7 @@ class MappingController extends Controller
         return [
             'data' => [
                 'count' => $irs['count'],
+                'i' => $i,
                 'result' => $irs['result'],
                 'figures' => $figures,
                 'failureTypes' => $failureTypes,

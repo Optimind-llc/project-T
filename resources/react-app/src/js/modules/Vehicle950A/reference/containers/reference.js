@@ -6,11 +6,12 @@ import Select from 'react-select';
 import { vehicles, processes, inspections, inspectionGroups } from '../../../../utils/Processes';
 // Actions
 import { push } from 'react-router-redux';
-import { pageActions } from '../ducks/mapping';
+import { referenceActions } from '../ducks/reference';
 // Styles
 import './reference.scss';
 // Components
 import CustomCalendar from '../components/calendar/calendar';
+import ReferenceBody from '../components/referenceBody/referenceBody';
 // import Loading from '../../../components/loading/loading';
 // import RangeCalendar from '../components/rangeCalendar/rangeCalendar';
 // import Mapping from '../../mapping/containers/mapping';
@@ -36,26 +37,52 @@ class Reference extends Component {
   }
 
   componentWillUnmount() {
-   clearInterval(this.state.intervalId); 
+   clearInterval(this.state.intervalId);
+    this.props.actions.clearReferenceData();
   }
 
-  endInterval() {
-    clearInterval(this.state.intervalId);
-  }
+  search() {
+    const { advancedSearch, panelIdSearch } = this.props.actions;
+    const { p, i, pt, narrowedBy, choku, judge, startDate, endDate, requiredF, requiredM, panelId } = this.state;
+    const format = 'YYYY-MM-DD';
 
-  serchItorG() {
-    const { getItorGData } = this.props.actions;
-    getItorGData();
-  }
+    const take = 100;
+    const skip = 0;
 
+    if (narrowedBy === 'advanced') {
+      advancedSearch(
+        p.value,
+        i.value,
+        pt.value,
+        choku.value,
+        judge.value,
+        startDate.format(format),
+        endDate.format(format),
+        requiredF.map(f => f.value),
+        requiredM.map(m => m.value),
+        take,
+        skip
+      );
+    }
+    else if (narrowedBy === 'panelId') {
+      panelIdSearch(
+        p.value,
+        i.value,
+        pt.value,
+        panelId,
+        take,
+        skip
+      );
+    }
+  }
 
   render() {
+    const { InitialData, ReferenceData, actions } = this.props;
     const { p, i, pt, narrowedBy, choku, judge, startDate, endDate, requiredF, requiredM, panelId } = this.state;
-    const { InitialData, actions } = this.props;
 
     const processes = InitialData.processes.map(p => { return {label: p.name, value: p.en} });
 
-    const filterdI = InitialData.combination2.filter(c => 
+    const filterdI = InitialData.combination.filter(c => 
       c.process === p.value
     ).map(c => 
       c.inspection
@@ -67,10 +94,10 @@ class Reference extends Component {
       filterdI.indexOf(i.en) >= 0
     ).map(i => { return {label: i.name, value: i.en} });
 
-    const partTypes = InitialData.combination2.filter(c => 
+    const partTypes = InitialData.combination.filter(c => 
       c.process === p.value && c.inspection === i.value
     ).map(c => {
-      return { label: c.label, value: c.parts };
+      return { label: c.label, value: c.part };
     });
 
     const chokus = InitialData.chokus.slice().reverse().reduce((pre, cur, i, self) => {
@@ -84,8 +111,6 @@ class Reference extends Component {
     const modificationTypes = InitialData.modificationTypes.map(mt => {
       return {label: mt.name, value: mt.id};
     });
-
-    const SerchedData = {};
 
     return (
       <div id="reference-950A-wrap">
@@ -189,7 +214,7 @@ class Reference extends Component {
                     name="手直"
                     placeholder="手直区分を選択"
                     className="width454"
-                    clearable={false}
+                    clearable={true}
                     Searchable={false}
                     multi={true}
                     value={requiredM}
@@ -215,25 +240,28 @@ class Reference extends Component {
           </div>
           <button
             className="serch dark"
-            onClick={() => this.serch()}
+            onClick={() => this.search()}
           >
             <p>この条件で検索</p>
           </button>
         </div>
         <div className="bg-white reference-result">
           {
-            SerchedData.isFetching &&
-            <p>検索中...</p>
+            ReferenceData.isFetching && 
+            <p className="message">検索中...</p>
           }{
-            SerchedData.data != null && !SerchedData.isFetching &&
-            <CustomTable
-              count={SerchedData.data.count}
-              data={SerchedData.data.parts}
-              failures={SerchedData.data.f}
-              holes={SerchedData.data.h}
-              modifications={SerchedData.data.m}
-              hModifications={SerchedData.data.hm}
-              inlines={SerchedData.data.i}
+            !ReferenceData.isFetching && ReferenceData.data != null && ReferenceData.data.count === 0 &&
+            <p className="message">検索結果なし</p>
+          }{
+            !ReferenceData.isFetching && ReferenceData.data != null && ReferenceData.data.count > 0 &&
+            <ReferenceBody
+              count={ReferenceData.data.count}
+              results={ReferenceData.data.results}
+              fts={ReferenceData.data.fts}
+              mts={ReferenceData.data.mts}
+              hts={ReferenceData.data.hts}
+              hmts={ReferenceData.data.hmts}
+              its={ReferenceData.data.its}
               download={() => handleDownload(table)}
             />
           }
@@ -245,16 +273,18 @@ class Reference extends Component {
 
 Reference.propTypes = {
   InitialData: PropTypes.object.isRequired,
+  ReferenceData: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     InitialData: state.Application.vehicle950A,
+    ReferenceData: state.ReferenceData950A,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({push}, pageActions);
+  const actions = Object.assign({push}, referenceActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };

@@ -136,7 +136,6 @@ class GeneratePDF
             $this->tcpdf->MultiCell($dhj1, $hhj, '×', 1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2, $A4['y1']+$hhj);
             $this->tcpdf->MultiCell($dhj2, $hhj, $count0, 1, 'C', 0, 1, $A4['x0']+$dhj1+$dhj2+$dhj1, $A4['y1']+$hhj);
         }
-
     }
 
     protected function renderA4($irs)
@@ -216,7 +215,7 @@ class GeneratePDF
         $d_comment = 20;
         $d_date = 14;
 
-        $fn = $this->failureTypes->count() + $this->modificationTypes->count();
+        $fn = $this->failureTypes->count() + $this->modificationTypes->count() + $this->holeModificationTypes->count();
         $fd = ($A3['xmax'] - $A3['x0']*2 - array_sum($d) - $d_comment - $d_date)/$fn;
 
         foreach ($irs->chunk(40) as $page => $irs40) {
@@ -235,6 +234,10 @@ class GeneratePDF
 
             foreach ($this->modificationTypes as $mi => $m) {
                 $this->tcpdf->Text($A3['x0']+array_sum($d)+$fd*($fi+1+$mi), $A3['y1'], $m['name']);
+            }
+
+            foreach ($this->holeModificationTypes as $hmi => $hm) {
+                $this->tcpdf->Text($A3['x0']+array_sum($d)+$fd*($fi+1+$mi+1+$hmi), $A3['y1'], $hm['name']);
             }
 
             $this->tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd, $A3['y1'], 'コメント');
@@ -273,6 +276,14 @@ class GeneratePDF
                     $this->tcpdf->Text($A3['x0']+array_sum($d)+$fd*($fi+1+$mi), $A3['y2']+($row)*$A3['th'], $sum);
                 }
 
+                foreach ($this->holeModificationTypes as $hmi => $hmt) {
+                    $sum = $ir['hms']->filter(function($hm) use ($hmt) {
+                        return $hm == $hmt['id'];
+                    })->count();
+
+                    $this->tcpdf->Text($A3['x0']+array_sum($d)+$fd*($fi+1+$mi+1+$hmi), $A3['y2']+($row)*$A3['th'], $sum);
+                }
+
                 if ($ir['comment']) {
                     $comment = mb_substr($ir['comment'], 0, 4, 'UTF-8').'..';
                 } else {
@@ -283,6 +294,9 @@ class GeneratePDF
             }
 
             $this->tcpdf->Line($A3['x0']+array_sum($d)+$fd*($fi+1)-3, 20, $A3['x0']+array_sum($d)+$fd*($fi+1)-4, 286, array('dash' => '2'));
+            if (isset($mi)) {
+                $this->tcpdf->Line($A3['x0']+array_sum($d)+$fd*($fi+1+$mi+1)-3, 20, $A3['x0']+array_sum($d)+$fd*($fi+1+$mi+1)-4, 286, array('dash' => '2'));
+            }
             $this->tcpdf->Text(210, 286, 'page '.($page+1));
         }
 

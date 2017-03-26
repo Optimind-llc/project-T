@@ -710,7 +710,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],
             //穴あけ_手直検査
             [
-                'path'       => 'h_ana_doorInnerL_1.png',
+                'path'       => 'h_ana_doorInnerL_0.png',
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'pt_pn'      => 6714211020,
@@ -740,7 +740,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerR_1.png',
+                'path'       => 'h_ana_doorInnerR_0.png',
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'pt_pn'      => 6714111020,

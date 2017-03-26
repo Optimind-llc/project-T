@@ -96,7 +96,7 @@ class ReportController extends Controller
 
         $holeTypes = [];
         if ($inspection === 'ana' || $inspection === 'kashimego') {
-            $holeTypes = $this->holeType->getAllByPns([$pn]);
+            $holeTypes = $this->holeType->getAllByPns([$pn], $inspection);
         }
 
         $inlineTypes = [];

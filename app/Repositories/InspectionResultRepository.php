@@ -179,7 +179,6 @@ class InspectionResultRepository
             ->first();
     }
     
-
     public function create($param, $fs, $ms, $hs, $uhs)
     {
         $new = new InspectionResult;
@@ -394,7 +393,7 @@ class InspectionResultRepository
         ];
     }
 
-    public function forMappingByPanelId($p, $i, $pn, $panelId)
+    public function forMappingByPanelId($p, $i, $pns, $panelId)
     {
         $irs = InspectionResult::with([
                 'failures' => function($q) {
@@ -404,13 +403,22 @@ class InspectionResultRepository
                     return $q->select('ir_id', 'type_id', 'failure_id', 'figure_id');
                 },
                 'modifications.failure' => function($q) {
-                    return $q->select('id', 'x', 'y');
+                    return $q->select('id', 'x', 'y', 'figure_id');
+                },
+                'modifications.failure.figure' => function($q) {
+                    return $q->select('id', 'inspection');
                 },
                 'holes' => function($q) {
                     return $q->where('status', '!=', 1)->select('id', 'ir_id', 'type_id', 'status');
                 },
                 'holes.holeModification' => function($q) {
                     return $q->select('hole_id', 'type_id');
+                },
+                'holeModifications' => function($q) {
+                    return $q->select('ir_id', 'type_id', 'hole_id');
+                },
+                'holeModifications.hole' => function($q) {
+                    return $q->select('id', 'type_id');
                 },
                 'inlines' => function($q) {
                     return $q->select('id', 'ir_id', 'type_id', 'status');
@@ -419,8 +427,8 @@ class InspectionResultRepository
             ->where('latest', '=', 1)
             ->where('process', '=', $p)
             ->where('inspection', '=', $i)
-            ->whereHas('part', function($q) use($pn, $panelId) {
-                $q->where('pn', '=', $pn)->where('panel_id', '=', $panelId);
+            ->whereHas('part', function($q) use($pns, $panelId) {
+                $q->whereIn('pn', $pns)->where('panel_id', '=', $panelId);
             })
             ->select(['id', 'part_id', 'ft_ids', 'mt_ids', 'hmt_ids', 'created_choku', 'inspected_at'])
             ->get()
@@ -444,7 +452,8 @@ class InspectionResultRepository
                             'id' => $m->type_id,
                             'x' => $m->failure->x,
                             'y' => $m->failure->y,
-                            'fig' => $m->figure_id
+                            'fig' => $m->figure_id,
+                            'fFigI' => $m->failure->figure->inspection
                         ];
                     }),
                     'hs' => $ir->holes->map(function($h) {
@@ -457,6 +466,12 @@ class InspectionResultRepository
                             'id' => $h->type_id,
                             's' => $h->status,
                             'hm' =>  $hm
+                        ];
+                    }),
+                    'hms' => $ir->holeModifications->map(function($hm) {
+                        return [
+                            'id' => $hm->hole->type_id,
+                            'hm' => $hm->type_id
                         ];
                     }),
                     'is' => $ir->inlines->map(function($i) {
@@ -537,6 +552,9 @@ class InspectionResultRepository
                 'holes.holeModification' => function($q) {
                     return $q->select('hole_id', 'type_id');
                 },
+                'holeModifications' => function($q) {
+                    return $q->select('ir_id', 'type_id', 'hole_id');
+                },
                 'inlines' => function($q) {
                     return $q->select('id', 'ir_id', 'type_id', 'status');
                 }
@@ -590,6 +608,9 @@ class InspectionResultRepository
                             'status' => $h->status,
                             'hm' =>  $hm
                         ];
+                    }),
+                    'hms' => $ir->holeModifications->map(function($hm) {
+                        return $hm->type_id;
                     }),
                     'is' => $ir->inlines->keyBy('type_id')->map(function($i) {
                         return [

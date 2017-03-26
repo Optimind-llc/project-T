@@ -94,4 +94,16 @@
       clear: both;
     }
   }
+
+  .reference-result {
+    margin-top: 6px;
+    position: relative;
+
+    > p.message {
+      padding: 6px;
+      font-size: 16px;
+      text-align: center;
+      font-weight: 600;
+    }
+  }
 }
