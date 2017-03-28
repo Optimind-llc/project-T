@@ -124,7 +124,7 @@ class Insert950ADummyData extends Command
         $request->setForGet($process, $inspection, ['ドアインナR']);
         $getted = $controller->getInspection('950A', $request);
 
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 100; $i++) {
             $panelId = 'X'.str_pad($i, 7, 0, STR_PAD_LEFT);
             $parts = $this->createPart($panelId, $getted['partTypes'], $getted['failures']);
 

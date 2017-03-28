@@ -26,7 +26,7 @@ class Reference extends Component {
       i: {label: '外観検査', value: 'gaikan'},
       pt: {label: 'ドアインナL', value: 6714211020},
       narrowedBy: 'advanced',
-      choku: {label: '全直', value: ['W','Y','B']},
+      choku: {label: '全直', value: ['W','Y','B','NA']},
       judge: {label: '両方', value: [0, 1, 2]},
       startDate: moment(),
       endDate: moment(),
@@ -97,13 +97,13 @@ class Reference extends Component {
     const partTypes = InitialData.combination.filter(c => 
       c.process === p.value && c.inspection === i.value
     ).map(c => {
-      return { label: c.label, value: c.part };
+      return { label: c.partName, value: c.pn };
     });
 
     const chokus = InitialData.chokus.slice().reverse().reduce((pre, cur, i, self) => {
       pre.unshift({ label: cur.name, value: [cur.code], disabled: cur.status === 0 });
       return pre;
-    }, [{ label: '全直', value: ['W','Y','B'] }]);
+    }, [{ label: '全直', value: ['W','Y','B','NA'] }]);
 
     const failureTypes = InitialData.failureTypes.map(ft => {
       return {label: ft.name, value: ft.id};
@@ -198,7 +198,7 @@ class Reference extends Component {
                   <p>不良</p>
                   <Select
                     name="不良"
-                    placeholder="不良区分を選択"
+                    placeholder="絞り込む不良区分を選択"
                     className="width454"
                     clearable={true}
                     Searchable={false}
@@ -212,7 +212,7 @@ class Reference extends Component {
                   <p>手直</p>
                   <Select
                     name="手直"
-                    placeholder="手直区分を選択"
+                    placeholder="絞り込む手直区分を選択"
                     className="width454"
                     clearable={true}
                     Searchable={false}

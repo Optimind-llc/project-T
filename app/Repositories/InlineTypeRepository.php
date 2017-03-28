@@ -9,6 +9,14 @@ use App\Models\Vehicle950A\InlineType;
  */
 class InlineTypeRepository
 {
+    public function getByIds($ids)
+    {
+        return InlineType::whereIn('id', $ids)
+            ->orderBy('label')
+            ->select(['id', 'label', 'max', 'min'])
+            ->get();
+    }
+
     public function getOnlyActiveByPn($pn)
     {
         return InlineType::where('pt_pn', '=', $pn)

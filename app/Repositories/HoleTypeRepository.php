@@ -9,6 +9,14 @@ use App\Models\Vehicle950A\HoleType;
  */
 class HoleTypeRepository
 {
+    public function getByIds($ids)
+    {
+        return HoleType::whereIn('id', $ids)
+            ->orderBy('label')
+            ->select(['id', 'label'])
+            ->get();
+    }
+
     public function getOnlyActiveByPn($pn)
     {
         return HoleType::where('pt_pn', '=', $pn)

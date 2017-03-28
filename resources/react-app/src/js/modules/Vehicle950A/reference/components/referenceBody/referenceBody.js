@@ -42,8 +42,8 @@ class ReferenceBody extends Component {
         }
       }
       else if (sort.key == 'hs') {
-        aaa = a[sort.key].find(h => h.id == [sort.id]).status;
-        bbb = b[sort.key].find(h => h.id == [sort.id]).status;
+        aaa = a[sort.key][sort.id];
+        bbb = b[sort.key][sort.id];
       }
       else if (sort.key == 'iAt' || sort.key == 'uAt') {
         aaa = moment(a[sort.key], 'YYYY-MM-DD HH:mm:ss 11:08:40').unix();
@@ -75,6 +75,7 @@ class ReferenceBody extends Component {
       status: 47,
       label: 87,
       hole: 46,
+      inline: 60,
       comment: 77,
       by: 80,
       at: 127
@@ -89,7 +90,7 @@ class ReferenceBody extends Component {
       tableWidth = tableWidth + CW.hole*hts.length;
     }
     if (its.length > 0) {
-      tableWidth = tableWidth + CW.hole*its.length;
+      tableWidth = tableWidth + CW.inline*its.length;
     }
 
     return (
@@ -101,9 +102,9 @@ class ReferenceBody extends Component {
           count >= 100 &&
           <p className="result-count">{`${count}件中 100件表示`}</p>
         }
-        <button className="download dark" onClick={() => download()}>
+        {/*<button className="download dark" onClick={() => download()}>
           <p>CSVをダウンロード</p>
-        </button>
+        </button>*/}
         <table className="reference-result" style={{width: tableWidth}}>
           <thead>
             <tr>
@@ -266,14 +267,14 @@ class ReferenceBody extends Component {
               its.length > 0 &&
               its.map(it =>
                 <th
-                  style={{width: CW.hole}}
+                  style={{width: CW.inline}}
                   className={`clickable ${(sort.key == 'is' && sort.id == it.id) ? sort.asc ? 'asc' : 'desc' : ''}`}
                   onClick={() => {
                     if(sort.key == 'is') this.setState({sort: { key: 'is', asc: !sort.asc, id: it.id }});
                     else this.setState({sort: { key: 'is', asc: true, id: it.id }});
                   }}
                 >
-                  {`P-${it.sort}`}
+                  {`P-${it.label}`}
                 </th>
               )
             }
@@ -296,9 +297,10 @@ class ReferenceBody extends Component {
                   hts.length > 0 &&
                   hts.map(ht => {
                     let status;
-                    if (r.hs.find(ch => ch.id == ht.id).status == 0) {status = '×';}
-                    else if (r.hs.find(ch => ch.id == ht.id).status == 2) {status = '△';}
-                    else if (r.hs.find(ch => ch.id == ht.id).status == 1) {status = '○';}
+                    if (r.hs[ht.id] === 0) {status = '×';}
+                    else if (r.hs[ht.id] === 2) {status = '△';}
+                    else if (r.hs[ht.id] === 1) {status = '○';}
+                    else {status = '-';}
 
                     return (<td style={{width: CW.hole}}>{status}</td>);
                   })
@@ -336,12 +338,13 @@ class ReferenceBody extends Component {
                     let target = 0;
                     if (r.is[it.id]) {
                       target = r.is[it.id];
-                      if ( target.status > target.max || target.status < target.min ) {
+                      console.log(target)
+                      if ( target > it.max || target < it.min ) {
                         status = false;
                       }
                     }
 
-                    return (<td style={{width: CW.hole, color: status ? '#000' : 'red'}}>{target.status}</td>);
+                    return (<td style={{width: CW.inline, color: status ? '#000' : 'red'}}>{target}</td>);
                   })
                 }
                 <td style={{width: CW.comment}}>{r.comment ? r.comment.slice(0,5)+'..' : ''}</td>

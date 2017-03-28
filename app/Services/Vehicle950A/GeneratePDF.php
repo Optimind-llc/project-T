@@ -331,7 +331,8 @@ class GeneratePDF
                         'gS' => $ir['status'],
                         's' => $ir['status'],
                         'fs' => $ir['fs'],
-                        'ms' => $ir['ms']
+                        'ms' => $ir['ms'],
+                        'hms' => $ir['hms']
                     ];
                 }
             }
@@ -351,7 +352,8 @@ class GeneratePDF
                     })->count()
                 ],
                 'fs' => array_count_values($collected->pluck('fs')->flatten()->toArray()),
-                'ms' => array_count_values($collected->pluck('ms')->flatten()->toArray())
+                'ms' => array_count_values($collected->pluck('ms')->flatten()->toArray()),
+                'hms' => array_count_values($collected->pluck('hms')->flatten()->toArray())
             ]);
         });
 
@@ -369,6 +371,10 @@ class GeneratePDF
 
         foreach ($this->modificationTypes as $mi => $mt) {
             $this->tcpdf->Text($A3['x0']+48+$fd*($fi+1+$mi), $A3['y1'], $mt['name']);
+        }
+
+        foreach ($this->holeModificationTypes as $hmi => $hmt) {
+            $this->tcpdf->Text($A3['x0']+48+$fd*($fi+1+$mi+1+$hmi), $A3['y1'], $hmt['name']);
         }
 
         $n = 0;
@@ -405,6 +411,17 @@ class GeneratePDF
 
                     $this->tcpdf->Text($A3['x0']+48+$fd*($fi+1+$mi), $A3['y2']+$n*$th, $f_sum);
                 }
+
+                foreach ($this->holeModificationTypes as $hmi => $hmt) {
+                    if (!array_key_exists($hmt['id'], $sum['hms'])) {
+                        $hm_sum = 0;
+                    }
+                    else {
+                        $hm_sum = $sum['hms'][$hmt['id']];
+                    }
+
+                    $this->tcpdf->Text($A3['x0']+48+$fd*($fi+1+$mi+1+$hmi), $A3['y2']+$n*$th, $hm_sum);
+                }
             }
 
             $n = $n+1;
@@ -413,6 +430,9 @@ class GeneratePDF
         $this->tcpdf->Line($A3['x0'], 110, $A3['xmax'] - $A3['x0'], 110, array('dash' => '3,1'));
         $this->tcpdf->Line($A3['x0'], 190, $A3['xmax'] - $A3['x0'], 190, array('dash' => '3,1'));
         $this->tcpdf->Line($A3['x0']+48+$fd*($fi+1)-3, 20, $A3['x0']+48+$fd*($fi+1)-4, 196, array('dash' => '2'));
+        if (isset($mi)) {
+            $this->tcpdf->Line($A3['x0']+48+$fd*($fi+1+$mi+1)-3, 20, $A3['x0']+48+$fd*($fi+1+$mi+1)-4, 196, array('dash' => '2'));
+        }
 
         return $this->tcpdf;
     }
