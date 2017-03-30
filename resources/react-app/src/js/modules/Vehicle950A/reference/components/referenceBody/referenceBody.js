@@ -1,6 +1,10 @@
+import { throttle } from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import './referenceBody.scss';
+
+const PADDING  = 100;
+const INTERVAL = 300;
 
 class ReferenceBody extends Component {
   constructor(props, context) {
@@ -12,6 +16,25 @@ class ReferenceBody extends Component {
         id: 0
       }
     };
+  }
+
+  componentDidMount() {
+    this._interval = INTERVAL;
+    this._padding  = PADDING;
+
+    this._onScroll = throttle((e) => this.onScroll(e), this._interval);
+    this.refs.scrollOuter.addEventListener('scroll', this._onScroll);
+  }
+
+  onScroll (e) {
+    if (this.props.disabled) { return; }
+
+    const target = e.target;
+    const remaining = target.scrollHeight - (target.clientHeight + target.scrollTop);
+
+    if (remaining < this._padding) {
+      this.props.additionalSearch(this.props.results.length);
+    }
   }
 
   sortResults(results) {
@@ -66,7 +89,7 @@ class ReferenceBody extends Component {
     const { count, results ,fts ,mts ,hts ,hmts ,its, download } = this.props;
 
     const CW = {
-      num: 36,
+      num: 40,
       v: 43,
       pn: 80,
       name: 140,
@@ -95,17 +118,18 @@ class ReferenceBody extends Component {
 
     return (
       <div className="table-wrap">
-        {
+        <p className="result-count">{`${count}件中 ${results.length}件表示`}</p>
+        {/*
           count < 100 &&
           <p className="result-count">{`${count}件中 ${count}件表示`}</p>
-        }{
+        */}{/*
           count >= 100 &&
           <p className="result-count">{`${count}件中 100件表示`}</p>
-        }
-        {/*<button className="download dark" onClick={() => download()}>
+        */}
+        {<button className="download dark" onClick={() => download()}>
           <p>CSVをダウンロード</p>
-        </button>*/}
-        <table className="reference-result" style={{width: tableWidth}}>
+        </button>}
+        <table className="reference-result-table" style={{width: tableWidth}}>
           <thead>
             <tr>
               <th rowSpan="2" style={{width: CW.num}}>No.</th>
@@ -280,7 +304,7 @@ class ReferenceBody extends Component {
             }
             </tr>
           </thead>
-          <tbody>
+          <tbody ref="scrollOuter" onScroll={this._onScroll}>
           {
             this.sortResults(results).map((r, i) =>
               <tr>
@@ -338,7 +362,6 @@ class ReferenceBody extends Component {
                     let target = 0;
                     if (r.is[it.id]) {
                       target = r.is[it.id];
-                      console.log(target)
                       if ( target > it.max || target < it.min ) {
                         status = false;
                       }
@@ -368,7 +391,8 @@ ReferenceBody.propTypes = {
   hts: PropTypes.array.isRequired,
   hmts: PropTypes.array.isRequired,
   its: PropTypes.array.isRequired,
-  download: PropTypes.func.isRequired
+  download: PropTypes.func.isRequired,
+  additionalSearch: PropTypes.func.isRequired
 };
 
 export default ReferenceBody;

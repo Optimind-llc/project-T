@@ -80,6 +80,15 @@
           display: block;
           clear: both;
         }
+
+        input.panelId {
+          letter-spacing: 0.1em;
+        }
+
+        span.small {
+          font-size: 11px;
+          margin-left: 20px;
+        }
     	}
     }
 
@@ -97,6 +106,7 @@
 
   .reference-result {
     margin-top: 6px;
+    padding: 4px;
     position: relative;
 
     > p.message {

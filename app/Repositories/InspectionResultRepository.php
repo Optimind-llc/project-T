@@ -288,7 +288,7 @@ class InspectionResultRepository
                     return $q->select('id', 'x', 'y', 'figure_id');
                 },
                 'modifications.failure.figure' => function($q) {
-                    return $q->select('id', 'inspection');
+                    return $q->select('id', 'inspection', 'pt_pn');
                 },
                 'holes' => function($q) {
                     return $q->where('status', '!=', 1)->select('id', 'ir_id', 'type_id', 'status');
@@ -339,7 +339,8 @@ class InspectionResultRepository
                             'x' => $m->failure->x,
                             'y' => $m->failure->y,
                             'fig' => $m->figure_id,
-                            'fFigI' => $m->failure->figure->inspection
+                            'fFigI' => $m->failure->figure->inspection,
+                            'fFigPn' => $m->failure->figure->pt_pn
                         ];
                     }),
                     'hs' => $ir->holes->map(function($h) {
@@ -406,7 +407,7 @@ class InspectionResultRepository
                     return $q->select('id', 'x', 'y', 'figure_id');
                 },
                 'modifications.failure.figure' => function($q) {
-                    return $q->select('id', 'inspection');
+                    return $q->select('id', 'inspection', 'pt_pn');
                 },
                 'holes' => function($q) {
                     return $q->where('status', '!=', 1)->select('id', 'ir_id', 'type_id', 'status');
@@ -453,7 +454,8 @@ class InspectionResultRepository
                             'x' => $m->failure->x,
                             'y' => $m->failure->y,
                             'fig' => $m->figure_id,
-                            'fFigI' => $m->failure->figure->inspection
+                            'fFigI' => $m->failure->figure->inspection,
+                            'fFigPn' => $m->failure->figure->pt_pn
                         ];
                     }),
                     'hs' => $ir->holes->map(function($h) {

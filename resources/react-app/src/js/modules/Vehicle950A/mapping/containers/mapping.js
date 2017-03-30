@@ -197,7 +197,7 @@ class Mapping extends Component {
                   type="text"
                   value={panelId}
                   style={{width: 140}}
-                  onChange={e => this.setState({panelId: e.target.value})}
+                  onChange={e => this.setState({panelId: e.target.value.replace(/[^A-Za-z0-9]+/i,'').toUpperCase().substr(0,8)})}
                 />
               </div>
             </div>

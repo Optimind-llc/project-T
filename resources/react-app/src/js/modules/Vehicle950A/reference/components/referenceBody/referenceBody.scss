@@ -19,7 +19,7 @@
       right: 4px;
     }
 
-    table.reference-result {
+    table.reference-result-table {
       border-spacing: 0;
       border-collapse: collapse;
       font-size: 10px;
@@ -65,7 +65,7 @@
 
       tbody {
         display: block;
-        max-height: calc(100vh - 290px);
+        max-height: calc(100vh - 260px);
         overflow-y: scroll;
 
         tr {

@@ -159,7 +159,6 @@ class InsertDummyData extends Command
      */
     public function handle()
     {
-var_dump(base_path('/aa'));
 
         $request = new DummyRequest;
         $controller = new InspectionController;

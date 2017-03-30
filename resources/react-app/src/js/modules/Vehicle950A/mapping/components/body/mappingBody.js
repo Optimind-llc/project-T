@@ -530,7 +530,7 @@ class MappingBody extends Component {
 
                       let mx = m.x;
                       let my = m.y;
-                      if(data.i === 'tenaoshi') {
+                      if(data.i === 'tenaoshi' && (m.fFigPn === 6715211020 || m.fFigPn === 6715111020)) {
                         if(m.fFigI === 'maegaikan' || m.fFigI === 'atogaikan') {
                           mx = mx*103/152 + 280;
                           my = my*103/152;
@@ -681,6 +681,12 @@ class MappingBody extends Component {
                       page = 4;
                       htx = htx*103/152 + 280;
                       hty = (hty + 490)*103/152;
+                    }
+                    else if(ht.pn === 6441211010 || ht.pn === 6441211020) {
+                      page = 2;
+                    }
+                    else if(ht.pn === 6441111010 || ht.pn === 6441111020) {
+                      page = 2;
                     }
 
                     const x = htx/2/split + (870/split)*((page+(split-1))%split);

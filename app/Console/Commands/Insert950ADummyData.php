@@ -68,38 +68,18 @@ class Insert950ADummyData extends Command
         return $workers[$choku][array_rand($workers[$choku], 1)]['name'];
     }
 
-    protected function createPart($panelId, $partTypes, $ft = [], $mt = [], $hmt = [])
+    protected function createPart($panelId, $partTypes)
     {
         $results = [];
         foreach ($partTypes as $partType) {
-            $createFailures = function() use ($partType, $ft, $mt) {
-                $margin = 10;
-
-                $F = [];
-                foreach ($partType['figures'] as $figure) {
-                    for ($i=0; $i<4; $i++) {
-                        array_push($F, [
-                            'failureTypeId' => $ft[array_rand($ft)]['id'],
-                            'figureId' => $figure['id'],
-                            'x' => rand($margin, $figure['sizeX'] - $margin),
-                            'y' => rand($margin, $figure['sizeY'] - $margin),
-                            'modificationTypeId' => count($mt) === 0 ? null : $mt[array_rand($mt)]['id']
-                        ]);
-                    }
-                }
-
-                return $F;
-            };
-
-
             $dummy_comments = ['コメントだよ', '', ''];
 
             $result = [
-                'pn' => $partType['pn'],
+                'pn' => $partType['partType']['pn'],
                 'panelId' => $panelId,
                 'comment' => $dummy_comments[array_rand($dummy_comments, 1)],
                 'status' => rand(0, 1),
-                'failures' => count($ft) === 0 ? [] : $createFailures()
+                'failures' => []
             ];
 
             array_push($results, $result);
@@ -124,9 +104,16 @@ class Insert950ADummyData extends Command
         $request->setForGet($process, $inspection, ['ドアインナR']);
         $getted = $controller->getInspection('950A', $request);
 
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= 1000; $i++) {
             $panelId = 'X'.str_pad($i, 7, 0, STR_PAD_LEFT);
-            $parts = $this->createPart($panelId, $getted['partTypes'], $getted['failures']);
+            // $parts = $this->createPart($panelId, $getted['partTypes']);
+            $parts = [
+                [
+                    'pn' => 6714211020,
+                    'panelId' => $panelId,
+                    'status' => 1
+                ]
+            ];
 
             $choku = $this->getChoku($getted['workers']);
             $worker = $this->getWorker($getted['workers'], $choku);

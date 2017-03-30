@@ -59,7 +59,17 @@ class ReferenceController extends Controller
         $ftIds = $request->fs;
         $mtIds = $request->ms;
 
-        $irs = InspectionResult::with([
+        $irs = InspectionResult::where('latest', '=', 1)
+            ->where('process', '=', $request->p)
+            ->where('inspection', '=', $request->i)
+            ->whereHas('part', function($q) use($pn) {
+                $q->where('pn', '=', $pn);
+            })
+            ->whereIn('status', $request->status)
+            ->whereIn('created_choku', $request->chokus)
+            ->where('created_at', '>=', $start)
+            ->where('created_at', '<', $end)
+            ->with([
                 'part' => function($q) {
                     return $q->select('id', 'pn', 'panel_id');
                 },
@@ -81,19 +91,11 @@ class ReferenceController extends Controller
                 'inlines' => function($q) {
                     return $q->select('id', 'ir_id', 'type_id', 'status');
                 }
-            ])
-            ->where('latest', '=', 1)
-            ->where('process', '=', $request->p)
-            ->where('inspection', '=', $request->i)
-            ->whereHas('part', function($q) use($pn) {
-                $q->where('pn', '=', $pn);
-            })
-            ->whereIn('status', $request->status)
-            ->whereIn('created_choku', $request->chokus)
-            ->where('created_at', '>=', $start)
-            ->where('created_at', '<', $end)
-            ->take($request->take)
-            ->skip($request->skip);
+            ]);
+
+        $count = $irs->count();
+
+        $irs = $irs->take($request->take)->skip($request->skip)->orderBy('id');
 
             if (count($ftIds) > 0) {
                 $irs = $irs->whereHas('failures', function($q) use($ftIds) {
@@ -107,9 +109,9 @@ class ReferenceController extends Controller
                 });
             }
 
-
             $irs = $irs->get()->map(function($ir) use($vehicle) {
                 return [
+                    'id' => $ir->id,
                     'v' => $vehicle,
                     'pn' => $ir->part->pn,
                     'name' => $ir->part->partType->name,
@@ -173,10 +175,9 @@ class ReferenceController extends Controller
         })->flatten()->unique();
         $inlineTypes = $this->inlineType->getByIds($it_ids);
 
-
         return [
             'data' => [
-                'count' => $irs->count(),
+                'count' => $count,
                 'results' => $irs,
                 'fts' => $failureTypes,
                 'mts' => $modificationTypes,

@@ -18,7 +18,7 @@ class CustomTable extends Component {
   sortData(data) {
     const { sort } = this.state;
 
-    data.sort((a,b) => {
+    data.slice().sort((a,b) => {
       let aaa = 0;
       let bbb = 0;
 
@@ -346,11 +346,20 @@ class CustomTable extends Component {
                   inlines.map(i => {
                     let status = true;
                     let target = 0;
+
                     if (d.inlines[i.id]) {
                       target = d.inlines[i.id];
-                      if ( target.status > target.max || target.status < target.min ) {
-                        status = false;
+
+                      if (d.igId !== '19') {
+                        if ( target.status > target.max || target.status < target.min ) {
+                          status = false;
+                        }
+                      } else {
+                        if ( target.status > target.max2 || target.status < target.min2 ) {
+                          status = false;
+                        }
                       }
+
                     }
 
                     return (<td style={{width: colWidth.inline, color: status ? '#000' : 'red'}}>{target.status}</td>);

@@ -1141,14 +1141,14 @@ class ShowController extends Controller
         if ($count > 100) {
             for ($i=0; $i < 100; $i++) {
                 $detail = new PartResult($parts[$i], $partTypeId, $itionGId);
-                $formated = $detail->setDetails()->formatForRerefence()->get();
+                $formated = $detail->setDetails()->formatForRerefence($judgement)->get();
                 $data[] = $formated;
             }
         }
         else {
             foreach ($parts as $part_id) {
                 $detail = new PartResult($part_id, $partTypeId, $itionGId);
-                $formated = $detail->setDetails()->formatForRerefence()->get();
+                $formated = $detail->setDetails()->formatForRerefence($judgement)->get();
                 $data[] = $formated;
             }
         }
@@ -1171,6 +1171,15 @@ class ShowController extends Controller
             $i = PartType::find($partTypeId)->inlines;
         }
 
+        $data = collect($data)->filter(function($r) use($judgement) {
+            if ($judgement === [0]) {
+                return $r['status'] === 0;
+            }
+            return true;
+        });
+
+        $count = $data->count();
+
         return ['data' => [
             'count' => $count,
             'f' => $f,
@@ -1178,7 +1187,8 @@ class ShowController extends Controller
             'h' => $h,
             'hm' => $hm,
             'i' => $i,
-            'parts' => $data
+            'parts' => $data,
+            'igId' => $itionGId
         ]];
     }
 

@@ -22,14 +22,14 @@ class InspectorTableSeeder extends Seeder
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         }
 
-        if (env('DB_CONNECTION') == 'mysql') {
-            DB::table($table_name)->truncate();
-        } elseif (env('DB_CONNECTION') == 'sqlite') {
-            DB::statement('DELETE FROM ' . $table_name);
-        } else {
-            //For PostgreSQL or anything else
-            DB::statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
-        }
+        // if (env('DB_CONNECTION') == 'mysql') {
+        //     DB::table($table_name)->truncate();
+        // } elseif (env('DB_CONNECTION') == 'sqlite') {
+        //     DB::statement('DELETE FROM ' . $table_name);
+        // } else {
+        //     //For PostgreSQL or anything else
+        //     DB::statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
+        // }
 
         $data = [
             // 成型　白直
@@ -793,14 +793,14 @@ class InspectorTableSeeder extends Seeder
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         }
 
-        if (env('DB_CONNECTION') == 'mysql') {
-            DB::table($table_name)->truncate();
-        } elseif (env('DB_CONNECTION') == 'sqlite') {
-            DB::statement('DELETE FROM ' . $table_name);
-        } else {
-            //For PostgreSQL or anything else
-            DB::statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
-        }
+        // if (env('DB_CONNECTION') == 'mysql') {
+        //     DB::table($table_name)->truncate();
+        // } elseif (env('DB_CONNECTION') == 'sqlite') {
+        //     DB::statement('DELETE FROM ' . $table_name);
+        // } else {
+        //     //For PostgreSQL or anything else
+        //     DB::statement('TRUNCATE TABLE ' . $table_name . ' CASCADE');
+        // }
 
         $data = [
             //成型_検査_インナ_ライン１_白

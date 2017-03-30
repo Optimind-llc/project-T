@@ -50,10 +50,10 @@ class RelatedHoleTableSeeder extends Seeder
             [1, 2,  183,  542, 'right', 'square', 'solid', '95CDDC'],
             [1, 3,  273,  267, 'top',   'square', 'solid', '95CDDC'],
             [1, 4,  137,  307, 'left',  'square', 'solid', '95CDDC'],
-            [1, 5,  134,  483, 'top',   'square', 'solid', '95CDDC'],
+            [1, 5,  134,  473, 'top',   'square', 'solid', '95CDDC'],
             [1, 6,  127,  518, 'left',  'square', 'solid', '95CDDC'],
             [1, 7,  127,  595, 'left',  'square', 'solid', '95CDDC'],
-            [1, 8,  133,  627, 'bottom','square', 'solid', '95CDDC'],
+            [1, 8,  133,  637, 'bottom','square', 'solid', '95CDDC'],
             [1, 9,  185,  852, 'bottom','square', 'solid', '95CDDC'],
             [1, 10, 453,  875, 'bottom','square', 'solid', '95CDDC'],
             [1, 11, 727,  869, 'bottom','square', 'solid', '95CDDC'],
@@ -86,7 +86,7 @@ class RelatedHoleTableSeeder extends Seeder
             [2, 34, 835,  800, 'top',   'square', 'solid', '938957'],
             [2, 35, 984,  800, 'top',   'square', 'solid', '938957'],
             [2, 36, 1134, 800, 'top',   'square', 'solid', '938957'],
-            [2, 37, 1202, 800, 'top',   'square', 'solid', '938957'],
+            [2, 37, 1212, 800, 'top',   'square', 'solid', '938957'],
             [2, 38, 272,  840, 'bottom','square', 'solid', '938957'],
             [2, 39, 460,  840, 'bottom','square', 'solid', '938957'],
             [2, 40, 591,  833, 'bottom','square', 'solid', '938957'],
@@ -124,11 +124,11 @@ class RelatedHoleTableSeeder extends Seeder
             [3, 69, 216,  436, 'left',  'square', 'solid', '604B7A'],
             [3, 70, 216,  526, 'left',  'square', 'solid', '604B7A'],
 
-            [4, 71, 246,  279, 'top',   'square', 'solid', '779242'],
+            [4, 71, 246,  270, 'top',   'square', 'solid', '779242'],
             [4, 72, 1570, 209, 'top',   'square', 'solid', '779242'],
             [4, 73, 208,  646, 'left',  'square', 'solid', '779242'],
 
-            [4, 74, 265,  351, 'right', 'square', 'solid', '933837'],
+            [4, 74, 275,  351, 'right', 'square', 'solid', '933837'],
             [4, 75, 1208, 275, 'top',   'square', 'solid', '933837'],
 
             [4, 76, 239,  317, 'left',  'square', 'solid', 'FFFD38'],
@@ -153,7 +153,7 @@ class RelatedHoleTableSeeder extends Seeder
             [5, 92, 945,  756, 'bottom','square', 'solid', '1AAF54'],
 
             [5, 93, 1510, 424, 'right', 'square', 'solid', 'DB0B17'],
-            [5, 94, 1494, 489, 'bottom','square', 'solid', 'DB0B17'],
+            [5, 94, 1494, 500, 'bottom','square', 'solid', 'DB0B17'],
             [5, 95, 1519, 469, 'right', 'square', 'solid', 'DB0B17'],
 
             [5, 96, 1446, 519, 'left',  'square', 'solid', 'FFFFFF'],
@@ -471,10 +471,10 @@ class RelatedHoleTableSeeder extends Seeder
 
             [3, 47, 1301, 696, 'bottom','square', 'solid', '9B9B9B'],
             [3, 48, 1286, 594, 'top',   'square', 'solid', '9B9B9B'],
-            [3, 49, 1113, 755, 'bottom','square', 'solid', '9B9B9B'],
+            [3, 49, 1113, 755, 'top',   'square', 'solid', '9B9B9B'],
             [3, 50, 1104, 630, 'top',   'square', 'solid', '9B9B9B'],
             [3, 51, 624,  630, 'top',   'square', 'solid', '9B9B9B'],
-            [3, 52, 613,  756, 'bottom','square', 'solid', '9B9B9B'],
+            [3, 52, 613,  756, 'top'   ,'square', 'solid', '9B9B9B'],
             [3, 53, 446,  595, 'top',   'square', 'solid', '9B9B9B'],
             [3, 54, 429,  697, 'bottom','square', 'solid', '9B9B9B'],
 
@@ -488,14 +488,14 @@ class RelatedHoleTableSeeder extends Seeder
             [4, 62, 451,  526, 'top',   'square', 'solid', 'E26C22'],
             [4, 63, 327,  528, 'top',   'square', 'solid', 'E26C22'],
 
-            [4, 64, 1116, 900, 'bottom','square', 'solid', '36859A'],
-            [4, 65, 626,  900, 'bottom','square', 'solid', '36859A'],
+            [4, 64, 1106, 900, 'bottom','square', 'solid', '36859A'],
+            [4, 65, 636,  900, 'bottom','square', 'solid', '36859A'],
 
             [4, 66, 1435, 246, 'top',   'square', 'solid', '604B7A'],
             [4, 67, 305,  246, 'top',   'square', 'solid', '604B7A'],
 
-            [4, 68, 1134, 883, 'top',   'square', 'solid', '1AAF54'],
-            [4, 69, 609,  883, 'top',   'square', 'solid', '1AAF54'],
+            [4, 68, 1144, 883, 'top',   'square', 'solid', '1AAF54'],
+            [4, 69, 600,  883, 'top',   'square', 'solid', '1AAF54'],
         ];
 
         //穴検査_ラゲージインナSTD
@@ -572,10 +572,10 @@ class RelatedHoleTableSeeder extends Seeder
 
             [3, 47, 1301, 696, 'bottom','square', 'solid', '9B9B9B'],
             [3, 48, 1286, 594, 'top',   'square', 'solid', '9B9B9B'],
-            [3, 49, 1113, 755, 'bottom','square', 'solid', '9B9B9B'],
+            [3, 49, 1113, 755, 'top',   'square', 'solid', '9B9B9B'],
             [3, 50, 1104, 630, 'top',   'square', 'solid', '9B9B9B'],
             [3, 51, 624,  630, 'top',   'square', 'solid', '9B9B9B'],
-            [3, 52, 613,  756, 'bottom','square', 'solid', '9B9B9B'],
+            [3, 52, 613,  756, 'top'   ,'square', 'solid', '9B9B9B'],
             [3, 53, 446,  595, 'top',   'square', 'solid', '9B9B9B'],
             [3, 54, 429,  697, 'bottom','square', 'solid', '9B9B9B'],
 
@@ -589,14 +589,14 @@ class RelatedHoleTableSeeder extends Seeder
             [4, 62, 451,  526, 'top',   'square', 'solid', 'E26C22'],
             [4, 63, 327,  528, 'top',   'square', 'solid', 'E26C22'],
 
-            [4, 64, 1116, 900, 'bottom','square', 'solid', '36859A'],
-            [4, 65, 626,  900, 'bottom','square', 'solid', '36859A'],
+            [4, 64, 1106, 900, 'bottom','square', 'solid', '36859A'],
+            [4, 65, 636,  900, 'bottom','square', 'solid', '36859A'],
 
             [4, 66, 1435, 246, 'top',   'square', 'solid', '604B7A'],
             [4, 67, 305,  246, 'top',   'square', 'solid', '604B7A'],
 
-            [4, 68, 1134, 883, 'top',   'square', 'solid', '1AAF54'],
-            [4, 69, 609,  883, 'top',   'square', 'solid', '1AAF54'],
+            [4, 68, 1144, 883, 'top',   'square', 'solid', '1AAF54'],
+            [4, 69, 600,  883, 'top',   'square', 'solid', '1AAF54'],
         ];
 
         //穴検査_ラゲージインナARW
@@ -807,37 +807,37 @@ class RelatedHoleTableSeeder extends Seeder
 
         //かしめ後検査_ドアインナR
         $reinforceR_kashimeHoles = [
-            [1, 1,  137,  247, 'top',   'square', 'solid', 'FFFD38'],
-            [1, 2,  269,  248, 'top',   'square', 'solid', 'FFFD38'],
-            [1, 3,  514,  233, 'top',   'square', 'solid', 'FFFD38'],
-            [1, 4,  772,  218, 'top',   'square', 'solid', 'FFFD38'],
-            [1, 5,  1010, 209, 'top',   'square', 'solid', 'FFFD38'],
-            [1, 6,  1233, 194, 'top',   'square', 'solid', 'FFFD38'],
-            [1, 7,  1451, 184, 'top',   'square', 'solid', 'FFFD38'],
-            [1, 8,  1590, 177, 'top',   'square', 'solid', 'FFFD38'],
-            [1, 9,  128,  446, 'bottom','square', 'solid', 'FFFD38'],
-            [1, 10, 327,  433, 'bottom','square', 'solid', 'FFFD38'],
-            [1, 11, 582,  414, 'bottom','square', 'solid', 'FFFD38'],
-            [1, 12, 743,  403, 'bottom','square', 'solid', 'FFFD38'],
-            [1, 13, 940,  390, 'bottom','square', 'solid', 'FFFD38'],
-            [1, 14, 1205, 376, 'bottom','square', 'solid', 'FFFD38'],
-            [1, 15, 1394, 368, 'bottom','square', 'solid', 'FFFD38'],
-            [1, 16, 1616, 364, 'bottom','square', 'solid', 'FFFD38'],
+            [3, 1,  137,  247, 'top',   'square', 'solid', 'FFFD38'],
+            [3, 2,  269,  248, 'top',   'square', 'solid', 'FFFD38'],
+            [3, 3,  514,  233, 'top',   'square', 'solid', 'FFFD38'],
+            [3, 4,  772,  218, 'top',   'square', 'solid', 'FFFD38'],
+            [3, 5,  1010, 209, 'top',   'square', 'solid', 'FFFD38'],
+            [3, 6,  1233, 194, 'top',   'square', 'solid', 'FFFD38'],
+            [3, 7,  1451, 184, 'top',   'square', 'solid', 'FFFD38'],
+            [3, 8,  1590, 177, 'top',   'square', 'solid', 'FFFD38'],
+            [3, 9,  128,  446, 'bottom','square', 'solid', 'FFFD38'],
+            [3, 10, 327,  433, 'bottom','square', 'solid', 'FFFD38'],
+            [3, 11, 582,  414, 'bottom','square', 'solid', 'FFFD38'],
+            [3, 12, 743,  403, 'bottom','square', 'solid', 'FFFD38'],
+            [3, 13, 940,  390, 'bottom','square', 'solid', 'FFFD38'],
+            [3, 14, 1205, 376, 'bottom','square', 'solid', 'FFFD38'],
+            [3, 15, 1394, 368, 'bottom','square', 'solid', 'FFFD38'],
+            [3, 16, 1616, 364, 'bottom','square', 'solid', 'FFFD38'],
 
-            [2, 17, 801,  840, 'bottom','square', 'solid', '95CDDC'],
-            [2, 18, 878,  833, 'bottom','square', 'solid', '95CDDC'],
-            [2, 19, 920,  679, 'top',   'square', 'solid', '95CDDC'],
-            [2, 20, 324,  300, 'top',   'square', 'solid', '95CDDC'],
-            [2, 21, 391,  314, 'top',   'square', 'solid', '95CDDC'],
-            [2, 22, 1450, 238, 'top',   'square', 'solid', '95CDDC'],
-            [2, 23, 1515, 256, 'top',   'square', 'solid', '95CDDC'],
-            [2, 24, 1681, 262, 'right', 'square', 'solid', '95CDDC'],
-            [2, 25, 1681, 327, 'right', 'square', 'solid', '95CDDC'],
-            [2, 26, 168,  349, 'top',   'square', 'solid', '95CDDC'],
-            [2, 27, 922,  208, 'top',   'square', 'solid', '95CDDC'],
-            [2, 28, 1085, 200, 'top',   'square', 'solid', '95CDDC'],
-            [2, 29, 1636, 221, 'top',   'square', 'solid', '95CDDC'],
-            [2, 30, 880,  720, 'left',  'square', 'solid', '95CDDC'],
+            [4, 17, 801,  840, 'bottom','square', 'solid', '95CDDC'],
+            [4, 18, 878,  833, 'bottom','square', 'solid', '95CDDC'],
+            [4, 19, 920,  679, 'top',   'square', 'solid', '95CDDC'],
+            [4, 20, 324,  300, 'top',   'square', 'solid', '95CDDC'],
+            [4, 21, 391,  314, 'top',   'square', 'solid', '95CDDC'],
+            [4, 22, 1450, 238, 'top',   'square', 'solid', '95CDDC'],
+            [4, 23, 1515, 256, 'top',   'square', 'solid', '95CDDC'],
+            [4, 24, 1681, 262, 'right', 'square', 'solid', '95CDDC'],
+            [4, 25, 1681, 327, 'right', 'square', 'solid', '95CDDC'],
+            [4, 26, 168,  349, 'top',   'square', 'solid', '95CDDC'],
+            [4, 27, 922,  208, 'top',   'square', 'solid', '95CDDC'],
+            [4, 28, 1085, 200, 'top',   'square', 'solid', '95CDDC'],
+            [4, 29, 1636, 221, 'top',   'square', 'solid', '95CDDC'],
+            [4, 30, 880,  720, 'left',  'square', 'solid', '95CDDC'],
         ];
 
         //かしめ後検査_リンフォースR

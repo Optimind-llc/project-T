@@ -95,6 +95,7 @@ class CreateResultTablesFor950A extends Migration
             $table->integer('y')->unsigned()->default(0);
             $table->integer('sub_x')->unsigned()->default(0);
             $table->integer('sub_y')->unsigned()->default(0);
+            $table->tinyInteger('face')->unsigned()->default(1);
             $table->integer('type_id')->unsigned();
             $table->integer('ir_id')->unsigned();
             $table->integer('part_id')->unsigned();

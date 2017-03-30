@@ -3,7 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
+import { handleDownload } from '../../../../utils/Export';
 import { vehicles, processes, inspections, inspectionGroups } from '../../../../utils/Processes';
+
 // Actions
 import { push } from 'react-router-redux';
 import { referenceActions } from '../ducks/reference';
@@ -37,8 +39,82 @@ class Reference extends Component {
   }
 
   componentWillUnmount() {
-   clearInterval(this.state.intervalId);
     this.props.actions.clearReferenceData();
+  }
+
+  handleDownload() {
+    const { ReferenceData } = this.props;
+
+    let table = [];
+    if (ReferenceData.data != null && !ReferenceData.isFetching) {
+      let header = ['車種','品番','品名','パネルID','直','検査者','更新者','判定'];
+
+      ReferenceData.data.hts.forEach(ht => {
+        header.push(String(ht.label));
+      });
+      ReferenceData.data.hmts.forEach(hmt => {
+        header.push(hmt.name);
+      });
+      ReferenceData.data.fts.forEach(ft => {
+        header.push(ft.name);
+      });
+      ReferenceData.data.mts.forEach(mt => {
+        header.push(mt.name);
+      });
+      ReferenceData.data.its.forEach(it => {
+        header.push(String(it.label));
+      });
+
+      header.push('コメント');
+      header.push('検査日');
+      header.push('更新日');
+
+      table.push(header);
+
+      let rows = ReferenceData.data.results.map(r => {
+        const status = r.status == 1 ? '○' : '×';
+        const uBy = r.uBy ? r.uBy : '';
+        let result = [r.v, String(r.pn), r.name, r.panelId, r.choku, r.cBy, uBy, status];
+
+        ReferenceData.data.hts.forEach(ht => {
+          let hStatus = '-';
+          if (r.hs[ht.id] === 0) {hStatus = '×'}
+          if (r.hs[ht.id] === 1) {hStatus = '○'}
+          if (r.hs[ht.id] === 2) {hStatus = '△'}
+
+          result.push(hStatus);
+        });
+
+        ReferenceData.data.hmts.forEach(hmt => {
+          let hmSum = r.hms[hmt.id] ? p.failures[hm.id] : 0;
+          result.push(String(hmSum));
+        });
+
+        ReferenceData.data.fts.forEach(ft => {
+          let fSum = r.fs[ft.id] ? r.fs[ft.id] : 0;
+          result.push(String(fSum));
+        });
+
+        ReferenceData.data.mts.forEach(mt => {
+          let mSum = r.ms[mt.id] ? r.ms[mt.id] : 0;
+          result.push(String(mSum));
+        });
+
+        ReferenceData.data.its.forEach(it => {
+          result.push(String(r.is[it.id]));
+        });
+
+        result.push(r.comment ? r.comment : '');
+        result.push(r.iAt);
+        result.push(r.uAt);
+
+        return result;
+      });
+
+      table = table.concat(rows);
+    };
+
+    handleDownload(table);
   }
 
   search() {
@@ -46,11 +122,44 @@ class Reference extends Component {
     const { p, i, pt, narrowedBy, choku, judge, startDate, endDate, requiredF, requiredM, panelId } = this.state;
     const format = 'YYYY-MM-DD';
 
-    const take = 100;
+    const take = 50;
     const skip = 0;
 
     if (narrowedBy === 'advanced') {
       advancedSearch(
+        p.value,
+        i.value,
+        pt.value,
+        choku.value,
+        judge.value,
+        startDate.format(format),
+        endDate.format(format),
+        requiredF.map(f => f.value),
+        requiredM.map(m => m.value),
+        take,
+        skip
+      );
+    }
+    else if (narrowedBy === 'panelId') {
+      panelIdSearch(
+        p.value,
+        i.value,
+        pt.value,
+        panelId,
+        take,
+        skip
+      );
+    }
+  }
+
+  additionalSearch(skip) {
+    const { advancedAdditionalSearch, panelIdSearch } = this.props.actions;
+    const { p, i, pt, narrowedBy, choku, judge, startDate, endDate, requiredF, requiredM, panelId } = this.state;
+    const format = 'YYYY-MM-DD';
+    const take = 50;
+
+    if (narrowedBy === 'advanced') {
+      advancedAdditionalSearch(
         p.value,
         i.value,
         pt.value,
@@ -229,17 +338,18 @@ class Reference extends Component {
                 className={`column selectable ${narrowedBy === 'panelId' ? 'selected' : ''}`}
                 onClick={() => this.setState({narrowedBy: 'panelId'})}
               >
-                <p>パネルID</p>
+                <p>パネルID<span className="small">4文字以上</span></p>
                 <input
+                  className="panelId"
                   type="text"
                   value={panelId}
-                  onChange={e => this.setState({panelId: e.target.value})}
+                  onChange={e => this.setState({panelId: e.target.value.replace(/[^A-Za-z0-9]+/i,'').toUpperCase().substr(0,8)})}
                 />
               </div>
             </div>
           </div>
           <button
-            className="serch dark"
+            className={`serch dark ${narrowedBy === 'panelId' && (panelId.length < 4 || panelId.length > 8) ? 'disabled' : ''}`}
             onClick={() => this.search()}
           >
             <p>この条件で検索</p>
@@ -250,10 +360,10 @@ class Reference extends Component {
             ReferenceData.isFetching && 
             <p className="message">検索中...</p>
           }{
-            !ReferenceData.isFetching && ReferenceData.data != null && ReferenceData.data.count === 0 &&
+            !ReferenceData.isFetching && ReferenceData.data != null && ReferenceData.data.results.length === 0 &&
             <p className="message">検索結果なし</p>
           }{
-            !ReferenceData.isFetching && ReferenceData.data != null && ReferenceData.data.count > 0 &&
+            !ReferenceData.isFetching && ReferenceData.data != null && ReferenceData.data.results.length > 0 &&
             <ReferenceBody
               count={ReferenceData.data.count}
               results={ReferenceData.data.results}
@@ -262,7 +372,8 @@ class Reference extends Component {
               hts={ReferenceData.data.hts}
               hmts={ReferenceData.data.hmts}
               its={ReferenceData.data.its}
-              download={() => handleDownload(table)}
+              download={() => this.handleDownload()}
+              additionalSearch={(skip) => this.additionalSearch(skip)}
             />
           }
         </div>
