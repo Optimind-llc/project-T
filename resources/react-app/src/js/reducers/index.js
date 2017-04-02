@@ -30,7 +30,7 @@ import MappingData950A from '../modules/Vehicle950A/mapping/ducks/mapping';
 import ReferenceData950A from '../modules/Vehicle950A/reference/ducks/reference';
 import ReportData950A from '../modules/Vehicle950A/report/ducks/report';
 
-import MaintFailure950A from '../modules/Vehicle950A/master/failure/ducks/report';
+import MaintFailure950A from '../modules/Vehicle950A/master/failure/ducks/meintFailure';
 
 const rootReducer = combineReducers(Object.assign({
   Application,
