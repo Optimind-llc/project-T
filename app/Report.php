@@ -1904,6 +1904,8 @@ class Report
                         'sort' => $i->sort,
                         'min' => $i->min_tolerance,
                         'max' => $i->max_tolerance,
+                        'min2' => $i->min2,
+                        'max2' => $i->max2,
                         'status' => $i->pivot->status
                     ]);
                 })->sortBy('sort')->values()
@@ -1990,7 +1992,13 @@ class Report
             foreach ($inlines as $i => $inline) {
                 $tcpdf->Text($A3['x0']+array_sum($d)+$i*$di, $A3['y1'], 'P-'.$inline['sort']);
 
-                $tolerance = number_format($inline['min'],2).'〜'.number_format($inline['max'],2);
+                if ($this->line == 2) {
+                    $tolerance = number_format($inline['min2'],2).'〜'.number_format($inline['max2'],2);
+                }
+                else {
+                    $tolerance = number_format($inline['min'],2).'〜'.number_format($inline['max'],2);
+                }
+
                 $tcpdf->SetFont('kozgopromedium', '', 6);
                 $tcpdf->Text($A3['x0']+array_sum($d)+$i*$di, $A3['y1']+5, $tolerance);
                 $tcpdf->SetFont('kozgopromedium', '', 8);
@@ -2007,8 +2015,15 @@ class Report
 
                 foreach ($part['inlines'] as $col => $inline) {
                     $judge = '';
-                    if ($inline['status'] > $inline['max'] || $inline['status'] < $inline['min']) {
-                        $judge = '×';
+                    if ($this->line == 2) {
+                        if ($inline['status'] > $inline['max2'] || $inline['status'] < $inline['min2']) {
+                            $judge = '×';
+                        }
+                    }
+                    else {
+                        if ($inline['status'] > $inline['max'] || $inline['status'] < $inline['min']) {
+                            $judge = '×';
+                        }  
                     }
                     $tcpdf->Text($A3['x0']+array_sum($d)+$col*$di, $A3['y2']+$th*$row, $inline['status']);
                     $tcpdf->Text($A3['x0']+array_sum($d)+$col*$di+9, $A3['y2']+$th*$row, $judge);

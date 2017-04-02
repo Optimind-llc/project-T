@@ -119,7 +119,6 @@ export function createFailure(name, label, inspections) {
 }
 
 export function updateFailure(id, name, label, inspections) {
-  console.log(id, name, label, inspections)
   return {
     [CALL_API]: {
       types: [

@@ -238,6 +238,7 @@ class InspectionController extends Controller
                                 'id' => $f->id,
                                 'x' => $f->x,
                                 'y' => $f->y,
+                                'face' => $f->face,
                                 'typeId' => $f->type_id,
                                 'figureId' => $f->figure->id,
                                 'figurePage' => $f->figure->page
@@ -254,6 +255,7 @@ class InspectionController extends Controller
                                 'failureId' => $m->failure->id,
                                 'x' => $m->failure->x,
                                 'y' => $m->failure->y,
+                                'face' => $m->failure->face,
                                 'typeId' => $m->type_id,
                                 'figureId' => $m->figure->id,
                                 'figurePage' => $m->figure->page
@@ -334,6 +336,7 @@ class InspectionController extends Controller
                             'id' => $f->id,
                             'x' => $f->x,
                             'y' => $f->y,
+                            'face' => $f->face,
                             'typeId' => $f->type_id,
                             'figureId' => $f->figure->id,
                             'figurePage' => $f->figure->page
@@ -350,6 +353,7 @@ class InspectionController extends Controller
                             'failureId' => $m->failure->id,
                             'x' => $m->failure->x,
                             'y' => $m->failure->y,
+                            'face' => $m->failure->face,
                             'typeId' => $m->type_id,
                             'figureId' => $m->figure->id,
                             'figurePage' => $m->figure->page

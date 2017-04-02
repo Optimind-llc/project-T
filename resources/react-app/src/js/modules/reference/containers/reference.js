@@ -392,6 +392,7 @@ class Reference extends Component {
           }{
             SerchedData.data != null && !SerchedData.isFetching &&
             <CustomTable
+              igId={SerchedData.data.igId}
               count={SerchedData.data.count}
               data={SerchedData.data.parts}
               failures={SerchedData.data.f}

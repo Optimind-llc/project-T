@@ -123,7 +123,7 @@ class InspectionResultRepository
         return $ir = InspectionResult::identify($p, $i, $partId)
             ->with([
                 'failures' => function($q) {
-                    $q->select('id', 'x', 'y', 'type_id', 'ir_id', 'figure_id');
+                    $q->select('id', 'x', 'y', 'face', 'type_id', 'ir_id', 'figure_id');
                 },
                 'failures.figure' => function($q) {
                     $q->select('id', 'page');

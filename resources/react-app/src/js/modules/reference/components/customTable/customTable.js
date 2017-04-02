@@ -65,7 +65,7 @@ class CustomTable extends Component {
   }
 
   render() {
-    const { count, data, failures, holes, modifications, hModifications, inlines, download } = this.props;
+    const { igId, count, data, failures, holes, modifications, hModifications, inlines, download } = this.props;
     const { sort } = this.state;
     const colWidth = {
       number: 36,
@@ -349,13 +349,12 @@ class CustomTable extends Component {
 
                     if (d.inlines[i.id]) {
                       target = d.inlines[i.id];
-
-                      if (d.igId !== '19') {
+                      if (igId !== '19') {
                         if ( target.status > target.max || target.status < target.min ) {
                           status = false;
                         }
                       } else {
-                        if ( target.status > target.max2 || target.status < target.min2 ) {
+                        if ( target.status > i.max2 || target.status < i.min2 ) {
                           status = false;
                         }
                       }
