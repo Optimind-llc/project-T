@@ -48,7 +48,7 @@ class RelatedHoleModificationTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '伸縮防止',
+                'name'       => '伸展防止',
                 'label'      => 4,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -87,7 +87,7 @@ class RelatedHoleModificationTableSeeder extends Seeder
 
         //穴あけ_穴検査_ドアインナ
         $h_ana_doorInner_failures = [
-            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+            [1,  1], [6,  1]
         ];
 
         $data = array_map(function($i, $f) {
@@ -104,7 +104,7 @@ class RelatedHoleModificationTableSeeder extends Seeder
 
         //穴あけ_穴検査_リンフォース
         $h_ana_reinforce_failures = [
-            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+            [1,  1], [6,  1]
         ];
 
         $data = array_map(function($i, $f) {
@@ -121,7 +121,7 @@ class RelatedHoleModificationTableSeeder extends Seeder
 
         //穴あけ_穴検査_ラゲージインナ
         $h_ana_luggageInner_failures = [
-            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+            [1,  1], [6,  1]
         ];
 
         $data = array_map(function($i, $f) {
@@ -138,7 +138,7 @@ class RelatedHoleModificationTableSeeder extends Seeder
 
         //穴あけ_穴検査_ラゲージアウタ
         $h_ana_luggageOuter_failures = [
-            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+            [1,  1], [6,  1]
         ];
 
         $data = array_map(function($i, $f) {
@@ -156,7 +156,7 @@ class RelatedHoleModificationTableSeeder extends Seeder
 
         //穴あけ_手直検査_ドアインナ
         $h_tenaoshi_doorInner_failures = [
-            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+            [1,  1], [6,  1]
         ];
 
         $data = array_map(function($i, $f) {
@@ -173,7 +173,7 @@ class RelatedHoleModificationTableSeeder extends Seeder
 
         //穴あけ_手直検査_リンフォース
         $h_tenaoshi_reinforce_failures = [
-            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+            [1,  1], [6,  1]
         ];
 
         $data = array_map(function($i, $f) {
@@ -190,7 +190,7 @@ class RelatedHoleModificationTableSeeder extends Seeder
 
         //穴あけ_手直検査_ラゲージインナ
         $h_tenaoshi_luggageInner_failures = [
-            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+            [1,  1], [6,  1]
         ];
 
         $data = array_map(function($i, $f) {
@@ -207,7 +207,7 @@ class RelatedHoleModificationTableSeeder extends Seeder
 
         //穴あけ_手直検査_ラゲージアウタ
         $h_tenaoshi_luggageOuter_failures = [
-            [1,  1], [2,  1], [3,  1], [4,  1], [6,  1]
+            [1,  1], [6,  1]
         ];
 
         $data = array_map(function($i, $f) {

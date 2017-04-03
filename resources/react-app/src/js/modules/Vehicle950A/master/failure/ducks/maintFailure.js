@@ -1,5 +1,5 @@
 import {fromJS, Map as iMap, List as iList} from 'immutable';
-import { CALL_API } from '../../../../middleware/fetchMiddleware';
+import { CALL_API } from '../../../../../middleware/fetchMiddleware';
 
 export const REDUEST_FAILURE_DATA = 'REDUEST_FAILURE_DATA';
 export const REDUEST_FAILURE_DATA_SUCCESS = 'REDUEST_FAILURE_DATA_SUCCESS';
@@ -114,5 +114,4 @@ export function deactivateFailure(id) {
 
 export const pageActions = {
   requestFailures,
-  advancedMapping
 };

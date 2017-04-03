@@ -261,7 +261,7 @@ class RelatedModificationTableSeeder extends Seeder
 
         //穴あけ_手直検査_ドアインナ
         $h_tenaoshi_doorInner_failures = [
-            [1,  2], [9, 2]
+            [1,  2], [2,  2], [3,  2],[4,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -278,7 +278,7 @@ class RelatedModificationTableSeeder extends Seeder
 
         //穴あけ_手直検査_リンフォース
         $h_tenaoshi_reinforce_failures = [
-            [1,  2], [9, 2]
+            [1,  2], [2,  2], [3,  2],[4,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -295,7 +295,7 @@ class RelatedModificationTableSeeder extends Seeder
 
         //穴あけ_手直検査_ラゲージインナ
         $h_tenaoshi_luggageInner_failures = [
-            [1,  2], [9, 2]
+            [1,  2], [2,  2], [3,  2],[4,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -312,7 +312,7 @@ class RelatedModificationTableSeeder extends Seeder
 
         //穴あけ_手直検査_ラゲージアウタ
         $h_tenaoshi_luggageOuter_failures = [
-            [1,  2], [9, 2]
+            [1,  2], [2,  2], [3,  2],[4,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {

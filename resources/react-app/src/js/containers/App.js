@@ -53,10 +53,10 @@ class App extends Component {
       ],
       '950A': [
         { en: '950A/maintenance/worker', name: '担当者マスタ', disable: true },
-        { en: '950A/maintenance/failure', name: '不良区分マスタ', disable: false },
-        { en: '950A/maintenance/modification', name: '手直区分マスタ', disable: false },
-        { en: '950A/maintenance/holeModification', name: '穴手直区分マスタ', disable: false },
-        { en: '950A/maintenance/hole', name: '穴あけポイント', disable: false },
+        { en: '950A/maintenance/failure', name: '不良区分マスタ', disable: true },
+        { en: '950A/maintenance/modification', name: '手直区分マスタ', disable: true },
+        { en: '950A/maintenance/holeModification', name: '穴手直区分マスタ', disable: true },
+        { en: '950A/maintenance/hole', name: '穴あけポイント', disable: true },
         { en: '950A/maintenance/inline', name: '精度ポイント', disable: true }
       ]
     };

@@ -1176,7 +1176,7 @@ class ShowController extends Controller
                 return $r['status'] === 0;
             }
             return true;
-        });
+        })->values();
 
         $count = $data->count();
 

@@ -434,7 +434,7 @@ class RelatedFailureTableSeeder extends Seeder
         //穴あけ_洗浄後外観検査_ドアインナ
         $h_gaikan_doorInner_failures = [
             [1,  2], [2,  2], [3,  2], [4,  2], [5,  2], [19, 2], [9,  2],
-            [20, 2], [21, 2], [22, 2], [18, 2], [44, 2], [41, 2]
+            [20, 2], [21, 2], [22, 2], [18, 2], [44, 2], [10, 2], [41, 2]
         ];
 
         $data = array_map(function($i, $f) {
