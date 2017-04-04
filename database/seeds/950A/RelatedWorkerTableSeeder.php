@@ -459,8 +459,80 @@ class RelatedWorkerTableSeeder extends Seeder
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
-            ]
+            ],[
+                'name'       => '知念 智',
+                'yomi'       => 'チネンサトシ',
+                'code'       => '0056',
+                'choku_code' => 'W',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '島田 大',
+                'yomi'       => 'シマダスグル',
+                'code'       => '0057',
+                'choku_code' => 'W',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '大竹 亮亘',
+                'yomi'       => 'オオダケアキノブ',
+                'code'       => '0058',
+                'choku_code' => 'W',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '蟹 俊之',
+                'yomi'       => 'カニトシユキ',
+                'code'       => '0059',
+                'choku_code' => 'W',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '壁岸 政義',
+                'yomi'       => 'カベキシマサヨシ',
+                'code'       => '0060',
+                'choku_code' => 'W',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '白木 太一',
+                'yomi'       => 'シラキタイチ',
+                'code'       => '0061',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '大竹 智之',
+                'yomi'       => 'オオダケトモユキ',
+                'code'       => '0062',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '金渕 泰明',
+                'yomi'       => 'カナブチヤスアキ',
+                'code'       => '0063',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '門馬 弘尚',
+                'yomi'       => 'モンマヒロタカ',
+                'code'       => '0064',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
         ];
+
+
+
+
+
+
+
+
+
 
         DB::connection('950A')->table($table_name)->insert($data);
 
@@ -614,29 +686,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'door',
-                'worker_id' => 21,
+                'worker_id' => 22,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'door',
-                'worker_id' => 22,
+                'worker_id' => 56,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'door',
-                'worker_id' => 23,
+                'worker_id' => 57,
                 'sort'      => 7
-            ],
-            //穴あけ_外観検査_ドア_黄
-            [
+            ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'door',
-                'worker_id' => 16,
-                'sort'      => 1
+                'worker_id' => 58,
+                'sort'      => 8
             ],[
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'division'   => 'door',
+                'worker_id' => 59,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'division'   => 'door',
+                'worker_id' => 60,
+                'sort'      => 10
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'division'   => 'door',
+                'worker_id' => 23,
+                'sort'      => 11
+            ],
+            //穴あけ_外観検査_ドア_黄
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'maegaikan',
+            //     'division'   => 'door',
+            //     'worker_id' => 16,
+            //     'sort'      => 1
+            // ],
+            [
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'door',
@@ -652,33 +749,52 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'door',
-                'worker_id' => 26,
+                'worker_id' => 61,
                 'sort'      => 4
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'door',
-                'worker_id' => 27,
+                'worker_id' => 62,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'door',
-                'worker_id' => 28,
+                'worker_id' => 63,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'door',
-                'worker_id' => 29,
+                'worker_id' => 64,
                 'sort'      => 7
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'door',
-                'worker_id' => 55,
+                'worker_id' => 27,
                 'sort'      => 8
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'division'   => 'door',
+                'worker_id' => 28,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'division'   => 'door',
+                'worker_id' => 29,
+                'sort'      => 10
             ],
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'maegaikan',
+            //     'division'   => 'door',
+            //     'worker_id' => 55,
+            //     'sort'      => 11
+            // ],
 
             //穴あけ_塗装前外観検査_ドア_白
             [
@@ -709,29 +825,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'door',
-                'worker_id' => 21,
+                'worker_id' => 22,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'door',
-                'worker_id' => 22,
+                'worker_id' => 56,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'door',
-                'worker_id' => 23,
+                'worker_id' => 57,
                 'sort'      => 7
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'division'   => 'door',
+                'worker_id' => 58,
+                'sort'      => 8
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'division'   => 'door',
+                'worker_id' => 59,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'division'   => 'door',
+                'worker_id' => 60,
+                'sort'      => 10
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'division'   => 'door',
+                'worker_id' => 23,
+                'sort'      => 11
             ],
             //穴あけ_外観検査_ドア_黄
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'atogaikan',
+            //     'division'   => 'door',
+            //     'worker_id' => 16,
+            //     'sort'      => 1
+            // ],
             [
-                'process'    => 'holing',
-                'inspection' => 'atogaikan',
-                'division'   => 'door',
-                'worker_id' => 16,
-                'sort'      => 1
-            ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'door',
@@ -747,33 +888,52 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'door',
-                'worker_id' => 26,
+                'worker_id' => 61,
                 'sort'      => 4
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'door',
-                'worker_id' => 27,
+                'worker_id' => 62,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'door',
-                'worker_id' => 28,
+                'worker_id' => 63,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'door',
-                'worker_id' => 29,
+                'worker_id' => 64,
                 'sort'      => 7
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'door',
-                'worker_id' => 55,
+                'worker_id' => 27,
                 'sort'      => 8
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'division'   => 'door',
+                'worker_id' => 28,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'division'   => 'door',
+                'worker_id' => 29,
+                'sort'      => 10
             ],
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'atogaikan',
+            //     'division'   => 'door',
+            //     'worker_id' => 55,
+            //     'sort'      => 11
+            // ],
 
             //穴あけ_穴検査_ドア_白
             [
@@ -804,29 +964,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'door',
-                'worker_id' => 21,
+                'worker_id' => 22,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'door',
-                'worker_id' => 22,
+                'worker_id' => 56,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'door',
-                'worker_id' => 23,
+                'worker_id' => 57,
                 'sort'      => 7
-            ],
-            //穴あけ_穴検査_ドア_黄
-            [
+            ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'door',
-                'worker_id' => 16,
-                'sort'      => 1
+                'worker_id' => 58,
+                'sort'      => 8
             ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
+                'worker_id' => 59,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
+                'worker_id' => 60,
+                'sort'      => 10
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
+                'worker_id' => 23,
+                'sort'      => 11
+            ],
+            //穴あけ_穴検査_ドア_黄
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'ana',
+            //     'division'   => 'door',
+            //     'worker_id' => 16,
+            //     'sort'      => 1
+            // ],
+            [
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'door',
@@ -842,35 +1027,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'door',
-                'worker_id' => 26,
+                'worker_id' => 61,
                 'sort'      => 4
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'door',
-                'worker_id' => 27,
+                'worker_id' => 62,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'door',
-                'worker_id' => 28,
+                'worker_id' => 63,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'door',
-                'worker_id' => 29,
+                'worker_id' => 64,
                 'sort'      => 7
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'door',
-                'worker_id' => 55,
+                'worker_id' => 27,
                 'sort'      => 8
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
+                'worker_id' => 28,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'door',
+                'worker_id' => 29,
+                'sort'      => 10
             ],
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'ana',
+            //     'division'   => 'door',
+            //     'worker_id' => 55,
+            //     'sort'      => 11
+            // ],
 
-            //穴あけ_穴検査_ドア_白
+            //穴あけ_手直検査_ドア_白
             [
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
@@ -899,29 +1103,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'door',
-                'worker_id' => 21,
+                'worker_id' => 22,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'door',
-                'worker_id' => 22,
+                'worker_id' => 56,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'door',
-                'worker_id' => 23,
+                'worker_id' => 57,
                 'sort'      => 7
-            ],
-            //穴あけ_穴検査_ドア_黄
-            [
+            ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'door',
-                'worker_id' => 16,
-                'sort'      => 1
+                'worker_id' => 58,
+                'sort'      => 8
             ],[
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
+                'worker_id' => 59,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
+                'worker_id' => 60,
+                'sort'      => 10
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
+                'worker_id' => 23,
+                'sort'      => 11
+            ],
+            //穴あけ_手直検査_ドア_黄
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'tenaoshi',
+            //     'division'   => 'door',
+            //     'worker_id' => 16,
+            //     'sort'      => 1
+            // ],
+            [
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'door',
@@ -937,33 +1166,52 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'door',
-                'worker_id' => 26,
+                'worker_id' => 61,
                 'sort'      => 4
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'door',
-                'worker_id' => 27,
+                'worker_id' => 62,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'door',
-                'worker_id' => 28,
+                'worker_id' => 63,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'door',
-                'worker_id' => 29,
+                'worker_id' => 64,
                 'sort'      => 7
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'door',
-                'worker_id' => 55,
+                'worker_id' => 27,
                 'sort'      => 8
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
+                'worker_id' => 28,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'door',
+                'worker_id' => 29,
+                'sort'      => 10
             ],
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'tenaoshi',
+            //     'division'   => 'door',
+            //     'worker_id' => 55,
+            //     'sort'      => 11
+            // ],
 
             //かしめ/接着_かしめ後検査_ドア_白
             [
@@ -1318,7 +1566,7 @@ class RelatedWorkerTableSeeder extends Seeder
             ],
 
 
-            //穴あけ_洗浄前外観検査_ラゲージ_白
+            //穴あけ_塗装前外観検査_ドア_白
             [
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
@@ -1347,29 +1595,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'luggage',
-                'worker_id' => 21,
+                'worker_id' => 22,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'luggage',
-                'worker_id' => 22,
+                'worker_id' => 56,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'luggage',
-                'worker_id' => 23,
+                'worker_id' => 57,
                 'sort'      => 7
-            ],
-            //穴あけ_洗浄前外観検査_ラゲージ_黄
-            [
+            ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'luggage',
-                'worker_id' => 16,
-                'sort'      => 1
+                'worker_id' => 58,
+                'sort'      => 8
             ],[
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'division'   => 'luggage',
+                'worker_id' => 59,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'division'   => 'luggage',
+                'worker_id' => 60,
+                'sort'      => 10
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'division'   => 'luggage',
+                'worker_id' => 23,
+                'sort'      => 11
+            ],
+            //穴あけ_外観検査_ドア_黄
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'maegaikan',
+            //     'division'   => 'luggage',
+            //     'worker_id' => 16,
+            //     'sort'      => 1
+            // ],
+            [
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'luggage',
@@ -1385,35 +1658,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'luggage',
-                'worker_id' => 26,
+                'worker_id' => 61,
                 'sort'      => 4
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'luggage',
-                'worker_id' => 27,
+                'worker_id' => 62,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'luggage',
-                'worker_id' => 28,
+                'worker_id' => 63,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'luggage',
-                'worker_id' => 29,
+                'worker_id' => 64,
                 'sort'      => 7
             ],[
                 'process'    => 'holing',
                 'inspection' => 'maegaikan',
                 'division'   => 'luggage',
-                'worker_id' => 55,
+                'worker_id' => 27,
                 'sort'      => 8
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'division'   => 'luggage',
+                'worker_id' => 28,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'maegaikan',
+                'division'   => 'luggage',
+                'worker_id' => 29,
+                'sort'      => 10
             ],
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'maegaikan',
+            //     'division'   => 'luggage',
+            //     'worker_id' => 55,
+            //     'sort'      => 11
+            // ],
 
-            //穴あけ_洗浄後外観検査_ラゲージ_白
+            //穴あけ_塗装前外観検査_ドア_白
             [
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
@@ -1442,29 +1734,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'luggage',
-                'worker_id' => 21,
+                'worker_id' => 22,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'luggage',
-                'worker_id' => 22,
+                'worker_id' => 56,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'luggage',
-                'worker_id' => 23,
+                'worker_id' => 57,
                 'sort'      => 7
-            ],
-            //穴あけ_洗浄後外観検査_ラゲージ_黄
-            [
+            ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'luggage',
-                'worker_id' => 16,
-                'sort'      => 1
+                'worker_id' => 58,
+                'sort'      => 8
             ],[
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'division'   => 'luggage',
+                'worker_id' => 59,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'division'   => 'luggage',
+                'worker_id' => 60,
+                'sort'      => 10
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'division'   => 'luggage',
+                'worker_id' => 23,
+                'sort'      => 11
+            ],
+            //穴あけ_外観検査_ドア_黄
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'atogaikan',
+            //     'division'   => 'luggage',
+            //     'worker_id' => 16,
+            //     'sort'      => 1
+            // ],
+            [
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'luggage',
@@ -1480,35 +1797,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'luggage',
-                'worker_id' => 26,
+                'worker_id' => 61,
                 'sort'      => 4
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'luggage',
-                'worker_id' => 27,
+                'worker_id' => 62,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'luggage',
-                'worker_id' => 28,
+                'worker_id' => 63,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'luggage',
-                'worker_id' => 29,
+                'worker_id' => 64,
                 'sort'      => 7
             ],[
                 'process'    => 'holing',
                 'inspection' => 'atogaikan',
                 'division'   => 'luggage',
-                'worker_id' => 55,
+                'worker_id' => 27,
                 'sort'      => 8
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'division'   => 'luggage',
+                'worker_id' => 28,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'atogaikan',
+                'division'   => 'luggage',
+                'worker_id' => 29,
+                'sort'      => 10
             ],
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'atogaikan',
+            //     'division'   => 'luggage',
+            //     'worker_id' => 55,
+            //     'sort'      => 11
+            // ],
 
-            //穴あけ_穴検査_ラゲージ_白
+            //穴あけ_穴検査_ドア_白
             [
                 'process'    => 'holing',
                 'inspection' => 'ana',
@@ -1537,29 +1873,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'luggage',
-                'worker_id' => 21,
+                'worker_id' => 22,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'luggage',
-                'worker_id' => 22,
+                'worker_id' => 56,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'luggage',
-                'worker_id' => 23,
+                'worker_id' => 57,
                 'sort'      => 7
-            ],
-            //穴あけ_穴検査_ラゲージ_黄
-            [
+            ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'luggage',
-                'worker_id' => 16,
-                'sort'      => 1
+                'worker_id' => 58,
+                'sort'      => 8
             ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 59,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 60,
+                'sort'      => 10
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 23,
+                'sort'      => 11
+            ],
+            //穴あけ_穴検査_ドア_黄
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'ana',
+            //     'division'   => 'luggage',
+            //     'worker_id' => 16,
+            //     'sort'      => 1
+            // ],
+            [
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'luggage',
@@ -1575,35 +1936,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'luggage',
-                'worker_id' => 26,
+                'worker_id' => 61,
                 'sort'      => 4
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'luggage',
-                'worker_id' => 27,
+                'worker_id' => 62,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'luggage',
-                'worker_id' => 28,
+                'worker_id' => 63,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'luggage',
-                'worker_id' => 29,
+                'worker_id' => 64,
                 'sort'      => 7
             ],[
                 'process'    => 'holing',
                 'inspection' => 'ana',
                 'division'   => 'luggage',
-                'worker_id' => 55,
+                'worker_id' => 27,
                 'sort'      => 8
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 28,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'ana',
+                'division'   => 'luggage',
+                'worker_id' => 29,
+                'sort'      => 10
             ],
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'ana',
+            //     'division'   => 'luggage',
+            //     'worker_id' => 55,
+            //     'sort'      => 11
+            // ],
 
-            //穴あけ_手直検査_ラゲージ_白
+            //穴あけ_手直検査_ドア_白
             [
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
@@ -1632,29 +2012,54 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'luggage',
-                'worker_id' => 21,
+                'worker_id' => 22,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'luggage',
-                'worker_id' => 22,
+                'worker_id' => 56,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'luggage',
-                'worker_id' => 23,
+                'worker_id' => 57,
                 'sort'      => 7
-            ],
-            //穴あけ_穴検査_ラゲージ_黄
-            [
+            ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'luggage',
-                'worker_id' => 16,
-                'sort'      => 1
+                'worker_id' => 58,
+                'sort'      => 8
             ],[
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
+                'worker_id' => 59,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
+                'worker_id' => 60,
+                'sort'      => 10
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
+                'worker_id' => 23,
+                'sort'      => 11
+            ],
+            //穴あけ_手直検査_ドア_黄
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'tenaoshi',
+            //     'division'   => 'luggage',
+            //     'worker_id' => 16,
+            //     'sort'      => 1
+            // ],
+            [
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'luggage',
@@ -1670,33 +2075,52 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'luggage',
-                'worker_id' => 26,
+                'worker_id' => 61,
                 'sort'      => 4
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'luggage',
-                'worker_id' => 27,
+                'worker_id' => 62,
                 'sort'      => 5
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'luggage',
-                'worker_id' => 28,
+                'worker_id' => 63,
                 'sort'      => 6
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'luggage',
-                'worker_id' => 29,
+                'worker_id' => 64,
                 'sort'      => 7
             ],[
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'division'   => 'luggage',
-                'worker_id' => 55,
+                'worker_id' => 27,
                 'sort'      => 8
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
+                'worker_id' => 28,
+                'sort'      => 9
+            ],[
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
+                'worker_id' => 29,
+                'sort'      => 10
             ],
+            // [
+            //     'process'    => 'holing',
+            //     'inspection' => 'tenaoshi',
+            //     'division'   => 'luggage',
+            //     'worker_id' => 55,
+            //     'sort'      => 11
+            // ],
 
             //かしめ/接着_かしめ後検査_ラゲージ_白
             [

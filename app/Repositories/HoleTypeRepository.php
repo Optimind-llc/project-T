@@ -45,7 +45,8 @@ class HoleTypeRepository
                     'l' => $ht->label,
                     'd' => $ht->direction,
                     'fig' => $ht->fig_id,
-                    'i' => $ht->inspection
+                    'i' => $ht->inspection,
+                    's' => $ht->status
                 ];
             });
     }
