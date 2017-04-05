@@ -872,7 +872,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],
             //かしめ_かしめ後検査
             [
-                'path'       => 'h_ana_doorInnerL_1.png',
+                'path'       => 'j_kashimego_doorInnerL_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'kashimego',
                 'pt_pn'      => 6714211020,
@@ -882,37 +882,17 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerL_1.png',
+                'path'       => 'j_kashimego_reinforceL_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'kashimego',
-                'pt_pn'      => 6714211020,
+                'pt_pn'      => 6715211020,
                 'page'       => 2,
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_reinforceL_1.png',
-                'process'    => 'jointing',
-                'inspection' => 'kashimego',
-                'pt_pn'      => 6715211020,
-                'page'       => 3,
-                'size_x'     => 1740,
-                'size_y'     => 1030,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'path'       => 'h_ana_reinforceL_2.png',
-                'process'    => 'jointing',
-                'inspection' => 'kashimego',
-                'pt_pn'      => 6715211020,
-                'page'       => 4,
-                'size_x'     => 1740,
-                'size_y'     => 1030,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'path'       => 'h_ana_doorInnerR_1.png',
+                'path'       => 'j_kashimego_doorInnerR_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'kashimego',
                 'pt_pn'      => 6714111020,
@@ -922,31 +902,11 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_doorInnerR_1.png',
+                'path'       => 'j_kashimego_reinforceR_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'kashimego',
-                'pt_pn'      => 6714111020,
+                'pt_pn'      => 6715111020,
                 'page'       => 2,
-                'size_x'     => 1740,
-                'size_y'     => 1030,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'path'       => 'h_ana_reinforceR_1.png',
-                'process'    => 'jointing',
-                'inspection' => 'kashimego',
-                'pt_pn'      => 6715111020,
-                'page'       => 3,
-                'size_x'     => 1740,
-                'size_y'     => 1030,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'path'       => 'h_ana_reinforceR_2.png',
-                'process'    => 'jointing',
-                'inspection' => 'kashimego',
-                'pt_pn'      => 6715111020,
-                'page'       => 4,
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'created_at' => $now,
@@ -982,17 +942,6 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],
-            // [
-            //     'path'       => 'h_ana_luggageOuterSTD_1.png',
-            //     'process'    => 'jointing',
-            //     'inspection' => 'kashimego',
-            //     'pt_pn'      => 6441111010,
-            //     'page'       => 2,
-            //     'size_x'     => 1740,
-            //     'size_y'     => 1030,
-            //     'created_at' => $now,
-            //     'updated_at' => $now
-            // ],
             [
                 'path'       => 'h_ana_luggageOuterARW_1.png',
                 'process'    => 'jointing',

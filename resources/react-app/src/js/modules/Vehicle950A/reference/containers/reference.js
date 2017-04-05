@@ -122,7 +122,7 @@ class Reference extends Component {
     const { p, i, pt, narrowedBy, choku, judge, startDate, endDate, requiredF, requiredM, panelId } = this.state;
     const format = 'YYYY-MM-DD';
 
-    const take = 50;
+    const take = 1000;
     const skip = 0;
 
     if (narrowedBy === 'advanced') {
@@ -156,7 +156,7 @@ class Reference extends Component {
     const { advancedAdditionalSearch, panelIdSearch } = this.props.actions;
     const { p, i, pt, narrowedBy, choku, judge, startDate, endDate, requiredF, requiredM, panelId } = this.state;
     const format = 'YYYY-MM-DD';
-    const take = 50;
+    const take = 100;
 
     if (narrowedBy === 'advanced') {
       advancedAdditionalSearch(

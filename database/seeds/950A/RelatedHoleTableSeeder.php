@@ -532,7 +532,6 @@ class RelatedHoleTableSeeder extends Seeder
         DB::connection('950A')->table($table_name)->insert($data);
 
         //穴検査_ラゲージインナARW
-        //穴検査_ラゲージインナSTD 古いやつ
         $luggageInnerARW_holes = [
             [1, 1,  1005, 365, 'top',   'square', 'solid', 'FBD5B7', 1],
             [1, 2,  737,  365, 'top',   'square', 'solid', 'FBD5B7', 1],
@@ -673,7 +672,7 @@ class RelatedHoleTableSeeder extends Seeder
         },$luggageOuterSTD_holes);
         DB::connection('950A')->table($table_name)->insert($data);
 
-        //穴検査_ラゲージインナARW
+        //穴検査_ラゲージアウタARW
         $luggageOuterARW_holes = [
             [1, 1,  403,  264, 'top',   'square', 'solid', 'C3D59E'],
             [1, 2,  871,  332, 'top',   'square', 'solid', 'C3D59E'],
@@ -729,55 +728,38 @@ class RelatedHoleTableSeeder extends Seeder
          * かしめ/接着工程　かしめ検査
          */
 
-        //かしめ後検査_ドアインナR
-        $doorinnerR_kashimeHoles = [
-            [1, 1,  181,  479, 'right', 'square', 'solid', '95CDDC'],
-            [1, 2,  183,  539, 'right', 'square', 'solid', '95CDDC'],
-            [1, 3,  273,  268, 'right', 'square', 'solid', '95CDDC'],
-            [1, 4,  246,  279, 'top',   'square', 'solid', '95CDDC'],
-            [1, 5,  138,  299, 'left',  'square', 'solid', '95CDDC'],
-            [1, 6,  135,  483, 'left',  'square', 'solid', '95CDDC'],
-            [1, 7,  128,  518, 'left',  'square', 'solid', '95CDDC'],
-            [1, 8,  128,  595, 'left',  'square', 'solid', '95CDDC'],
-            [1, 9,  135,  627, 'left',  'square', 'solid', '95CDDC'],
-            [1, 10, 210,  646, 'right', 'square', 'solid', '95CDDC'],
-            [1, 11, 186,  852, 'bottom','square', 'solid', '95CDDC'],
-            [1, 12, 454,  875, 'bottom','square', 'solid', '95CDDC'],
-            [1, 13, 728,  870, 'bottom','square', 'solid', '95CDDC'],
-            [1, 14, 1003, 864, 'bottom','square', 'solid', '95CDDC'],
-            [1, 15, 1331, 795, 'bottom','square', 'solid', '95CDDC'],
-            [1, 16, 1459, 679, 'right', 'square', 'solid', '95CDDC'],
-            [1, 17, 1548, 531, 'right', 'square', 'solid', '95CDDC'],
-            [1, 18, 1581, 362, 'right', 'square', 'solid', '95CDDC'],
-            [1, 19, 1582, 249, 'right', 'square', 'solid', '95CDDC'],
-            [1, 20, 1572, 209, 'top',   'square', 'solid', '95CDDC'],
-            [1, 21, 757,  756, 'top',   'square', 'solid', '95CDDC'],
-            [1, 22, 946,  756, 'top',   'square', 'solid', '95CDDC'],
-            [1, 23, 459,  510, 'top',   'square', 'solid', '95CDDC'],
-            [1, 24, 556,  481, 'top',   'square', 'solid', '95CDDC'],
-            [1, 25, 561,  557, 'bottom','square', 'solid', '95CDDC'],
+        //かしめ後検査_ドアインナL
+        $doorinnerL_kashimeHoles = [
+            [1, 1,  114,  262, 'left',  'circle', 'solid', 'E26C22'],
+            [1, 2,  124,  385, 'left',  'circle', 'solid', 'E26C22'],
+            [1, 3,  163,  570, 'left',  'circle', 'solid', 'E26C22'],
+            [1, 4,  258,  729, 'left',  'circle', 'solid', 'E26C22'],
+            [1, 5,  390,  849, 'left',  'circle', 'solid', 'E26C22'],
+            [1, 6,  728,  917, 'bottom','circle', 'solid', 'E26C22'],
+            [1, 7,  1006, 916, 'bottom','circle', 'solid', 'E26C22'],
+            [1, 8,  1287, 915, 'bottom','circle', 'solid', 'E26C22'],
+            [1, 9,  1559, 883, 'right', 'circle', 'solid', 'E26C22'],
+            [1, 10, 1610, 646, 'right', 'circle', 'solid', 'E26C22'],
+            [1, 11, 1624, 603, 'right', 'circle', 'solid', 'E26C22'],
+            [1, 12, 1624, 526, 'right', 'circle', 'solid', 'E26C22'],
+            [1, 13, 1605, 476, 'right', 'circle', 'solid', 'E26C22'],
+            [1, 14, 1595, 284, 'right', 'circle', 'solid', 'E26C22'],
+            [1, 15, 1442, 247, 'top',   'circle', 'solid', 'E26C22'],
+            [1, 16, 1522, 437, 'left',  'circle', 'solid', 'E26C22'],
+            [1, 17, 1522, 517, 'left',  'circle', 'solid', 'E26C22'],
 
-            [2, 26, 251,  243, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 27, 360,  244, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 28, 558,  233, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 29, 767,  221, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 30, 960,  212, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 31, 1141, 202, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 32, 1318, 192, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 33, 1447, 188, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 34, 1535, 251, 'right', 'square', 'solid', 'FFFD38'],
-            [2, 35, 1415, 427, 'right', 'square', 'solid', 'FFFD38'],
-            [2, 36, 1394, 474, 'right', 'square', 'solid', 'FFFD38'],
-            [2, 37, 1452, 337, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 38, 1271, 342, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 39, 1118, 348, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 40, 903,  359, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 41, 743,  369, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 42, 613,  378, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 43, 405,  393, 'top',   'square', 'solid', 'FFFD38'],
-            [2, 44, 244,  404, 'left',  'square', 'solid', 'FFFD38'],
-            [2, 45, 217,  436, 'left',  'square', 'solid', 'FFFD38'],
-            [2, 46, 217,  527, 'left',  'square', 'solid', 'FFFD38'],
+            [1, 18, 122,  217, 'top',   'diamond', 'solid', '1EB1ED'],
+            [1, 19, 1487, 267, 'top',   'diamond', 'solid', '1EB1ED'],
+            [1, 20, 1512, 657, 'left',  'diamond', 'solid', '1EB1ED'],
+
+            [1, 21, 1147, 487, 'left',  'star', 'solid', 'FFFD38'],
+            [1, 22, 1147, 567, 'left',  'star', 'solid', 'FFFD38'],
+
+            [1, 23, 757,  792, 'top',   'triangle', 'solid', '90E941'],
+            [1, 24, 947,  787, 'top',   'triangle', 'solid', '90E941'],
+
+            [1, 25, 550,  414, 'right', 'square', 'solid', '779242'],
+            [1, 26, 1247, 514, 'right', 'square', 'solid', '779242'],
         ];
 
         //かしめ後検査_ドアインナR
@@ -787,32 +769,6 @@ class RelatedHoleTableSeeder extends Seeder
                 'x'          => $h[2],
                 'y'          => $h[3],
                 'direction'  => $h[4],
-                'shape'      => $h[5],
-                'border'     => $h[6],
-                'color'      => $h[7],
-                'pt_pn'      => 6714111020,
-                'figure_id'  => $getFigureId(6714111020, 'jointing', 'kashimego', $h[0]),
-                'created_at' => $now,
-                'updated_at' => $now
-            ];
-        },$doorinnerR_kashimeHoles);
-        DB::connection('950A')->table($table_name)->insert($data);
-
-        //かしめ後検査_ドアインナL
-        $data = array_map(function($h) use($getFigureId, $now) {
-            if ($h[4] === 'left') {
-                $direction = 'right';
-            } elseif ($h[4] === 'right') {
-                $direction = 'left';
-            } else {
-                $direction = $h[4];
-            }
-
-            return [
-                'label'      => $h[1],
-                'x'          => 1740 - $h[2],
-                'y'          => $h[3],
-                'direction'  => $direction,
                 'shape'      => $h[5],
                 'border'     => $h[6],
                 'color'      => $h[7],
@@ -821,64 +777,10 @@ class RelatedHoleTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ];
-        },$doorinnerR_kashimeHoles);
+        },$doorinnerL_kashimeHoles);
         DB::connection('950A')->table($table_name)->insert($data);
-
 
         //かしめ後検査_ドアインナR
-        $reinforceR_kashimeHoles = [
-            [3, 1,  137,  247, 'top',   'square', 'solid', 'FFFD38'],
-            [3, 2,  269,  248, 'top',   'square', 'solid', 'FFFD38'],
-            [3, 3,  514,  233, 'top',   'square', 'solid', 'FFFD38'],
-            [3, 4,  772,  218, 'top',   'square', 'solid', 'FFFD38'],
-            [3, 5,  1010, 209, 'top',   'square', 'solid', 'FFFD38'],
-            [3, 6,  1233, 194, 'top',   'square', 'solid', 'FFFD38'],
-            [3, 7,  1451, 184, 'top',   'square', 'solid', 'FFFD38'],
-            [3, 8,  1590, 177, 'top',   'square', 'solid', 'FFFD38'],
-            [3, 9,  128,  446, 'bottom','square', 'solid', 'FFFD38'],
-            [3, 10, 327,  433, 'bottom','square', 'solid', 'FFFD38'],
-            [3, 11, 582,  414, 'bottom','square', 'solid', 'FFFD38'],
-            [3, 12, 743,  403, 'bottom','square', 'solid', 'FFFD38'],
-            [3, 13, 940,  390, 'bottom','square', 'solid', 'FFFD38'],
-            [3, 14, 1205, 376, 'bottom','square', 'solid', 'FFFD38'],
-            [3, 15, 1394, 368, 'bottom','square', 'solid', 'FFFD38'],
-            [3, 16, 1616, 364, 'bottom','square', 'solid', 'FFFD38'],
-
-            [4, 17, 801,  840, 'bottom','square', 'solid', '95CDDC'],
-            [4, 18, 878,  833, 'bottom','square', 'solid', '95CDDC'],
-            [4, 19, 920,  679, 'top',   'square', 'solid', '95CDDC'],
-            [4, 20, 324,  300, 'top',   'square', 'solid', '95CDDC'],
-            [4, 21, 391,  314, 'top',   'square', 'solid', '95CDDC'],
-            [4, 22, 1450, 238, 'top',   'square', 'solid', '95CDDC'],
-            [4, 23, 1515, 256, 'top',   'square', 'solid', '95CDDC'],
-            [4, 24, 1681, 262, 'right', 'square', 'solid', '95CDDC'],
-            [4, 25, 1681, 327, 'right', 'square', 'solid', '95CDDC'],
-            [4, 26, 168,  349, 'top',   'square', 'solid', '95CDDC'],
-            [4, 27, 922,  208, 'top',   'square', 'solid', '95CDDC'],
-            [4, 28, 1085, 200, 'top',   'square', 'solid', '95CDDC'],
-            [4, 29, 1636, 221, 'top',   'square', 'solid', '95CDDC'],
-            [4, 30, 880,  720, 'left',  'square', 'solid', '95CDDC'],
-        ];
-
-        //かしめ後検査_リンフォースR
-        $data = array_map(function($h) use($getFigureId, $now) {
-            return [
-                'label'      => $h[1],
-                'x'          => $h[2],
-                'y'          => $h[3],
-                'direction'  => $h[4],
-                'shape'      => $h[5],
-                'border'     => $h[6],
-                'color'      => $h[7],
-                'pt_pn'      => 6715111020,
-                'figure_id'  => $getFigureId(6715111020, 'jointing', 'kashimego', $h[0]),
-                'created_at' => $now,
-                'updated_at' => $now
-            ];
-        },$reinforceR_kashimeHoles);
-        DB::connection('950A')->table($table_name)->insert($data);
-
-        //かしめ後検査_リンフォースL
         $data = array_map(function($h) use($getFigureId, $now) {
             if ($h[4] === 'left') {
                 $direction = 'right';
@@ -896,8 +798,64 @@ class RelatedHoleTableSeeder extends Seeder
                 'shape'      => $h[5],
                 'border'     => $h[6],
                 'color'      => $h[7],
+                'pt_pn'      => 6714111020,
+                'figure_id'  => $getFigureId(6714111020, 'jointing', 'kashimego', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$doorinnerL_kashimeHoles);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+
+        //かしめ後検査_リンフォースL
+        $reinforceR_kashimeHoles = [
+            [2, 1,  210,  441, 'top',   'star', 'solid', 'FFFD38'],
+
+            [2, 2,  187,  595, 'bottom','diamond', 'solid', '1EB1ED'],
+            [2, 3,  900,  428, 'top',   'diamond', 'solid', '1EB1ED'],
+            [2, 4,  1056, 414, 'top',   'diamond', 'solid', '1EB1ED'],
+
+            [2, 5,  1595, 404, 'top',   'square', 'solid', '604B7A'],
+        ];
+
+        //かしめ後検査_リンフォースL
+        $data = array_map(function($h) use($getFigureId, $now) {
+            return [
+                'label'      => $h[1],
+                'x'          => $h[2],
+                'y'          => $h[3],
+                'direction'  => $h[4],
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
                 'pt_pn'      => 6715211020,
                 'figure_id'  => $getFigureId(6715211020, 'jointing', 'kashimego', $h[0]),
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        },$reinforceR_kashimeHoles);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //かしめ後検査_リンフォースR
+        $data = array_map(function($h) use($getFigureId, $now) {
+            if ($h[4] === 'left') {
+                $direction = 'right';
+            } elseif ($h[4] === 'right') {
+                $direction = 'left';
+            } else {
+                $direction = $h[4];
+            }
+
+            return [
+                'label'      => $h[1],
+                'x'          => 1740 - $h[2],
+                'y'          => $h[3],
+                'direction'  => $direction,
+                'shape'      => $h[5],
+                'border'     => $h[6],
+                'color'      => $h[7],
+                'pt_pn'      => 6715111020,
+                'figure_id'  => $getFigureId(6715111020, 'jointing', 'kashimego', $h[0]),
                 'created_at' => $now,
                 'updated_at' => $now
             ];
@@ -912,14 +870,6 @@ class RelatedHoleTableSeeder extends Seeder
             [1, 3,  711,  714, 'top',   'square', 'solid', 'F5964F'],
             [1, 4,  665,  714, 'top',   'square', 'solid', 'F5964F'],
             [1, 5,  678,  772, 'bottom','square', 'solid', 'F5964F'],
-            [1, 6,  439,  603, 'top',   'square', 'solid', 'F5964F'],
-            [1, 7,  624,  639, 'top',   'square', 'solid', 'F5964F'],
-            [1, 8,  1117, 640, 'top',   'square', 'solid', 'F5964F'],
-            [1, 9,  1302, 601, 'top',   'square', 'solid', 'F5964F'],
-            [1, 10, 423,  709, 'bottom','square', 'solid', 'F5964F'],
-            [1, 11, 614,  768, 'bottom','square', 'solid', 'F5964F'],
-            [1, 12, 1127, 768, 'bottom','square', 'solid', 'F5964F'],
-            [1, 13, 1318, 706, 'bottom','square', 'solid', 'F5964F'],
         ];
 
         //かしめ後検査_ラゲージインナSTD
