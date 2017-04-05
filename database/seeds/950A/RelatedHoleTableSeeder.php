@@ -865,11 +865,11 @@ class RelatedHoleTableSeeder extends Seeder
 
         //かしめ後検査_ラゲージインナSTD
         $luggageInnerSTD_kashimeHoles = [
-            [1, 1,  735,  366, 'top',   'square', 'solid', 'F5964F'],
-            [1, 2,  1003, 366, 'top',   'square', 'solid', 'F5964F'],
-            [1, 3,  711,  714, 'top',   'square', 'solid', 'F5964F'],
-            [1, 4,  665,  714, 'top',   'square', 'solid', 'F5964F'],
-            [1, 5,  678,  772, 'bottom','square', 'solid', 'F5964F'],
+            [1, 1,  737,  419, 'top',   'circle', 'solid', '604B7A'],
+            [1, 2,  1006, 419, 'top',   'circle', 'solid', '604B7A'],
+            [1, 3,  1007, 766, 'top',   'circle', 'solid', '604B7A'],
+            [1, 4,  1100, 766, 'top',   'circle', 'solid', '604B7A'],
+            [1, 5,  1063, 824, 'bottom','circle', 'solid', '604B7A'],
         ];
 
         //かしめ後検査_ラゲージインナSTD
@@ -892,12 +892,20 @@ class RelatedHoleTableSeeder extends Seeder
 
         //かしめ後検査_ラゲージインナARW
         $luggageInnerARW_kashimeHoles = [
-            [1, 1,  735,  366, 'top',   'square', 'solid', 'F5964F'],
-            [1, 2,  1003, 366, 'top',   'square', 'solid', 'F5964F'],
-            [1, 3,  711,  714, 'top',   'square', 'solid', 'F5964F'],
-            [1, 4,  665,  714, 'top',   'square', 'solid', 'F5964F'],
-            [1, 5,  678,  772, 'bottom','square', 'solid', 'F5964F'],
-            [1, 6,  439,  603, 'top',   'square', 'solid', 'F5964F'],
+            [1, 1,  737,  419, 'top',   'circle', 'solid', '604B7A'],
+            [1, 2,  1006, 419, 'top',   'circle', 'solid', '604B7A'],
+            [1, 3,  1007, 766, 'top',   'circle', 'solid', '604B7A'],
+            [1, 4,  1100, 766, 'top',   'circle', 'solid', '604B7A'],
+            [1, 5,  1063, 824, 'bottom','circle', 'solid', '604B7A'],
+
+            [1, 6,  1303, 654, 'top',   'circle', 'solid', 'FD7D82'],
+            [1, 7,  1118, 694, 'top',   'circle', 'solid', 'FD7D82'],
+            [1, 8,  1129, 820, 'bottom','circle', 'solid', 'FD7D82'],
+            [1, 9,  1319, 760, 'bottom','circle', 'solid', 'FD7D82'],
+            [1, 10, 627,  692, 'top',   'circle', 'solid', 'FD7D82'],
+            [1, 11, 441,  654, 'top',   'circle', 'solid', 'FD7D82'],
+            [1, 12, 426,  760, 'bottom','circle', 'solid', 'FD7D82'],
+            [1, 13, 616, 820, 'bottom','circle', 'solid', 'FD7D82'],
         ];
 
         //かしめ後検査_ラゲージインナARW
@@ -920,8 +928,8 @@ class RelatedHoleTableSeeder extends Seeder
 
         //かしめ後検査_ラゲージアウタSTD
         $luggageOuterSTD_kashimeHoles = [
-            [1, 1,  626,  343, 'top',   'square', 'solid', '36859A'],
-            [1, 2,  1115, 340, 'top',   'square', 'solid', '36859A'],
+            [1, 1,  636,  410, 'top',   'circle', 'solid', 'FD7D82'],
+            [1, 2,  1105, 411, 'top',   'circle', 'solid', 'FD7D82'],
         ];
 
         //かしめ後検査_ラゲージアウタSTD
@@ -944,14 +952,15 @@ class RelatedHoleTableSeeder extends Seeder
 
         //かしめ後検査_ラゲージインナARW
         $luggageOuterARW_kashimeHoles = [
-            [1, 1, 626,  343, 'top',   'square', 'solid', '36859A'],
-            [1, 2, 1115, 340, 'top',   'square', 'solid', '36859A'],
-            [1, 3, 336,  598, 'left',  'square', 'solid', '36859A'],
-            [1, 4, 727,  651, 'top',   'square', 'solid', '36859A'],
-            [1, 5, 1017, 651, 'top',   'square', 'solid', '36859A'],
-            [1, 6, 1407, 597, 'right', 'square', 'solid', '36859A'],
-            [1, 7, 750,  772, 'bottom','square', 'solid', '36859A'],
-            [1, 8, 996,  772, 'bottom','square', 'solid', '36859A'],
+            [1, 1, 636,  410, 'top',   'circle', 'solid', 'FD7D82'],
+            [1, 2, 1105, 411, 'top',   'circle', 'solid', 'FD7D82'],
+
+            [1, 3, 1388, 630, 'top',   'circle', 'solid', '36859A'],
+            [1, 4, 1013, 686, 'top',   'circle', 'solid', '36859A'],
+            [1, 5, 733,  686, 'top',   'circle', 'solid', '36859A'],
+            [1, 6, 356,  630, 'top',   'circle', 'solid', '36859A'],
+            [1, 7, 754,  807, 'bottom','circle', 'solid', '36859A'],
+            [1, 8, 990,  807, 'bottom','circle', 'solid', '36859A'],
         ];
 
         //かしめ後検査_ラゲージアウタARW
