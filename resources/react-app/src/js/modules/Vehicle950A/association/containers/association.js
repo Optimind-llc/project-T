@@ -33,7 +33,7 @@ class Association extends Component {
   }
 
   serch() {
-    const { actions: {getPartFData} } = this.props;
+    const { getPartFamilyByDate, getPartFamilyByPanelId } = this.props.actions;
     const { narrowedBy, type, startDate, startHour, endDate, endHour, partTId, panelId } = this.state;
 
     let start;
@@ -44,7 +44,6 @@ class Association extends Component {
       start = startDate == null ? null : `${startDate.format('YYYY-MM-DD')}-${startHour.value}`;
     }
 
-
     let end;
     if (endHour == null) {
       end = endDate == null ? null : `${endDate.format('YYYY-MM-DD')}-23`;
@@ -53,8 +52,14 @@ class Association extends Component {
       end = endDate == null ? null : `${endDate.format('YYYY-MM-DD')}-${endHour.value}`;
     }
 
-    const partTypeId = partTId == null ? null : partTId.value;
-    getPartFData(narrowedBy, start, end, partTypeId, panelId);
+    const pn = partTId == null ? null : partTId.value;
+
+    if (narrowedBy === 'date') {
+      getPartFamilyByDate(type, start, end);
+    }
+    else if (narrowedBy === 'panelId') {
+      getPartFamilyByPanelId(type, pn, panelId);
+    }
   }
 
   render() {
