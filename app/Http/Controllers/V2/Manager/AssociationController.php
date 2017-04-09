@@ -32,6 +32,7 @@ class AssociationController extends Controller
             ->map(function($pf) {
                 return [
                     'id' => $pf->id,
+                    'type' => $pf->type,
                     'updatedAt' => $pf->updated_at->toDateTimeString(),
                     'parts' => $pf->parts->map(function($p) {
                         return [
@@ -42,8 +43,10 @@ class AssociationController extends Controller
                     })
                 ];
             })
-            ->toArray();
+            ->groupBy('type');
 
-        return $partFamilis;
+        return [
+            'data' => $partFamilis
+        ];
     }
 }

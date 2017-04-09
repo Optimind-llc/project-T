@@ -85,7 +85,7 @@ export function clearPartFamilyData() {
   }
 }
 
-export const partFActions = {
+export const partFamilyActions = {
   getPartFamilyByDate,
   getPartFamilyByPanelId,
   clearPartFamilyData

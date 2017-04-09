@@ -463,7 +463,8 @@ class InspectionController extends Controller
         return [
             'associated' => $associated,
             'self' => $iSelf_results,
-            'children' => $iChildren_results
+            'children' => $iChildren_results,
+            'partId' => $targetPart->id
         ];
 
     }

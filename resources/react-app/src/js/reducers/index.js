@@ -29,6 +29,7 @@ import maintHoleData from '../modules/hole/ducks/hole';
 import MappingData950A from '../modules/Vehicle950A/mapping/ducks/mapping';
 import ReferenceData950A from '../modules/Vehicle950A/reference/ducks/reference';
 import ReportData950A from '../modules/Vehicle950A/report/ducks/report';
+import AssociationData950A from '../modules/Vehicle950A/association/ducks/partFamily';
 
 import MaintFailure950A from '../modules/Vehicle950A/master/failure/ducks/maintFailure';
 
@@ -55,6 +56,7 @@ const rootReducer = combineReducers(Object.assign({
   ReferenceData950A,
   ReportData950A,
   MaintFailure950A,
+  AssociationData950A,
   routing: routerReducer
 }));
 

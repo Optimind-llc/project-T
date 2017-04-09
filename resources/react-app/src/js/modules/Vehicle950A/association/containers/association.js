@@ -5,12 +5,13 @@ import moment from 'moment';
 import Select from 'react-select';
 // import { handleDownload } from '../../../utils/Export';
 // Actions
-import { partFActions } from '../ducks/partF';
+import { partFamilyActions } from '../ducks/partFamily';
 // import { updatePartFActions } from '../ducks/updatePartF';
 // import { mappingActions } from '../ducks/mapping';
 // Styles
 import './association.scss';
 // Components
+import Table from '../components/table/table';
 import CustomCalendar from '../components/calendar/calendar';
 import Loading from '../../../../components/loading/loading';
 // import Mapping from '../components/mapping/mapping';
@@ -55,33 +56,34 @@ class Association extends Component {
     const pn = partTId == null ? null : partTId.value;
 
     if (narrowedBy === 'date') {
-      getPartFamilyByDate(type, start, end);
+      getPartFamilyByDate(type.value, start, end);
     }
     else if (narrowedBy === 'panelId') {
-      getPartFamilyByPanelId(type, pn, panelId);
+      getPartFamilyByPanelId(type.value, pn, panelId);
     }
   }
 
   render() {
-    const { PartFData, UpdatePartFData, MappingData } = this.props;
+    const { PartFamilyData, UpdatePartFData, MappingData } = this.props;
     const { narrowedBy, type, startDate, startHour, endDate, endHour, partType, partTId, panelId } = this.state;
 
-    let table = [];
-    if (PartFData.data != null && !PartFData.isFetching) {
-      let header = ['更新日','バックドアインナー','アッパー','サイドアッパーLH','サイドアッパーRH','サイドロアLH','サイドロアRH'];
-      table.push(header);
+    // let table = [];
+    // if (PartFamilyData.data != null && !PartFamilyData.isFetching) {
+    //   let header = ['更新日','バックドアインナー','アッパー','サイドアッパーLH','サイドアッパーRH','サイドロアLH','サイドロアRH'];
+    //   table.push(header);
 
-      table = table.concat(PartFData.data.families.map(pf => [
-        pf.associatedAt,
-        pf.parts['67149'][0].panelId,
-        pf.parts['67119'] ? pf.parts['67119'][0].panelId : '',
-        pf.parts['67176'][0].panelId,
-        pf.parts['67175'][0].panelId,
-        pf.parts['67178'][0].panelId,
-        pf.parts['67177'][0].panelId
-      ]));
-    };
+    //   table = table.concat(PartFamilyData.data.families.map(pf => [
+    //     pf.associatedAt,
+    //     pf.parts['67149'][0].panelId,
+    //     pf.parts['67119'] ? pf.parts['67119'][0].panelId : '',
+    //     pf.parts['67176'][0].panelId,
+    //     pf.parts['67175'][0].panelId,
+    //     pf.parts['67178'][0].panelId,
+    //     pf.parts['67177'][0].panelId
+    //   ]));
+    // };
 
+console.log(PartFamilyData);
     return (
       <div id="association-950A-wrap">
         <div className="bg-white">
@@ -242,162 +244,22 @@ class Association extends Component {
 
         </div>
         {
-          PartFData.isFetching &&
+          PartFamilyData.isFetching &&
           <p>検索中...</p>
         }{
-          PartFData.data != null && !PartFData.isFetching &&
+          PartFamilyData.data != null && !PartFamilyData.isFetching &&
           <div className="result bg-white">
             {
-              PartFData.data.count < 100 &&
-              <p className="result-count">{`${PartFData.data.count}件中 ${PartFData.data.families.length}件表示`}</p>
+              PartFamilyData.data.count < 100 &&
+              <p className="result-count">{`${PartFamilyData.data.count}件中 ${PartFamilyData.data.families.length}件表示`}</p>
             }{
-              PartFData.data.count >= 100 &&
-              <p className="result-count">{`${PartFData.data.count}件中 100件表示`}</p>
+              PartFamilyData.data.count >= 100 &&
+              <p className="result-count">{`${PartFamilyData.data.count}件中 100件表示`}</p>
             }
             <button className="download dark" onClick={() => handleDownload(table)}>
               <p>CSVをダウンロード</p>
             </button>
-            <table>
-              <thead>
-                <tr>
-                  <th colSpan={1} rowSpan={2}>No.</th>
-                  <th colSpan={1} rowSpan={2}>更新日</th>
-                  <th colSpan={1}>ドアインナL</th>
-                  <th colSpan={1}>リンフォースL</th>
-                  <th colSpan={1}>ドアASSY LH</th>
-                  <th colSpan={1} rowSpan={2}>機能</th>
-                </tr>
-                <tr>
-                  <th>6714211020</th>
-                  <th>6715211020</th>
-                  <th>6701611020</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  PartFData.data && PartFData.data.families.length != 0 &&
-                  PartFData.data.families.map((f, i)=> 
-                    {
-                      return(
-                        <tr className="content">
-                          <td>{i+1}</td>
-                          <td>{f.associatedAt}</td>
-                          <td>
-                            <p onClick={() => {
-                              this.setState({
-                                mappingModal: true,
-                                mappingId: f.parts['67149'][0].id,
-                                mappingPartTypeId: 1,
-                                header: `67149 バックドアインナー　パネルID: ${f.parts['67149'][0].panelId}`
-                              });
-                            }}>
-                              {f.parts['67149'][0].panelId}
-                            </p>
-                          </td>
-                          <td>
-                            {
-                              f.parts['67119'] &&
-                              <p onClick={() => {
-                                this.setState({
-                                  mappingModal: true,
-                                  mappingId: f.parts['67119'][0].id,
-                                  mappingPartTypeId: 2,
-                                  header: `67119 アッパー　パネルID: ${f.parts['67119'][0].panelId}`
-                                });
-                              }}>
-                                {f.parts['67119'][0].panelId}
-                              </p>
-                            }
-                          </td>
-                          <td>
-                            <p onClick={() => {
-                              this.setState({
-                                mappingModal: true,
-                                mappingId: f.parts['67176'][0].id,
-                                mappingPartTypeId: 4,
-                                header: `67176 サイドアッパーLH　パネルID: ${f.parts['67176'][0].panelId}`
-                              });
-                            }}>
-                              {f.parts['67176'][0].panelId}
-                            </p>
-                          </td>
-                          <td>
-                            <p onClick={() => {
-                              this.setState({
-                                mappingModal: true,
-                                mappingId: f.parts['67175'][0].id,
-                                mappingPartTypeId: 3,
-                                header: `67175 サイドアッパーRH　パネルID: ${f.parts['67175'][0].panelId}`
-                              });
-                            }}>
-                              {f.parts['67175'][0].panelId}
-                            </p>
-                          </td>
-                          <td>
-                            <p onClick={() => {
-                              this.setState({
-                                mappingModal: true,
-                                mappingId: f.parts['67178'][0].id,
-                                mappingPartTypeId: 6,
-                                header: `67178 サイドロアLH　パネルID: ${f.parts['67178'][0].panelId}`
-                              });
-                            }}>
-                              {f.parts['67178'][0].panelId}
-                            </p>
-                          </td>
-                          <td>
-                            <p onClick={() => {
-                              this.setState({
-                                mappingModal: true,
-                                mappingId: f.parts['67177'][0].id,
-                                mappingPartTypeId: 5,
-                                header: `67177 サイドロアRH　パネルID: ${f.parts['67177'][0].panelId}`
-                              });
-                            }}>
-                              {f.parts['67177'][0].panelId}
-                            </p>
-                          </td>
-                          <td>
-                            <p onClick={() => {
-                              this.setState({
-                                mappingModal: true,
-                                mappingId: f.parts['67007'][0].id,
-                                mappingPartTypeId: 7,
-                                header: `67007 バックドアインナーASSY　パネルID: ${f.parts['67007'][0].panelId}`
-                              });
-                            }}>
-                              {f.parts['67007'][0].panelId}
-                            </p>
-                          </td>
-                          <td>
-                            <button
-                              className="dark edit"
-                              onClick={() => this.setState({
-                                editModal: true,
-                                editting_f: f.familyId,
-                                editting_1: f.parts[67149][0].panelId,
-                                editting_2: f.parts[67119] ? f.parts[67119][0].panelId : '',
-                                editting_4: f.parts[67176][0].panelId,
-                                editting_3: f.parts[67175][0].panelId,
-                                editting_6: f.parts[67178][0].panelId,
-                                editting_5: f.parts[67177][0].panelId
-                              })}
-                            >
-                              <p>編集</p>
-                            </button>
-                          </td>
-                        </tr>
-                      )
-                    }              
-                  )
-                }{
-                  PartFData.data && PartFData.data.families.length == 0 &&
-                  <tr className="content">
-                    <td colSpan="10">検査結果なし</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
+            <Table data={PartFamilyData.data.doorL}/>
             {/*
               this.state.editModal &&
               <div>
@@ -546,14 +408,14 @@ Association.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    PartFData: state.PartFData,
+    PartFamilyData: state.AssociationData950A,
     UpdatePartFData: state.UpdatePartFData,
     MappingData: state.MappingData,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({}, partFActions);
+  const actions = Object.assign({}, partFamilyActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };
