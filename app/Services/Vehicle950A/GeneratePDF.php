@@ -228,6 +228,10 @@ class GeneratePDF
             $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,2)), $A3['y1'], '検査者');
             $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y1'], '出荷判定');
 
+            if ($fn > 20) {
+                $this->tcpdf->SetFont('kozgopromedium', '', 5);
+            }
+
             foreach ($this->failureTypes as $fi => $f) {
                 $this->tcpdf->Text($A3['x0']+array_sum($d)+($fd*$fi), $A3['y1'], $f['name']);
             }
@@ -238,6 +242,10 @@ class GeneratePDF
 
             foreach ($this->holeModificationTypes as $hmi => $hm) {
                 $this->tcpdf->Text($A3['x0']+array_sum($d)+$fd*($fi+1+$mi+1+$hmi), $A3['y1'], $hm['name']);
+            }
+
+            if ($fn > 20) {
+                $this->tcpdf->SetFont('kozgopromedium', '', 7);
             }
 
             $this->tcpdf->Text($A3['x0']+array_sum($d)+$fn*$fd, $A3['y1'], 'コメント');

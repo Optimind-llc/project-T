@@ -22,6 +22,9 @@ import Reference950A from '../modules/Vehicle950A/reference/containers/reference
 import Report950A from '../modules/Vehicle950A/report/containers/report';
 import Association950A from '../modules/Vehicle950A/association/containers/association';
 
+import MeintFailureType950A from '../modules/Vehicle950A/master/failure/containers/failure';
+
+
 class Root extends Component {
   render() {
     const { history, store } = this.props;
@@ -44,9 +47,9 @@ class Root extends Component {
               <Route name="直レポート" path="report" component={Report950A}/>
               <Route name="マッピング" path="association" component={Association950A}/>
               <Route path="maintenance">
-                <Route name="マッピング" path="worker" component={Dashboard950A}/>
-                <Route name="マッピング" path="failure" component={Dashboard950A}/>
-                <Route name="マッピング" path="modification" component={Dashboard950A}/>
+                <Route name="検査者マスタ" path="worker" component={Dashboard950A}/>
+                <Route name="不良区分マスタ" path="failure" component={MeintFailureType950A}/>
+                <Route name="手直区分マスタ" path="modification" component={Dashboard950A}/>
                 <Route name="マッピング" path="holeModification" component={Dashboard950A}/>
                 <Route name="マッピング" path="hole" component={Dashboard950A}/>
                 <Route name="マッピング" path="inline" component={Dashboard950A}/>

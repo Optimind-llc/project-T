@@ -16,9 +16,9 @@ class Mapping extends Component {
     return (
       <div className="result-table">
         <p className="result-count">{`${data.length}件表示`}</p>
-        <button className="download dark" onClick={() => handleDownload(table)}>
+        {/*<button className="download dark" onClick={() => handleDownload(table)}>
           <p>CSVをダウンロード</p>
-        </button>
+        </button>*/}
         <table>
           <thead>
             <tr>
@@ -51,7 +51,10 @@ class Mapping extends Component {
                           a.sort > b.sort ? 1 : -1
                         ).map(p =>
                           <td>
-                            <p onClick={() => handleMapping(p.pn, p.id, 'molding', 'gaikan')}>
+                            {/*<p onClick={() => handleMapping(p.pn, p.id, 'molding', 'gaikan')}>
+                              {p.panelId}
+                            </p>*/}
+                            <p>
                               {p.panelId}
                             </p>
                           </td>

@@ -252,6 +252,41 @@ class RelatedFailureTableSeeder extends Seeder
                 'label'      => 43,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => 'カラー座屈',
+                'label'      => 44,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => 'カラー欠',
+                'label'      => 45,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => 'リベット欠',
+                'label'      => 46,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => 'ナット欠',
+                'label'      => 47,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => 'ボルト焼付き',
+                'label'      => 48,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => 'BKT欠',
+                'label'      => 49,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => 'ナット座屈',
+                'label'      => 50,
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ];
 
@@ -724,7 +759,7 @@ class RelatedFailureTableSeeder extends Seeder
 
         //かしめ_外周仕上_ラゲージアウタ
         $j_gaishushiage_luggageOuter_failures = [
-            [1,  2], [4,  2], [21, 2], [28, 2], [2,  2], [3,  2], [11, 2],
+            [1,  2], [4,  2], [21, 2], [2,  2], [3,  2], [11, 2],
             [32, 2], [19, 2], [29, 2], [17, 2], [18, 2], [41, 2]
         ];
 
@@ -742,7 +777,7 @@ class RelatedFailureTableSeeder extends Seeder
 
         //かしめ_パテ修復後_ラゲージアウタ
         $j_pateshufukugo_luggageOuter_failures = [
-            [1,  2], [4,  2], [21, 2], [28, 2], [2,  2], [3,  2], [11, 2],
+            [1,  2], [4,  2], [21, 2], [2,  2], [3,  2], [11, 2],
             [32, 2], [19, 2], [29, 2], [17, 2], [18, 2], [41, 2]
         ];
 
@@ -760,7 +795,7 @@ class RelatedFailureTableSeeder extends Seeder
 
         //かしめ_水検後_ラゲージアウタ
         $j_suikengo_luggageOuter_failures = [
-            [1,  2], [4,  2], [21, 2], [28, 2], [2,  2], [3,  2], [11, 2],
+            [1,  2], [4,  2], [21, 2], [2,  2], [3,  2], [11, 2],
             [32, 2], [19, 2], [29, 2], [17, 2], [18, 2], [41, 2]
         ];
 
@@ -798,7 +833,7 @@ class RelatedFailureTableSeeder extends Seeder
         $j_gaikan_doorASSY_failures = [
             [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2], [28, 2],
             [3,  2], [2,  2], [8,  2], [11, 2], [32, 2], [19, 2], [29, 2],
-            [30, 2], [31, 2], [41, 2]
+            [30, 2], [31, 2], [45, 2], [41, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -815,9 +850,9 @@ class RelatedFailureTableSeeder extends Seeder
 
         //接着_外観検査_ラゲージASSY
         $j_gaikan_luggageASSY_failures = [
-            [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2], [28, 2],
+            [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2],
             [3,  2], [2,  2], [8,  2], [11, 2], [32, 2], [19, 2], [29, 2],
-            [30, 2], [31, 2], [41, 2]
+            [30, 2], [31, 2], [49, 2], [50, 2], [45, 2], [51, 2], [41, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -836,7 +871,7 @@ class RelatedFailureTableSeeder extends Seeder
         $j_tenaoshi_doorASSY_failures = [
             [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2], [28, 2],
             [3,  2], [2,  2], [8,  2], [11, 2], [32, 2], [19, 2], [29, 2],
-            [30, 2], [31, 2], [41, 2]
+            [30, 2], [31, 2], [45, 2], [46, 2], [47, 2], [48, 2], [41, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -853,9 +888,9 @@ class RelatedFailureTableSeeder extends Seeder
 
         //接着_手直_ラゲージASSY
         $j_tenaoshi_luggageASSY_failures = [
-            [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2], [28, 2],
+            [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2],
             [3,  2], [2,  2], [8,  2], [11, 2], [32, 2], [19, 2], [29, 2],
-            [30, 2], [31, 2], [41, 2]
+            [30, 2], [31, 2], [49, 2], [50, 2], [45, 2], [51, 2], [41, 2]
         ];
 
         $data = array_map(function($i, $f) {

@@ -466,7 +466,6 @@ class InspectionController extends Controller
             'children' => $iChildren_results,
             'partId' => $targetPart->id
         ];
-
     }
 
     public function update($vehicle, Request $request)

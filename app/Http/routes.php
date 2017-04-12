@@ -200,16 +200,6 @@ Route::group(['prefix' => 'manager/{vehicle}', 'namespace' => 'V2\Manager'], fun
     Route::get('report', 'InitialController@index');
     Route::get('association', 'InitialController@index');
 
-    // Maintenance
-    Route::group(['prefix' => 'maintenance'], function () {
-        Route::get('worker', 'InitialController@index');
-        Route::get('failure', 'InitialController@index');
-        Route::get('modification', 'InitialController@index');
-        Route::get('holeModification', 'InitialController@index');
-        Route::get('hole', 'InitialController@index');
-        Route::get('inline', 'InitialController@index');
-    });
-
     Route::get('initial', 'InitialController@all');
 
     Route::post('mapping/realtime', 'MappingController@realtime');
@@ -219,9 +209,7 @@ Route::group(['prefix' => 'manager/{vehicle}', 'namespace' => 'V2\Manager'], fun
     Route::post('reference/advanced', 'ReferenceController@advanced');
     Route::post('reference/panelId', 'ReferenceController@byPanelId');
 
-
     Route::get('/check/{date}', 'ReportController@check');
-
 
     Route::post('report/check', 'ReportController@check');
     Route::get('report/export/{process}/{inspection}/{line}/{part}/{date}/{choku}', 'ReportController@export');
@@ -231,6 +219,17 @@ Route::group(['prefix' => 'manager/{vehicle}', 'namespace' => 'V2\Manager'], fun
     Route::post('association/family/update', 'AssociationController@updateFamily');
     Route::post('association/family/mapping', 'AssociationController@mapping');
 
+    // Maintenance
+    Route::group(['prefix' => 'maintenance'], function () {
+        Route::get('worker', 'InitialController@index');
+        Route::get('failure', 'InitialController@index');
+        Route::get('modification', 'InitialController@index');
+        Route::get('holeModification', 'InitialController@index');
+        Route::get('hole', 'InitialController@index');
+        Route::get('inline', 'InitialController@index');
+
+        Route::post('failureType', 'MaintFailureTypeController@get');
+    });
 });
 
 

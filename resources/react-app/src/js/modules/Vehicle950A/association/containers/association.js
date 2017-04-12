@@ -89,7 +89,7 @@ class Association extends Component {
   }
 
   render() {
-    const { PartFamilyData, UpdatePartFData, MappingData, PartTypes, combination, actions } = this.props;
+    const { PartFamilyData, UpdatePartFData, MappingData, PartTypes, combination, inspections, actions } = this.props;
     const { narrowedBy, type, startDate, startHour, endDate, endHour, partType, panelId, editModal, toBeEditted, mappingModal } = this.state;
 
     return (
@@ -327,174 +327,29 @@ class Association extends Component {
             </div>
             <div className="mapping-left-panel">
               <ul>
-                <li className="process-name">成形ライン①</li>
+                <li className="process-name">成形工程</li>
                 {
-                  combination.filter(c => c.process === 'molding' )
+                  combination.filter(c => c.process === 'molding' && c.pn == 6714211020).map(c =>
+                    <li
+                      className="inspection-name"
+                      onClick={() => this.setState({
+                        p: 'molding',
+                        i: c.i,
+                        active: 'failure'
+                      }, () => this.handleMapping(6714211020, 1, 'molding', c.i))}
+                    >
+                      {inspections.find(i => i.en === c.inspection).name}
+                    </li>
+                  )
                 }
-                <li
-                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'm001' && ig.i == 'gaikan' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'm001' && i === 'gaikan') ? 'active' : ''}`}
-                  onClick={() => this.setState({
-                    p: 'm001',
-                    i: 'gaikan',
-                    active: 'failure'
-                  }, () => this.requestMapping('gaikan'))}
-                >
-                  外観検査
-                </li>
-                <li
-                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'm001' && ig.i == 'inline' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'm001' && i === 'inline') ? 'active' : ''}`}
-                  onClick={() => this.setState({
-                    p: 'm001',
-                    i: 'inline',
-                    active: 'inline'
-                  }, () => this.requestMapping('inline'))}
-                >精度検査</li>
               </ul>
               <div className="divider"></div>
               <ul>
-                <li className="process-name">成形ライン②</li>
-                <li
-                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'm002' && ig.i == 'gaikan' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'm002' && i === 'gaikan') ? 'active' : ''}`}
-                  onClick={() => this.setState({
-                    p: 'm002',
-                    i: 'gaikan',
-                    active: 'failure'
-                  }, () => this.requestMapping('gaikan'))}
-                >
-                  外観検査
-                </li>
-                <li
-                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'm002' && ig.i == 'inline' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'm002' && i === 'inline') ? 'active' : ''}`}
-                  onClick={() => this.setState({
-                    p: 'm002',
-                    i: 'inline',
-                    active: 'inline'
-                  }, () => this.requestMapping('inline'))}
-                >精度検査</li>
+                <li className="process-name">穴あけ工程</li>
               </ul>
               <div className="divider"></div>
               <ul>
-                <li className="process-name">穴あけ</li>
-                <li
-                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'h' && ig.i == 'gaikan' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'h' && i === 'gaikan') ? 'active' : ''}`}
-                  onClick={() => this.setState({
-                    p: 'h',
-                    i: 'gaikan',
-                    active: 'failure'
-                  }, () => this.requestMapping('gaikan'))}
-                >外観検査</li>
-                <li
-                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'h' && ig.i == 'ana' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'h' && i === 'ana') ? 'active' : ''}`}
-                  onClick={() => this.setState({
-                    p: 'h',
-                    i: 'ana',
-                    active: 'hole'
-                  }, () => this.requestMapping('ana'))}
-                >穴検査</li>
-              </ul>
-              <div className="divider"></div>
-              <ul>
-                <li className="process-name">接着</li>
-                <li
-                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'j' && ig.i == 'inline' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'j' && i === 'inline') ? 'active' : ''}`}
-                  onClick={() => this.setState({
-                    p: 'j',
-                    i: 'inline',
-                    active: 'inline'
-                  }, () => this.requestMapping('inline'))}
-                >
-                  精度検査
-                </li>
-              </ul>
-              <ul
-                className={`grouped ${(p === 'j' && i !== 'inline') ? 'active' : ''} ${mappingPartTypeId === 7 ? '' : 'disabled'}`}
-                onClick={() => {
-                    this.setState({
-                      p: 'j',
-                      i: null,
-                      active: 'failure'
-                    }, () => this.requestMapping(null));
-              }}>
-                <li
-                  className={`inspection-name-jointing`}
-                  onClick={() => {
-                    let newJi = [];
-                    if (ji.indexOf(16) >= 0) {
-                      ji.splice(ji.indexOf(16), 1);
-                      newJi = ji;
-                    } else {
-                      newJi = [16, ...ji];                  
-                    }
-
-                    this.setState({p: 'j', ji: newJi});
-                  }}
-                >
-                  簡易CF {p === 'j' && i !== 'inline' && ji.indexOf(16) >= 0 && <div className="icon-check red">️</div>}
-                </li>
-                <li
-                  className={`inspection-name-jointing ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'j' && ig.i == 'shisui' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'j' && i === 'shisui') ? 'active' : ''}`}
-                  onClick={() => {
-                    let newJi = [];
-                    if (ji.indexOf(10) >= 0) {
-                      ji.splice(ji.indexOf(10), 1);
-                      newJi = ji;
-                    } else {
-                      newJi = [10, ...ji]  ;                  
-                    }
-
-                    this.setState({p: 'j', ji: newJi});
-                  }}
-                >
-                  止水 {p === 'j' && i !== 'inline' && ji.indexOf(10) >= 0 && <div className="icon-check yellow">️</div>}
-                </li>
-                <li
-                  className={`inspection-name-jointing ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'j' && ig.i == 'shiage' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'j' && i === 'shiage') ? 'active' : ''}`}
-                  onClick={() => {
-                    let newJi = [];
-                    if (ji.indexOf(11) >= 0) {
-                      ji.splice(ji.indexOf(11), 1);
-                      newJi = ji;
-                    } else {
-                      newJi = [11, ...ji]  ;                  
-                    }
-
-                    this.setState({p: 'j', ji: newJi});
-                  }}
-                >
-                  仕上 {p === 'j' && i !== 'inline' && ji.indexOf(11) >= 0 && <div className="icon-check blue">️</div>}
-                </li>
-                <li
-                  className={`inspection-name-jointing ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'j' && ig.i == 'kensa' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'j' && i === 'kensa') ? 'active' : ''}`}
-                  onClick={() => {
-                    let newJi = [];
-                    if (ji.indexOf(12) >= 0) {
-                      ji.splice(ji.indexOf(12), 1);
-                      newJi = ji;
-                    } else {
-                      newJi = [12, ...ji]  ;                  
-                    }
-
-                    this.setState({p: 'j', ji: newJi});
-                  }}
-                >
-                  検査 {p === 'j' && i !== 'inline' && ji.indexOf(12) >= 0 && <div className="icon-check green">️</div>}
-                </li>
-                <li
-                  className={`inspection-name-jointing ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'j' && ig.i == 'tenaoshi' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'j' && i === 'tenaoshi') ? 'active' : ''}`}
-                  onClick={() => {
-                    let newJi = [];
-                    if (ji.indexOf(14) >= 0) {
-                      ji.splice(ji.indexOf(14), 1);
-                      newJi = ji;
-                    } else {
-                      newJi = [14, ...ji]  ;                  
-                    }
-
-                    this.setState({p: 'j', ji: newJi});
-                  }}
-                >
-                  手直 {p === 'j' && i !== 'inline' && ji.indexOf(14) >= 0 && <div className="icon-check purple">️</div>}
-                </li>
+                <li className="process-name">かしめ/接着工程</li>
               </ul>
             </div>
             <Mapping
@@ -517,6 +372,7 @@ function mapStateToProps(state, ownProps) {
     UpdatePartFData: state.UpdatePartFData,
     MappingData: state.AssociationMappingData950A,
     PartTypes: state.Application.vehicle950A.partTypes,
+    inspections: state.Application.vehicle950A.inspections,
     combination: state.Application.vehicle950A.combination,
   };
 }

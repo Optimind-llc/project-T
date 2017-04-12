@@ -3,10 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
-import { vehicles, processes, inspections, inspectionGroups } from '../../../../utils/Processes';
 // Actions
 import { push } from 'react-router-redux';
-import { maintFailureActions } from '../ducks/maintFailure';
+// import { maintFailureActions } from '../ducks/maintFailure';
 // Styles
 import './failure.scss';
 // Components
