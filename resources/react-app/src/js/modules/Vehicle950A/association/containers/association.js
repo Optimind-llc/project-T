@@ -89,7 +89,7 @@ class Association extends Component {
   }
 
   render() {
-    const { PartFamilyData, UpdatePartFData, MappingData, PartTypes, actions } = this.props;
+    const { PartFamilyData, UpdatePartFData, MappingData, PartTypes, combination, actions } = this.props;
     const { narrowedBy, type, startDate, startHour, endDate, endHour, partType, panelId, editModal, toBeEditted, mappingModal } = this.state;
 
     return (
@@ -327,8 +327,10 @@ class Association extends Component {
             </div>
             <div className="mapping-left-panel">
               <ul>
-                
                 <li className="process-name">成形ライン①</li>
+                {
+                  combination.filter(c => c.process === 'molding' )
+                }
                 <li
                   className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'm001' && ig.i == 'gaikan' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'm001' && i === 'gaikan') ? 'active' : ''}`}
                   onClick={() => this.setState({
@@ -515,6 +517,7 @@ function mapStateToProps(state, ownProps) {
     UpdatePartFData: state.UpdatePartFData,
     MappingData: state.AssociationMappingData950A,
     PartTypes: state.Application.vehicle950A.partTypes,
+    combination: state.Application.vehicle950A.combination,
   };
 }
 

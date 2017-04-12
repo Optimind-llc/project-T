@@ -76,7 +76,7 @@ class RelatedHoleTableSeeder extends Seeder
             [2, 25, 151,  452, 'left',  'square', 'solid', 'D89695'],
             [2, 26, 168,  560, 'left',  'square', 'solid', 'D89695'],
             [2, 27, 168,  700, 'left',  'square', 'solid', 'D89695'],
-            [2, 28, 205,  796, 'left',  'square', 'solid', 'D89695'],
+            [2, 28, 198,  796, 'left',  'square', 'solid', 'D89695'],
 
             [2, 29, 240,  773, 'top',   'square', 'solid', '938957'],
             [2, 30, 283,  791, 'top',   'square', 'solid', '938957'],
@@ -93,7 +93,7 @@ class RelatedHoleTableSeeder extends Seeder
             [2, 41, 751,  833, 'bottom','square', 'solid', '938957'],
             [2, 42, 908,  833, 'bottom','square', 'solid', '938957'],
             [2, 43, 1024, 833, 'bottom','square', 'solid', '938957'],
-            [2, 44, 1179, 823, 'bottom','square', 'solid', '938957'],
+            [2, 44, 1179, 830, 'bottom','square', 'solid', '938957'],
             [2, 45, 1328, 745, 'right', 'square', 'solid', '938957'],
             [2, 46, 1411, 663, 'right', 'square', 'solid', '938957'],
             [2, 47, 1501, 531, 'right', 'square', 'solid', '938957'],
