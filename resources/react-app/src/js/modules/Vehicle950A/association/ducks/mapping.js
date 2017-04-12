@@ -1,5 +1,5 @@
 import {fromJS, Map as iMap, List as iList} from 'immutable';
-import { CALL_API } from '../../../middleware/fetchMiddleware';
+import { CALL_API } from '../../../../middleware/fetchMiddleware';
 
 export const REDUEST_MAPPING_DATA = 'REDUEST_MAPPING_DATA';
 export const REDUEST_MAPPING_DATA_SUCCESS = 'REDUEST_MAPPING_DATA_SUCCESS';
@@ -44,7 +44,7 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export function getMappingData(partId, itionGId) {
+export function getMappingData(pn, id, p, i) {
   return {
     [CALL_API]: {
       types: [
@@ -52,9 +52,9 @@ export function getMappingData(partId, itionGId) {
         REDUEST_MAPPING_DATA_SUCCESS,
         REDUEST_MAPPING_DATA_FAIL
       ],
-      endpoint: 'manager/association/mapping',
+      endpoint: '/manager/950A/association/family/mapping',
       method: 'POST',
-      body: { partId, itionGId }
+      body: { pn, id, p, i }
     }
   };
 }

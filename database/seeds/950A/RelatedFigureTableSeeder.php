@@ -912,7 +912,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_luggageInnerSTD_1.png',
+                'path'       => 'j_kashimego_luggageInnerSTD_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'kashimego',
                 'pt_pn'      => 6441211010,
@@ -922,7 +922,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_luggageInnerARW_1.png',
+                'path'       => 'j_kashimego_luggageInnerARW_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'kashimego',
                 'pt_pn'      => 6441211020,
@@ -932,7 +932,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_luggageOuterSTD_1.png',
+                'path'       => 'j_kashimego_luggageOuterSTD_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'kashimego',
                 'pt_pn'      => 6441111010,
@@ -941,9 +941,8 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_y'     => 1030,
                 'created_at' => $now,
                 'updated_at' => $now
-            ],
-            [
-                'path'       => 'h_ana_luggageOuterARW_1.png',
+            ],[
+                'path'       => 'j_kashimego_luggageOuterARW_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'kashimego',
                 'pt_pn'      => 6441111020,

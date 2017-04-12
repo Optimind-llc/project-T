@@ -36,7 +36,7 @@ class RelatedPartTableSeeder extends Seeder
                 'short_name' => 'DIR',
                 'division1'  => 'door',
                 'division2'  => 'doorInner',
-                'sort'       => 2,
+                'sort'       => 3,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -69,7 +69,7 @@ class RelatedPartTableSeeder extends Seeder
                 'short_name' => 'RL',
                 'division1'  => 'door',
                 'division2'  => 'reinforce',
-                'sort'       => 3,
+                'sort'       => 2,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -91,7 +91,7 @@ class RelatedPartTableSeeder extends Seeder
                 'short_name' => 'RIA',
                 'division1'  => 'luggage',
                 'division2'  => 'luggageInner',
-                'sort'       => 6,
+                'sort'       => 7,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -102,7 +102,7 @@ class RelatedPartTableSeeder extends Seeder
                 'short_name' => 'ROS',
                 'division1'  => 'luggage',
                 'division2'  => 'luggageOuter',
-                'sort'       => 7,
+                'sort'       => 6,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[

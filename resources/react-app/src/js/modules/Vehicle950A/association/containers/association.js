@@ -6,15 +6,15 @@ import Select from 'react-select';
 // import { handleDownload } from '../../../utils/Export';
 // Actions
 import { partFamilyActions } from '../ducks/partFamily';
-// import { updatePartFActions } from '../ducks/updatePartF';
-// import { mappingActions } from '../ducks/mapping';
+import { mappingActions } from '../ducks/mapping';
 // Styles
 import './association.scss';
 // Components
 import Table from '../components/table/table';
+import Edit from '../components/edit/edit';
+import Mapping from '../components/mapping/mapping';
 import CustomCalendar from '../components/calendar/calendar';
 import Loading from '../../../../components/loading/loading';
-// import Mapping from '../components/mapping/mapping';
 
 class Association extends Component {
   constructor(props, context) {
@@ -23,19 +23,21 @@ class Association extends Component {
     this.state = {
       narrowedBy: 'date',
       type: {label: 'ドアL', value: 'doorL'},
-      partType: {label: '全て', value: ['doorInnerL','doorInnerR','reinforceL','reinforceR','luggageInnerSTD','luggageInnerARW','luggageOuterSTD','luggageOuterARW']},
-      partTId: null,
+      partType: {label: '全て', value: [6714211020, 6714111020, 6715211020, 6715111020, 6441211010, 6441211020, 6441111010, 6441111020]},
       panelId: '',
       startDate: moment(),
       startHour: null,
       endDate: moment(),
       endHour: null,
+      editModal: false,
+      toBeEditted: null,
+      mappingModal: false
     };
   }
 
   serch() {
     const { getPartFamilyByDate, getPartFamilyByPanelId } = this.props.actions;
-    const { narrowedBy, type, startDate, startHour, endDate, endHour, partTId, panelId } = this.state;
+    const { narrowedBy, type, startDate, startHour, endDate, endHour, partType, panelId } = this.state;
 
     let start;
     if (startHour == null) {
@@ -53,20 +55,15 @@ class Association extends Component {
       end = endDate == null ? null : `${endDate.format('YYYY-MM-DD')}-${endHour.value}`;
     }
 
-    const pn = partTId == null ? null : partTId.value;
-
     if (narrowedBy === 'date') {
       getPartFamilyByDate(type.value, start, end);
     }
     else if (narrowedBy === 'panelId') {
-      getPartFamilyByPanelId(type.value, pn, panelId);
+      getPartFamilyByPanelId(partType.value, panelId);
     }
   }
 
-  render() {
-    const { PartFamilyData, UpdatePartFData, MappingData } = this.props;
-    const { narrowedBy, type, startDate, startHour, endDate, endHour, partType, partTId, panelId } = this.state;
-
+  handleDownload() {
     // let table = [];
     // if (PartFamilyData.data != null && !PartFamilyData.isFetching) {
     //   let header = ['更新日','バックドアインナー','アッパー','サイドアッパーLH','サイドアッパーRH','サイドロアLH','サイドロアRH'];
@@ -82,8 +79,19 @@ class Association extends Component {
     //     pf.parts['67177'][0].panelId
     //   ]));
     // };
+  }
 
-console.log(PartFamilyData);
+  handleMapping(pn, id, p, i) {
+    const { getMappingData } = this.props.actions;
+    getMappingData(pn, id, p, i);
+
+    this.setState({mappingModal: true})
+  }
+
+  render() {
+    const { PartFamilyData, UpdatePartFData, MappingData, PartTypes, actions } = this.props;
+    const { narrowedBy, type, startDate, startHour, endDate, endHour, partType, panelId, editModal, toBeEditted, mappingModal } = this.state;
+
     return (
       <div id="association-950A-wrap">
         <div className="bg-white">
@@ -213,15 +221,15 @@ console.log(PartFamilyData);
                   Searchable={true}
                   value={partType}
                   options={[
-                    {label: 'ドアインナL', value: ['doorInnerL']},
-                    {label: 'ドアインナR', value: ['doorInnerR']},
-                    {label: 'リンフォースL', value: ['reinforceL']},
-                    {label: 'リンフォースR', value: ['reinforceR']},
-                    {label: 'ラゲージインナSTD', value: ['luggageInnerSTD']},
-                    {label: 'ラゲージインナARW', value: ['luggageInnerARW']},
-                    {label: 'ラゲージインナSTD', value: ['luggageOuterSTD']},
-                    {label: 'ラゲージインナARW', value: ['luggageOuterARW']},
-                    {label: '全て', value: ['doorInnerL','doorInnerR','reinforceL','reinforceR','luggageInnerSTD','luggageInnerARW','luggageOuterSTD','luggageOuterARW']}
+                    {label: 'ドアインナL', value: [6714211020]},
+                    {label: 'ドアインナR', value: [6714111020]},
+                    {label: 'リンフォースL', value: [6715211020]},
+                    {label: 'リンフォースR', value: [6715111020]},
+                    {label: 'ラゲージインナSTD', value: [6441211010]},
+                    {label: 'ラゲージインナARW', value: [6441211020]},
+                    {label: 'ラゲージインナSTD', value: [6441111010]},
+                    {label: 'ラゲージインナARW', value: [6441111020]},
+                    {label: '全て', value: [6714211020, 6714111020, 6715211020, 6715111020, 6441211010, 6441211020, 6441111010, 6441111020]}
                   ]}
                   onChange={partType => this.setState({partType})}
                 />
@@ -241,7 +249,6 @@ console.log(PartFamilyData);
               <p>この条件で検索</p>
             </button>
           </div>
-
         </div>
         {
           PartFamilyData.isFetching &&
@@ -250,151 +257,247 @@ console.log(PartFamilyData);
           PartFamilyData.data != null && !PartFamilyData.isFetching &&
           <div className="result bg-white">
             {
-              PartFamilyData.data.count < 100 &&
-              <p className="result-count">{`${PartFamilyData.data.count}件中 ${PartFamilyData.data.families.length}件表示`}</p>
+              PartFamilyData.data.doorL &&
+              <Table
+                data={PartFamilyData.data.doorL}
+                partNames={['ドアインナL','リンフォースL','ドアASSY LH']}
+                handleDownload={() => handleDownload('doorL')}
+                handleEdit={id => this.setState({
+                  editModal: true,
+                  toBeEditted: PartFamilyData.data.doorL.find(f => f.id === id),
+                })}
+                handleMapping={(pn, id, p, i) => this.handleMapping(pn, id, p, i)}
+              />
             }{
-              PartFamilyData.data.count >= 100 &&
-              <p className="result-count">{`${PartFamilyData.data.count}件中 100件表示`}</p>
+              PartFamilyData.data.doorR &&
+              <Table
+                data={PartFamilyData.data.doorR}
+                partNames={['ドアインナR','リンフォースR','ドアASSY RH']}
+                handleDownload={() => handleDownload('doorR')}
+                handleEdit={id => this.setState({
+                  editModal: true,
+                  toBeEditted: PartFamilyData.data.doorR.find(f => f.id === id),
+                })}
+                handleMapping={(pn, id, p, i) => this.handleMapping(pn, id, p, i)}
+              />
+            }{
+              PartFamilyData.data.luggageSTD &&
+              <Table
+                data={PartFamilyData.data.luggageSTD}
+                partNames={['ラゲージインナSTD','ラゲージアウタSTD','ラゲージASSY STD']}
+                handleDownload={() => handleDownload('luggageSTD')}
+                handleEdit={id => this.setState({
+                  editModal: true,
+                  toBeEditted: PartFamilyData.data.luggageSTD.find(f => f.id === id),
+                })}
+                handleMapping={(pn, id, p, i) => this.handleMapping(pn, id, p, i)}
+              />
+            }{
+              PartFamilyData.data.luggageARW &&
+              <Table
+                data={PartFamilyData.data.luggageARW}
+                partNames={['ラゲージインナARW','ラゲージアウタARW','ラゲージASSY ARW']}
+                handleDownload={() => handleDownload('luggageARW')}
+                handleEdit={id => this.setState({
+                  editModal: true,
+                  toBeEditted: PartFamilyData.data.luggageARW.find(f => f.id === id),
+                })}
+                handleMapping={(pn, id, p, i) => this.handleMapping(pn, id, p, i)}
+              />
             }
-            <button className="download dark" onClick={() => handleDownload(table)}>
-              <p>CSVをダウンロード</p>
-            </button>
-            <Table data={PartFamilyData.data.doorL}/>
-            {/*
-              this.state.editModal &&
-              <div>
-                <div className="modal">
-                </div>
-                <div className="edit-wrap">
-                  <div className="edit">
-                    <div className="message-wrap">
-                    {
-                      UpdatePartFData.message == 'Already be associated others' &&
-                      UpdatePartFData.parts.map(p =>
-                        <p>{`${p.pn} : ${p.name} : ${p.panelId} の更新に失敗しました　すでに他の部品に使用されています。`}</p>
-                      )
-                    }{
-                      UpdatePartFData.message == 'success' &&
-                      <p>更新しました</p>
+          </div>
+        }{
+          editModal &&
+          <Edit
+            partTypes={PartTypes}
+            partsData={toBeEditted}
+            updatePartFamily={(id, parts) => actions.updatePartFamily(id, parts)}
+            closeModal={() => {
+              this.setState({editModal: false});
+              actions.clearErrorPart();
+              this.serch();
+            }}
+            errorParts={PartFamilyData.errorParts}
+          />
+        }{
+          mappingModal && MappingData.data &&
+          <div className="mapping-wrap">
+            <div className="mapping-header">
+              <p>{'header'}</p>
+            </div>
+            <div className="mapping-left-panel">
+              <ul>
+                
+                <li className="process-name">成形ライン①</li>
+                <li
+                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'm001' && ig.i == 'gaikan' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'm001' && i === 'gaikan') ? 'active' : ''}`}
+                  onClick={() => this.setState({
+                    p: 'm001',
+                    i: 'gaikan',
+                    active: 'failure'
+                  }, () => this.requestMapping('gaikan'))}
+                >
+                  外観検査
+                </li>
+                <li
+                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'm001' && ig.i == 'inline' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'm001' && i === 'inline') ? 'active' : ''}`}
+                  onClick={() => this.setState({
+                    p: 'm001',
+                    i: 'inline',
+                    active: 'inline'
+                  }, () => this.requestMapping('inline'))}
+                >精度検査</li>
+              </ul>
+              <div className="divider"></div>
+              <ul>
+                <li className="process-name">成形ライン②</li>
+                <li
+                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'm002' && ig.i == 'gaikan' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'm002' && i === 'gaikan') ? 'active' : ''}`}
+                  onClick={() => this.setState({
+                    p: 'm002',
+                    i: 'gaikan',
+                    active: 'failure'
+                  }, () => this.requestMapping('gaikan'))}
+                >
+                  外観検査
+                </li>
+                <li
+                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'm002' && ig.i == 'inline' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'm002' && i === 'inline') ? 'active' : ''}`}
+                  onClick={() => this.setState({
+                    p: 'm002',
+                    i: 'inline',
+                    active: 'inline'
+                  }, () => this.requestMapping('inline'))}
+                >精度検査</li>
+              </ul>
+              <div className="divider"></div>
+              <ul>
+                <li className="process-name">穴あけ</li>
+                <li
+                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'h' && ig.i == 'gaikan' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'h' && i === 'gaikan') ? 'active' : ''}`}
+                  onClick={() => this.setState({
+                    p: 'h',
+                    i: 'gaikan',
+                    active: 'failure'
+                  }, () => this.requestMapping('gaikan'))}
+                >外観検査</li>
+                <li
+                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'h' && ig.i == 'ana' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'h' && i === 'ana') ? 'active' : ''}`}
+                  onClick={() => this.setState({
+                    p: 'h',
+                    i: 'ana',
+                    active: 'hole'
+                  }, () => this.requestMapping('ana'))}
+                >穴検査</li>
+              </ul>
+              <div className="divider"></div>
+              <ul>
+                <li className="process-name">接着</li>
+                <li
+                  className={`inspection-name ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'j' && ig.i == 'inline' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'j' && i === 'inline') ? 'active' : ''}`}
+                  onClick={() => this.setState({
+                    p: 'j',
+                    i: 'inline',
+                    active: 'inline'
+                  }, () => this.requestMapping('inline'))}
+                >
+                  精度検査
+                </li>
+              </ul>
+              <ul
+                className={`grouped ${(p === 'j' && i !== 'inline') ? 'active' : ''} ${mappingPartTypeId === 7 ? '' : 'disabled'}`}
+                onClick={() => {
+                    this.setState({
+                      p: 'j',
+                      i: null,
+                      active: 'failure'
+                    }, () => this.requestMapping(null));
+              }}>
+                <li
+                  className={`inspection-name-jointing`}
+                  onClick={() => {
+                    let newJi = [];
+                    if (ji.indexOf(16) >= 0) {
+                      ji.splice(ji.indexOf(16), 1);
+                      newJi = ji;
+                    } else {
+                      newJi = [16, ...ji];                  
                     }
-                    </div>
-                    <div className="input-wrap">
-                      <div className="input">
-                        <p className="label">バックドアインナー<br/>67149</p>
-                        <input
-                          type="text"
-                          value={this.state.editting_1}
-                          onChange={(e) => this.setState({editting_1: e.target.value})}
-                        />
-                        {
-                          this.state.editting_1.length != 8 &&
-                          <p className="validation_msg">8桁で入力してください</p>
-                        }
-                      </div>
-                      <div className="input">
-                        <p className="label">アッパー<br/>67119</p>
-                        <input
-                          type="text"
-                          placeholder="QRコード無し"
-                          value={this.state.editting_2}
-                          onChange={(e) => this.setState({editting_2: e.target.value})}
-                        />
-                        {
-                          this.state.editting_2.length !== 0 && this.state.editting_2.length != 8 &&
-                          <p className="validation_msg">8桁で入力してください</p>
-                        }
-                      </div>
-                      <div className="input">
-                        <p className="label">サイドアッパーLH<br/>67176</p>
-                        <input
-                          type="text"
-                          value={this.state.editting_4}
-                          onChange={(e) => this.setState({editting_4: e.target.value})}
-                        />
-                        {
-                          this.state.editting_4.length != 8 &&
-                          <p className="validation_msg">8桁で入力してください</p>
-                        }
-                      </div>
-                      <div className="input">
-                        <p className="label">サイドアッパーRH<br/>67175</p>
-                        <input
-                          type="text"
-                          value={this.state.editting_3}
-                          onChange={(e) => this.setState({editting_3: e.target.value})}
-                        />
-                        {
-                          this.state.editting_3.length != 8 &&
-                          <p className="validation_msg">8桁で入力してください</p>
-                        }
-                      </div>
-                      <div className="input">
-                        <p className="label">サイドロアLH<br/>67178</p>
-                        <input
-                          type="text"
-                          value={this.state.editting_6}
-                          onChange={(e) => this.setState({editting_6: e.target.value})}
-                        />
-                        {
-                          this.state.editting_6.length != 8 &&
-                          <p className="validation_msg">8桁で入力してください</p>
-                        }
-                      </div>
-                      <div className="input">
-                        <p className="label">サイドロアRH<br/>67177</p>
-                        <input
-                          type="text"
-                          value={this.state.editting_5}
-                          onChange={(e) => this.setState({editting_5: e.target.value})}
-                        />
-                        {
-                          this.state.editting_5.length != 8 &&
-                          <p className="validation_msg">8桁で入力してください</p>
-                        }
-                      </div>
-                    </div>
-                    <div className="btn-wrap">
-                      <button
-                        className={(this.state.editting_1.length === 8 && (this.state.editting_2.length === 0 || this.state.editting_2.length === 8) && this.state.editting_3.length === 8 && this.state.editting_4.length === 8 && this.state.editting_5.length === 8 && this.state.editting_6.length === 8) ? '' : 'disabled'}
-                        onClick={() => {
-                          this.props.actions.updatePartFamily({
-                            "id": this.state.editting_f,
-                            "parts": [
-                              {
-                                "partTypeId": 1,
-                                "panelId": this.state.editting_1
-                              },{
-                                "partTypeId": 2,
-                                "panelId": this.state.editting_2
-                              },{
-                                "partTypeId": 3,
-                                "panelId": this.state.editting_3
-                              },{
-                                "partTypeId": 4,
-                                "panelId": this.state.editting_4
-                              },{
-                                "partTypeId": 5,
-                                "panelId": this.state.editting_5
-                              },{
-                                "partTypeId": 6,
-                                "panelId": this.state.editting_6
-                              }
-                            ]
-                          });
-                        }}
-                      >
-                        保存
-                      </button>
-                      <button onClick={() => {
-                        this.serch()
-                        this.props.actions.clearMessage();
-                        this.setState({editModal: false});
-                      }}>終了</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            */}
+
+                    this.setState({p: 'j', ji: newJi});
+                  }}
+                >
+                  簡易CF {p === 'j' && i !== 'inline' && ji.indexOf(16) >= 0 && <div className="icon-check red">️</div>}
+                </li>
+                <li
+                  className={`inspection-name-jointing ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'j' && ig.i == 'shisui' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'j' && i === 'shisui') ? 'active' : ''}`}
+                  onClick={() => {
+                    let newJi = [];
+                    if (ji.indexOf(10) >= 0) {
+                      ji.splice(ji.indexOf(10), 1);
+                      newJi = ji;
+                    } else {
+                      newJi = [10, ...ji]  ;                  
+                    }
+
+                    this.setState({p: 'j', ji: newJi});
+                  }}
+                >
+                  止水 {p === 'j' && i !== 'inline' && ji.indexOf(10) >= 0 && <div className="icon-check yellow">️</div>}
+                </li>
+                <li
+                  className={`inspection-name-jointing ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'j' && ig.i == 'shiage' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'j' && i === 'shiage') ? 'active' : ''}`}
+                  onClick={() => {
+                    let newJi = [];
+                    if (ji.indexOf(11) >= 0) {
+                      ji.splice(ji.indexOf(11), 1);
+                      newJi = ji;
+                    } else {
+                      newJi = [11, ...ji]  ;                  
+                    }
+
+                    this.setState({p: 'j', ji: newJi});
+                  }}
+                >
+                  仕上 {p === 'j' && i !== 'inline' && ji.indexOf(11) >= 0 && <div className="icon-check blue">️</div>}
+                </li>
+                <li
+                  className={`inspection-name-jointing ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'j' && ig.i == 'kensa' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'j' && i === 'kensa') ? 'active' : ''}`}
+                  onClick={() => {
+                    let newJi = [];
+                    if (ji.indexOf(12) >= 0) {
+                      ji.splice(ji.indexOf(12), 1);
+                      newJi = ji;
+                    } else {
+                      newJi = [12, ...ji]  ;                  
+                    }
+
+                    this.setState({p: 'j', ji: newJi});
+                  }}
+                >
+                  検査 {p === 'j' && i !== 'inline' && ji.indexOf(12) >= 0 && <div className="icon-check green">️</div>}
+                </li>
+                <li
+                  className={`inspection-name-jointing ${inspectionGroups.filter(ig => ig.vehicle == '680A' && ig.part == mappingPartTypeId && ig.p == 'j' && ig.i == 'tenaoshi' && !ig.disabled).length !== 0 ? '' : 'disable'} ${(p === 'j' && i === 'tenaoshi') ? 'active' : ''}`}
+                  onClick={() => {
+                    let newJi = [];
+                    if (ji.indexOf(14) >= 0) {
+                      ji.splice(ji.indexOf(14), 1);
+                      newJi = ji;
+                    } else {
+                      newJi = [14, ...ji]  ;                  
+                    }
+
+                    this.setState({p: 'j', ji: newJi});
+                  }}
+                >
+                  手直 {p === 'j' && i !== 'inline' && ji.indexOf(14) >= 0 && <div className="icon-check purple">️</div>}
+                </li>
+              </ul>
+            </div>
+            <Mapping
+              data={MappingData.data}
+            />
           </div>
         }
       </div>
@@ -410,12 +513,13 @@ function mapStateToProps(state, ownProps) {
   return {
     PartFamilyData: state.AssociationData950A,
     UpdatePartFData: state.UpdatePartFData,
-    MappingData: state.MappingData,
+    MappingData: state.AssociationMappingData950A,
+    PartTypes: state.Application.vehicle950A.partTypes,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({}, partFamilyActions);
+  const actions = Object.assign({}, partFamilyActions, mappingActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };

@@ -509,6 +509,119 @@ class InspectionResultRepository
         ];
     }
 
+    public function forMappingByPartId($p, $i, $partId)
+    {
+        $irs = InspectionResult::with([
+                'failures' => function($q) {
+                    return $q->select('ir_id', 'type_id', 'x', 'y', 'figure_id');
+                },
+                'modifications' => function($q) {
+                    return $q->select('ir_id', 'type_id', 'failure_id', 'figure_id');
+                },
+                'modifications.failure' => function($q) {
+                    return $q->select('id', 'x', 'y', 'figure_id');
+                },
+                'modifications.failure.figure' => function($q) {
+                    return $q->select('id', 'inspection', 'pt_pn');
+                },
+                'holes' => function($q) {
+                    return $q->where('status', '!=', 1)->select('id', 'ir_id', 'type_id', 'status');
+                },
+                'holes.holeModification' => function($q) {
+                    return $q->select('hole_id', 'type_id');
+                },
+                'holeModifications' => function($q) {
+                    return $q->select('ir_id', 'type_id', 'hole_id');
+                },
+                'holeModifications.hole' => function($q) {
+                    return $q->select('id', 'type_id');
+                },
+                'inlines' => function($q) {
+                    return $q->select('id', 'ir_id', 'type_id', 'status');
+                }
+            ])
+            ->where('latest', '=', 1)
+            ->where('process', '=', $p)
+            ->where('inspection', '=', $i)
+            ->where('part_id', '=', $partId)
+            ->select(['id', 'part_id', 'ft_ids', 'mt_ids', 'hmt_ids', 'created_choku', 'inspected_at'])
+            ->get()
+            ->map(function($ir) {
+                return [
+                    'ft_ids' => unserialize($ir->ft_ids),
+                    'mt_ids' => unserialize($ir->mt_ids),
+                    'hmt_ids' => unserialize($ir->hmt_ids),
+                    'c' => $ir->created_choku,
+                    'pn' => $ir->part->pn,
+                    'fs' => $ir->failures->map(function($f) {
+                        return [
+                            'id' => $f->type_id,
+                            'x' => $f->x,
+                            'y' => $f->y,
+                            'fig' => $f->figure_id
+                        ];
+                    }),
+                    'ms' => $ir->modifications->map(function($m) {
+                        return [
+                            'id' => $m->type_id,
+                            'x' => $m->failure->x,
+                            'y' => $m->failure->y,
+                            'fig' => $m->figure_id,
+                            'fFigI' => $m->failure->figure->inspection,
+                            'fFigPn' => $m->failure->figure->pt_pn
+                        ];
+                    }),
+                    'hs' => $ir->holes->map(function($h) {
+                        $hm = -1;
+                        if ($h->holeModification) {
+                            $hm = $h->holeModification->type_id;
+                        }
+
+                        return [
+                            'id' => $h->type_id,
+                            's' => $h->status,
+                            'hm' =>  $hm
+                        ];
+                    }),
+                    'hms' => $ir->holeModifications->map(function($hm) {
+                        return [
+                            'id' => $hm->hole->type_id,
+                            'hm' => $hm->type_id
+                        ];
+                    }),
+                    'is' => $ir->inlines->map(function($i) {
+                        return [
+                            'id' => $i->type_id,
+                            's' => $i->status,
+                            'fig' => $i->figure_id
+                        ];
+                    })
+                ];
+            });
+
+        $count = $irs->count();
+
+        $ft_ids = $irs->map(function($ir){
+            return $ir['ft_ids'];
+        })->flatten()->unique();
+
+        $mt_ids = $irs->map(function($ir){
+            return $ir['mt_ids'];
+        })->flatten()->unique();
+
+        $hmt_ids = $irs->map(function($ir){
+            return $ir['hmt_ids'];
+        })->flatten()->unique();
+
+        return [
+            'count' => $irs->sortBy('pn')->groupBy('pn')->map(function($ptResult) {return $ptResult->count();}),
+            'result' => $irs->sortBy('pn')->groupBy('pn')->values(),
+            'ft_ids' => $ft_ids,
+            'mt_ids' => $mt_ids,
+            'hmt_ids' => $hmt_ids
+        ];
+    }
+
     public function forCheckReport($process, $line, $start, $end, $choku)
     {
         $chokus = [$choku, 'NA'];

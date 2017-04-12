@@ -9,13 +9,15 @@ export const UPDATE_PART_FAMILY_DATA = 'UPDATE_PART_FAMILY_DATA';
 export const UPDATE_PART_FAMILY_DATA_SUCCESS = 'UPDATE_PART_FAMILY_DATA_SUCCESS';
 export const UPDATE_PART_FAMILY_DATA_FAIL = 'UPDATE_PART_FAMILY_DATA_FAIL';
 
+export const CLEAR_ERROR_PART = 'CLEAR_ERROR_PART';
 export const CLEAR_PART_FAMILY_DATA = 'CLEAR_PART_FAMILY_DATA';
 
 
 const initialState = {
   data: null,
   isFetching: false,
-  didInvalidate: false
+  didInvalidate: false,
+  errorParts: null
 };
 
 export default function reducer(state = initialState, action) {
@@ -37,6 +39,33 @@ export default function reducer(state = initialState, action) {
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: true
+      });
+
+    case UPDATE_PART_FAMILY_DATA:
+      return Object.assign({}, state, {
+        isFetching: true,
+        didInvalidate: false
+      });
+
+    case UPDATE_PART_FAMILY_DATA_SUCCESS:
+      return Object.assign({}, state, {
+        data: action.payload.data,
+        isFetching: false,
+        didInvalidate: false,
+        errorParts: action.payload.parts
+      });
+
+    case UPDATE_PART_FAMILY_DATA_FAIL:
+    console.log(action.payload);
+      return Object.assign({}, state, {
+        isFetching: false,
+        didInvalidate: true,
+        errorParts: null
+      });
+
+    case CLEAR_ERROR_PART:
+      return Object.assign({}, state, {
+        errorParts: null
       });
 
     case CLEAR_PART_FAMILY_DATA:
@@ -64,7 +93,7 @@ export function getPartFamilyByDate(type, start, end) {
   };
 }
 
-export function getPartFamilyByPanelId(type, pn, panelId) {
+export function getPartFamilyByPanelId(pn, panelId) {
   return {
     [CALL_API]: {
       types: [
@@ -74,9 +103,30 @@ export function getPartFamilyByPanelId(type, pn, panelId) {
       ],
       endpoint: '/manager/950A/association/family/panelId',
       method: 'POST',
-      body: { type, start, end }
+      body: { pn, panelId }
     }
   };
+}
+
+export function updatePartFamily(id, parts) {
+  return {
+    [CALL_API]: {
+      types: [
+        UPDATE_PART_FAMILY_DATA,
+        UPDATE_PART_FAMILY_DATA_SUCCESS,
+        UPDATE_PART_FAMILY_DATA_FAIL
+      ],
+      endpoint: '/manager/950A/association/family/update',
+      method: 'POST',
+      body: { id, parts }
+    }
+  };
+}
+
+export function clearErrorPart() {
+  return {
+    type: CLEAR_ERROR_PART
+  }
 }
 
 export function clearPartFamilyData() {
@@ -88,5 +138,7 @@ export function clearPartFamilyData() {
 export const partFamilyActions = {
   getPartFamilyByDate,
   getPartFamilyByPanelId,
+  updatePartFamily,
+  clearErrorPart,
   clearPartFamilyData
 };

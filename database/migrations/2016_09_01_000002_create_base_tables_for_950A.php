@@ -119,7 +119,7 @@ class CreateBaseTablesFor950A extends Migration
 
         Schema::connection('950A')->create('figures', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('path', 32);
+            $table->string('path', 64);
             $table->string('process', 16);
             $table->string('inspection', 16);
             $table->bigInteger('pt_pn')->unsigned();
