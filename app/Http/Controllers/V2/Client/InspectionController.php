@@ -53,6 +53,8 @@ class InspectionController extends Controller
 
     public function getInspection($vehicle, Request $request)
     {
+        sleep(3);
+
         $process = $request->process;
         $inspection = $request->inspection;
         $pt_names = $request->partNames;

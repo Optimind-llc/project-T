@@ -86,7 +86,7 @@ class Reference extends Component {
         });
 
         ReferenceData.data.hmts.forEach(hmt => {
-          let hmSum = r.hms[hmt.id] ? p.failures[hm.id] : 0;
+          let hmSum = r.hms[hmt.id] ? r.hms[hmt.id] : 0;
           result.push(String(hmSum));
         });
 

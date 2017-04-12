@@ -1,21 +1,12 @@
-#association .modal {
-  z-index: 1001;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(0,0,0,0.7);
-
-  .mapping-wrap {
+#association-950A-wrap .mapping-wrap {
     position: fixed;
     top: 0;
     left: 0;
-    margin: 10px;
-    padding: 10px;
-    height: calc(100% - 20px);
+    margin: 0;
+    padding: 40px 20px;
+    height: calc(100% - 0px);
     min-height: 595px;
-    width: calc(100% - 20px);
+    width: calc(100% - 0px);
     min-width: 1330px;
     background-color: white;
     border-radius: 4px;
@@ -27,14 +18,14 @@
 
     .mapping-header {
       p {
-        margin: 0 0 10px 100px;
+        margin: 0 0 10px 120px;
         font-size: 14px;
       }
     }
 
     .mapping-left-panel {
       float: left;
-      width: 100px;
+      width: 120px;
 
       ul {
         margin: 0;
@@ -147,295 +138,286 @@
 
     .mapping-right-main {
       float: right;
-      width: calc(100% - 100px);
+      width: calc(100% - 120px);
       padding: 4px;
       border: 4px solid #4A4A4A;
       border-radius: 4px;
 
-      .mapping-figure {
+      .mapping-body {
         position: relative;
-        float: left;
-        min-height: 615px;
-        width: 870px;
-        background-color: white;
+        display: flex;
+        flex-flow: row nowrap;
+        background-color: #FFF;
+        border-radius: 4px;
+        padding: 4px;
 
-        p {
-          margin-left: 100px;
-          font-size: 12px;
-        }
-
-        .figure {
+        .color-label {
           position: absolute;
-          top: 100px;
-          left: 0;
-          width: 870px;
+          top: 2px;
+          left: 2px;
+          background-color: #DDD;
+          border-radius: 4px;
 
-          img {
-            width: 870px;
-            display: block;
-            z-index: 1000;
+          > div {
+            float: left;
+            width: 60px;
 
-            &.quarter {
-              width: 435px;
+            div {
               float: left;
+              width: 12px;
+              height: 12px;
+              margin: 4px;
 
-              &:nth-last-of-type(1):after {
-                content: "";
-                display: block;
-                clear: both;
+              &.circle-red {
+                border-radius: 6px;
+                background-color: red;
               }
+              &.circle-yellow {
+                border-radius: 6px;
+                background-color: #C6B700;
+              }
+              &.circle-blue {
+                border-radius: 6px;
+                background-color: blue;
+              }
+              &.rect-red {
+                background-color: red;
+              }
+              &.rect-yellow {
+                background-color: #C6B700;
+              }
+              &.rect-blue {
+                background-color: blue;
+              }
+            }
+
+            p {
+              margin: 0;
+              font-size: 14px
             }
           }
         }
 
-        svg {
-          position: absolute;
-          top: 100px;
-          left: 0;
-          width: 870px;
-          height: 515px;
+        .figure-wrap {
+          margin-top: 20px;
+          position: relative;
+          flex-grow: 0;
+
+          svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 870px;
+            height: 515px;
+          }
         }
-      }
 
-      .mapping-right-panel {
-        float: right;
-        min-height: 615px;
-        width: calc(100% - 870px);
-        background-color: white;
+        .control-panel {
+          flex-basis: 290px;
+          flex-grow: 1;
+          min-height: 520px;
+          min-width: 210px;
+          margin: 0 0 0 4px;
 
-        .right-panel-tab {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 40px;
-
-          button {
-            flex-basis: 175px;
+          .control-tab {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 40px;
-            background-color: #4A4A4A;
-            color: #FFF;
-            border: none;
-            border-radius: 4px 4px 0 0;
-            cursor: default;
+            font-size: 12px;
 
-            &.disable {
+            button {
+              flex-basis: 175px;
               height: 40px;
+              background-color: #4A4A4A;
+              color: #FFF;
               border: none;
               border-radius: 4px 4px 0 0;
-              background-color: #EEE;
-              color: #9F9F9F;
-              cursor: pointer;
-            }
-          }
-        }
+              cursor: default;
 
-        .right-panel-content {
-          height: 575px;
-          background-color: #FFF;
-          border: 2px solid #BFBFBF;
-          border-radius: 0 0 4px 4px;
-          overflow-y: scroll;
-
-          .collection {
-            display: flex;
-            flex-flow: row nowrap;
-            justify-content: center;
-            position: relative;
-            margin: 20px 4px;
-            font-size: 14px;
-
-            > p {
-              position: absolute;
-              top: -17px;
-              left: 60px;
-              font-size: 12px;
-            }
-
-            > div ul {
-              margin: 0;
-              padding: 0;
-
-              li {
-                display: flex;
-                flex-flow: row nowrap;
-                padding: 3px 6px;
-                border-bottom: 1px solid #BFBFBF;
-                height: 21px;
-
-                &:nth-child(1) {
-                  border-top: 1px solid #BFBFBF;
-                }                 
-
-                &:nth-child(2n) {
-                  background-color: #EEE;
-                }
-
-                span p.icon-check {
-                  margin: -1px 0 0 2px;
-                  padding: 0;
-                  font-size: 10px;
-                }
+              &.disable {
+                height: 40px;
+                border: none;
+                border-radius: 4px 4px 0 0;
+                background-color: #EEE;
+                color: #9F9F9F;
+                cursor: pointer;
               }
             }
           }
+          .control-content {
+            height: 480px;
+            background-color: #FFF;
+            border: 2px solid #BFBFBF;
+            border-radius: 0 0 4px 4px;
+            overflow-y: scroll;
 
-          .failure .collection {
-            > div {
-              width: 40px;
-              border-right: 1px solid #BFBFBF;
-              border-left: 1px solid #BFBFBF;
+            .collection {
+              display: flex;
+              flex-flow: row nowrap;
+              margin: 10px;
+              font-size: 12px;
 
-              &:nth-child(1) {
-                width: 160px;
-                border-right: none;
+              > div {
+                flex-shrink: 0;
+                ul {
+                  margin: 0;
+                  padding: 0;
 
-                ul li span {
+                  li {
+                    display: flex;
+                    flex-flow: row nowrap;
+                    padding: 3px 6px;
+                    border-bottom: 1px solid #BFBFBF;
+                    height: 21px;
+
+                    &:nth-child(1) {
+                      border-top: 1px solid #BFBFBF;
+                    }                 
+
+                    &:nth-child(2n) {
+                      background-color: #EEE;
+                    }
+                  }
+                }
+
+              }
+            }
+
+            .failure .collection {
+              > div {
+                &:nth-child(1) {
+                  width: 112px;
+                  border-right: 1px solid #BFBFBF;
+                  border-left: 1px solid #BFBFBF;
+
+                  ul li span {
+                    &:nth-child(1) {
+                      border: 1px solid #BBB;
+                      border-radius: 4px;
+                      margin: 3px 6px 3px 0;
+                      height: 12px;
+                      width: 12px;
+                      font-size: 10px;
+
+                      p {
+                        display: block;
+                        font-size: 10px;
+                        margin: -1px 0 0 2px;
+                        padding: 0;
+                        width: 12px;
+
+                      }
+                    }
+                    
+                    &:nth-child(2) {
+                      min-width: 114px;
+                    }
+                  }
+                }
+                &:nth-child(2) {
+                  width: 86px;
+                  border-right: 1px solid #BFBFBF;
+                }
+                &:nth-child(3) {
+                  width: 86px;
+                  border-right: 1px solid #BFBFBF;
+                }
+              }
+            }
+
+            .hole .collection {
+              > div {
+                width: 50px;
+                border-right: 1px solid #BFBFBF;
+                border-left: 1px solid #BFBFBF;
+
+                ul li:nth-child(1) span {
                   &:nth-child(1) {
                     border: 1px solid #BBB;
                     border-radius: 4px;
-                    margin: 3px 16px 3px 0;
+                    margin: 3px 3px 3px 0;
                     height: 12px;
                     width: 12px;
                     font-size: 10px;
+
+                    p {
+                      display: block;
+                      font-size: 10px;
+                      margin: -1px 0 0 2px;
+                      padding: 0;
+                      width: 12px;
+
+                    }
                   }
+                  
                   &:nth-child(2) {
-                      min-width: 114px;
+                    min-width: 114px;
                   }
+                }
+
+                &:nth-child(2), &:nth-child(3), &:nth-child(4), &:nth-child(5) {
+                  width: 80px;
+                  border-left: none;
                 }
               }
             }
-          }
 
-          .hole .collection {
-            min-width: 282px;
-
-            > div:nth-child(1) {
-              flex-basis: 40px;
-              border-right: 1px solid #BFBFBF;  
-            }
-            > div:nth-child(2) {
-              flex-basis: 50px;
-              border-right: 1px solid #BFBFBF;
-            }
-            > div:nth-child(3) {
-              flex-basis: 50px;
-              border-right: 1px solid #BFBFBF;
-            }
-            > div:nth-child(4) {
-              flex-basis: 50px;
-              border-right: 1px solid #BFBFBF;
-            }
-            > div:nth-child(5) {
-              flex-basis: 44px;
-            }
-
-            ul span {
-              margin-top: 4px;
-              margin-left: 4px;
-              font-size: 10px;
-            }
-
-            ul li:nth-child(1) span {
-              border: 1px solid #BBB;
-              border-radius: 4px;
-              margin: 3px 6px 3px 0;
-              height: 12px;
-              width: 12px;
-              font-size: 10px;
-            }
-          }
-
-          .comment .collection {
-            > div {
-              &:nth-child(1) {
-                flex-basis: 151px;
+            .holeModification .collection {
+              > div {
+                width: 50px;
                 border-right: 1px solid #BFBFBF;
+                border-left: 1px solid #BFBFBF;
 
-                ul li span {
+                ul li:nth-child(1) span {
                   &:nth-child(1) {
                     border: 1px solid #BBB;
                     border-radius: 4px;
-                    margin: 3px 16px 3px 0;
+                    margin: 3px 3px 3px 0;
                     height: 12px;
                     width: 12px;
-                    font-size: 10px;  
+                    font-size: 10px;
+
+                    p {
+                      display: block;
+                      font-size: 10px;
+                      margin: -1px 0 0 2px;
+                      padding: 0;
+                      width: 12px;
+
+                    }
                   }
+                  
+                  &:nth-child(2) {
+                    min-width: 114px;
+                  }
+                }
+
+                &:nth-child(2), &:nth-child(3), &:nth-child(4), &:nth-child(5), &:nth-child(6) {
+                  width: 90px;
+                  border-left: none;
                 }
               }
             }
           }
+        }
+        .cover {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: white;
+            opacity: .9;
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: center;
+            align-items: center;
 
-          .hModification .collection {
-            min-width: 314px;
-
-            > div:nth-child(1) {
-              flex-basis: 36px;
-              border-right: 1px solid #BFBFBF;  
+            p {
+                font-size: 18px;
             }
-            > div:nth-child(2) {
-              flex-basis: 90px;
-              border-right: 1px solid #BFBFBF;
-            }
-            > div:nth-child(3) {
-              flex-basis: 116px;
-              border-right: 1px solid #BFBFBF;
-            }
-            > div:nth-child(4) {
-              flex-basis: 90px;
-            }
-
-            ul span {
-              margin-top: 4px;
-              margin-left: 4px;
-              font-size: 10px;
-            }
-
-            ul li:nth-child(1) {
-              font-size: 12px;
-
-              span {
-                border: 1px solid #BBB;
-                border-radius: 4px;
-                margin: 3px 6px 3px 0;
-                height: 12px;
-                width: 12px;
-                font-size: 10px;
-              }
-            }
-          }
-
-          .inline .collection {
-              min-width: 282px;
-              > div:nth-child(1) {
-                flex-basis: 80px;
-                border-right: 1px solid #BFBFBF;    
-              }
-              > div:nth-child(2) {
-                flex-basis: 70px;
-                border-right: 1px solid #BFBFBF;
-              }
-              > div:nth-child(3) {
-                flex-basis: 70px;
-                border-right: 1px solid #BFBFBF;
-              }
-
-              ul span {
-                margin-top: 4px;
-                margin-left: 4px;
-                font-size: 10px;
-              }
-
-              ul li:nth-child(1) span {
-                border: 1px solid #BBB;
-                border-radius: 4px;
-                margin: 3px 6px 3px 0;
-                height: 12px;
-                width: 12px;
-                font-size: 10px;
-            }
-          }
         }
       }
     }
-  }
 }

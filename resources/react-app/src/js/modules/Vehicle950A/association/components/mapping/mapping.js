@@ -440,8 +440,8 @@ class Mapping extends Component {
     }
 
     return (
-      <div className="mapping-body-wrap">
-        <div className="bg-white mapping-body">
+      <div className="mapping-right-main">
+        <div className="mapping-body">
           <div className="color-label">
             <div>
               <div className="circle-red"></div>

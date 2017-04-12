@@ -261,6 +261,7 @@ class Association extends Component {
               <Table
                 data={PartFamilyData.data.doorL}
                 partNames={['ドアインナL','リンフォースL','ドアASSY LH']}
+                partPns={[6714211020,6715211020,6701611020]}
                 handleDownload={() => handleDownload('doorL')}
                 handleEdit={id => this.setState({
                   editModal: true,
@@ -273,6 +274,7 @@ class Association extends Component {
               <Table
                 data={PartFamilyData.data.doorR}
                 partNames={['ドアインナR','リンフォースR','ドアASSY RH']}
+                partPns={[6714111020,6715111020,6701511020]}
                 handleDownload={() => handleDownload('doorR')}
                 handleEdit={id => this.setState({
                   editModal: true,
@@ -285,6 +287,7 @@ class Association extends Component {
               <Table
                 data={PartFamilyData.data.luggageSTD}
                 partNames={['ラゲージインナSTD','ラゲージアウタSTD','ラゲージASSY STD']}
+                partPns={[6441211010,6441111010,6440111010]}
                 handleDownload={() => handleDownload('luggageSTD')}
                 handleEdit={id => this.setState({
                   editModal: true,
@@ -297,6 +300,7 @@ class Association extends Component {
               <Table
                 data={PartFamilyData.data.luggageARW}
                 partNames={['ラゲージインナARW','ラゲージアウタARW','ラゲージASSY ARW']}
+                partPns={[6441211020,6441111020,6440111020]}
                 handleDownload={() => handleDownload('luggageARW')}
                 handleEdit={id => this.setState({
                   editModal: true,
@@ -322,6 +326,14 @@ class Association extends Component {
         }{
           mappingModal && MappingData.data &&
           <div className="mapping-wrap">
+            <div
+              className="panel-btn"
+              onClick={() => {
+                this.setState({mappingModal: false});
+                actions.clearMappingData();
+              }}>
+              <span className="panel-btn-close"></span>
+            </div>
             <div className="mapping-header">
               <p>{'header'}</p>
             </div>
@@ -329,14 +341,14 @@ class Association extends Component {
               <ul>
                 <li className="process-name">成形工程</li>
                 {
-                  combination.filter(c => c.process === 'molding' && c.pn == 6714211020).map(c =>
+                  combination.filter(c => c.process === 'molding' && c.pn == MappingData.data.pn).map(c =>
                     <li
                       className="inspection-name"
                       onClick={() => this.setState({
                         p: 'molding',
                         i: c.i,
                         active: 'failure'
-                      }, () => this.handleMapping(6714211020, 1, 'molding', c.i))}
+                      }, () => this.handleMapping(MappingData.data.pn, 1, 'molding', c.i))}
                     >
                       {inspections.find(i => i.en === c.inspection).name}
                     </li>
@@ -346,10 +358,38 @@ class Association extends Component {
               <div className="divider"></div>
               <ul>
                 <li className="process-name">穴あけ工程</li>
+                {
+                  combination.filter(c => c.process === 'holing' && c.pn == MappingData.data.pn).map(c =>
+                    <li
+                      className="inspection-name"
+                      onClick={() => this.setState({
+                        p: 'holing',
+                        i: c.i,
+                        active: 'failure'
+                      }, () => this.handleMapping(MappingData.data.pn, 1, 'holing', c.i))}
+                    >
+                      {inspections.find(i => i.en === c.inspection).name}
+                    </li>
+                  )
+                }
               </ul>
               <div className="divider"></div>
               <ul>
                 <li className="process-name">かしめ/接着工程</li>
+                {
+                  combination.filter(c => c.process === 'jointing' && c.pn == MappingData.data.pn).map(c =>
+                    <li
+                      className="inspection-name"
+                      onClick={() => this.setState({
+                        p: 'jointing',
+                        i: c.i,
+                        active: 'failure'
+                      }, () => this.handleMapping(MappingData.data.pn, 1, 'jointing', c.i))}
+                    >
+                      {inspections.find(i => i.en === c.inspection).name}
+                    </li>
+                  )
+                }
               </ul>
             </div>
             <Mapping

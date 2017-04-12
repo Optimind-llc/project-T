@@ -11,7 +11,7 @@ class Mapping extends Component {
   }
 
   render() {
-    const { data, partNames, handleDownload, handleEdit, handleMapping } = this.props;
+    const { data, partNames, partPns, handleDownload, handleEdit, handleMapping } = this.props;
 
     return (
       <div className="result-table">
@@ -25,16 +25,18 @@ class Mapping extends Component {
               <th colSpan={1} rowSpan={2} width="30">No.</th>
               <th colSpan={1} rowSpan={2} width="120">更新日</th>
               {
-                partNames.map(pn =>
-                  <th colSpan={1}>{pn}</th>
+                partNames.map(name =>
+                  <th colSpan={1}>{name}</th>
                 )
               }
               <th colSpan={1} rowSpan={2} width="100">機能</th>
             </tr>
             <tr>
-              <th>6714211020</th>
-              <th>6715211020</th>
-              <th>6701611020</th>
+              {
+                partPns.map(pn =>
+                  <th>{pn}</th>
+                )
+              }
             </tr>
           </thead>
           <tbody>
@@ -51,10 +53,7 @@ class Mapping extends Component {
                           a.sort > b.sort ? 1 : -1
                         ).map(p =>
                           <td>
-                            {/*<p onClick={() => handleMapping(p.pn, p.id, 'molding', 'gaikan')}>
-                              {p.panelId}
-                            </p>*/}
-                            <p>
+                            <p onClick={() => handleMapping(p.pn, p.id, 'molding', 'gaikan')}>
                               {p.panelId}
                             </p>
                           </td>
@@ -88,6 +87,7 @@ class Mapping extends Component {
 Mapping.propTypes = {
   data: PropTypes.object.isRequired,
   partNames: PropTypes.array.isRequired,
+  partPns: PropTypes.array.isRequired,
   handleDownload: PropTypes.func.isRequired,
   handleEdit: PropTypes.func.isRequired,
   handleMapping: PropTypes.func.isRequired
