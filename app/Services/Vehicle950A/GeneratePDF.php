@@ -229,7 +229,7 @@ class GeneratePDF
             $this->tcpdf->Text($A3['x0']+array_sum(array_slice($d,0,3)), $A3['y1'], '出荷判定');
 
             if ($fn > 20) {
-                $this->tcpdf->SetFont('kozgopromedium', '', 5);
+                $this->tcpdf->SetFont('kozgopromedium', '', 4.4);
             }
 
             foreach ($this->failureTypes as $fi => $f) {
