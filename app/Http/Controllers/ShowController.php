@@ -1316,8 +1316,8 @@ class ShowController extends Controller
         });
 
         $count = $data->count();
-        if ($count > 100) {
-            $data = $data->take(100);
+        if ($count > 1000) {
+            $data = $data->take(1000);
         }
 
         return ['data' => [
