@@ -7,15 +7,12 @@ class Mapping extends Component {
     super(props, context);
 
     this.state = {
-      p: null,
-      i: null,
-      ji: [16, 10, 11, 12, 14],
-      active: 'failure',
+      active: props.defaultActive.name,
       fFilter: [],
-      holeStatus: 0,
-      hModification: 1,
-      cFilter: [],
-      inlineStatus: 's1'
+      mFilter: [],
+      hmFilter: [],
+      hFilter: 0,
+      iFilter: 0
     };
   }
 

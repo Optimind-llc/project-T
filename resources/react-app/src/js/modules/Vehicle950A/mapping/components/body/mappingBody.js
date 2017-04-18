@@ -349,7 +349,7 @@ class MappingBody extends Component {
                       sum = 0;
                     }
 
-                    const sum0 = iStatus.filter(i => i.id == it.id && i.s >= it.min && i.s <= it.max).length;
+                    const sum0 = iStatus.filter(i => i.id == it.id && (i.s < it.min || i.s > it.max)).length;
                     if (sum !== 0) percentage = Math.round(1000*sum0/sum)/10;
 
                     return (
@@ -373,7 +373,7 @@ class MappingBody extends Component {
                       sum = 0;
                     }
 
-                    const sum1 = iStatus.filter(i => i.id == it.id && (i.s < it.min || i.s > it.max)).length;
+                    const sum1 = iStatus.filter(i => i.id == it.id && i.s >= it.min && i.s <= it.max).length;
                     if (sum !== 0) percentage = Math.round(1000*sum1/sum)/10;
 
                     return (
@@ -578,7 +578,7 @@ class MappingBody extends Component {
                       disable = count === 0;
                     } else {
                       const count = hStatus.filter(h => h.id === ht.id).length;
-                      disable = count === data.count;
+                      disable = count === data.count[ht.pn];
                     }
 
                     const x = ht.x/2/split + (870/split)*((page+(split-1))%split);

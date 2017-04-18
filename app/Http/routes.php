@@ -228,7 +228,7 @@ Route::group(['prefix' => 'manager/{vehicle}', 'namespace' => 'V2\Manager'], fun
         Route::get('hole', 'InitialController@index');
         Route::get('inline', 'InitialController@index');
 
-        Route::post('failureType', 'MaintFailureTypeController@get');
+        Route::post('failureTypes', 'MaintFailureTypeController@get');
     });
 });
 

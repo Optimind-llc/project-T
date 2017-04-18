@@ -287,7 +287,13 @@ class RelatedFailureTableSeeder extends Seeder
                 'label'      => 50,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => '接着剤不足',
+                'label'      => 51,
+                'created_at' => $now,
+                'updated_at' => $now
             ]
+            
         ];
 
         DB::connection('950A')->table($table_name)->insert($data);
@@ -833,7 +839,7 @@ class RelatedFailureTableSeeder extends Seeder
         $j_gaikan_doorASSY_failures = [
             [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2], [28, 2],
             [3,  2], [2,  2], [8,  2], [11, 2], [32, 2], [19, 2], [29, 2],
-            [30, 2], [31, 2], [45, 2], [41, 2]
+            [30, 2], [31, 2], [45, 2], [52, 2], [41, 2],
         ];
 
         $data = array_map(function($i, $f) {
@@ -852,7 +858,7 @@ class RelatedFailureTableSeeder extends Seeder
         $j_gaikan_luggageASSY_failures = [
             [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2],
             [3,  2], [2,  2], [8,  2], [11, 2], [32, 2], [19, 2], [29, 2],
-            [30, 2], [31, 2], [49, 2], [50, 2], [45, 2], [51, 2], [41, 2]
+            [30, 2], [31, 2], [49, 2], [50, 2], [45, 2], [51, 2], [52, 2], [41, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -888,9 +894,9 @@ class RelatedFailureTableSeeder extends Seeder
 
         //接着_手直_ラゲージASSY
         $j_tenaoshi_luggageASSY_failures = [
-            [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2],
-            [3,  2], [2,  2], [8,  2], [11, 2], [32, 2], [19, 2], [29, 2],
-            [30, 2], [31, 2], [49, 2], [50, 2], [45, 2], [51, 2], [41, 2]
+            [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2], [3,  2],
+            [2,  2], [8,  2], [11, 2], [32, 2], [19, 2], [29, 2], [30, 2],
+            [31, 2], [49, 2], [50, 2], [45, 2], [51, 2], [52, 2], [41, 2]
         ];
 
         $data = array_map(function($i, $f) {

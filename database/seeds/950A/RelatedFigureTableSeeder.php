@@ -790,7 +790,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_gaikan_luggageInnerSTD_1.png',
+                'path'       => 'h_ana_luggageInnerSTD_1.png',
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'pt_pn'      => 6441211010,
@@ -800,23 +800,13 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_luggageInnerSTD_1.png',
+                'path'       => 'h_gaikan_luggageInnerSTD_1.png',
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'pt_pn'      => 6441211010,
                 'page'       => 2,
                 'size_x'     => 1740,
                 'size_y'     => 1030,
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
-                'path'       => 'h_gaikan_luggageInnerARW_1.png',
-                'process'    => 'holing',
-                'inspection' => 'tenaoshi',
-                'pt_pn'      => 6441211020,
-                'page'       => 1,
-                'size_x'     => 1740,
-                'size_y'     => 980,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -824,13 +814,23 @@ class RelatedFigureTableSeeder extends Seeder
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'pt_pn'      => 6441211020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 980,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'h_gaikan_luggageInnerARW_1.png',
+                'process'    => 'holing',
+                'inspection' => 'tenaoshi',
+                'pt_pn'      => 6441211020,
                 'page'       => 2,
                 'size_x'     => 1740,
                 'size_y'     => 1030,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_gaikan_luggageOuterSTD_1.png',
+                'path'       => 'h_ana_luggageOuterSTD_1.png',
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'pt_pn'      => 6441111010,
@@ -840,7 +840,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_luggageOuterSTD_1.png',
+                'path'       => 'h_gaikan_luggageOuterSTD_1.png',
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'pt_pn'      => 6441111010,
@@ -850,7 +850,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_gaikan_luggageOuterARW_1.png',
+                'path'       => 'h_ana_luggageOuterARW_1.png',
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'pt_pn'      => 6441111020,
@@ -860,7 +860,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'h_ana_luggageOuterARW_1.png',
+                'path'       => 'h_gaikan_luggageOuterARW_1.png',
                 'process'    => 'holing',
                 'inspection' => 'tenaoshi',
                 'pt_pn'      => 6441111020,

@@ -137,6 +137,101 @@ class Insert950AInline extends Command
         DB::connection('950A')->table('inlines')->insert($data);
     }
 
+    protected function saveInspectionForJointing($pn, $panel_id, $inspected_at, $status, $inlines)
+    {
+        $newPart = Part::where('panel_id', $panel_id)
+            ->where('pn', $pn)
+            ->first();
+
+        if (!$newPart instanceof Part) {
+            $newPart = new Part;
+            $newPart->panel_id = $panel_id;
+            $newPart->pn = $pn;
+            $newPart->save();
+        }
+
+        // Results older than self
+        $j_inline_results_old = InspectionResult::where('process', '=', 'jointing')
+            ->where('inspection', '=', 'inline')
+            ->where('part_id', '=', $newPart->id)
+            ->where('inspected_at', '<=', $inspected_at)
+            ->get();
+
+        if ($j_inline_results_old->count() > 0) {
+            foreach ($j_inline_results_old as $j_i_result) {
+                $j_i_result->latest = 0;
+                $j_i_result->save();
+            }
+        }
+
+        // Results newer than self
+        $j_inline_results_new = InspectionResult::where('process', '=', 'jointing')
+            ->where('inspection', '=', 'inline')
+            ->where('part_id', '=', $newPart->id)
+            ->where('inspected_at', '>', $inspected_at)
+            ->get();
+
+        $latest = 1;
+        if ($j_inline_results_new->count() > 0) {
+            $latest = 0;
+        }
+
+        // Get choke from molding inspection of same panelID
+        $j_gaikan_result = InspectionResult::where('process', '=', 'jointing')
+            ->where('inspection', '=', 'gaikan')
+            ->where('part_id', '=', $newPart->id)
+            ->first();
+
+        $choku = 'NA';
+        $created_by = '';
+        $created_at = $inspected_at;
+        if (!is_null($j_gaikan_result)) {
+            $created_at = $j_gaikan_result->created_at;
+            $choku = $j_gaikan_result->created_choku;
+            $created_by = $j_gaikan_result->created_by;
+        }
+
+        // Save inline inspection result
+        $newResult = new InspectionResult;
+        $newResult->part_id = $newPart->id;
+        $newResult->process = 'jointing';
+        $newResult->inspection = 'inline';
+        $newResult->created_choku = $choku;
+        $newResult->created_by = $created_by;
+        $newResult->status = $status;
+        $newResult->latest = $latest;
+        $newResult->inspected_at = $inspected_at;
+        $newResult->created_at = $created_at;
+        $newResult->save();
+
+        $figures = collect(DB::connection('950A')
+            ->table('figures')
+            ->where('process', '=', 'jointing')
+            ->where('inspection', '=', 'inline')
+            ->select(['id', 'pt_pn', 'process', 'inspection'])
+            ->get());
+
+        $getFigureId = function($pn, $p, $i) use($figures) {
+            return $figures->first(function($key, $v) use ($pn, $p, $i) {
+                return $v->pt_pn == $pn && $v->process === $p && $v->inspection === $i;
+            })->id;
+        };
+
+        $irId = $newResult->id;
+        $part_id = $newPart->id;
+        $data = array_map(function($i) use($irId, $part_id, $pn, $getFigureId, $inspected_at) {
+            return [
+                'type_id'    => $i[0],
+                'status'     => $i[1],
+                'ir_id'      => $irId,
+                'part_id'    => $part_id,
+                'figure_id'  => $getFigureId($pn, 'jointing', 'inline'),
+                'created_at' => $inspected_at
+            ];
+        }, $inlines);
+        DB::connection('950A')->table('inlines')->insert($data);
+    }
+
     protected function insertFile($filepath)
     {
         $file = new \SplFileObject($filepath['path']);
@@ -340,6 +435,175 @@ class Insert950AInline extends Command
 
                 $this->saveInspection($pn, $panel_id, $inspected_at, $status, $luggageInner_inlines);
             }
+            elseif ($filepath['head']  === 'J011' && $row === 0 && count($data) === 29) {
+                $inspected_at = Carbon::createFromFormat('Y/m/d H:i:s', $data[0]);
+                $pn = substr($data[1], 0, 10);
+
+                if ($pn !== '6714111020' && $pn !== '6714211020') {
+                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
+                    \Log::error($message);
+                    $this->error($message);
+                    $file = null;
+                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
+                    return 0;
+                }
+
+                $this->info('J011 0 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
+
+                $panel_id = $data[3].$data[4];
+                $status = $data[5] == 'OK' ? 1 : 0;
+
+                if ($pn == '6714111020') {
+                    $doorAssy_inlines = [
+                        [75,$data[6] ],
+                        [76,$data[7] ],
+                        [77,$data[8] ],
+                        [78,$data[9] ],
+                        [79,$data[10]],
+                        [80,$data[11]],
+                        [81,$data[12]],
+                        [82,$data[13]],
+                        [83,$data[14]],
+                        [84,$data[15]],
+                        [85,$data[16]],
+                        [86,$data[17]],
+                        [87,$data[18]],
+                        [88,$data[19]],
+                        [89,$data[20]],
+                        [90,$data[21]],
+                        [91,$data[22]],
+                        [92,$data[23]],
+                        [93,$data[24]],
+                        [94,$data[25]],
+                        [95,$data[26]],
+                        [96,$data[27]],
+                        [97,$data[28]]
+                    ];
+
+                    $this->saveInspectionForJointing(6701511020, $panel_id, $inspected_at, $status, $doorAssy_inlines);
+                }
+            }
+            elseif ($filepath['head']  === 'J021' && $row === 0 && count($data) === 29) {
+                $inspected_at = Carbon::createFromFormat('Y/m/d H:i:s', $data[0]);
+                $pn = substr($data[1], 0, 10);
+
+                if ($pn !== '6714111020' && $pn !== '6714211020') {
+                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
+                    \Log::error($message);
+                    $this->error($message);
+                    $file = null;
+                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
+                    return 0;
+                }
+
+                $this->info('J021 0 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
+
+                $panel_id = $data[3].$data[4];
+                $status = $data[5] == 'OK' ? 1 : 0;
+
+                if ($pn == '6714211020') {
+                    $doorAssy_inlines = [
+                        [98, $data[6] ],
+                        [99, $data[7] ],
+                        [100,$data[8] ],
+                        [101,$data[9] ],
+                        [102,$data[10]],
+                        [103,$data[11]],
+                        [104,$data[12]],
+                        [105,$data[13]],
+                        [106,$data[14]],
+                        [107,$data[15]],
+                        [108,$data[16]],
+                        [109,$data[17]],
+                        [110,$data[18]],
+                        [111,$data[19]],
+                        [112,$data[20]],
+                        [113,$data[21]],
+                        [114,$data[22]],
+                        [115,$data[23]],
+                        [116,$data[24]],
+                        [117,$data[25]],
+                        [118,$data[26]],
+                        [119,$data[27]],
+                        [120,$data[28]]
+                    ];
+
+                    $this->saveInspectionForJointing(6701611020, $panel_id, $inspected_at, $status, $doorAssy_inlines);
+                }
+            }
+            elseif ($filepath['head']  === 'J001' && $row === 0 && count($data) === 27) {
+                $inspected_at = Carbon::createFromFormat('Y/m/d H:i:s', $data[0]);
+                $pn = substr($data[1], 0, 10);
+
+                if ($pn !== '6441211010' && $pn !== '6441211020') {
+                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
+                    \Log::error($message);
+                    $this->error($message);
+                    $file = null;
+                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
+                    return 0;
+                }
+
+                $this->info('J001 0 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
+
+                $panel_id = $data[3].$data[4];
+                $status = $data[5] == 'OK' ? 1 : 0;
+
+                if ($pn == '6441211010') {
+                    $luggageInner_inlines = [
+                        [121,$data[6] ],
+                        [122,$data[7] ],
+                        [123,$data[8] ],
+                        [124,$data[9] ],
+                        [125,$data[10]],
+                        [126,$data[11]],
+                        [127,$data[12]],
+                        [128,$data[13]],
+                        [129,$data[14]],
+                        [130,$data[15]],
+                        [131,$data[16]],
+                        [132,$data[17]],
+                        [133,$data[18]],
+                        [134,$data[19]],
+                        [135,$data[20]],
+                        [136,$data[21]],
+                        [137,$data[22]],
+                        [138,$data[23]],
+                        [139,$data[24]],
+                        [140,$data[25]],
+                        [141,$data[26]]
+                    ];
+
+                    $this->saveInspectionForJointing(6440111010, $panel_id, $inspected_at, $status, $luggageInner_inlines);
+                }
+                elseif ($pn == '6441211020') {
+                    $luggageInner_inlines = [
+                        [142,$data[6] ],
+                        [143,$data[7] ],
+                        [144,$data[8] ],
+                        [145,$data[9] ],
+                        [146,$data[10]],
+                        [147,$data[11]],
+                        [148,$data[12]],
+                        [149,$data[13]],
+                        [150,$data[14]],
+                        [151,$data[15]],
+                        [152,$data[16]],
+                        [153,$data[17]],
+                        [154,$data[18]],
+                        [155,$data[19]],
+                        [156,$data[20]],
+                        [157,$data[21]],
+                        [158,$data[22]],
+                        [159,$data[23]],
+                        [160,$data[24]],
+                        [161,$data[25]],
+                        [162,$data[26]]
+                    ];
+
+                    $this->saveInspectionForJointing(6440111020, $panel_id, $inspected_at, $status, $luggageInner_inlines);
+                }
+            }
         }
 
         $file = null;
@@ -380,7 +644,7 @@ class Insert950AInline extends Command
 
         $results = [];
         foreach ($lists as $list) {
-            if ($list['head'] === 'M011' || $list['head'] === 'M021' || $list['head'] === 'M001') {
+            if ($list['head'] === 'M011' || $list['head'] === 'M021' || $list['head'] === 'M001' || $list['head'] === 'J011' || $list['head'] === 'J021' || $list['head'] === 'J001') {
                 $results[] = $this->insertFile($list);
             }
             else {

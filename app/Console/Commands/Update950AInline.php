@@ -45,22 +45,39 @@ class Update950AInline extends Command
         $today = Carbon::today();
 
         $targetInspectionResults = InspectionResult::where('created_choku', '=', 'NA')
-            ->where('created_at', '>=', $today->subDays(1))
+            ->where('created_at', '>=', $today->subDays(10))
             ->get();
 
         foreach ($targetInspectionResults as $ir) {
-            $m_g_ir = InspectionResult::where('part_id', '=', $ir->part_id)
-                ->where('process', '=', 'molding')
-                ->where('inspection', '=', 'gaikan')
-                ->select(['part_id', 'process', 'inspection', 'created_choku', 'created_by'])
-                ->first();
+            if ($ir->process === 'molding') {
+                $m_g_ir = InspectionResult::where('part_id', '=', $ir->part_id)
+                    ->where('process', '=', 'molding')
+                    ->where('inspection', '=', 'gaikan')
+                    ->select(['part_id', 'process', 'inspection', 'created_choku', 'created_by'])
+                    ->first();
 
-            if (!is_null($m_g_ir)) {
-                $ir->created_choku = $m_g_ir->created_choku;
-                $ir->created_by = $m_g_ir->created_by;
-                $ir->save();
+                if (!is_null($m_g_ir)) {
+                    $ir->created_choku = $m_g_ir->created_choku;
+                    $ir->created_by = $m_g_ir->created_by;
+                    $ir->save();
 
-                $this->info('inspection_result_id = '.$ir->id. ' was updated');
+                    $this->info('inspection_result_id = '.$ir->id. ' was updated');
+                }
+            }
+            else if ($ir->process === 'jointing') {
+                $j_g_ir = InspectionResult::where('part_id', '=', $ir->part_id)
+                    ->where('process', '=', 'jointing')
+                    ->where('inspection', '=', 'gaikan')
+                    ->select(['part_id', 'process', 'inspection', 'created_choku', 'created_by'])
+                    ->first();
+
+                if (!is_null($j_g_ir)) {
+                    $ir->created_choku = $j_g_ir->created_choku;
+                    $ir->created_by = $j_g_ir->created_by;
+                    $ir->save();
+
+                    $this->info('inspection_result_id = '.$ir->id. ' was updated');
+                }
             }
         }
 

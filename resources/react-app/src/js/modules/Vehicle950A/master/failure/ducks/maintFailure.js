@@ -37,7 +37,7 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export function requestFailures() {
+export function requestFailures(name, inspection, division) {
   return {
     [CALL_API]: {
       types: [
@@ -45,9 +45,9 @@ export function requestFailures() {
         REDUEST_FAILURE_DATA_SUCCESS,
         REDUEST_FAILURE_DATA_FAIL
       ],
-      endpoint: 'maintenance/950A/failures',
-      method: 'GET',
-      body: null
+      endpoint: 'manager/950A/maintenance/failureTypes',
+      method: 'POST',
+      body: { name, inspection, division }
     }
   };
 }
@@ -60,7 +60,7 @@ export function createFailure(name, label, inspections) {
         CREATE_FAILURES_DATA_SUCCESS,
         CREATE_FAILURES_DATA_FAIL
       ],
-      endpoint: 'maintenance/950A/failure/create',
+      endpoint: 'manager/950A/maintenance/failure/create',
       method: 'POST',
       body: {name, label, inspections}
     }
@@ -75,7 +75,7 @@ export function updateFailure(id, name, label, inspections) {
         UPDATE_FAILURES_DATA_SUCCESS,
         UPDATE_FAILURES_DATA_FAIL
       ],
-      endpoint: 'maintenance/950A/failure/update',
+      endpoint: 'manager/950A/maintenance/failure/update',
       method: 'POST',
       body: {id, name, label, inspections}
     }
@@ -90,7 +90,7 @@ export function activateFailure(id) {
         ACTIVATE_FAILURES_DATA_SUCCESS,
         ACTIVATE_FAILURES_DATA_FAIL
       ],
-      endpoint: `maintenance/950A/failure/${id}/activate`,
+      endpoint: `manager/950A/maintenance/failure/${id}/activate`,
       method: 'POST',
       body: null
     }
@@ -105,13 +105,13 @@ export function deactivateFailure(id) {
         DEACTIVATE_FAILURES_DATA_SUCCESS,
         DEACTIVATE_FAILURES_DATA_FAIL
       ],
-      endpoint: `maintenance/failure/950A/${id}/deactivate`,
+      endpoint: `manager/950A/maintenance/failure/${id}/deactivate`,
       method: 'POST',
       body: null
     }
   };
 }
 
-export const pageActions = {
+export const maintFailureActions = {
   requestFailures,
 };

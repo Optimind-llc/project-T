@@ -13,6 +13,16 @@ class FailureType extends Model
     protected $connection = '950A';
     protected $guarded = ['id'];
 
+    public function inspections()
+    {
+        return $this->belongsToMany(
+            'App\Models\Vehicle950A\Inspection',
+            'ft_related',
+            'type_id',
+            'inspection'
+        )->withPivot('type', 'sort');
+    }
+
     public function scopeNarrow($query, $p, $i, $d)
     {
         return $query->join('ft_related as ftr', function ($join) use ($p, $i, $d){

@@ -187,6 +187,7 @@ class AssociationController extends Controller
         $i = $request->i;
         $partId = $request->id;
         $pn = $request->pn;
+        $pns = [$pn];
 
         $irs = $this->inspectionResult->forMappingByPartId($p, $i, $partId);
 
@@ -224,6 +225,7 @@ class AssociationController extends Controller
         return [
             'data' => [
                 'pn' => $pn,
+                'partId' => $partId,
                 'count' => $irs['count'],
                 'i' => $i,
                 'result' => $irs['result'],

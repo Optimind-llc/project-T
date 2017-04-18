@@ -85,7 +85,8 @@ class Association extends Component {
     const { getMappingData } = this.props.actions;
     getMappingData(pn, id, p, i);
 
-    this.setState({mappingModal: true})
+    // this.setState({mappingModal: true})
+    this.setState({mappingModal: false})
   }
 
   render() {
@@ -344,11 +345,12 @@ class Association extends Component {
                   combination.filter(c => c.process === 'molding' && c.pn == MappingData.data.pn).map(c =>
                     <li
                       className="inspection-name"
-                      onClick={() => this.setState({
-                        p: 'molding',
-                        i: c.i,
-                        active: 'failure'
-                      }, () => this.handleMapping(MappingData.data.pn, 1, 'molding', c.i))}
+                      onClick={() => this.handleMapping(
+                        MappingData.data.pn,
+                        MappingData.data.partId,
+                        'molding',
+                        inspections.find(i => i.en === c.inspection).en
+                      )}
                     >
                       {inspections.find(i => i.en === c.inspection).name}
                     </li>
@@ -362,11 +364,12 @@ class Association extends Component {
                   combination.filter(c => c.process === 'holing' && c.pn == MappingData.data.pn).map(c =>
                     <li
                       className="inspection-name"
-                      onClick={() => this.setState({
-                        p: 'holing',
-                        i: c.i,
-                        active: 'failure'
-                      }, () => this.handleMapping(MappingData.data.pn, 1, 'holing', c.i))}
+                      onClick={() => this.handleMapping(
+                        MappingData.data.pn,
+                        MappingData.data.partId,
+                        'holing',
+                        inspections.find(i => i.en === c.inspection).en
+                      )}
                     >
                       {inspections.find(i => i.en === c.inspection).name}
                     </li>
@@ -380,11 +383,12 @@ class Association extends Component {
                   combination.filter(c => c.process === 'jointing' && c.pn == MappingData.data.pn).map(c =>
                     <li
                       className="inspection-name"
-                      onClick={() => this.setState({
-                        p: 'jointing',
-                        i: c.i,
-                        active: 'failure'
-                      }, () => this.handleMapping(MappingData.data.pn, 1, 'jointing', c.i))}
+                      onClick={() => this.handleMapping(
+                        MappingData.data.pn,
+                        MappingData.data.partId,
+                        'jointing',
+                        inspections.find(i => i.en === c.inspection).en
+                      )}
                     >
                       {inspections.find(i => i.en === c.inspection).name}
                     </li>
@@ -394,6 +398,7 @@ class Association extends Component {
             </div>
             <Mapping
               data={MappingData.data}
+              defaultActive="failure"
             />
           </div>
         }

@@ -7,10 +7,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 // Models
-use App\Models\Vehicle950A\Worker;
-use App\Models\Vehicle950A\Failure;
-use App\Models\Vehicle950A\Modification;
-use App\Models\Vehicle950A\Hole;
+use App\Models\Vehicle950A\FailureType;
 // Exceptions
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -20,42 +17,40 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class MaintFailureTypeController extends Controller
 {
-    public function get(Request $request)
+    public function get($vhicle, Request $request)
     {
         $name = $request->name;
-        $inspection = $request->inspection;
-        $status = $request->status;
+        $inspections = $request->inspections;
+        $divisions = $request->divisions;
 
-        $failures = Failure::whereIn('status', $status)
+        $failureTypes = FailureType::whereIn('division', $divisions)
             ->where(function($q) use ($name) {
                 if ($name !== '') {
                     $q->where('name', 'like', $name.'%');
                 }
-            });
-
-        if ($inspection !== 'all') {
-            $failures = $failures->whereHas('inspections', function($q) use ($inspection) {
+            })
+            ->whereHas('inspections', function($q) use ($inspections) {
                 $q->where('id', '=', $inspection);
+            })
+            ->orderBy('label')
+            ->get()
+            ->map(function($f) {
+                return [
+                    'id' => $f->id,
+                    'name' => $f->name,
+                    'label' => $f->label,
+                    'status' => $f->status,
+                    'inspections' => $f->inspections->map(function($i) {
+                        return [
+                            'id' => $i->id,
+                            'type' => $i->pivot->type,
+                            'sort' => $i->pivot->sort
+                        ];
+                    })
+                ];
             });
-        }
 
-        $failures = $failures->orderBy('label')->get()->map(function($f) {
-            return [
-                'id' => $f->id,
-                'name' => $f->name,
-                'label' => $f->label,
-                'status' => $f->status,
-                'inspections' => $f->inspections->map(function($i) {
-                    return [
-                        'id' => $i->id,
-                        'type' => $i->pivot->type,
-                        'sort' => $i->pivot->sort
-                    ];
-                })
-            ];
-        });
-
-        return ['data' => $failures];
+        return ['data' => $failureTypes];
     }
 
     public function createFailure(Request $request)

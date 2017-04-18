@@ -19,6 +19,58 @@ class reportBody extends Component {
       self.indexOf(c) === i
     );
 
+    const styles = {
+      molding: {
+        gaikan: [],
+        inline: [
+          { pt: 'luggageInnerARW', value: 78, height: 58 }
+        ],
+      },
+      holing: {
+        maegaikan: [],
+        atogaikan: [],
+        ana: [],
+        tenaoshi: []
+      },
+      jointing: {
+        kashimego: [],
+        gaishushiage: [
+          { pt: 'luggageOuterSTD', value: 68*5 + 10, height: 58 },
+          { pt: 'luggageOuterARW', value: 78, height: 58 },
+        ],
+        pateshufukugo: [
+          { pt: 'luggageOuterSTD', value: 68*5 + 10, height: 58 },
+          { pt: 'luggageOuterARW', value: 78, height: 58 },
+        ],
+        suikengo: [
+          { pt: 'luggageOuterSTD', value: 68*5 + 10, height: 58 },
+          { pt: 'luggageOuterARW', value: 78, height: 58 },
+        ],
+        tosoukeirego: [
+          { pt: 'luggageOuterSTD', value: 68*5 + 10, height: 58 },
+          { pt: 'luggageOuterARW', value: 78, height: 58 },
+        ],
+        inline: [
+          { pt: 'doorASSY LH', value: 0, height: 126 },
+          { pt: 'doorASSY RH', value: 0, height: 126 },
+          { pt: 'luggageASSY STD', value: 0, height: 126 },
+          { pt: 'luggageASSY ARW', value: 0, height: 126 }
+        ],
+        gaikan: [
+          { pt: 'doorASSY LH', value: 0, height: 126 },
+          { pt: 'doorASSY RH', value: 0, height: 126 },
+          { pt: 'luggageASSY STD', value: 0, height: 126 },
+          { pt: 'luggageASSY ARW', value: 0, height: 126 }
+        ],
+        tenaoshi: [
+          { pt: 'doorASSY LH', value: 0, height: 126 },
+          { pt: 'doorASSY RH', value: 0, height: 126 },
+          { pt: 'luggageASSY STD', value: 0, height: 126 },
+          { pt: 'luggageASSY ARW', value: 0, height: 126 }
+        ]
+      },
+    };
+
     return (
       <div className="bg-white report-body">
         {
@@ -37,6 +89,10 @@ class reportBody extends Component {
                     key={pti}
                     className={`report-panel ${data.filter(d => d.process === p && d.inspection === i && d.partEn === pt).length > 0 ? '' : 'disabled'}`}
                     onClick={() => openModal(i, pt)}
+                    style={{
+                      marginTop: styles[p][i].find(mt => mt.pt == pt) ? styles[p][i].find(mt => mt.pt == pt).value : 0,
+                      height: styles[p][i].find(mt => mt.pt == pt) ? styles[p][i].find(mt => mt.pt == pt).height : 58
+                    }}
                   >
                     <p className="report-line-name">{partTypes.find(partType => partType.en === pt).name}</p>
                   </div>

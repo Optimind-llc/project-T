@@ -77,6 +77,16 @@ class RelatedModificationTableSeeder extends Seeder
                 'label'      => 99,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => 'ペイント',
+                'label'      => 9,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '接着剤補修',
+                'label'      => 10,
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ];
 
@@ -390,7 +400,7 @@ class RelatedModificationTableSeeder extends Seeder
         //接着_外観検査_ドアASSY
         $j_gaikan_doorASSY_failures = [
             [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
-            [9, 2]
+            [10, 2], [11,2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -408,7 +418,7 @@ class RelatedModificationTableSeeder extends Seeder
         //接着_外観検査_ラゲージASSY
         $j_gaikan_luggageASSY_failures = [
             [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
-            [9, 2]
+            [10, 2], [11,2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -426,7 +436,7 @@ class RelatedModificationTableSeeder extends Seeder
         //接着_手直_ドアASSY
         $j_tenaoshi_doorASSY_failures = [
             [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
-            [9, 2]
+            [10, 2], [11,2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -444,7 +454,7 @@ class RelatedModificationTableSeeder extends Seeder
         //接着_手直_ラゲージASSY
         $j_tenaoshi_luggageASSY_failures = [
             [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
-            [9, 2]
+            [10, 2], [11,2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {

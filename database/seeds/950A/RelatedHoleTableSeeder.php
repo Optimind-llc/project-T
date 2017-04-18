@@ -426,7 +426,6 @@ class RelatedHoleTableSeeder extends Seeder
             [3, 67, 1,    1, 'bottom','square', 'solid', '000000', 0],
             [3, 68, 1,    1, 'bottom','square', 'solid', '000000', 0],
             [3, 69, 1,    1, 'bottom','square', 'solid', '000000', 0]
-
         ];
 
         //穴検査_ラゲージインナSTD 新しいやつ
@@ -955,12 +954,12 @@ class RelatedHoleTableSeeder extends Seeder
             [1, 1, 636,  410, 'top',   'circle', 'solid', 'FD7D82'],
             [1, 2, 1105, 411, 'top',   'circle', 'solid', 'FD7D82'],
 
-            [1, 3, 1388, 630, 'top',   'circle', 'solid', '36859A'],
-            [1, 4, 1013, 686, 'top',   'circle', 'solid', '36859A'],
-            [1, 5, 733,  686, 'top',   'circle', 'solid', '36859A'],
-            [1, 6, 356,  630, 'top',   'circle', 'solid', '36859A'],
-            [1, 7, 754,  807, 'bottom','circle', 'solid', '36859A'],
-            [1, 8, 990,  807, 'bottom','circle', 'solid', '36859A'],
+            [1, 3, 1388, 630, 'top',   'circle', 'solid', 'FD7D82'],
+            [1, 4, 1013, 686, 'top',   'circle', 'solid', 'FD7D82'],
+            [1, 5, 733,  686, 'top',   'circle', 'solid', 'FD7D82'],
+            [1, 6, 356,  630, 'top',   'circle', 'solid', 'FD7D82'],
+            [1, 7, 754,  807, 'bottom','circle', 'solid', 'FD7D82'],
+            [1, 8, 990,  807, 'bottom','circle', 'solid', 'FD7D82'],
         ];
 
         //かしめ後検査_ラゲージアウタARW

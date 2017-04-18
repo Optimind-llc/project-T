@@ -111,13 +111,13 @@ class RelatedInspectionGroupTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '水検後',
+                'name'       => '水研後',
                 'en'         => 'suikengo',
                 'sort'       => 4,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '塗装受入後',
+                'name'       => '塗装後',
                 'en'         => 'tosoukeirego',
                 'sort'       => 5,
                 'created_at' => $now,
