@@ -105,7 +105,7 @@ class RelatedInspectionGroupTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'パテ修復後',
+                'name'       => 'パテ修復',
                 'en'         => 'pateshufukugo',
                 'sort'       => 3,
                 'created_at' => $now,

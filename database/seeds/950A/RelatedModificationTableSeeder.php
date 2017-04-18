@@ -87,6 +87,11 @@ class RelatedModificationTableSeeder extends Seeder
                 'label'      => 10,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => '再パテ補修',
+                'label'      => 11,
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ];
 
@@ -363,7 +368,7 @@ class RelatedModificationTableSeeder extends Seeder
         //かしめ_パテ修復後_ラゲージアウタ
         $j_pateshufukugo_luggageOuter_failures = [
             [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
-            [9, 2]
+            [12, 2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {

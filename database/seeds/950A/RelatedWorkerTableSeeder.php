@@ -592,10 +592,28 @@ class RelatedWorkerTableSeeder extends Seeder
                 'choku_code' => 'W',
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => '河本 翔太',
+                'yomi'       => 'コウモトショウタ',
+                'code'       => '0075',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '山鹿 侃将',
+                'yomi'       => 'ヤマガナオマサ',
+                'code'       => '0076',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '中谷 優士',
+                'yomi'       => 'ナカヤユウジ',
+                'code'       => '0077',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
             ]
-
-            
-   
         ];
 
         DB::connection('950A')->table($table_name)->insert($data);
@@ -2389,6 +2407,24 @@ class RelatedWorkerTableSeeder extends Seeder
                 'division'   => 'luggage',
                 'worker_id' => 40,
                 'sort'      => 6
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
+                'worker_id' => 75,
+                'sort'      => 7
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
+                'worker_id' => 76,
+                'sort'      => 8
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'gaishushiage',
+                'division'   => 'luggage',
+                'worker_id' => 77,
+                'sort'      => 9
             ],
 
 
@@ -2479,6 +2515,24 @@ class RelatedWorkerTableSeeder extends Seeder
                 'division'   => 'luggage',
                 'worker_id' => 40,
                 'sort'      => 6
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
+                'worker_id' => 75,
+                'sort'      => 7
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
+                'worker_id' => 76,
+                'sort'      => 8
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'pateshufukugo',
+                'division'   => 'luggage',
+                'worker_id' => 77,
+                'sort'      => 9
             ],
 
 
@@ -2569,6 +2623,24 @@ class RelatedWorkerTableSeeder extends Seeder
                 'division'   => 'luggage',
                 'worker_id' => 40,
                 'sort'      => 6
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
+                'worker_id' => 75,
+                'sort'      => 7
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
+                'worker_id' => 76,
+                'sort'      => 8
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'suikengo',
+                'division'   => 'luggage',
+                'worker_id' => 77,
+                'sort'      => 9
             ],
 
 
@@ -2659,6 +2731,24 @@ class RelatedWorkerTableSeeder extends Seeder
                 'division'   => 'luggage',
                 'worker_id' => 40,
                 'sort'      => 6
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
+                'worker_id' => 75,
+                'sort'      => 7
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
+                'worker_id' => 76,
+                'sort'      => 8
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'tosoukeirego',
+                'division'   => 'luggage',
+                'worker_id' => 77,
+                'sort'      => 9
             ],
 
 
@@ -2749,6 +2839,24 @@ class RelatedWorkerTableSeeder extends Seeder
                 'division'   => 'luggage',
                 'worker_id' => 40,
                 'sort'      => 6
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
+                'worker_id' => 75,
+                'sort'      => 7
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
+                'worker_id' => 76,
+                'sort'      => 8
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'gaikan',
+                'division'   => 'luggage',
+                'worker_id' => 77,
+                'sort'      => 9
             ],
 
             //かしめ/接着_手直_ラゲージ_白
@@ -2838,6 +2946,24 @@ class RelatedWorkerTableSeeder extends Seeder
                 'division'   => 'luggage',
                 'worker_id' => 40,
                 'sort'      => 6
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
+                'worker_id' => 75,
+                'sort'      => 7
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
+                'worker_id' => 76,
+                'sort'      => 8
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'tenaoshi',
+                'division'   => 'luggage',
+                'worker_id' => 77,
+                'sort'      => 9
             ],
         ];
 
