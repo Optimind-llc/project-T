@@ -976,7 +976,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],
             //接着_パテ修復後
             [
-                'path'       => 'j_luggageOuterSTD.png',
+                'path'       => 'h_gaikan_luggageOuterSTD_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'pateshufukugo',
                 'pt_pn'      => 6441111010,
@@ -986,7 +986,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'j_luggageOuterARW.png',
+                'path'       => 'h_gaikan_luggageOuterARW_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'pateshufukugo',
                 'pt_pn'      => 6441111020,
@@ -998,7 +998,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],
             //接着_水検後
             [
-                'path'       => 'j_luggageOuterSTD.png',
+                'path'       => 'h_gaikan_luggageOuterSTD_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'suikengo',
                 'pt_pn'      => 6441111010,
@@ -1008,7 +1008,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'j_luggageOuterARW.png',
+                'path'       => 'h_gaikan_luggageOuterARW_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'suikengo',
                 'pt_pn'      => 6441111020,
@@ -1020,7 +1020,7 @@ class RelatedFigureTableSeeder extends Seeder
             ],
             //接着_塗装受入後
             [
-                'path'       => 'j_luggageOuterSTD.png',
+                'path'       => 'h_gaikan_luggageOuterSTD_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'tosoukeirego',
                 'pt_pn'      => 6441111010,
@@ -1030,7 +1030,7 @@ class RelatedFigureTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'path'       => 'j_luggageOuterARW.png',
+                'path'       => 'h_gaikan_luggageOuterARW_1.png',
                 'process'    => 'jointing',
                 'inspection' => 'tosoukeirego',
                 'pt_pn'      => 6441111020,
