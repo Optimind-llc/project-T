@@ -613,7 +613,16 @@ class RelatedWorkerTableSeeder extends Seeder
                 'choku_code' => 'Y',
                 'created_at' => $now,
                 'updated_at' => $now
-            ]
+            ],[
+                'name'       => '岡田 俊英',
+                'yomi'       => 'オカダシュンエイ',
+                'code'       => '0078',
+                'choku_code' => 'Y',
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+
+
         ];
 
         DB::connection('950A')->table($table_name)->insert($data);
@@ -716,26 +725,8 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'molding',
                 'inspection' => 'gaikan',
                 'division'   => 'door',
-                'worker_id' => 13,
+                'worker_id' => 78,
                 'sort'      => 5
-            ],[
-                'process'    => 'molding',
-                'inspection' => 'gaikan',
-                'division'   => 'door',
-                'worker_id' => 14,
-                'sort'      => 6
-            ],[
-                'process'    => 'molding',
-                'inspection' => 'gaikan',
-                'division'   => 'door',
-                'worker_id' => 15,
-                'sort'      => 7
-            ],[
-                'process'    => 'molding',
-                'inspection' => 'gaikan',
-                'division'   => 'door',
-                'worker_id' => 16,
-                'sort'      => 8
             ],
 
 
@@ -1647,26 +1638,8 @@ class RelatedWorkerTableSeeder extends Seeder
                 'process'    => 'molding',
                 'inspection' => 'gaikan',
                 'division'   => 'luggage',
-                'worker_id' => 13,
-                'sort'      => 5
-            ],[
-                'process'    => 'molding',
-                'inspection' => 'gaikan',
-                'division'   => 'luggage',
-                'worker_id' => 14,
-                'sort'      => 6
-            ],[
-                'process'    => 'molding',
-                'inspection' => 'gaikan',
-                'division'   => 'luggage',
-                'worker_id' => 15,
-                'sort'      => 7
-            ],[
-                'process'    => 'molding',
-                'inspection' => 'gaikan',
-                'division'   => 'luggage',
-                'worker_id' => 16,
-                'sort'      => 8
+                'worker_id'  => 78,
+                'sort'       => 5
             ],
 
 

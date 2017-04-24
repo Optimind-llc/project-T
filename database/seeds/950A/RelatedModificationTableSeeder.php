@@ -88,8 +88,18 @@ class RelatedModificationTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => '再パテ補修',
+                'name'       => 'パテ補修',
                 'label'      => 11,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '再パテ補修',
+                'label'      => 12,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => 'かしめ直し',
+                'label'      => 13,
                 'created_at' => $now,
                 'updated_at' => $now
             ]
@@ -346,6 +356,75 @@ class RelatedModificationTableSeeder extends Seeder
         /*
          * 　かしめ工程
          */
+        //穴あけ_手直検査_ドアインナ
+        $h_tenaoshi_doorInner_failures = [
+            [13,  2], [9, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'tenaoshi',
+                'division'      => 'doorInner',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_tenaoshi_doorInner_failures), $h_tenaoshi_doorInner_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴あけ_手直検査_リンフォース
+        $h_tenaoshi_reinforce_failures = [
+            [13,  2], [9, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'tenaoshi',
+                'division'      => 'reinforce',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_tenaoshi_reinforce_failures), $h_tenaoshi_reinforce_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴あけ_手直検査_ラゲージインナ
+        $h_tenaoshi_luggageInner_failures = [
+            [13,  2], [9, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'tenaoshi',
+                'division'      => 'luggageInner',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_tenaoshi_luggageInner_failures), $h_tenaoshi_luggageInner_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //穴あけ_手直検査_ラゲージアウタ
+        $h_tenaoshi_luggageOuter_failures = [
+            [13,  2], [9, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'holing',
+                'inspection'    => 'tenaoshi',
+                'division'      => 'luggageOuter',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($h_tenaoshi_luggageOuter_failures), $h_tenaoshi_luggageOuter_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+
 
         //かしめ_外周仕上_ラゲージアウタ
         $j_gaishushiage_luggageOuter_failures = [
@@ -368,7 +447,7 @@ class RelatedModificationTableSeeder extends Seeder
         //かしめ_パテ修復後_ラゲージアウタ
         $j_pateshufukugo_luggageOuter_failures = [
             [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
-            [12, 2], [9, 2]
+            [12, 2], [13, 2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -401,6 +480,42 @@ class RelatedModificationTableSeeder extends Seeder
         }, array_keys($j_suikengo_luggageOuter_failures), $j_suikengo_luggageOuter_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
+
+        //接着_外観検査_ドアASSY
+        $j_setchakugo_doorASSY_failures = [
+            [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
+            [10, 2], [11,2], [9, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'jointing',
+                'inspection'    => 'setchakugo',
+                'division'      => 'doorASSY',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($j_setchakugo_doorASSY_failures), $j_setchakugo_doorASSY_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //接着_外観検査_ラゲージASSY
+        $j_setchakugo_luggageASSY_failures = [
+            [1,  2], [2, 2], [3,  2], [5,  2], [6, 2], [7, 2], [8, 2],
+            [10, 2], [11,2], [9, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'jointing',
+                'inspection'    => 'setchakugo',
+                'division'      => 'luggageASSY',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($j_setchakugo_luggageASSY_failures), $j_setchakugo_luggageASSY_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
 
         //接着_外観検査_ドアASSY
         $j_gaikan_doorASSY_failures = [

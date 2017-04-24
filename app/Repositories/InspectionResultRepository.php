@@ -125,11 +125,17 @@ class InspectionResultRepository
                 'failures' => function($q) {
                     $q->select('id', 'x', 'y', 'face', 'type_id', 'ir_id', 'figure_id');
                 },
+                'failures.type' => function($q) {
+                    $q->select('id', 'label');
+                },
                 'failures.figure' => function($q) {
                     $q->select('id', 'page');
                 },
                 'modifications' => function($q) {
                     $q->select('id', 'type_id', 'failure_id', 'ir_id', 'figure_id');
+                },
+                'modifications.type' => function($q) {
+                    $q->select('id', 'label');
                 },
                 'modifications.failure' => function($q) {
                     $q->select('id', 'x', 'y');
@@ -142,6 +148,9 @@ class InspectionResultRepository
                 },
                 'holes.holeModification' => function($q) {
                     $q->select('id', 'type_id', 'hole_id');
+                },
+                'holes.holeModification.type' => function($q) {
+                    $q->select('id', 'label');
                 }
             ])
             ->select([

@@ -224,9 +224,9 @@ class RelatedHoleModificationTableSeeder extends Seeder
 
 
         //かしめ/接着_かしめ後検査_ドアインナ
-        $j_kashimego_doorInner_failures = [
-            [5,  1], [6,  1]
-        ];
+        // $j_kashimego_doorInner_failures = [
+        //     [6,  1]
+        // ];
 
         $data = array_map(function($i, $f) {
             return [
@@ -241,9 +241,9 @@ class RelatedHoleModificationTableSeeder extends Seeder
         DB::connection('950A')->table($table_name)->insert($data);
 
         //かしめ/接着_かしめ後検査_リンフォース
-        $j_kashimego_reinforce_failures = [
-            [5,  1], [6,  1]
-        ];
+        // $j_kashimego_reinforce_failures = [
+        //     [6,  1]
+        // ];
 
         $data = array_map(function($i, $f) {
             return [
@@ -258,9 +258,9 @@ class RelatedHoleModificationTableSeeder extends Seeder
         DB::connection('950A')->table($table_name)->insert($data);
 
         //かしめ/接着_かしめ後検査_ラゲージインナ
-        $j_kashimego_luggageInner_failures = [
-            [5,  1], [6,  1]
-        ];
+        // $j_kashimego_luggageInner_failures = [
+        //     [6,  1]
+        // ];
 
         $data = array_map(function($i, $f) {
             return [
@@ -275,9 +275,9 @@ class RelatedHoleModificationTableSeeder extends Seeder
         DB::connection('950A')->table($table_name)->insert($data);
 
         //かしめ/接着_かしめ後検査_ラゲージアウタ
-        $j_kashimego_luggageOuter_failures = [
-            [5,  1], [6,  1]
-        ];
+        // $j_kashimego_luggageOuter_failures = [
+        //     [6,  1]
+        // ];
 
         $data = array_map(function($i, $f) {
             return [

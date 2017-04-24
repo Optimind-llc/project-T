@@ -77,7 +77,7 @@ class RelatedInspectionGroupTableSeeder extends Seeder
             [
                 'name'       => '外観検査',
                 'en'         => 'gaikan',
-                'sort'       => 7,
+                'sort'       => 8,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -105,7 +105,7 @@ class RelatedInspectionGroupTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name'       => 'パテ修復',
+                'name'       => 'パテ補修',
                 'en'         => 'pateshufukugo',
                 'sort'       => 3,
                 'created_at' => $now,
@@ -131,13 +131,19 @@ class RelatedInspectionGroupTableSeeder extends Seeder
             ],[
                 'name'       => '洗浄前外観検査',
                 'en'         => 'maegaikan',
-                'sort'       => 8,
+                'sort'       => 9,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
                 'name'       => '塗装後外観検査',
                 'en'         => 'atogaikan',
-                'sort'       => 9,
+                'sort'       => 10,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => '接着後',
+                'en'         => 'setchakugo',
+                'sort'       => 7,
                 'created_at' => $now,
                 'updated_at' => $now
             ],

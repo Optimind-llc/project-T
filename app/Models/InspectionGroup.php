@@ -65,7 +65,11 @@ class InspectionGroup extends Model
 
     public function sortedFailures()
     {
-        $sortedFailures = $this->inspection->failures->map(function($f) {
+        $sortedFailures = $this->inspection
+            ->failures()
+            ->where('status', '=', 1)
+            ->get()
+            ->map(function($f) {
                 return [
                     'id' => $f->id,
                     'label' => $f->label,
@@ -91,7 +95,11 @@ class InspectionGroup extends Model
 
     public function sortedModifications()
     {
-        $sortedModifications = $this->inspection->modifications->map(function ($m) {
+        $sortedModifications = $this->inspection
+            ->modifications()
+            ->where('status', '=', 1)
+            ->get()
+            ->map(function ($m) {
                 return [
                     'id' => $m->id,
                     'label' => $m->label,

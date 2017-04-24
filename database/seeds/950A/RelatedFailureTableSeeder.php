@@ -292,8 +292,17 @@ class RelatedFailureTableSeeder extends Seeder
                 'label'      => 51,
                 'created_at' => $now,
                 'updated_at' => $now
+            ],[
+                'name'       => 'ハジキ',
+                'label'      => 52,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'name'       => 'スケ',
+                'label'      => 53,
+                'created_at' => $now,
+                'updated_at' => $now
             ]
-            
         ];
 
         DB::connection('950A')->table($table_name)->insert($data);
@@ -783,8 +792,8 @@ class RelatedFailureTableSeeder extends Seeder
 
         //かしめ_パテ修復後_ラゲージアウタ
         $j_pateshufukugo_luggageOuter_failures = [
-            [1,  2], [4,  2], [21, 2], [2,  2], [3,  2], [11, 2],
-            [32, 2], [19, 2], [29, 2], [17, 2], [18, 2], [41, 2]
+            [1,  2], [4,  2], [21, 2], [2,  2], [3,  2], [11, 2], [32, 2],
+            [19, 2], [29, 2], [17, 2], [18, 2], [9,  2], [16, 2], [41, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -820,7 +829,8 @@ class RelatedFailureTableSeeder extends Seeder
         //かしめ_塗装受入後_ラゲージアウタ
         $j_tosoukeirego_luggageOuter_failures = [
             [33, 2], [34, 2], [35, 2], [1,  2], [4,  2], [3,  2], [36, 2],
-            [37, 2], [38, 2], [39, 2], [40, 2], [41, 2]
+            [37, 2], [38, 2], [39, 2], [40, 2], [53, 2], [17, 2], [54, 2],
+            [2,  2], [41, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -835,11 +845,49 @@ class RelatedFailureTableSeeder extends Seeder
         }, array_keys($j_tosoukeirego_luggageOuter_failures), $j_tosoukeirego_luggageOuter_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
+        //接着_接着後_ドアASSY
+        $j_setchakugo_doorASSY_failures = [
+            [1,  2], [4,  2], [26, 2], [27, 2], [21, 2], [28, 2], [3,  2],
+            [2,  2], [8,  2], [11, 2], [32, 2], [19, 2], [29, 2], [30, 2],
+            [31, 2], [45, 2], [52, 2], [41, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'jointing',
+                'inspection'    => 'setchakugo',
+                'division'      => 'doorASSY',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($j_setchakugo_doorASSY_failures), $j_setchakugo_doorASSY_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
+        //接着_接着後_ラゲージASSY
+        $j_setchakugo_luggageASSY_failures = [
+            [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2], [3,  2],
+            [2,  2], [8,  2], [32, 2], [19, 2], [29, 2], [30, 2], [31, 2],
+            [49, 2], [50, 2], [45, 2], [51, 2], [52, 2], [41, 2]
+        ];
+
+        $data = array_map(function($i, $f) {
+            return [
+                'process'       => 'jointing',
+                'inspection'    => 'setchakugo',
+                'division'      => 'luggageASSY',
+                'type_id'       => $f[0],
+                'type'          => $f[1],
+                'sort'          => $i+1
+            ];
+        }, array_keys($j_setchakugo_luggageASSY_failures), $j_setchakugo_luggageASSY_failures);
+        DB::connection('950A')->table($table_name)->insert($data);
+
         //接着_外観検査_ドアASSY
         $j_gaikan_doorASSY_failures = [
-            [42, 2], [1,  2], [4,  2], [26, 2], [27, 2], [21, 2], [28, 2],
-            [3,  2], [2,  2], [8,  2], [11, 2], [32, 2], [19, 2], [29, 2],
-            [30, 2], [31, 2], [45, 2], [52, 2], [41, 2],
+            [1,  2], [4,  2], [26, 2], [27, 2], [21, 2], [28, 2], [3,  2],
+            [2,  2], [8,  2], [11, 2], [32, 2], [19, 2], [29, 2], [30, 2],
+            [31, 2], [45, 2], [52, 2], [41, 2]
         ];
 
         $data = array_map(function($i, $f) {

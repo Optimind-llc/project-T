@@ -240,6 +240,7 @@ class InspectionController extends Controller
                                 'y' => $f->y,
                                 'face' => $f->face,
                                 'typeId' => $f->type_id,
+                                'typeLabel' => $f->type->label,
                                 'figureId' => $f->figure->id,
                                 'figurePage' => $f->figure->page
                             ];
@@ -257,6 +258,7 @@ class InspectionController extends Controller
                                 'y' => $m->failure->y,
                                 'face' => $m->failure->face,
                                 'typeId' => $m->type_id,
+                                'typeLabel' => $m->type->label,
                                 'figureId' => $m->figure->id,
                                 'figurePage' => $m->figure->page
                             ];
@@ -278,12 +280,14 @@ class InspectionController extends Controller
                             $holeModificationType = 0;
                             if ($h->holeModification) {
                                 $holeModificationType = $h->holeModification->type_id;
+                                $holeModificationTypeLabel = $h->holeModification->type->label;
                             }
                             return [
                                 'id' => $h->id,
                                 'typeId' => $h->type_id,
                                 'status' => $h->status,
-                                'holeModificationType' => $holeModificationType
+                                'holeModificationType' => $holeModificationType,
+                                'holeModificationTypeLabel' => $holeModificationTypeLabel
                             ];
                         }),
                     ];

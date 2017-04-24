@@ -82,6 +82,11 @@ return [
         ['process' => 'jointing', 'inspection' => 'inline', 'part' => 'luggageASSY ARW', 'partName' => 'ラゲージASSY ARW', 'pn' => 6440111020],
 
 
+        ['process' => 'jointing', 'inspection' => 'setchakugo', 'part' => 'doorASSY LH', 'partName' => 'ドアASSY LH', 'pn' => 6701611020],
+        ['process' => 'jointing', 'inspection' => 'setchakugo', 'part' => 'doorASSY RH', 'partName' => 'ドアASSY RH', 'pn' => 6701511020],
+        ['process' => 'jointing', 'inspection' => 'setchakugo', 'part' => 'luggageASSY STD', 'partName' => 'ラゲージASSY STD', 'pn' => 6440111010],
+        ['process' => 'jointing', 'inspection' => 'setchakugo', 'part' => 'luggageASSY ARW', 'partName' => 'ラゲージASSY ARW', 'pn' => 6440111020],
+
         ['process' => 'jointing', 'inspection' => 'gaikan', 'part' => 'doorASSY LH', 'partName' => 'ドアASSY LH', 'pn' => 6701611020],
         ['process' => 'jointing', 'inspection' => 'gaikan', 'part' => 'doorASSY RH', 'partName' => 'ドアASSY RH', 'pn' => 6701511020],
         ['process' => 'jointing', 'inspection' => 'gaikan', 'part' => 'luggageASSY STD', 'partName' => 'ラゲージASSY STD', 'pn' => 6440111010],
@@ -152,6 +157,12 @@ return [
 
         ['process' => 'jointing', 'inspection' => 'tosoukeirego', 'label' => 'ラゲージアウタSTD', 'parts' => [6441111010]],
         ['process' => 'jointing', 'inspection' => 'tosoukeirego', 'label' => 'ラゲージアウタARW', 'parts' => [6441111020]],
+
+
+        ['process' => 'jointing', 'inspection' => 'setchakugo', 'label' => 'ドアASSY LH', 'parts' => [6701611020]],
+        ['process' => 'jointing', 'inspection' => 'setchakugo', 'label' => 'ドアASSY RH', 'parts' => [6701511020]],
+        ['process' => 'jointing', 'inspection' => 'setchakugo', 'label' => 'ラゲージASSY STD', 'parts' => [6440111010]],
+        ['process' => 'jointing', 'inspection' => 'setchakugo', 'label' => 'ラゲージASSY ARW', 'parts' => [6440111020]],
 
         ['process' => 'jointing', 'inspection' => 'inline', 'label' => 'ドアASSY LH', 'parts' => [6701611020]],
         ['process' => 'jointing', 'inspection' => 'inline', 'label' => 'ドアASSY RH', 'parts' => [6701511020]],
