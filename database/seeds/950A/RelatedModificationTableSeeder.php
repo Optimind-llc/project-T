@@ -356,72 +356,72 @@ class RelatedModificationTableSeeder extends Seeder
         /*
          * 　かしめ工程
          */
-        //穴あけ_手直検査_ドアインナ
-        $h_tenaoshi_doorInner_failures = [
+        //かしめ工程_かしめ後_ドアインナ
+        $h_kashimego_doorInner_failures = [
             [13,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
             return [
-                'process'       => 'holing',
-                'inspection'    => 'tenaoshi',
+                'process'       => 'jointing',
+                'inspection'    => 'kashimego',
                 'division'      => 'doorInner',
                 'type_id'       => $f[0],
                 'type'          => $f[1],
                 'sort'          => $i+1
             ];
-        }, array_keys($h_tenaoshi_doorInner_failures), $h_tenaoshi_doorInner_failures);
+        }, array_keys($h_kashimego_doorInner_failures), $h_kashimego_doorInner_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
-        //穴あけ_手直検査_リンフォース
-        $h_tenaoshi_reinforce_failures = [
+        //かしめ工程_かしめ後_リンフォース
+        $h_kashimego_reinforce_failures = [
             [13,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
             return [
-                'process'       => 'holing',
-                'inspection'    => 'tenaoshi',
+                'process'       => 'jointing',
+                'inspection'    => 'kashimego',
                 'division'      => 'reinforce',
                 'type_id'       => $f[0],
                 'type'          => $f[1],
                 'sort'          => $i+1
             ];
-        }, array_keys($h_tenaoshi_reinforce_failures), $h_tenaoshi_reinforce_failures);
+        }, array_keys($h_kashimego_reinforce_failures), $h_kashimego_reinforce_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
-        //穴あけ_手直検査_ラゲージインナ
-        $h_tenaoshi_luggageInner_failures = [
+        //かしめ工程_かしめ後_ラゲージインナ
+        $h_kashimego_luggageInner_failures = [
             [13,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
             return [
-                'process'       => 'holing',
-                'inspection'    => 'tenaoshi',
+                'process'       => 'jointing',
+                'inspection'    => 'kashimego',
                 'division'      => 'luggageInner',
                 'type_id'       => $f[0],
                 'type'          => $f[1],
                 'sort'          => $i+1
             ];
-        }, array_keys($h_tenaoshi_luggageInner_failures), $h_tenaoshi_luggageInner_failures);
+        }, array_keys($h_kashimego_luggageInner_failures), $h_kashimego_luggageInner_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
-        //穴あけ_手直検査_ラゲージアウタ
-        $h_tenaoshi_luggageOuter_failures = [
+        //かしめ工程_かしめ後_ラゲージアウタ
+        $h_kashimego_luggageOuter_failures = [
             [13,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
             return [
-                'process'       => 'holing',
-                'inspection'    => 'tenaoshi',
+                'process'       => 'jointing',
+                'inspection'    => 'kashimego',
                 'division'      => 'luggageOuter',
                 'type_id'       => $f[0],
                 'type'          => $f[1],
                 'sort'          => $i+1
             ];
-        }, array_keys($h_tenaoshi_luggageOuter_failures), $h_tenaoshi_luggageOuter_failures);
+        }, array_keys($h_kashimego_luggageOuter_failures), $h_kashimego_luggageOuter_failures);
         DB::connection('950A')->table($table_name)->insert($data);
 
 

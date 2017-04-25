@@ -228,68 +228,68 @@ class RelatedHoleModificationTableSeeder extends Seeder
         //     [6,  1]
         // ];
 
-        $data = array_map(function($i, $f) {
-            return [
-                'process'       => 'jointing',
-                'inspection'    => 'kashimego',
-                'division'      => 'doorInner',
-                'type_id'       => $f[0],
-                'type'          => $f[1],
-                'sort'          => $i+1
-            ];
-        }, array_keys($j_kashimego_doorInner_failures), $j_kashimego_doorInner_failures);
-        DB::connection('950A')->table($table_name)->insert($data);
+        // $data = array_map(function($i, $f) {
+        //     return [
+        //         'process'       => 'jointing',
+        //         'inspection'    => 'kashimego',
+        //         'division'      => 'doorInner',
+        //         'type_id'       => $f[0],
+        //         'type'          => $f[1],
+        //         'sort'          => $i+1
+        //     ];
+        // }, array_keys($j_kashimego_doorInner_failures), $j_kashimego_doorInner_failures);
+        // DB::connection('950A')->table($table_name)->insert($data);
 
         //かしめ/接着_かしめ後検査_リンフォース
         // $j_kashimego_reinforce_failures = [
         //     [6,  1]
         // ];
 
-        $data = array_map(function($i, $f) {
-            return [
-                'process'       => 'jointing',
-                'inspection'    => 'kashimego',
-                'division'      => 'reinforce',
-                'type_id'       => $f[0],
-                'type'          => $f[1],
-                'sort'          => $i+1
-            ];
-        }, array_keys($j_kashimego_reinforce_failures), $j_kashimego_reinforce_failures);
-        DB::connection('950A')->table($table_name)->insert($data);
+        // $data = array_map(function($i, $f) {
+        //     return [
+        //         'process'       => 'jointing',
+        //         'inspection'    => 'kashimego',
+        //         'division'      => 'reinforce',
+        //         'type_id'       => $f[0],
+        //         'type'          => $f[1],
+        //         'sort'          => $i+1
+        //     ];
+        // }, array_keys($j_kashimego_reinforce_failures), $j_kashimego_reinforce_failures);
+        // DB::connection('950A')->table($table_name)->insert($data);
 
         //かしめ/接着_かしめ後検査_ラゲージインナ
         // $j_kashimego_luggageInner_failures = [
         //     [6,  1]
         // ];
 
-        $data = array_map(function($i, $f) {
-            return [
-                'process'       => 'jointing',
-                'inspection'    => 'kashimego',
-                'division'      => 'luggageInner',
-                'type_id'       => $f[0],
-                'type'          => $f[1],
-                'sort'          => $i+1
-            ];
-        }, array_keys($j_kashimego_luggageInner_failures), $j_kashimego_luggageInner_failures);
-        DB::connection('950A')->table($table_name)->insert($data);
+        // $data = array_map(function($i, $f) {
+        //     return [
+        //         'process'       => 'jointing',
+        //         'inspection'    => 'kashimego',
+        //         'division'      => 'luggageInner',
+        //         'type_id'       => $f[0],
+        //         'type'          => $f[1],
+        //         'sort'          => $i+1
+        //     ];
+        // }, array_keys($j_kashimego_luggageInner_failures), $j_kashimego_luggageInner_failures);
+        // DB::connection('950A')->table($table_name)->insert($data);
 
         //かしめ/接着_かしめ後検査_ラゲージアウタ
         // $j_kashimego_luggageOuter_failures = [
         //     [6,  1]
         // ];
 
-        $data = array_map(function($i, $f) {
-            return [
-                'process'       => 'jointing',
-                'inspection'    => 'kashimego',
-                'division'      => 'luggageOuter',
-                'type_id'       => $f[0],
-                'type'          => $f[1],
-                'sort'          => $i+1
-            ];
-        }, array_keys($j_kashimego_luggageOuter_failures), $j_kashimego_luggageOuter_failures);
-        DB::connection('950A')->table($table_name)->insert($data);
+        // $data = array_map(function($i, $f) {
+        //     return [
+        //         'process'       => 'jointing',
+        //         'inspection'    => 'kashimego',
+        //         'division'      => 'luggageOuter',
+        //         'type_id'       => $f[0],
+        //         'type'          => $f[1],
+        //         'sort'          => $i+1
+        //     ];
+        // }, array_keys($j_kashimego_luggageOuter_failures), $j_kashimego_luggageOuter_failures);
+        // DB::connection('950A')->table($table_name)->insert($data);
         
         if (env('DB_CONNECTION') == 'mysql') {
             DB::connection('950A')->statement('SET FOREIGN_KEY_CHECKS=1;');
