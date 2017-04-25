@@ -21,4 +21,13 @@ class HoleModification extends Model
             'id'
         );
     }
+
+    public function type()
+    {
+        return $this->belongsTo(
+            'App\Models\Vehicle950A\HoleModificationType',
+            'type_id',
+            'id'
+        );
+    }
 }

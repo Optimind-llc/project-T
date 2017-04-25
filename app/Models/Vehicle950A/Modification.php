@@ -31,6 +31,15 @@ class Modification extends Model
         );
     }
 
+    public function type()
+    {
+        return $this->belongsTo(
+            'App\Models\Vehicle950A\ModificationType',
+            'type_id',
+            'id'
+        );
+    }
+
     // public function inspections()
     // {
     //     return $this->belongsToMany(
