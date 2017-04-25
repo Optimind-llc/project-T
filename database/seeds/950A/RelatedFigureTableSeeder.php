@@ -1166,7 +1166,49 @@ class RelatedFigureTableSeeder extends Seeder
                 'size_y'     => 1030,
                 'created_at' => $now,
                 'updated_at' => $now
-            ]
+            ],
+            //接着_接着後検査（追加）
+            [
+                'path'       => 'j_doorAssyR_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'pt_pn'      => 6701511020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_doorAssyL_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'pt_pn'      => 6701611020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_luggageAssySTD_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'pt_pn'      => 6440111010,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],[
+                'path'       => 'j_luggageAssyARW_1.png',
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'pt_pn'      => 6440111020,
+                'page'       => 1,
+                'size_x'     => 1740,
+                'size_y'     => 1030,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
         ];
 
         DB::connection('950A')->table($table_name)->insert($data);
