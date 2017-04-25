@@ -1379,6 +1379,96 @@ class RelatedWorkerTableSeeder extends Seeder
                 'sort'      => 7
             ],
 
+            //かしめ/接着_接着後_ドア_白
+            [
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 30,
+                'sort'      => 1
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 31,
+                'sort'      => 2
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 65,
+                'sort'      => 3
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 66,
+                'sort'      => 4
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 4,
+                'sort'      => 5
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 67,
+                'sort'      => 6
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 44,
+                'sort'      => 7
+            ],
+            //かしめ/接着_接着後_ドア_黄
+            [
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 36,
+                'sort'      => 1
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 37,
+                'sort'      => 2
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 38,
+                'sort'      => 3
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 39,
+                'sort'      => 4
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 72,
+                'sort'      => 5
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 41,
+                'sort'      => 6
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'door',
+                'worker_id' => 42,
+                'sort'      => 7
+            ],
+
+
             //かしめ/接着_外観検査_ドア_白
             [
                 'process'    => 'jointing',
@@ -2724,6 +2814,112 @@ class RelatedWorkerTableSeeder extends Seeder
                 'sort'      => 9
             ],
 
+            //かしめ/接着_接着後_ラゲージ_白
+            [
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 43,
+                'sort'      => 1
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 44,
+                'sort'      => 2
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 45,
+                'sort'      => 3
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 46,
+                'sort'      => 4
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 68,
+                'sort'      => 5
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 69,
+                'sort'      => 6
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 70,
+                'sort'      => 7
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 71,
+                'sort'      => 8
+            ],
+            //かしめ/接着_接着後_ラゲージ_黄
+            [
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 49,
+                'sort'      => 1
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 50,
+                'sort'      => 2
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 51,
+                'sort'      => 3
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 52,
+                'sort'      => 4
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 53,
+                'sort'      => 5
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 40,
+                'sort'      => 6
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 75,
+                'sort'      => 7
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 76,
+                'sort'      => 8
+            ],[
+                'process'    => 'jointing',
+                'inspection' => 'setchakugo',
+                'division'   => 'luggage',
+                'worker_id' => 77,
+                'sort'      => 9
+            ],
 
             //かしめ/接着_外観検査_ラゲージ_白
             [
