@@ -278,6 +278,7 @@ class InspectionController extends Controller
                         'modifications' => $modifications,
                         'holes' => $result['holes']->map(function($h) {
                             $holeModificationType = 0;
+                            $holeModificationLabel = 0;
                             if ($h->holeModification) {
                                 $holeModificationType = $h->holeModification->type_id;
                                 $holeModificationTypeLabel = $h->holeModification->type->label;
