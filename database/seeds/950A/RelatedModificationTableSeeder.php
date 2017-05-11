@@ -358,7 +358,7 @@ class RelatedModificationTableSeeder extends Seeder
          */
         //かしめ工程_かしめ後_ドアインナ
         $h_kashimego_doorInner_failures = [
-            [14,  2], [9, 2]
+            [1,  2], [2,  2], [3,  2], [14,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -375,7 +375,7 @@ class RelatedModificationTableSeeder extends Seeder
 
         //かしめ工程_かしめ後_リンフォース
         $h_kashimego_reinforce_failures = [
-            [14,  2], [9, 2]
+            [1,  2], [2,  2], [3,  2], [14,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -392,7 +392,7 @@ class RelatedModificationTableSeeder extends Seeder
 
         //かしめ工程_かしめ後_ラゲージインナ
         $h_kashimego_luggageInner_failures = [
-            [14,  2], [9, 2]
+            [1,  2], [2,  2], [3,  2], [14,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
@@ -409,7 +409,7 @@ class RelatedModificationTableSeeder extends Seeder
 
         //かしめ工程_かしめ後_ラゲージアウタ
         $h_kashimego_luggageOuter_failures = [
-            [14,  2], [9, 2]
+            [1,  2], [2,  2], [3,  2], [14,  2], [9, 2]
         ];
 
         $data = array_map(function($i, $f) {
