@@ -76,16 +76,15 @@ return [
         ['process' => 'jointing', 'inspection' => 'tosoukeirego', 'part' => 'luggageOuterSTD', 'partName' => 'ラゲージアウタSTD', 'pn' => 6441111010],
         ['process' => 'jointing', 'inspection' => 'tosoukeirego', 'part' => 'luggageOuterARW', 'partName' => 'ラゲージアウタARW', 'pn' => 6441111020],
 
-        ['process' => 'jointing', 'inspection' => 'inline', 'part' => 'doorASSY LH', 'partName' => 'ドアASSY LH', 'pn' => 6701611020],
-        ['process' => 'jointing', 'inspection' => 'inline', 'part' => 'doorASSY RH', 'partName' => 'ドアASSY RH', 'pn' => 6701511020],
-        ['process' => 'jointing', 'inspection' => 'inline', 'part' => 'luggageASSY STD', 'partName' => 'ラゲージASSY STD', 'pn' => 6440111010],
-        ['process' => 'jointing', 'inspection' => 'inline', 'part' => 'luggageASSY ARW', 'partName' => 'ラゲージASSY ARW', 'pn' => 6440111020],
-
-
         ['process' => 'jointing', 'inspection' => 'setchakugo', 'part' => 'doorASSY LH', 'partName' => 'ドアASSY LH', 'pn' => 6701611020],
         ['process' => 'jointing', 'inspection' => 'setchakugo', 'part' => 'doorASSY RH', 'partName' => 'ドアASSY RH', 'pn' => 6701511020],
         ['process' => 'jointing', 'inspection' => 'setchakugo', 'part' => 'luggageASSY STD', 'partName' => 'ラゲージASSY STD', 'pn' => 6440111010],
         ['process' => 'jointing', 'inspection' => 'setchakugo', 'part' => 'luggageASSY ARW', 'partName' => 'ラゲージASSY ARW', 'pn' => 6440111020],
+
+        ['process' => 'jointing', 'inspection' => 'inline', 'part' => 'doorASSY LH', 'partName' => 'ドアASSY LH', 'pn' => 6701611020],
+        ['process' => 'jointing', 'inspection' => 'inline', 'part' => 'doorASSY RH', 'partName' => 'ドアASSY RH', 'pn' => 6701511020],
+        ['process' => 'jointing', 'inspection' => 'inline', 'part' => 'luggageASSY STD', 'partName' => 'ラゲージASSY STD', 'pn' => 6440111010],
+        ['process' => 'jointing', 'inspection' => 'inline', 'part' => 'luggageASSY ARW', 'partName' => 'ラゲージASSY ARW', 'pn' => 6440111020],
 
         ['process' => 'jointing', 'inspection' => 'gaikan', 'part' => 'doorASSY LH', 'partName' => 'ドアASSY LH', 'pn' => 6701611020],
         ['process' => 'jointing', 'inspection' => 'gaikan', 'part' => 'doorASSY RH', 'partName' => 'ドアASSY RH', 'pn' => 6701511020],

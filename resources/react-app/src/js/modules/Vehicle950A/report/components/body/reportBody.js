@@ -50,6 +50,12 @@ class reportBody extends Component {
           { pt: 'luggageOuterSTD', value: 68*5 + 10, height: 58 },
           { pt: 'luggageOuterARW', value: 78, height: 58 },
         ],
+        setchakugo: [
+          { pt: 'doorASSY LH', value: 0, height: 126 },
+          { pt: 'doorASSY RH', value: 0, height: 126 },
+          { pt: 'luggageASSY STD', value: 0, height: 126 },
+          { pt: 'luggageASSY ARW', value: 0, height: 126 }
+        ],
         inline: [
           { pt: 'doorASSY LH', value: 0, height: 126 },
           { pt: 'doorASSY RH', value: 0, height: 126 },

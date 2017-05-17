@@ -83,7 +83,7 @@ class RelatedInspectionGroupTableSeeder extends Seeder
             ],[
                 'name'       => '精度検査',
                 'en'         => 'inline',
-                'sort'       => 6,
+                'sort'       => 7,
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
@@ -143,7 +143,7 @@ class RelatedInspectionGroupTableSeeder extends Seeder
             ],[
                 'name'       => '接着後',
                 'en'         => 'setchakugo',
-                'sort'       => 7,
+                'sort'       => 6,
                 'created_at' => $now,
                 'updated_at' => $now
             ],

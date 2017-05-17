@@ -373,6 +373,10 @@ class GeneratePDF
         $this->tcpdf->SetFont('kozgopromedium', '', 7);
         $this->tcpdf->Text($A3['x0']+24, $A3['y1'], '出荷判定');
 
+        if ($fn > 20) {
+            $this->tcpdf->SetFont('kozgopromedium', '', 4.4);
+        }
+
         foreach ($this->failureTypes as $fi => $ft) {
             $this->tcpdf->Text($A3['x0']+48+$fd*$fi, $A3['y1'], $ft['name']);
         }
@@ -383,6 +387,10 @@ class GeneratePDF
 
         foreach ($this->holeModificationTypes as $hmi => $hmt) {
             $this->tcpdf->Text($A3['x0']+48+$fd*($fi+1+$mi+1+$hmi), $A3['y1'], $hmt['name']);
+        }
+
+        if ($fn > 20) {
+            $this->tcpdf->SetFont('kozgopromedium', '', 7);
         }
 
         $n = 0;

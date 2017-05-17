@@ -1,186 +1,190 @@
-#dashboardWrap {
+#press-maint-failureType-wrap {
   padding: 4px 4px 0 4px;
 
-  > div.header {
+  > div.filter-wrap {
     display: flex;
     flex-flow: row nowrap;
+    padding: 4px;
 
-    .serch-wrap {
-      flex-basis: 1030px;
-      flex-grow: 1;
-      padding: 10px;
-
-      .flex-row {
-        display: flex;
-        flex-flow: row nowrap;
-        margin-right: 10px;
-
-        > div {
-          margin: 0 10px;
-
-          &:nth-child(1) {
-            margin-left: 0;
-          }
-
-          &:nth-last-of-type(1) {
-            margin-right: 0;
-          }
-        }
+    > div {
+      > p {
+        float: left;
+        margin-right: 4px;
+        line-height: 30px;
       }
 
-      .col-1 {
-        justify-content: space-between;
-
-        > div {
-          display: flex;
-          flex-flow: row nowrap;
-          flex-grow: 1;
-
-          > p {
-            margin: 0 8px 0 0;
-            line-height: 30px;
-          }
-        }
-
-        .part {
-          flex-basis: 300px;
-
-          > p {
-            width: 30px;
-          }
-
-          > div {
-            width: calc(100% - 30px);
-          }
-        }
-
-        .process {
-          flex-basis: 230px;
-
-          > p {
-            width: 30px;
-          }
-
-          > div {
-            width: calc(100% - 30px);
-          }
-        }
-
-        .inspection {
-          flex-basis: 230px;
-
-          > p {
-            width: 30px;
-          }
-
-          > div {
-            width: calc(100% - 30px);
-          }
-        }
-
-        .choku {
-          flex-basis: 150px;
-
-          > p {
-            width: 14px;
-          }
-
-          > div {
-            width: calc(100% - 14px);
-          }
-        }
+      > div, input {
+        float: left;
+        width: 200px;
       }
 
-      .col-2 {
-        margin-top: 12px;
+      &.name {
+        width: 280px;
+      }
 
-        > div {
-          flex-grow: 1;
-          padding: 6px 10px;
-          height: 44px;
-          border: 1px solid #BBB;
-          border-radius: 4px;
-          color: #BBB;
+      &.status {
+        width: 280px;
+      }
+    }
+  }
 
-          &.active {
-            background-color: #4A4A4A;
-            cursor: default;
-            color: #FFF;
-            p {
-              color: #FFF;
-            }
-          }
-        }
+  > div.result-wrap {
+    padding: 4px;
 
-        .realtime {
-          flex-basis: 300px;
+    p.error-message-over-limit {
+      float: left;
+      margin: 4px;
+      color: red;
+    }
 
-          > p {
-            text-align: center;
-            line-height: 32px;
-            font-size: 16px;
-          }
-        }
+    button.create-btn {
+      float: right;
+      margin: 4px;
+      box-sizing: border-box;
+      padding: 0 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      height: 24px;
+      line-height: 24px;
+      color: #FFF;
+      background-color: #4A4A4A;
 
-        .term-wrap {
-          flex-basis: 500px;
-          display: flex;
-          flex-flow: row nowrap;
-
-          > p {
-            font-size: 16px;
-            line-height: 32px;
-
-            &:nth-child(3) {
-              margin: 0 6px;
-            }
-          }
-
-          input {
-            color: #BBB;
-          }
-        }
-
-        .panel-id-wrap {
-          flex-basis: 260px;
-          display: flex;
-          flex-flow: row nowrap;
-
-          > p {
-            font-size: 16px;
-            line-height: 32px;
-          }
-
-          >input {
-            width: 150px;
-          }
-        }
+      &:hover {
+        box-shadow: 0 0 5px #4A4A4A;
+      }
+      &:active {
+        box-shadow: none;
       }
     }
 
-    .mapping-btn {
-      flex-basis: 50px;
-      flex-grow: 0;
-      height: 86px;
-      margin: 10px 10px 10px 0 ;
-      border: 1px solid #BBB;
+    button.edit {
+      box-sizing: border-box;
+      padding: 0 10px;
+      border: none;
       border-radius: 4px;
-      color: #BBB;
+      cursor: pointer;
+      height: 24px;
+      line-height: 24px;
+      color: #FFF;
+      background-color: #4A4A4A;
 
-      p {
-        margin: 0;
-        padding: 0;
-        line-height: 84px;
-        text-align: center;
+      &:hover {
+        box-shadow: 0 0 5px #4A4A4A;
+      }
+      &:active {
+        box-shadow: none;
+      }
+    }
+
+    table {
+      width: 100%;
+      border-spacing: 0;
+      border-collapse: collapse;
+      white-space: nowrap;
+      font-size: 11px;
+
+      .clickable {
+        cursor: pointer;
+
+        &:after {
+          content: "";
+        }
+        &.asc:after {
+          content: "↑";
+        }
+        &.desc:after {
+          content: "↓";
+        }
       }
 
-      &.active {
-        background-color: #4A4A4A;
-        cursor: default;
-        color: #FFF;
+      th {
+        color: #fff;
+        padding: 4px 8px;
+        background: #258;
+        font-weight: bold;
+        border-left: 1px solid #FFF;
+        border-top: 1px solid #258;
+        border-bottom: 1px solid #CCC;
+        line-height: 120%;
+        text-align: center;
 
-        p {
-          color: #FFF;
+        &:first-child {
+          border-left: none;
+        }
+      }
+
+      tr {
+        background: #fff;
+
+        td {
+          padding: 4px 8px;
+          border-bottom: 1px solid #84b2e0;
+          border-left: 1px solid #84b2e0;
+          text-align: center;
+
+          &:last-child {
+            border-right: 1px solid #84b2e0;
+            box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
+          }
+
+          div.failure-status {
+            div {
+              display: inline-block;
+
+              &.failure-type {
+                width: 30px;
+                border: 1px solid #4A4A4A;
+                border-radius: 4px;
+
+                &.important {
+                  border: 1px solid red;
+                  color: red;
+                }
+              }
+
+              &.failure-sort {
+                margin-left: 4px;
+              }
+            }
+          }
+
+          p {
+            cursor: pointer;
+            margin: 0;
+          }
+
+          img.icon-checked {
+            height: 15px;
+            width: auto;
+            // position: relative;
+            top: 3px;
+            left: 0;
+            cursor: pointer;
+          }
+
+          div.icon-check {
+            display: inline-block;
+            // position: relative;
+            top: 3px;
+            left: 0;
+            height: 15px;
+            width: 15px;
+            border: 2px solid #CCC;
+            cursor: pointer;
+          }
+
+          button {
+            position: relative;
+            right: 0;
+          }
+        }
+
+        &:nth-child(2n+1) {
+          background: #f1f6fc;
+        }
+        &:last-child td {
+          box-shadow: 2px 2px 1px rgba(0,0,0,0.1);
         }
       }
     }
