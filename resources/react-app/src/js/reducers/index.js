@@ -33,6 +33,8 @@ import AssociationData950A from '../modules/Vehicle950A/association/ducks/partFa
 import AssociationMappingData950A from '../modules/Vehicle950A/association/ducks/mapping';
 
 import MaintFailure950A from '../modules/Vehicle950A/master/failure/ducks/maintFailure';
+import MaintModification950A from '../modules/Vehicle950A/master/modification/ducks/maintModification';
+import MaintWorker950A from '../modules/Vehicle950A/master/worker/ducks/maintWorker';
 
 const rootReducer = combineReducers(Object.assign({
   Application,
@@ -56,9 +58,11 @@ const rootReducer = combineReducers(Object.assign({
   MappingData950A,
   ReferenceData950A,
   ReportData950A,
-  MaintFailure950A,
   AssociationData950A,
   AssociationMappingData950A,
+  MaintFailure950A,
+  MaintModification950A,
+  MaintWorker950A,
   routing: routerReducer
 }));
 

@@ -20,7 +20,7 @@ class FailureType extends Model
             'ft_related',
             'type_id',
             'inspection'
-        )->withPivot('type', 'sort');
+        )->withPivot('process', 'inspection', 'division', 'type', 'sort');
     }
 
     public function scopeNarrow($query, $p, $i, $d)

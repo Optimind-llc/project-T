@@ -5,19 +5,19 @@ import moment from 'moment';
 import Select from 'react-select';
 // Actions
 import { push } from 'react-router-redux';
-import { maintFailureActions } from '../ducks/maintFailure';
+import { maintModificationActions } from '../ducks/maintModification';
 // Styles
-import './failure.scss';
+import './modification.scss';
 // import iconCheck from '../../../../../../assets/img/icon/check.png';
 // Components
 import Edit from '../components/edit/edit';
 import Create from '../components/create/create';
 
-class Failure extends Component {
+class Modification extends Component {
   constructor(props, context) {
     super(props, context);
     const { Inspections, MappingData, actions } = props;
-    actions.requestFailures();
+    actions.requestModifications();
 
     this.state = {
       name: '',
@@ -78,7 +78,7 @@ class Failure extends Component {
 
   render() {
     const { sort, editModal, editting, createModal } = this.state;
-    const { Processes, Inspections, Combination, FailureTypes, actions } = this.props;
+    const { Processes, Inspections, Combination, ModificationTypes, actions } = this.props;
 
     const processes = Processes.map(p => {
       return {label: p.name, value: p.en}
@@ -160,7 +160,6 @@ class Failure extends Component {
               value={this.state.name}
               onChange={e => this.setState(
                 {name: e.target.value},
-                () => this.requestFailure()
               )}
             />
           </div>
@@ -193,7 +192,7 @@ class Failure extends Component {
         </div>
         <div className="result-wrap bg-white">
           {
-            FailureTypes.message === 'over limit' &&
+            ModificationTypes.message === 'over limit' &&
             <p className="error-message-over-limit">不良区分の表示上限16を超えています</p>
           }
           <button
@@ -246,8 +245,8 @@ class Failure extends Component {
             </thead>
             <tbody>
             {
-              FailureTypes.data && FailureTypes.data.length !== 0 &&
-              this.sortData(FailureTypes.data).map((f, i)=> 
+              ModificationTypes.data && ModificationTypes.data.length !== 0 &&
+              this.sortData(ModificationTypes.data).map((f, i)=> 
                 {
                   return(
                     <tr className="content" key={i}>
@@ -281,7 +280,7 @@ class Failure extends Component {
                 }
               )
             }{
-              FailureTypes.data && FailureTypes.data.length == 0 &&
+              ModificationTypes.data && ModificationTypes.data.length == 0 &&
               <tr className="content">
                 <td colSpan="17">結果なし</td>
               </tr>
@@ -295,26 +294,26 @@ class Failure extends Component {
               name={editting.name}
               label={editting.label}
               inspections={editting.inspections}
-              message={FailureTypes.message}
+              message={ModificationTypes.message}
               dCombination={dCombination}
               close={() => {
                 actions.clearMessage();
                 this.setState({editModal: false});
-                actions.requestFailures()
+                actions.requestModifications()
               }}
-              update={(id, name, label, inspections) => actions.updateFailure(id, name, label, inspections)}
+              update={(id, name, label, inspections) => actions.updateModification(id, name, label, inspections)}
             />
           }{
             createModal &&
             <Create
-              message={FailureTypes.message}
+              message={ModificationTypes.message}
               dCombination={dCombination}
               close={() => {
                 actions.clearMessage();
                 this.setState({createModal: false});
-                actions.requestFailures();
+                actions.requestModifications();
               }}
-              create={(name, label, inspections) => actions.createFailure(name, label, inspections)}
+              create={(name, label, inspections) => actions.createModification(name, label, inspections)}
             />
           }
         </div>
@@ -323,10 +322,10 @@ class Failure extends Component {
   }
 }
 
-Failure.propTypes = {
+Modification.propTypes = {
   Processes: PropTypes.array.isRequired,
   Inspections: PropTypes.array.isRequired,
-  FailureTypes: PropTypes.array.isRequired
+  ModificationTypes: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -334,15 +333,15 @@ function mapStateToProps(state, ownProps) {
     Processes: state.Application.vehicle950A.processes,
     Inspections: state.Application.vehicle950A.inspections,
     Combination: state.Application.vehicle950A.combination,
-    FailureTypes: state.MaintFailure950A
+    ModificationTypes: state.MaintModification950A
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({push}, maintFailureActions);
+  const actions = Object.assign({push}, maintModificationActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Failure);
+export default connect(mapStateToProps, mapDispatchToProps)(Modification);

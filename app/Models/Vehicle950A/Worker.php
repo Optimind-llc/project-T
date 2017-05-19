@@ -14,6 +14,16 @@ class Worker extends Model
     protected $table = 'workers';
     protected $guarded = ['id'];
 
+    public function inspections()
+    {
+        return $this->belongsToMany(
+            'App\Models\Vehicle950A\Inspection',
+            'worker_related',
+            'worker_id',
+            'inspection'
+        )->withPivot('process', 'inspection', 'division', 'sort');
+    }
+
     public function scopeNarrow($query, $p, $i, $d)
     {
         return $query->join('worker_related as wr', function ($join) use ($p, $i, $d){

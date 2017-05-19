@@ -17,6 +17,11 @@ use Tymon\JWTAuth\Exceptions\JWTException;
  */
 class PagesController extends Controller
 {
+    public function now()
+    {
+        return Carbon::now();
+    }
+
     public function front()
     {
     	// return 'aaa';

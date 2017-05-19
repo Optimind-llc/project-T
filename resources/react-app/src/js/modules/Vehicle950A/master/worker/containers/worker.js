@@ -5,9 +5,9 @@ import moment from 'moment';
 import Select from 'react-select';
 // Actions
 import { push } from 'react-router-redux';
-import { maintFailureActions } from '../ducks/maintFailure';
+import { maintWorkerActions } from '../ducks/maintWorker';
 // Styles
-import './failure.scss';
+import './worker.scss';
 // import iconCheck from '../../../../../../assets/img/icon/check.png';
 // Components
 import Edit from '../components/edit/edit';
@@ -17,10 +17,10 @@ class Failure extends Component {
   constructor(props, context) {
     super(props, context);
     const { Inspections, MappingData, actions } = props;
-    actions.requestFailures();
+    actions.requestWorkers();
 
     this.state = {
-      name: '',
+      yomi: '',
       process: {label: '全て', value: 'all'},
       inspection: {label: '全て', value: 'all'},
       editModal: false,
@@ -37,12 +37,19 @@ class Failure extends Component {
    clearInterval(this.state.intervalId); 
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.Workers.message === 'success') {
+      this.setState({editModal: false, createModal: false});
+      this.props.actions.clearMessage();
+      this.props.actions.requestWorkers();
+    }
+  }
+
   sortData(data) {
     const { sort } = this.state;
 
     return data.slice().filter(d => {
       if (this.state.process.value !== 'all') {
-        console.log(this.state.process.value);
         return d.inspections.find(insp => insp.p === this.state.process.value);
       }
       return true;
@@ -52,8 +59,8 @@ class Failure extends Component {
       }
       return true;
     }).filter(d => {
-      if (this.state.name !== '') {
-        return d.name.indexOf(this.state.name) !== -1;
+      if (this.state.yomi !== '') {
+        return d.yomi.indexOf(this.state.yomi) !== -1;
       }
       return true;
     }).sort((a,b) => {
@@ -78,7 +85,7 @@ class Failure extends Component {
 
   render() {
     const { sort, editModal, editting, createModal } = this.state;
-    const { Processes, Inspections, Combination, FailureTypes, actions } = this.props;
+    const { Processes, Inspections, Combination, Workers, actions } = this.props;
 
     const processes = Processes.map(p => {
       return {label: p.name, value: p.en}
@@ -102,65 +109,52 @@ class Failure extends Component {
     });
 
     const dCombination = [
-      {p: 'molding', i: 'gaikan', d: 'doorInner', ds: 'DI'},
-      {p: 'molding', i: 'gaikan', d: 'reinforce', ds: 'RF'},
-      {p: 'molding', i: 'gaikan', d: 'luggageInner', ds: 'LI'},
-      {p: 'molding', i: 'gaikan', d: 'luggageOuter', ds: 'LO'},
+      {p: 'molding', i: 'gaikan', d: 'door', ds: 'D'},
+      {p: 'molding', i: 'gaikan', d: 'luggage', ds: 'L'},
 
-      {p: 'holing', i: 'maegaikan', d: 'doorInner', ds: 'DI'},
-      {p: 'holing', i: 'maegaikan', d: 'reinforce', ds: 'RF'},
-      {p: 'holing', i: 'maegaikan', d: 'luggageInner', ds: 'LI'},
-      {p: 'holing', i: 'maegaikan', d: 'luggageOuter', ds: 'LO'},
+      {p: 'holing', i: 'maegaikan', d: 'doorr', ds: 'D'},
+      {p: 'holing', i: 'maegaikan', d: 'luggager', ds: 'L'},
 
-      {p: 'holing', i: 'atogaikan', d: 'doorInner', ds: 'DI'},
-      {p: 'holing', i: 'atogaikan', d: 'reinforce', ds: 'RF'},
-      {p: 'holing', i: 'atogaikan', d: 'luggageInner', ds: 'LI'},
-      {p: 'holing', i: 'atogaikan', d: 'luggageOuter', ds: 'LO'},
+      {p: 'holing', i: 'atogaikan', d: 'doorInner', ds: 'D'},
+      {p: 'holing', i: 'atogaikan', d: 'luggageInner', ds: 'L'},
 
-      {p: 'holing', i: 'ana', d: 'doorInner', ds: 'DI'},
-      {p: 'holing', i: 'ana', d: 'reinforce', ds: 'RF'},
-      {p: 'holing', i: 'ana', d: 'luggageInner', ds: 'LI'},
-      {p: 'holing', i: 'ana', d: 'luggageOuter', ds: 'LO'},
+      {p: 'holing', i: 'ana', d: 'door', ds: 'D'},
+      {p: 'holing', i: 'ana', d: 'luggage', ds: 'L'},
 
-      {p: 'holing', i: 'tenaoshi', d: 'doorInner', ds: 'DI'},
-      {p: 'holing', i: 'tenaoshi', d: 'reinforce', ds: 'RF'},
-      {p: 'holing', i: 'tenaoshi', d: 'luggageInner', ds: 'LI'},
-      {p: 'holing', i: 'tenaoshi', d: 'luggageOuter', ds: 'LO'},
+      {p: 'holing', i: 'tenaoshi', d: 'door', ds: 'D'},
+      {p: 'holing', i: 'tenaoshi', d: 'luggage', ds: 'L'},
 
-      {p: 'jointing', i: 'kashimego', d: 'doorInner', ds: 'DI'},
-      {p: 'jointing', i: 'kashimego', d: 'reinforce', ds: 'RF'},
-      {p: 'jointing', i: 'kashimego', d: 'luggageInner', ds: 'LI'},
-      {p: 'jointing', i: 'kashimego', d: 'luggageOuter', ds: 'LO'},
+      {p: 'jointing', i: 'kashimego', d: 'door', ds: 'D'},
+      {p: 'jointing', i: 'kashimego', d: 'luggage', ds: 'L'},
 
-      {p: 'jointing', i: 'gaishushiage', d: 'luggageOuter', ds: 'LO'},
+      {p: 'jointing', i: 'gaishushiage', d: 'luggage', ds: 'LO'},
 
-      {p: 'jointing', i: 'pateshufukugo', d: 'luggageOuter', ds: 'LO'},
+      {p: 'jointing', i: 'pateshufukugo', d: 'luggage', ds: 'LO'},
 
-      {p: 'jointing', i: 'suikengo', d: 'luggageOuter', ds: 'LO'},
+      {p: 'jointing', i: 'suikengo', d: 'luggage', ds: 'LO'},
 
-      {p: 'jointing', i: 'tosoukeirego', d: 'luggageOuter', ds: 'LO'},
+      {p: 'jointing', i: 'tosoukeirego', d: 'luggage', ds: 'LO'},
 
-      {p: 'jointing', i: 'setchakugo', d: 'doorASSY', ds: 'DA'},
-      {p: 'jointing', i: 'setchakugo', d: 'luggageASSY', ds: 'LA'},
+      {p: 'jointing', i: 'setchakugo', d: 'door', ds: 'D'},
+      {p: 'jointing', i: 'setchakugo', d: 'luggage', ds: 'L'},
 
-      {p: 'jointing', i: 'gaikan', d: 'doorASSY', ds: 'DA'},
-      {p: 'jointing', i: 'gaikan', d: 'luggageASSY', ds: 'LA'},
+      {p: 'jointing', i: 'gaikan', d: 'door', ds: 'D'},
+      {p: 'jointing', i: 'gaikan', d: 'luggage', ds: 'L'},
 
-      {p: 'jointing', i: 'tenaoshi', d: 'doorASSY', ds: 'DA'},
-      {p: 'jointing', i: 'tenaoshi', d: 'luggageASSY', ds: 'LA'},
+      {p: 'jointing', i: 'tenaoshi', d: 'door', ds: 'D'},
+      {p: 'jointing', i: 'tenaoshi', d: 'luggage', ds: 'L'},
     ];
 
     return (
       <div id="press-maint-failureType-wrap">
         <div className="filter-wrap bg-white">
           <div className="name">
-            <p>不良名</p>
+            <p>ヨミ</p>
             <input
               type="text"
-              value={this.state.name}
+              value={this.state.yomi}
               onChange={e => this.setState(
-                {name: e.target.value},
-                () => this.requestFailure()
+                {yomi: e.target.value}
               )}
             />
           </div>
@@ -193,7 +187,7 @@ class Failure extends Component {
         </div>
         <div className="result-wrap bg-white">
           {
-            FailureTypes.message === 'over limit' &&
+            Workers.message === 'over limit' &&
             <p className="error-message-over-limit">不良区分の表示上限16を超えています</p>
           }
           <button
@@ -206,20 +200,21 @@ class Failure extends Component {
             <thead>
               <tr>
                 <th colSpan={1} rowSpan={3}>No.</th>
-                <th colSpan={1} rowSpan={3}>不良名</th>
-                <th colSpan={1} rowSpan={3}>表示<br/>番号</th>
-                <th colSpan={4} rowSpan={1}>成形</th>
-                <th colSpan={16} rowSpan={1}>穴あけ</th>
-                <th colSpan={14} rowSpan={1}>かしめ/接着</th>
+                <th colSpan={1} rowSpan={3}>名前</th>
+                <th colSpan={1} rowSpan={3}>ヨミ</th>
+                <th colSpan={1} rowSpan={3}>直</th>
+                <th colSpan={2} rowSpan={1}>成形</th>
+                <th colSpan={8} rowSpan={1}>穴あけ</th>
+                <th colSpan={12} rowSpan={1}>かしめ/接着</th>
                 <th colSpan={1} rowSpan={3}>機能</th>
               </tr>
               <tr>
-                <th colSpan={4} rowSpan={1}>外観検査</th>
-                <th colSpan={4} rowSpan={1}>洗浄前外観検査</th>
-                <th colSpan={4} rowSpan={1}>洗浄後外観検査</th>
-                <th colSpan={4} rowSpan={1}>穴検査</th>
-                <th colSpan={4} rowSpan={1}>手直</th>
-                <th colSpan={4} rowSpan={1}>かしめ後検査</th>
+                <th colSpan={2} rowSpan={1}>外観検査</th>
+                <th colSpan={2} rowSpan={1}>洗浄前外観検査</th>
+                <th colSpan={2} rowSpan={1}>洗浄後外観検査</th>
+                <th colSpan={2} rowSpan={1}>穴検査</th>
+                <th colSpan={2} rowSpan={1}>手直</th>
+                <th colSpan={2} rowSpan={1}>かしめ後検査</th>
                 <th colSpan={1} rowSpan={1}>外周仕上</th>
                 <th colSpan={1} rowSpan={1}>パテ補修</th>
                 <th colSpan={1} rowSpan={1}>水研後</th>
@@ -229,31 +224,32 @@ class Failure extends Component {
                 <th colSpan={2} rowSpan={1}>手直</th>
               </tr>
               <tr>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DA</th><th colSpan={1} rowSpan={1}>LA</th>
-                <th colSpan={1} rowSpan={1}>DA</th><th colSpan={1} rowSpan={1}>LA</th>
-                <th colSpan={1} rowSpan={1}>DA</th><th colSpan={1} rowSpan={1}>LA</th>
+                <th colSpan={1} rowSpan={1}>D</th><th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>D</th><th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>D</th><th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>D</th><th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>D</th><th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>D</th><th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>D</th><th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>D</th><th colSpan={1} rowSpan={1}>L</th>
+                <th colSpan={1} rowSpan={1}>D</th><th colSpan={1} rowSpan={1}>L</th>
               </tr>
             </thead>
             <tbody>
             {
-              FailureTypes.data && FailureTypes.data.length !== 0 &&
-              this.sortData(FailureTypes.data).map((f, i)=> 
+              Workers.data && Workers.data.length !== 0 &&
+              this.sortData(Workers.data).map((f, i)=> 
                 {
                   return(
                     <tr className="content" key={i}>
                       <td>{i+1}</td>
                       <td>{f.name}</td>
-                      <td>{f.label}</td>
+                      <td>{f.yomi}</td>
+                      <td>{f.choku}</td>
                       {
                         dCombination.map(dc => {
                           let num = '';
@@ -281,7 +277,7 @@ class Failure extends Component {
                 }
               )
             }{
-              FailureTypes.data && FailureTypes.data.length == 0 &&
+              Workers.data && Workers.data.length == 0 &&
               <tr className="content">
                 <td colSpan="17">結果なし</td>
               </tr>
@@ -293,28 +289,29 @@ class Failure extends Component {
             <Edit
               id={editting.id}
               name={editting.name}
-              label={editting.label}
+              yomi={editting.yomi}
+              choku={editting.choku}
               inspections={editting.inspections}
-              message={FailureTypes.message}
+              message={Workers.message}
               dCombination={dCombination}
               close={() => {
                 actions.clearMessage();
                 this.setState({editModal: false});
-                actions.requestFailures()
+                actions.requestWorkers()
               }}
-              update={(id, name, label, inspections) => actions.updateFailure(id, name, label, inspections)}
+              update={(id, name, yomi, choku, inspections) => actions.updateWorker(id, name, yomi, choku, inspections)}
             />
           }{
             createModal &&
             <Create
-              message={FailureTypes.message}
+              message={Workers.message}
               dCombination={dCombination}
               close={() => {
                 actions.clearMessage();
                 this.setState({createModal: false});
-                actions.requestFailures();
+                actions.requestWorkers();
               }}
-              create={(name, label, inspections) => actions.createFailure(name, label, inspections)}
+              create={(name, yomi, choku, inspections) => actions.createWorker(name, yomi, choku, inspections)}
             />
           }
         </div>
@@ -326,7 +323,7 @@ class Failure extends Component {
 Failure.propTypes = {
   Processes: PropTypes.array.isRequired,
   Inspections: PropTypes.array.isRequired,
-  FailureTypes: PropTypes.array.isRequired
+  Workers: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
@@ -334,12 +331,12 @@ function mapStateToProps(state, ownProps) {
     Processes: state.Application.vehicle950A.processes,
     Inspections: state.Application.vehicle950A.inspections,
     Combination: state.Application.vehicle950A.combination,
-    FailureTypes: state.MaintFailure950A
+    Workers: state.MaintWorker950A
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({push}, maintFailureActions);
+  const actions = Object.assign({push}, maintWorkerActions);
   return {
     actions: bindActionCreators(actions, dispatch)
   };

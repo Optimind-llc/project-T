@@ -15,6 +15,8 @@ Route::get('/', function () {
     return 'failure mapping system';
 });
 
+Route::get('/now', 'PagesController@now');
+
 // Get infomations for inspection 
 Route::get('client/inspection/{itionG_id}', 'Client\InspectionController@inspection')
 	->where([
@@ -228,7 +230,17 @@ Route::group(['prefix' => 'manager/{vehicle}', 'namespace' => 'V2\Manager'], fun
         Route::get('hole', 'InitialController@index');
         Route::get('inline', 'InitialController@index');
 
-        Route::post('failureTypes', 'MaintFailureTypeController@get');
+        Route::get('failureTypes', 'MaintFailureTypeController@get');
+        Route::post('failureType/create', 'MaintFailureTypeController@create');
+        Route::post('failureType/update', 'MaintFailureTypeController@update');
+
+        Route::get('modificationTypes', 'MaintModificationTypeController@get');
+        Route::post('modificationType/create', 'MaintModificationTypeController@create');
+        Route::post('modificationType/update', 'MaintModificationTypeController@update');
+
+        Route::get('workers', 'MaintWorkerController@get');
+        Route::post('worker/create', 'MaintWorkerController@create');
+        Route::post('worker/update', 'MaintWorkerController@update');
     });
 });
 

@@ -13,6 +13,16 @@ class ModificationType extends Model
     protected $connection = '950A';
     protected $guarded = ['id'];
 
+    public function inspections()
+    {
+        return $this->belongsToMany(
+            'App\Models\Vehicle950A\Inspection',
+            'mt_related',
+            'type_id',
+            'inspection'
+        )->withPivot('process', 'inspection', 'division', 'type', 'sort');
+    }
+
     public function scopeNarrow($query, $p, $i, $d)
     {
         return $query->join('mt_related as mtr', function ($join) use ($p, $i, $d){

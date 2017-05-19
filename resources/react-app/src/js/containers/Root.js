@@ -23,6 +23,8 @@ import Report950A from '../modules/Vehicle950A/report/containers/report';
 import Association950A from '../modules/Vehicle950A/association/containers/association';
 
 import MeintFailureType950A from '../modules/Vehicle950A/master/failure/containers/failure';
+import MeintModificationType950A from '../modules/Vehicle950A/master/modification/containers/modification';
+import MeintWorker950A from '../modules/Vehicle950A/master/worker/containers/worker';
 
 
 class Root extends Component {
@@ -47,9 +49,9 @@ class Root extends Component {
               <Route name="直レポート" path="report" component={Report950A}/>
               <Route name="マッピング" path="association" component={Association950A}/>
               <Route path="maintenance">
-                <Route name="検査者マスタ" path="worker" component={Dashboard950A}/>
+                <Route name="検査者マスタ" path="worker" component={MeintWorker950A}/>
                 <Route name="不良区分マスタ" path="failure" component={MeintFailureType950A}/>
-                <Route name="手直区分マスタ" path="modification" component={Dashboard950A}/>
+                <Route name="手直区分マスタ" path="modification" component={MeintModificationType950A}/>
                 <Route name="マッピング" path="holeModification" component={Dashboard950A}/>
                 <Route name="マッピング" path="hole" component={Dashboard950A}/>
                 <Route name="マッピング" path="inline" component={Dashboard950A}/>
