@@ -15,14 +15,18 @@
 
       > div, input {
         float: left;
-        width: 200px;
+        width: 180px;
       }
 
       &.name {
         width: 280px;
       }
 
-      &.status {
+      &.process {
+        width: 280px;
+      }
+
+      &.inspection {
         width: 280px;
       }
     }

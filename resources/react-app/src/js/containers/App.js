@@ -53,8 +53,8 @@ class App extends Component {
       ],
       '950A': [
         { en: '950A/maintenance/worker', name: '担当者マスタ', disable: false },
-        { en: '950A/maintenance/failure', name: '不良区分マスタ', disable: true },
-        { en: '950A/maintenance/modification', name: '手直区分マスタ', disable: true }
+        { en: '950A/maintenance/failure', name: '不良区分マスタ', disable: false },
+        { en: '950A/maintenance/modification', name: '手直区分マスタ', disable: false }
       ]
     };
 

@@ -29,7 +29,7 @@ class Edit extends Component {
 
   render() {
     const { id, name, yomi, choku, inspections } = this.state;
-    const { dCombination } = this.props;
+    const { editForActivate, dCombination } = this.props;
 
     return (
       <div>
@@ -51,6 +51,8 @@ class Edit extends Component {
             <p className="success-message">更新されました</p>
           }
           <div className="edit">
+          {
+            !editForActivate &&
             <div className="name">
               <p>名前</p>
               <input
@@ -59,6 +61,8 @@ class Edit extends Component {
                 onChange={e => this.setState({name: e.target.value})}
               />
             </div>
+          }{
+            !editForActivate &&
             <div className="label">
               <p>ヨミ</p>
               <input
@@ -67,23 +71,26 @@ class Edit extends Component {
                 onChange={e => this.setState({yomi: e.target.value})}
               />
             </div>
+          }{
+            !editForActivate &&
             <div className="choku" style={{width: 200}}>
-            <p>直</p>
-            <Select
-              name="直"
-              placeholder="直を選択"
-              styles={{height: 30}}
-              clearable={false}
-              Searchable={true}
-              value={this.state.choku}
-              options={[
-                {label: '白直', value: 'W'},
-                {label: '黄直', value: 'Y'},
-                {label: '黒直', value: 'B'}
-              ]}
-              onChange={choku => this.setState({choku})}
-            />
-          </div>
+              <p>直</p>
+              <Select
+                name="直"
+                placeholder="直を選択"
+                styles={{height: 30}}
+                clearable={false}
+                Searchable={true}
+                value={this.state.choku}
+                options={[
+                  {label: '白直', value: 'W'},
+                  {label: '黄直', value: 'Y'},
+                  {label: '黒直', value: 'B'}
+                ]}
+                onChange={choku => this.setState({choku})}
+              />
+            </div>
+          }
           </div>
           <div>
             <table>
@@ -325,6 +332,7 @@ class Edit extends Component {
 };
 
 Edit.propTypes = {
+  editForActivate: PropTypes.bool,
   id: PropTypes.number,
   name: PropTypes.string,
   yomi: PropTypes.number,

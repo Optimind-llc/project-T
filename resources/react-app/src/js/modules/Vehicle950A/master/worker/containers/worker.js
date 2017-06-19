@@ -21,21 +21,20 @@ class Failure extends Component {
 
     this.state = {
       yomi: '',
+      choku: {label: '全直', value: 'all'},
       process: {label: '全て', value: 'all'},
       inspection: {label: '全て', value: 'all'},
+      status: {label: '表示中', value: 'active'},
       editModal: false,
+      editForActivate: false,
       editting: null,
       createModal: false,
       sort: {
-        key: 'label',
+        key: 'yomi',
         asc: false,
         id: 0
       }
     };  }
-
-  componentWillUnmount() {
-   clearInterval(this.state.intervalId); 
-  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.Workers.message === 'success') {
@@ -63,11 +62,24 @@ class Failure extends Component {
         return d.yomi.indexOf(this.state.yomi) !== -1;
       }
       return true;
+    }).filter(d => {
+      if (this.state.choku.value !== 'all') {
+        return d.choku === this.state.choku.value;
+      }
+      return true;
+    }).filter(d => {
+      if (this.state.status.value === 'active') {
+        return d.inspections.length > 0;
+      }
+      else if (this.state.status.value === 'deactive') {
+        return d.inspections.length === 0;
+      }
+      return true;
     }).sort((a,b) => {
       let aaa = 0;
       let bbb = 0;
 
-      if (sort.key == 'label') {
+      if (sort.key == 'yomi') {
         aaa = a[sort.key];
         bbb = b[sort.key];
       }
@@ -112,11 +124,11 @@ class Failure extends Component {
       {p: 'molding', i: 'gaikan', d: 'door', ds: 'D'},
       {p: 'molding', i: 'gaikan', d: 'luggage', ds: 'L'},
 
-      {p: 'holing', i: 'maegaikan', d: 'doorr', ds: 'D'},
-      {p: 'holing', i: 'maegaikan', d: 'luggager', ds: 'L'},
+      {p: 'holing', i: 'maegaikan', d: 'door', ds: 'D'},
+      {p: 'holing', i: 'maegaikan', d: 'luggage', ds: 'L'},
 
-      {p: 'holing', i: 'atogaikan', d: 'doorInner', ds: 'D'},
-      {p: 'holing', i: 'atogaikan', d: 'luggageInner', ds: 'L'},
+      {p: 'holing', i: 'atogaikan', d: 'door', ds: 'D'},
+      {p: 'holing', i: 'atogaikan', d: 'luggage', ds: 'L'},
 
       {p: 'holing', i: 'ana', d: 'door', ds: 'D'},
       {p: 'holing', i: 'ana', d: 'luggage', ds: 'L'},
@@ -159,6 +171,23 @@ class Failure extends Component {
             />
           </div>
           <div className="process">
+            <p>直</p>
+            <Select
+              name="直"
+              placeholder="直を選択"
+              styles={{height: 30}}
+              clearable={false}
+              Searchable={true}
+              value={this.state.choku}
+              options={[
+                {label: '白直', value: 'W'},
+                {label: '黄直', value: 'Y'},
+                {label: '全直', value: 'all'}
+              ]}
+              onChange={choku => this.setState({choku})}
+            />
+          </div>
+          <div className="process">
             <p>工程</p>
             <Select
               name="工程"
@@ -184,6 +213,23 @@ class Failure extends Component {
               onChange={i => this.setState({inspection: i})}
             />
           </div>
+          <div className="inspection">
+            <p>状態</p>
+            <Select
+              name="検査"
+              placeholder="検査を選択"
+              styles={{height: 30}}
+              clearable={false}
+              Searchable={true}
+              value={this.state.status}
+              options={[
+                {label: '表示中', value: 'active'},
+                {label: '非表示中', value: 'deactive'},
+                {label: '全て', value: 'all'},
+              ]}
+              onChange={status => this.setState({status})}
+            />
+          </div>
         </div>
         <div className="result-wrap bg-white">
           {
@@ -206,12 +252,13 @@ class Failure extends Component {
                 <th colSpan={2} rowSpan={1}>成形</th>
                 <th colSpan={8} rowSpan={1}>穴あけ</th>
                 <th colSpan={12} rowSpan={1}>かしめ/接着</th>
+                <th colSpan={1} rowSpan={3}>iPad<br/>表示</th>
                 <th colSpan={1} rowSpan={3}>機能</th>
               </tr>
               <tr>
                 <th colSpan={2} rowSpan={1}>外観検査</th>
-                <th colSpan={2} rowSpan={1}>洗浄前外観検査</th>
-                <th colSpan={2} rowSpan={1}>洗浄後外観検査</th>
+                <th colSpan={2} rowSpan={1}>洗浄前外観</th>
+                <th colSpan={2} rowSpan={1}>洗浄後外観</th>
                 <th colSpan={2} rowSpan={1}>穴検査</th>
                 <th colSpan={2} rowSpan={1}>手直</th>
                 <th colSpan={2} rowSpan={1}>かしめ後検査</th>
@@ -262,10 +309,30 @@ class Failure extends Component {
                         })
                       }
                       <td>
+                      {
+                        f.inspections.length > 0 ?
+                        <img
+                          className="icon-checked"
+                          src="/img/icon/check.png"
+                          alt="iconCheck"
+                          onClick={() => actions.updateWorker(f.id, f.name, f.yomi, f.choku, [])}
+                        /> :
+                        <div
+                          className="icon-check"
+                          onClick={() => this.setState({
+                            editModal: true,
+                            editForActivate: true,
+                            editting: f
+                          })}
+                        ></div>
+                      }
+                      </td>
+                      <td>
                         <button
                           className="dark edit"
                           onClick={() => this.setState({
                             editModal: true,
+                            editForActivate: false,
                             editting: f
                           })}
                         >
@@ -287,6 +354,7 @@ class Failure extends Component {
           {
             editModal &&
             <Edit
+              editForActivate={this.state.editForActivate}
               id={editting.id}
               name={editting.name}
               yomi={editting.yomi}

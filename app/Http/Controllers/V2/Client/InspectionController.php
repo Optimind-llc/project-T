@@ -566,6 +566,8 @@ class InspectionController extends Controller
 
     public function delete($vehicle, Request $request)
     {
+        DB::connection('950A')->enableQueryLog();
+
         $process = $request->process;
         $inspection = $request->inspection;
         $partIds = $request->partIds;
@@ -573,6 +575,9 @@ class InspectionController extends Controller
         foreach ($partIds as $partId) {
             $this->inspectionResult->delete($process, $inspection, $partId);
         }
+
+        $message = DB::connection('950A')->getQueryLog();
+        logger($message);
 
         return [
             'message' => 'Delete inspection succeeded'

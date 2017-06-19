@@ -2,7 +2,7 @@ import fetch from 'isomorphic-fetch';
 import { CSRF_TOKEN, DOMAIN_NAME } from '../../config/env';
 import { keyToSnake } from './ChangeCaseUtils';
 import { camelizeKeys } from 'humps';
-
+console.log(DOMAIN_NAME);
 export function callApi(endpoint, method, body) {
   const request = {
     method,

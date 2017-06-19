@@ -16,9 +16,9 @@ class Mapping extends Component {
     return (
       <div className="result-table">
         <p className="result-count">{`${data.length}件表示`}</p>
-        {/*<button className="download dark" onClick={() => handleDownload(table)}>
+        <button className="download dark" onClick={() => handleDownload()}>
           <p>CSVをダウンロード</p>
-        </button>*/}
+        </button>
         <table>
           <thead>
             <tr>

@@ -26,13 +26,13 @@ class Edit extends Component {
           <div className="panel-btn" onClick={() => this.props.close()}>
             <span className="panel-btn-close"></span>
           </div>
-          <p className="title">不良区分情報編集</p>
+          <p className="title">手直区分情報編集</p>
           {
             this.props.message == 'duplicate failure name' &&
-            <p className="error-message">同じ名前の不良区分がすでに登録されています</p>
+            <p className="error-message">同じ名前の手直区分がすでに登録されています</p>
           }{
             this.props.message == 'duplicate failure label' &&
-            <p className="error-message">同じ番号の不良区分がすでに登録されています</p>
+            <p className="error-message">同じ番号の手直区分がすでに登録されています</p>
           }{
             this.props.message == 'success' &&
             <p className="success-message">更新されました</p>
@@ -65,7 +65,7 @@ class Edit extends Component {
                   <th colSpan={4} rowSpan={1}>外観検査</th>
                 </tr>
                 <tr>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
                 </tr>
               </thead>
               <tbody>
@@ -83,18 +83,6 @@ class Edit extends Component {
                             )
                         })}
                       />
-                      <div className="failure-type-wrap">
-                        <input
-                          type="checkbox"
-                          checked={inspections.find(i => i.p == dc.p && i.i == dc.i && i.d == dc.d).type === 1}
-                          onChange={() => this.setState({
-                            inspections: inspections.map(i =>
-                              i.p == dc.p && i.i == dc.i && i.d == dc.d ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i
-                            )
-                          })}
-                        />
-                        <p>重要</p>
-                      </div>
                       <div
                         className="panel-btn" 
                         onClick={() => this.setState({
@@ -105,7 +93,7 @@ class Edit extends Component {
                       </div>
                     </td> :
                     <td key={dc.p + dc.i + dc.d}>
-                      <p className="null"></p>
+                      <input className="visibility-hidden" type="number"/>
                       <div
                         className="panel-btn"
                         onClick={() => this.setState({
@@ -130,8 +118,8 @@ class Edit extends Component {
                   <th colSpan={4} rowSpan={1}>洗浄後外観検査</th>
                 </tr>
                 <tr>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
                 </tr>
               </thead>
               <tbody>
@@ -149,18 +137,6 @@ class Edit extends Component {
                             )
                         })}
                       />
-                      <div className="failure-type-wrap">
-                        <input
-                          type="checkbox"
-                          checked={inspections.find(i => i.p == dc.p && i.i == dc.i && i.d == dc.d).type === 1}
-                          onChange={() => this.setState({
-                            inspections: inspections.map(i =>
-                              i.p == dc.p && i.i == dc.i && i.d == dc.d ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i
-                            )
-                          })}
-                        />
-                        <p>重要</p>
-                      </div>
                       <div
                         className="panel-btn" 
                         onClick={() => this.setState({
@@ -171,7 +147,7 @@ class Edit extends Component {
                       </div>
                     </td> :
                     <td key={dc.p + dc.i + dc.d}>
-                      <p className="null"></p>
+                      <input className="visibility-hidden" type="number"/>
                       <div
                         className="panel-btn"
                         onClick={() => this.setState({
@@ -193,8 +169,8 @@ class Edit extends Component {
                   <th colSpan={4} rowSpan={1}>手直</th>
                 </tr>
                 <tr>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
                 </tr>
               </thead>
               <tbody>
@@ -212,18 +188,6 @@ class Edit extends Component {
                             )
                         })}
                       />
-                      <div className="failure-type-wrap">
-                        <input
-                          type="checkbox"
-                          checked={inspections.find(i => i.p == dc.p && i.i == dc.i && i.d == dc.d).type === 1}
-                          onChange={() => this.setState({
-                            inspections: inspections.map(i =>
-                              i.p == dc.p && i.i == dc.i && i.d == dc.d ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i
-                            )
-                          })}
-                        />
-                        <p>重要</p>
-                      </div>
                       <div
                         className="panel-btn" 
                         onClick={() => this.setState({
@@ -234,7 +198,7 @@ class Edit extends Component {
                       </div>
                     </td> :
                     <td key={dc.p + dc.i + dc.d}>
-                      <p className="null"></p>
+                      <input className="visibility-hidden" type="number"/>
                       <div
                         className="panel-btn"
                         onClick={() => this.setState({
@@ -262,7 +226,7 @@ class Edit extends Component {
                   <th colSpan={1} rowSpan={1}>塗装後</th>
                 </tr>
                 <tr>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
                   <th colSpan={1} rowSpan={1}>LO</th>
                   <th colSpan={1} rowSpan={1}>LO</th>
                   <th colSpan={1} rowSpan={1}>LO</th>
@@ -284,18 +248,6 @@ class Edit extends Component {
                             )
                         })}
                       />
-                      <div className="failure-type-wrap">
-                        <input
-                          type="checkbox"
-                          checked={inspections.find(i => i.p == dc.p && i.i == dc.i && i.d == dc.d).type === 1}
-                          onChange={() => this.setState({
-                            inspections: inspections.map(i =>
-                              i.p == dc.p && i.i == dc.i && i.d == dc.d ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i
-                            )
-                          })}
-                        />
-                        <p>重要</p>
-                      </div>
                       <div
                         className="panel-btn" 
                         onClick={() => this.setState({
@@ -306,7 +258,7 @@ class Edit extends Component {
                       </div>
                     </td> :
                     <td key={dc.p + dc.i + dc.d}>
-                      <p className="null"></p>
+                      <input className="visibility-hidden" type="number"/>
                       <div
                         className="panel-btn"
                         onClick={() => this.setState({
@@ -349,18 +301,6 @@ class Edit extends Component {
                             )
                         })}
                       />
-                      <div className="failure-type-wrap">
-                        <input
-                          type="checkbox"
-                          checked={inspections.find(i => i.p == dc.p && i.i == dc.i && i.d == dc.d).type === 1}
-                          onChange={() => this.setState({
-                            inspections: inspections.map(i =>
-                              i.p == dc.p && i.i == dc.i && i.d == dc.d ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i
-                            )
-                          })}
-                        />
-                        <p>重要</p>
-                      </div>
                       <div
                         className="panel-btn" 
                         onClick={() => this.setState({
@@ -371,7 +311,7 @@ class Edit extends Component {
                       </div>
                     </td> :
                     <td key={dc.p + dc.i + dc.d}>
-                      <p className="null"></p>
+                      <input className="visibility-hidden" type="number"/>
                       <div
                         className="panel-btn"
                         onClick={() => this.setState({

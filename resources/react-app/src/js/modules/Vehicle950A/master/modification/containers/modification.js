@@ -16,7 +16,7 @@ import Create from '../components/create/create';
 class Modification extends Component {
   constructor(props, context) {
     super(props, context);
-    const { Inspections, MappingData, actions } = props;
+    const { Inspections, actions } = props;
     actions.requestModifications();
 
     this.state = {
@@ -31,10 +31,15 @@ class Modification extends Component {
         asc: false,
         id: 0
       }
-    };  }
+    };
+  }
 
-  componentWillUnmount() {
-   clearInterval(this.state.intervalId); 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.ModificationTypes.message === 'success') {
+      this.setState({editModal: false, createModal: false});
+      this.props.actions.clearMessage();
+      this.props.actions.requestModifications();
+    }
   }
 
   sortData(data) {
@@ -154,7 +159,7 @@ class Modification extends Component {
       <div id="press-maint-failureType-wrap">
         <div className="filter-wrap bg-white">
           <div className="name">
-            <p>不良名</p>
+            <p>手直名</p>
             <input
               type="text"
               value={this.state.name}
@@ -193,7 +198,7 @@ class Modification extends Component {
         <div className="result-wrap bg-white">
           {
             ModificationTypes.message === 'over limit' &&
-            <p className="error-message-over-limit">不良区分の表示上限16を超えています</p>
+            <p className="error-message-over-limit">手直区分の表示上限16を超えています</p>
           }
           <button
             className="create-btn"
@@ -205,7 +210,7 @@ class Modification extends Component {
             <thead>
               <tr>
                 <th colSpan={1} rowSpan={3}>No.</th>
-                <th colSpan={1} rowSpan={3}>不良名</th>
+                <th colSpan={1} rowSpan={3}>手直名</th>
                 <th colSpan={1} rowSpan={3}>表示<br/>番号</th>
                 <th colSpan={4} rowSpan={1}>成形</th>
                 <th colSpan={16} rowSpan={1}>穴あけ</th>
@@ -228,12 +233,12 @@ class Modification extends Component {
                 <th colSpan={2} rowSpan={1}>手直</th>
               </tr>
               <tr>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
                 <th colSpan={1} rowSpan={1}>LO</th>
                 <th colSpan={1} rowSpan={1}>LO</th>
                 <th colSpan={1} rowSpan={1}>LO</th>

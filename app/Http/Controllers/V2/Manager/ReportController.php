@@ -71,6 +71,8 @@ class ReportController extends Controller
 
     public function export($vehicle, $process, $inspection, $line, $pn, $date, $choku)
     {
+        DB::connection('950A')->enableQueryLog();
+
         $date_obj = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
         $choku_obj = new Choku($date_obj);
         $start = $choku_obj->getDayStart();

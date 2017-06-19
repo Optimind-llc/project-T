@@ -31,10 +31,15 @@ class Failure extends Component {
         asc: false,
         id: 0
       }
-    };  }
+    };
+  }
 
-  componentWillUnmount() {
-   clearInterval(this.state.intervalId); 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.FailureTypes.message === 'success') {
+      this.setState({editModal: false, createModal: false});
+      this.props.actions.clearMessage();
+      this.props.actions.requestFailures();
+    }
   }
 
   sortData(data) {
@@ -229,12 +234,12 @@ class Failure extends Component {
                 <th colSpan={2} rowSpan={1}>手直</th>
               </tr>
               <tr>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
                 <th colSpan={1} rowSpan={1}>LO</th>
                 <th colSpan={1} rowSpan={1}>LO</th>
                 <th colSpan={1} rowSpan={1}>LO</th>

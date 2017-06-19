@@ -239,18 +239,15 @@ class Insert950AInline extends Command
 
         $now = Carbon::now();
 
+        $structureError = false;
         foreach ($file as $row => $data) {
             if ($filepath['head']  === 'M011' && $row === 0 && count($data) === 11) {
                 $inspected_at = Carbon::createFromFormat('Y/m/d H:i:s', $data[0]);
                 $pn = substr($data[1], 0, 10);
 
                 if ($pn !== '6715111020') {
-                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
-                    \Log::error($message);
-                    $this->error($message);
-                    $file = null;
-                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
-                    return 0;
+                    $structureError = true;
+                    break;
                 }
 
                 $this->info('M011 0 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
@@ -273,12 +270,8 @@ class Insert950AInline extends Command
                 $pn = substr($data[1], 0, 10);
 
                 if ($pn !== '6714111020') {
-                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
-                    \Log::error($message);
-                    $this->error($message);
-                    $file = null;
-                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
-                    return 0;
+                    $structureError = true;
+                    break;
                 }
 
                 $this->info('M011 1 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
@@ -311,12 +304,8 @@ class Insert950AInline extends Command
                 $pn = substr($data[1], 0, 10);
 
                 if ($pn !== '6715211020') {
-                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
-                    \Log::error($message);
-                    $this->error($message);
-                    $file = null;
-                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
-                    return 0;
+                    $structureError = true;
+                    break;
                 }
 
                 $this->info('M021 0 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
@@ -339,12 +328,8 @@ class Insert950AInline extends Command
                 $pn = substr($data[1], 0, 10);
 
                 if ($pn !== '6714211020') {
-                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
-                    \Log::error($message);
-                    $this->error($message);
-                    $file = null;
-                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
-                    return 0;
+                    $structureError = true;
+                    break;
                 }
 
                 $this->info('M021 1 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
@@ -377,12 +362,8 @@ class Insert950AInline extends Command
                 $pn = substr($data[1], 0, 10);
 
                 if ($pn !== '6441211010' && $pn !== '6441211020') {
-                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
-                    \Log::error($message);
-                    $this->error($message);
-                    $file = null;
-                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
-                    return 0;
+                    $structureError = true;
+                    break;
                 }
 
                 $this->info('M001 0 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
@@ -440,12 +421,8 @@ class Insert950AInline extends Command
                 $pn = substr($data[1], 0, 10);
 
                 if ($pn !== '6714111020' && $pn !== '6714211020') {
-                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
-                    \Log::error($message);
-                    $this->error($message);
-                    $file = null;
-                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
-                    return 0;
+                    $structureError = true;
+                    break;
                 }
 
                 $this->info('J011 0 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
@@ -488,12 +465,8 @@ class Insert950AInline extends Command
                 $pn = substr($data[1], 0, 10);
 
                 if ($pn !== '6714111020' && $pn !== '6714211020') {
-                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
-                    \Log::error($message);
-                    $this->error($message);
-                    $file = null;
-                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
-                    return 0;
+                    $structureError = true;
+                    break;
                 }
 
                 $this->info('J021 0 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
@@ -536,12 +509,8 @@ class Insert950AInline extends Command
                 $pn = substr($data[1], 0, 10);
 
                 if ($pn !== '6441211010' && $pn !== '6441211020') {
-                    $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
-                    \Log::error($message);
-                    $this->error($message);
-                    $file = null;
-                    // rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
-                    return 0;
+                    $structureError = true;
+                    break;
                 }
 
                 $this->info('J001 0 '.$pn.' '.$inspected_at->toDateTimeString().' has '.count($data).'columns');
@@ -607,6 +576,16 @@ class Insert950AInline extends Command
         }
 
         $file = null;
+
+        if ($structureError) {
+            rename($filepath['path'], $this->backupPath.DIRECTORY_SEPARATOR.$filepath['name']);
+            
+            $message = 'CSV structure error: PN does not match in "'.$filepath['path'].'"';
+            \Log::error($message);
+            $this->error($message);
+            return 0;
+        }
+
         unlink($filepath['path']);
         return 1;
     }

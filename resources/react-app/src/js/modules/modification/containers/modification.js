@@ -322,7 +322,7 @@ class Modification extends Component {
                         f.status == 1 ?
                         <img
                           className="icon-checked"
-                          src={iconCheck}
+                          src="/img/icon/check.png"
                           alt="iconCheck"
                           onClick={() => this.props.actions.deactivateModification(f.id)}
                         /> :

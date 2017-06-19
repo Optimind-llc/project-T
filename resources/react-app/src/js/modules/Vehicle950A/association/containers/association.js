@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import Select from 'react-select';
-// import { handleDownload } from '../../../utils/Export';
+import { handleDownload } from '../../../../utils/Export';
 // Actions
 import { partFamilyActions } from '../ducks/partFamily';
 import { mappingActions } from '../ducks/mapping';
@@ -63,22 +63,20 @@ class Association extends Component {
     }
   }
 
-  handleDownload() {
-    // let table = [];
-    // if (PartFamilyData.data != null && !PartFamilyData.isFetching) {
-    //   let header = ['更新日','バックドアインナー','アッパー','サイドアッパーLH','サイドアッパーRH','サイドロアLH','サイドロアRH'];
-    //   table.push(header);
+  handleDownload(type, data){
+    let table = [];
+    let header = ['更新日','ドアインナL','リンフォースL','ドアASSY LH'];
+    table.push(header);
 
-    //   table = table.concat(PartFamilyData.data.families.map(pf => [
-    //     pf.associatedAt,
-    //     pf.parts['67149'][0].panelId,
-    //     pf.parts['67119'] ? pf.parts['67119'][0].panelId : '',
-    //     pf.parts['67176'][0].panelId,
-    //     pf.parts['67175'][0].panelId,
-    //     pf.parts['67178'][0].panelId,
-    //     pf.parts['67177'][0].panelId
-    //   ]));
-    // };
+    table = table.concat(data.map(pf => [
+      pf.updatedAt,
+      pf.parts.find(p => p.pn === 6714211020).panelId,
+      pf.parts.find(p => p.pn === 6715211020).panelId,
+      pf.parts.find(p => p.pn === 6701611020).panelId,
+    ]));
+
+    console.log(table);
+    handleDownload(table);
   }
 
   handleMapping(pn, id, p, i) {
@@ -263,7 +261,7 @@ class Association extends Component {
                 data={PartFamilyData.data.doorL}
                 partNames={['ドアインナL','リンフォースL','ドアASSY LH']}
                 partPns={[6714211020,6715211020,6701611020]}
-                handleDownload={() => handleDownload('doorL')}
+                handleDownload={() => this.handleDownload('doorL', PartFamilyData.data.doorL)}
                 handleEdit={id => this.setState({
                   editModal: true,
                   toBeEditted: PartFamilyData.data.doorL.find(f => f.id === id),
@@ -276,7 +274,7 @@ class Association extends Component {
                 data={PartFamilyData.data.doorR}
                 partNames={['ドアインナR','リンフォースR','ドアASSY RH']}
                 partPns={[6714111020,6715111020,6701511020]}
-                handleDownload={() => handleDownload('doorR')}
+                handleDownload={() => handleDownload('doorR', PartFamilyData.data.doorR)}
                 handleEdit={id => this.setState({
                   editModal: true,
                   toBeEditted: PartFamilyData.data.doorR.find(f => f.id === id),
@@ -289,7 +287,7 @@ class Association extends Component {
                 data={PartFamilyData.data.luggageSTD}
                 partNames={['ラゲージインナSTD','ラゲージアウタSTD','ラゲージASSY STD']}
                 partPns={[6441211010,6441111010,6440111010]}
-                handleDownload={() => handleDownload('luggageSTD')}
+                handleDownload={() => handleDownload('luggageSTD', PartFamilyData.data.luggageSTD)}
                 handleEdit={id => this.setState({
                   editModal: true,
                   toBeEditted: PartFamilyData.data.luggageSTD.find(f => f.id === id),
@@ -302,7 +300,7 @@ class Association extends Component {
                 data={PartFamilyData.data.luggageARW}
                 partNames={['ラゲージインナARW','ラゲージアウタARW','ラゲージASSY ARW']}
                 partPns={[6441211020,6441111020,6440111020]}
-                handleDownload={() => handleDownload('luggageARW')}
+                handleDownload={() => handleDownload('luggageARW', PartFamilyData.data.luggageARW)}
                 handleEdit={id => this.setState({
                   editModal: true,
                   toBeEditted: PartFamilyData.data.luggageARW.find(f => f.id === id),

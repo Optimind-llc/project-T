@@ -43,7 +43,8 @@ class Report
         $this->now = Carbon::now();
 
         $switchingDate = Carbon::createFromFormat('Y-m-d H:i:s', '2016-12-3 00:00:00');
-        if ($d->gte($switchingDate)) {
+        $switchingDate2 = Carbon::createFromFormat('Y-m-d H:i:s', '2017-5-7 00:00:00');
+        if ($d->gte($switchingDate) && $d->lte($switchingDate2)) {
             $this->triple = true;
         }
         else {

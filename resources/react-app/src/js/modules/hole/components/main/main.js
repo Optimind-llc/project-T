@@ -153,7 +153,7 @@ class Main extends Component {
                     h.status == 1 ?
                     <img
                       className="icon-checked"
-                      src={iconCheck}
+                      src="/img/icon/check.png"
                       alt="iconCheck"
                       onClick={() => deactivateHole(h.id)}
                     /> :

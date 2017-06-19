@@ -76,6 +76,8 @@ class InspectionController extends Controller
 
     public function history(Request $request)
     {
+        DB::enableQueryLog();
+
         $validator = app('validator')->make(
             $request->all(),
             [
@@ -118,6 +120,9 @@ class InspectionController extends Controller
                 $heritage[$name] = 1;
             }
         }
+
+        $message = DB::getQueryLog();
+        logger($message);
 
         return [
             'heritage' => $heritage,

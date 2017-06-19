@@ -10,8 +10,23 @@ class Create extends Component {
       name: '',
       yomi: '',
       choku: {label: '白直', value: 'W'},
-      inspections: []
+      inspections: [],
+      messages: []
     };
+  }
+
+  validation(name) {
+    if (name.length > 6) {
+      this.setState({messages: [...this.state.messages, '検査者名は６文字以下で入力してください']});
+      return false;
+    }
+    else if (name.length === 0) {
+      this.setState({messages: [...this.state.messages, '検査者名を入力してください']});
+      return false;
+    }
+    else {
+      return true;
+    }
   }
 
   render() {
@@ -36,6 +51,11 @@ class Create extends Component {
           }{
             this.props.message == 'success' &&
             <p className="error-message">作成されました</p>
+          }{
+            this.state.messages.length !== 0 &&
+            this.state.messages.map(message => 
+              <p className="error-message">{message}</p>
+            )
           }
           <div className="edit">
             <div className="name">
@@ -299,7 +319,13 @@ class Create extends Component {
             <p className="explanation">※ 数字はiPadでの表示順</p>
           </div>  
           <div className="btn-wrap">
-            <button onClick={() => this.props.create(name, yomi, choku.value, inspections)}>
+            <button onClick={() => {
+              this.setState({messages: []}, () => {
+                if (this.validation(name)) {
+                  this.props.create(name, yomi, choku.value, inspections);
+                }
+              });
+            }}>
               登録
             </button>
           </div>

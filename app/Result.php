@@ -108,9 +108,12 @@ class Result
         $partTypeId = $this->partTypeId;
         $itionGId = $this->itionGId;
 
+        $period = Carbon::today()->subDays(30);
+
         $pages = Page::whereHas('parts', function ($q) use ($partId) {
             $q->where('parts.id', '=', $partId);
         })
+        ->where('created_at', '>', $period)
         ->get(['id'])
         ->map(function($page) {
             return $page->id;

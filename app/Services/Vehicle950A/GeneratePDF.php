@@ -1115,6 +1115,9 @@ class GeneratePDF
         $this->tcpdf->Line($A3['x0'], 112.6, $A3['xmax'] - $A3['x0'], 112.6, array('dash' => '3,1'));
         $this->tcpdf->Line($A3['x0'], 192.6, $A3['xmax'] - $A3['x0'], 192.6, array('dash' => '3,1'));
 
+            $message = DB::connection('950A')->getQueryLog();
+            logger($message);
+
         return $this->tcpdf;
     }
 }

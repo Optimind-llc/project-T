@@ -9,8 +9,23 @@ class Create extends Component {
     this.state = {
       name: '',
       label: '',
-      inspections: []
+      inspections: [],
+      messages: []
     };
+  }
+
+  validation(name) {
+    if (name.length > 6) {
+      this.setState({messages: [...this.state.messages, '手直区分名は６文字以下で入力してください']});
+      return false;
+    }
+    else if (name.length === 0) {
+      this.setState({messages: [...this.state.messages, '手直区分名を入力してください']});
+      return false;
+    }
+    else {
+      return true;
+    }
   }
 
   render() {
@@ -25,16 +40,21 @@ class Create extends Component {
           <div className="panel-btn" onClick={() => this.props.close()}>
             <span className="panel-btn-close"></span>
           </div>
-          <p className="title">新規不良区分登録</p>
+          <p className="title">新規手直区分登録</p>
           {
             this.props.message == 'duplicate failure name' &&
-            <p className="error-message">同じ名前の不良区分がすでに登録されています</p>
+            <p className="error-message">同じ名前の手直区分がすでに登録されています</p>
           }{
             this.props.message == 'duplicate failure label' &&
-            <p className="error-message">同じ番号の不良区分がすでに登録されています</p>
+            <p className="error-message">同じ番号の手直区分がすでに登録されています</p>
           }{
             this.props.message == 'success' &&
             <p className="error-message">作成されました</p>
+          }{
+            this.state.messages.length !== 0 &&
+            this.state.messages.map(message => 
+              <p className="error-message">{message}</p>
+            )
           }
           <div className="edit">
             <div className="name">
@@ -64,7 +84,7 @@ class Create extends Component {
                   <th colSpan={4} rowSpan={1}>外観検査</th>
                 </tr>
                 <tr>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
                 </tr>
               </thead>
               <tbody>
@@ -82,18 +102,6 @@ class Create extends Component {
                             )
                         })}
                       />
-                      <div className="failure-type-wrap">
-                        <input
-                          type="checkbox"
-                          checked={inspections.find(i => i.p == dc.p && i.i == dc.i && i.d == dc.d).type === 1}
-                          onChange={() => this.setState({
-                            inspections: inspections.map(i =>
-                              i.p == dc.p && i.i == dc.i && i.d == dc.d ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i
-                            )
-                          })}
-                        />
-                        <p>重要</p>
-                      </div>
                       <div
                         className="panel-btn" 
                         onClick={() => this.setState({
@@ -104,7 +112,7 @@ class Create extends Component {
                       </div>
                     </td> :
                     <td key={dc.p + dc.i + dc.d}>
-                      <p className="null"></p>
+                      <input className="visibility-hidden" type="number"/>
                       <div
                         className="panel-btn"
                         onClick={() => this.setState({
@@ -129,8 +137,8 @@ class Create extends Component {
                   <th colSpan={4} rowSpan={1}>洗浄後外観検査</th>
                 </tr>
                 <tr>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
                 </tr>
               </thead>
               <tbody>
@@ -148,18 +156,6 @@ class Create extends Component {
                             )
                         })}
                       />
-                      <div className="failure-type-wrap">
-                        <input
-                          type="checkbox"
-                          checked={inspections.find(i => i.p == dc.p && i.i == dc.i && i.d == dc.d).type === 1}
-                          onChange={() => this.setState({
-                            inspections: inspections.map(i =>
-                              i.p == dc.p && i.i == dc.i && i.d == dc.d ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i
-                            )
-                          })}
-                        />
-                        <p>重要</p>
-                      </div>
                       <div
                         className="panel-btn" 
                         onClick={() => this.setState({
@@ -170,7 +166,7 @@ class Create extends Component {
                       </div>
                     </td> :
                     <td key={dc.p + dc.i + dc.d}>
-                      <p className="null"></p>
+                      <input className="visibility-hidden" type="number"/>
                       <div
                         className="panel-btn"
                         onClick={() => this.setState({
@@ -192,8 +188,8 @@ class Create extends Component {
                   <th colSpan={4} rowSpan={1}>手直</th>
                 </tr>
                 <tr>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
                 </tr>
               </thead>
               <tbody>
@@ -211,18 +207,6 @@ class Create extends Component {
                             )
                         })}
                       />
-                      <div className="failure-type-wrap">
-                        <input
-                          type="checkbox"
-                          checked={inspections.find(i => i.p == dc.p && i.i == dc.i && i.d == dc.d).type === 1}
-                          onChange={() => this.setState({
-                            inspections: inspections.map(i =>
-                              i.p == dc.p && i.i == dc.i && i.d == dc.d ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i
-                            )
-                          })}
-                        />
-                        <p>重要</p>
-                      </div>
                       <div
                         className="panel-btn" 
                         onClick={() => this.setState({
@@ -233,7 +217,7 @@ class Create extends Component {
                       </div>
                     </td> :
                     <td key={dc.p + dc.i + dc.d}>
-                      <p className="null"></p>
+                      <input className="visibility-hidden" type="number"/>
                       <div
                         className="panel-btn"
                         onClick={() => this.setState({
@@ -261,7 +245,7 @@ class Create extends Component {
                   <th colSpan={1} rowSpan={1}>塗装後</th>
                 </tr>
                 <tr>
-                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>LF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
+                  <th colSpan={1} rowSpan={1}>DI</th><th colSpan={1} rowSpan={1}>RF</th><th colSpan={1} rowSpan={1}>LI</th><th colSpan={1} rowSpan={1}>LO</th>
                   <th colSpan={1} rowSpan={1}>LO</th>
                   <th colSpan={1} rowSpan={1}>LO</th>
                   <th colSpan={1} rowSpan={1}>LO</th>
@@ -283,18 +267,6 @@ class Create extends Component {
                             )
                         })}
                       />
-                      <div className="failure-type-wrap">
-                        <input
-                          type="checkbox"
-                          checked={inspections.find(i => i.p == dc.p && i.i == dc.i && i.d == dc.d).type === 1}
-                          onChange={() => this.setState({
-                            inspections: inspections.map(i =>
-                              i.p == dc.p && i.i == dc.i && i.d == dc.d ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i
-                            )
-                          })}
-                        />
-                        <p>重要</p>
-                      </div>
                       <div
                         className="panel-btn" 
                         onClick={() => this.setState({
@@ -305,7 +277,7 @@ class Create extends Component {
                       </div>
                     </td> :
                     <td key={dc.p + dc.i + dc.d}>
-                      <p className="null"></p>
+                      <input className="visibility-hidden" type="number"/>
                       <div
                         className="panel-btn"
                         onClick={() => this.setState({
@@ -348,18 +320,6 @@ class Create extends Component {
                             )
                         })}
                       />
-                      <div className="failure-type-wrap">
-                        <input
-                          type="checkbox"
-                          checked={inspections.find(i => i.p == dc.p && i.i == dc.i && i.d == dc.d).type === 1}
-                          onChange={() => this.setState({
-                            inspections: inspections.map(i =>
-                              i.p == dc.p && i.i == dc.i && i.d == dc.d ? Object.assign(i, {type: i.type === 1 ? 2 : 1}) : i
-                            )
-                          })}
-                        />
-                        <p>重要</p>
-                      </div>
                       <div
                         className="panel-btn" 
                         onClick={() => this.setState({
@@ -370,7 +330,7 @@ class Create extends Component {
                       </div>
                     </td> :
                     <td key={dc.p + dc.i + dc.d}>
-                      <p className="null"></p>
+                      <input className="visibility-hidden" type="number"/>
                       <div
                         className="panel-btn"
                         onClick={() => this.setState({
@@ -388,7 +348,16 @@ class Create extends Component {
             <p className="explanation">※ 数字はiPadでの表示順</p>
           </div>  
           <div className="btn-wrap">
-            <button onClick={() => this.props.create(name, label, inspections)}>
+            <button onClick={() => {
+              this.setState({messages: []}, () => {
+                if (this.validation(name, label)) {
+                  this.props.create(name, label, inspections);
+                }
+                else {
+                  this.setState({message: 'over 6'});
+                }
+              });
+            }}>
               登録
             </button>
           </div>

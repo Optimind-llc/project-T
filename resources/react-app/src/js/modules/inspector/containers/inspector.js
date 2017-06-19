@@ -402,7 +402,7 @@ class Inspector extends Component {
                         itor.status == 1 ?
                         <img
                           className="icon-checked"
-                          src={iconCheck}
+                          src="/img/icon/check.png"
                           alt="iconCheck"
                           onClick={() => this.props.actions.deactivateInspector(itor.id)}
                         /> :
