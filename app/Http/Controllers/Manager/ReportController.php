@@ -26,6 +26,8 @@ class ReportController extends Controller
 {
     public function report($itionGId, $date, $itorG)
     {
+        DB::enableQueryLog();
+
         $date = Carbon::createFromFormat('Y-m-d H:i:s', $date.' 00:00:00');
         $start = $date->copy()->addMinutes(15);
         $end = $date->copy()->addDay(1)->addHours(8)->addMinutes(30);
@@ -564,6 +566,8 @@ class ReportController extends Controller
         }
 
 // return $tcpdf;
+        $message = DB::getQueryLog();
+        logger($message);
 
         $tcpdf->output($pdf_path, 'I');
     }

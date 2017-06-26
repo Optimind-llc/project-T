@@ -41,6 +41,10 @@ class Edit extends Component {
           </div>
           <p className="title">検査者情報編集</p>
           {
+            editForActivate &&
+            <p className="explanation2">※※ (非表示)から(表示)にする場合はどこかの検査に表示順番を入力して下さい</p>
+          }
+          {
             this.props.message == 'duplicate failure name' &&
             <p className="error-message">同じ名前の検査者がすでに登録されています</p>
           }{
