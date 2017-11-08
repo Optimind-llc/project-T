@@ -7,16 +7,16 @@ class Edit extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      id: props.id,
-      max1: props.max1,
-      min1: props.min1,
-      max2: props.max2,
-      min2: props.min2,
+      max1: props.max1.toFixed(3),
+      min1: props.min1.toFixed(3),
+      max2: props.max2 !== null ? props.max2.toFixed(3) : null,
+      min2: props.min2 !== null ? props.min2.toFixed(3) : null,
     };
   }
 
   render() {
-    const { id, max1, min1, max2, min2 } = this.state;
+    const { id, partName, sort } = this.props;
+    const { max1, min1, max2, min2 } = this.state;
 
     return (
       <div>
@@ -27,55 +27,60 @@ class Edit extends Component {
             <span className="panel-btn-close"></span>
           </div>
           <p className="title">公差情報編集</p>
+          <p className="explanation">{`${partName}: ${sort}`}</p>
           <div className="edit">
-            <div className="name">
+            <div className="max1">
               <p>ライン１最大値</p>
               <input
                 type="number"
+                step="0.01"
                 value={this.state.max1}
                 onChange={e => {
                   if (e.target.value.length <= 6) {
-                    this.setState({name: e.target.value});
+                    this.setState({max1: e.target.value});
                   }
                 }}
               />
             </div>
-            <div className="name">
+            <div className="min1">
               <p>ライン１最小値</p>
               <input
                 type="number"
+                step="0.01"
                 value={this.state.min1}
                 onChange={e => {
                   if (e.target.value.length <= 6) {
-                    this.setState({name: e.target.value});
+                    this.setState({min1: e.target.value});
                   }
                 }}
               />
             </div>
             {
               this.state.max2 !== null &&
-              <div className="name">
+              <div className="max2">
                 <p>ライン２最大値</p>
                 <input
                   type="number"
+                  step="0.01"
                   value={this.state.max2}
                   onChange={e => {
                     if (e.target.value.length <= 6) {
-                      this.setState({name: e.target.value});
+                      this.setState({max2: e.target.value});
                     }
                   }}
                 />
               </div>
             }{
               this.state.min2 !== null &&
-              <div className="name">
+              <div className="min2">
                 <p>ライン２最小値</p>
                 <input
                   type="number"
+                  step="0.01"
                   value={this.state.min2}
                   onChange={e => {
                     if (e.target.value.length <= 6) {
-                      this.setState({name: e.target.value});
+                      this.setState({min2: e.target.value});
                     }
                   }}
                 />
@@ -83,9 +88,8 @@ class Edit extends Component {
             }
 
           </div>
-          <p className="explanation">※ 数字はiPadでの表示順</p>
           <div className="btn-wrap">
-            <button onClick={() => this.props.update(id, name, yomi, choku.value, itionG)}>
+            <button onClick={() => this.props.update(id, max1, min1, max2, min2)}>
               保存
             </button>
           </div>

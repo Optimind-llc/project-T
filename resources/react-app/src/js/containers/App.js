@@ -34,13 +34,13 @@ class App extends Component {
         { en: 'dashboard', name: 'マッピング', disable: false},
         { en: 'reference', name: '検査結果検索', disable: false },
         { en: 'report', name: '直レポート印刷', disable: false },
-        { en: 'association', name: 'パネルID検索', disable: false }
+        { en: 'association', name: 'パネルID検索', disable: false },
       ],
       '950A': [
         { en: '950A/mapping', name: 'マッピング', disable: false},
         { en: '950A/reference', name: '検査結果検索', disable: false },
         { en: '950A/report', name: '直レポート印刷', disable: false },
-        { en: '950A/association', name: 'パネルID検索', disable: false }
+        { en: '950A/association', name: 'パネルID検索', disable: false },
       ]
     };
 
@@ -49,12 +49,14 @@ class App extends Component {
         { en: 'inspector', name: '担当者マスタメンテ', disable: false },
         { en: 'failure', name: '不良区分マスタメンテ', disable: false },
         { en: 'modification', name: '手直区分マスタメンテ', disable: false },
-        { en: 'hole', name: '穴あけポイントメンテ', disable: false }
+        { en: 'hole', name: '穴あけポイントメンテ', disable: false },
+        { en: 'inline', name: '公差マスタメンテ', disable: false },
       ],
       '950A': [
         { en: '950A/maintenance/worker', name: '担当者マスタ', disable: false },
         { en: '950A/maintenance/failure', name: '不良区分マスタ', disable: false },
-        { en: '950A/maintenance/modification', name: '手直区分マスタ', disable: false }
+        { en: '950A/maintenance/modification', name: '手直区分マスタ', disable: false },
+        { en: '950A/maintenance/inline', name: '公差マスタメンテ', disable: false },
       ]
     };
 

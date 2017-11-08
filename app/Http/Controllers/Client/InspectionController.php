@@ -134,7 +134,6 @@ class InspectionController extends Controller
     {
         $family = $request->family;
         $groupId = $family['groupId'];
-        sleep(0);
         $inspectionGroup = InspectionGroup::find($groupId)->toArray();
 
         //Duplicate detection

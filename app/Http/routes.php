@@ -180,7 +180,7 @@ Route::post('maintenance/hole/{id}/deactivate', 'Manager\MaintenanceController@d
 
 //Update for inline maintenance
 Route::post('maintenance/inlines', 'Manager\MaintenanceController@inlines');
-Route::post('maintenance/hole/update', 'Manager\MaintenanceController@updateInline');
+Route::post('maintenance/inline/update', 'Manager\MaintenanceController@updateInline');
 
 /*
  * For 950A
@@ -246,6 +246,10 @@ Route::group(['prefix' => 'manager/{vehicle}', 'namespace' => 'V2\Manager'], fun
         Route::get('workers', 'MaintWorkerController@get');
         Route::post('worker/create', 'MaintWorkerController@create');
         Route::post('worker/update', 'MaintWorkerController@update');
+
+        Route::post('inlines', 'MaintInlineController@get');
+        // Route::post('worker/create', 'MaintInlineController@create');
+        Route::post('inline/update', 'MaintInlineController@update');
     });
 });
 

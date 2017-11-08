@@ -14,15 +14,15 @@ class Inline extends Component {
   constructor(props, context) {
     super(props, context);
 
-    let partTypeIds = {
+    let partTypePns = {
       label: '全て',
-      value: [1,7],
+      value: [6714111020, 6715111020, 6714211020, 6715211020, 6441211010, 6441211020, 6701511020, 6701611020, 6440111010, 6440111020],
     };
 
-    this.props.actions.getInlines(partTypeIds.value);
+    this.props.actions.getInlines(partTypePns.value);
 
     this.state = {
-      partTypeIds: partTypeIds,
+      partTypePns: partTypePns,
       editModal: false,
       editting: null,
       sort: {
@@ -35,14 +35,14 @@ class Inline extends Component {
 
   requestInlines() {
     const { getInlines } = this.props.actions;
-    const { partTypeIds } = this.state;
+    const { partTypePns } = this.state;
 
-    getInlines(partTypeIds.value);
+    getInlines(partTypePns.value);
   }
 
-  updateInline(id, max1, min1, max2, min2) {
+  updateInline(id, max, min, max2, min2) {
     const { updateInline } = this.props.actions;
-    updateInline(id, max1, min1, max2, min2);
+    updateInline(id, max, min, max2, min2);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -99,14 +99,22 @@ class Inline extends Component {
                 styles={{height: 30}}
                 clearable={false}
                 Searchable={true}
-                value={this.state.partTypeIds}
+                value={this.state.partTypePns}
                 options={[
-                  {label: '全て', value: [1,7]},
-                  {label: 'バックドアインナ', value: [1]},
-                  {label: 'バックドアインナASSY', value: [7]},
+                  {label: '全て', value: [6714111020, 6715111020, 6714211020, 6715211020, 6441211010, 6441211020, 6701511020, 6701611020, 6440111010, 6440111020]},
+                  {label: 'ドアインナL', value: [6714211020]},
+                  {label: 'ドアインナR', value: [6714111020]},
+                  {label: 'リンフォースL', value: [6715211020]},
+                  {label: 'リンフォースR', value: [6715111020]},
+                  {label: 'ラゲージインナSTD', value: [6441211010]},
+                  {label: 'ラゲージインナARW', value: [6441211020]},
+                  {label: 'ドアASSY LH', value: [6701611020]},
+                  {label: 'ドアASSY RH', value: [6701511020]},
+                  {label: 'ラゲージASSY STD', value: [  6440111010]},
+                  {label: 'ラゲージASSY ARW', value: [6440111020]},
                 ]}
                 onChange={value => this.setState(
-                  {partTypeIds: value},
+                  {partTypePns: value},
                   () => this.requestInlines()
                 )}
               />
@@ -119,7 +127,7 @@ class Inline extends Component {
               <tr>
                 <th
                   colSpan={1}
-                  rowSpan={3}
+                  rowSpan={1}
                   className={`clickable ${sort.key == 'id' ? sort.asc ? 'asc' : 'desc' : ''}`}
                   onClick={() => {
                     if(sort.key == 'id') this.setState({sort: { key: 'id', asc: !sort.asc, id: 0 }});
@@ -130,7 +138,7 @@ class Inline extends Component {
                 </th>
                 <th
                   colSpan={1}
-                  rowSpan={3}
+                  rowSpan={1}
                   className={`clickable ${sort.key == 'sort' ? sort.asc ? 'asc' : 'desc' : ''}`}
                   onClick={() => {
                     if(sort.key == 'sort') this.setState({sort: { key: 'sort', asc: !sort.asc, id: 0 }});
@@ -141,15 +149,10 @@ class Inline extends Component {
                 </th>
                 <th
                   colSpan={1}
-                  rowSpan={3}
+                  rowSpan={1}
                 >
                   部品名
                 </th>
-                <th colSpan={2}>ライン①</th>
-                <th colSpan={2}>ライン②</th>
-                <th colSpan={1} rowSpan={3}>機能</th>
-              </tr>
-              <tr>
                 <th
                   colSpan={1}
                 >
@@ -160,16 +163,7 @@ class Inline extends Component {
                 >
                   Min
                 </th>
-                <th
-                  colSpan={1}
-                >
-                  Max
-                </th>
-                <th
-                  colSpan={1}
-                >
-                  Min
-                </th>
+                <th colSpan={1} rowSpan={1}>機能</th>
               </tr>
             </thead>
             <tbody>
@@ -180,12 +174,10 @@ class Inline extends Component {
                   return(
                     <tr className="content" key={i}>
                       <td>{inline.id}</td>
-                      <td>{`${inline.sort}${inline.face ? `(${inline.face})` : ''} ${inline.position}`}</td>
+                      <td>{`${inline.label} ${inline.position}`}</td>
                       <td>{inline.partName}</td>
-                      <td>{inline.max1.toFixed(3)}</td>
-                      <td>{inline.min1.toFixed(3)}</td>
-                      <td>{inline.max2 !== null ? inline.max2.toFixed(3) : ''}</td>
-                      <td>{inline.min2 !== null ? inline.min2.toFixed(3) : ''}</td>
+                      <td>{inline.max.toFixed(3)}</td>
+                      <td>{inline.min.toFixed(3)}</td>
                       <td>
                         <button
                           className="dark edit"
@@ -213,15 +205,13 @@ class Inline extends Component {
             editModal &&
             <Edit
               id={editting.id}
-              sort={`${editting.sort}${editting.face ? `(${editting.face})` : ''} ${editting.position}`}
+              sort={`${editting.label} ${editting.position}`}
               partName={editting.partName}
-              max1={editting.max1}
-              min1={editting.min1}
-              max2={editting.max2}
-              min2={editting.min2}
+              max={editting.max}
+              min={editting.min}
 
               close={() => this.setState({editModal: false})}
-              update={(id, max1, min1, max2, min2) => this.updateInline(id, max1, min1, max2, min2)}
+              update={(id, max, min) => this.updateInline(id, max, min)}
             />
           }
         </div>

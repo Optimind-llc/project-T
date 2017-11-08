@@ -26,6 +26,7 @@ import Association950A from '../modules/Vehicle950A/association/containers/assoc
 import MeintFailureType950A from '../modules/Vehicle950A/master/failure/containers/failure';
 import MeintModificationType950A from '../modules/Vehicle950A/master/modification/containers/modification';
 import MeintWorker950A from '../modules/Vehicle950A/master/worker/containers/worker';
+import MeintInlineTyoe950A from '../modules/Vehicle950A/master/inline/containers/inline';
 
 
 class Root extends Component {
@@ -54,6 +55,8 @@ class Root extends Component {
                 <Route name="検査者マスタ" path="worker" component={MeintWorker950A}/>
                 <Route name="不良区分マスタ" path="failure" component={MeintFailureType950A}/>
                 <Route name="手直区分マスタ" path="modification" component={MeintModificationType950A}/>
+                <Route name="公差マスタメンテ" path="inline" component={MeintInlineTyoe950A}/>
+
                 <Route name="マッピング" path="holeModification" component={Dashboard950A}/>
                 <Route name="マッピング" path="hole" component={Dashboard950A}/>
                 <Route name="マッピング" path="inline" component={Dashboard950A}/>

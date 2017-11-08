@@ -669,6 +669,7 @@ class MaintenanceController extends Controller
                     'sort' => $h->sort,
                     'face' => $h->face,
                     'position' => $h->position,
+                    'face' => $h->face,
                     'max1' => $h->max_tolerance,
                     'min1' => $h->min_tolerance,
                     'max2' => $h->max2,
@@ -684,10 +685,6 @@ class MaintenanceController extends Controller
 
     public function updateInline(Request $request)
     {
-        $x = $request->point[0];
-        $y = $request->point[1];
-        $point = $x.','.$y;
-
         $inline = Inline::find($request->id);
         $inline->max_tolerance = $request->max1;
         $inline->min_tolerance = $request->min1;
