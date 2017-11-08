@@ -42,6 +42,7 @@ class ReportController extends Controller
                     ->whereIn('if.inspector_group', $itorGWithF)
                     ->where('if.inspection_group_id', '=', $itionGId)
                     ->whereNull('if.deleted_at')
+                    ->whereNull('if.kept_at')
                     ->where('if.created_at', '>=', $start)
                     ->where('if.created_at', '<', $end);
             })
@@ -111,6 +112,7 @@ class ReportController extends Controller
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                     $join->on('if.id', '=', 'pg.family_id')
                         ->whereNull('if.deleted_at')
+                        ->whereNull('if.kept_at')
                         ->where('if.created_at', '>=', $start)
                         ->where('if.created_at', '<', $end)
                         ->where('if.inspection_group_id', '=', $itionGId)
@@ -184,6 +186,7 @@ class ReportController extends Controller
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                     $join->on('if.id', '=', 'pg.family_id')
                         ->whereNull('if.deleted_at')
+                        ->whereNull('if.kept_at')
                         ->where('if.created_at', '>=', $start)
                         ->where('if.created_at', '<', $end)
                         ->where('if.inspection_group_id', '=', $itionGId)
@@ -269,6 +272,7 @@ class ReportController extends Controller
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                     $join->on('if.id', '=', 'pg.family_id')
                         ->whereNull('if.deleted_at')
+                        ->whereNull('if.kept_at')
                         ->where('if.created_at', '>=', $start)
                         ->where('if.created_at', '<', $end)
                         ->where('if.inspection_group_id', '=', $itionGId)
@@ -347,12 +351,13 @@ class ReportController extends Controller
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorGWithF) {
                     $join->on('if.id', '=', 'pg.family_id')
                         ->whereNull('if.deleted_at')
+                        ->whereNull('if.kept_at')
                         ->where('if.created_at', '>=', $start)
                         ->where('if.created_at', '<', $end)
                         ->where('if.inspection_group_id', '=', 16)
                         ->whereIn('if.inspector_group', $itorGWithF);
                 })
-                ->select(['parts.id', 'if.created_at'])
+                ->select(['parts.id', 'if.created_at', 'if.kept_at', 'if.id as fid'])
                 ->orderBy('if.inspected_at')
                 ->get();
 
@@ -403,6 +408,7 @@ class ReportController extends Controller
                 ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorG) {
                     $join->on('if.id', '=', 'pg.family_id')
                         ->whereNull('if.deleted_at')
+                        ->whereNull('if.kept_at')
                         ->whereIn('if.inspection_group_id', [9, 16, 10, 11, 12, 14]);
                 })
                 ->select(['parts.panel_id', 'pp.status', 'pg.page_type_id', 'pg.family_id', 'if.inspection_group_id', 'if.created_by', 'if.inspected_at', 'if.created_at', 'if.updated_at'])
@@ -419,6 +425,7 @@ class ReportController extends Controller
             ->join('inspection_families as if', function($join) use ($start, $end, $itionGId, $itorGWithF) {
                 $join->on('if.id', '=', 'pg.family_id')
                     ->whereNull('if.deleted_at')
+                    ->whereNull('if.kept_at')
                     ->where('if.created_at', '>=', $start)
                     ->where('if.created_at', '<', $end)
                     ->whereIn('if.inspection_group_id', [9, 16, 10, 11, 12, 14])
@@ -565,7 +572,6 @@ class ReportController extends Controller
                 break;
         }
 
-// return $tcpdf;
         $message = DB::getQueryLog();
         logger($message);
 

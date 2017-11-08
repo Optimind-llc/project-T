@@ -184,6 +184,7 @@ class InspectionController extends Controller
         $newFamily->created_by = $family['inspector'];
         $newFamily->created_at = $now;
         $newFamily->updated_at = $now;
+        $newFamily->kept_at = $family['kept'] ? $now : null;
         $newFamily->save();
 
         foreach ($family['pages'] as $key => $page) {
@@ -370,6 +371,8 @@ class InspectionController extends Controller
 
     public function updateInspection(Request $request)
     {
+        $now = Carbon::now();
+
         $family = $request->family;
         $familyId = $family['familyId'];
 
@@ -378,6 +381,7 @@ class InspectionController extends Controller
         $family_odj->comment = array_key_exists('comment', $family) ? $family['comment'] : null;
         // $family_odj->inspector_group = $family['choku'];
         $family_odj->updated_by = $family['updatedBy'];
+        $family_odj->kept_at = $family['kept'] ? $now : null;
         $family_odj->save();
 
         if (array_key_exists('deletedM', $family) && count($family['deletedM']) !== 0) {

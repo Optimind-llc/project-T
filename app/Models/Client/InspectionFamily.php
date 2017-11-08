@@ -19,7 +19,7 @@ class InspectionFamily extends Model
      * @var array
      */
     protected $guarded = ['id'];
-    protected $dates = ['inspected_at', 'deleted_at'];
+    protected $dates = ['inspected_at', 'deleted_at', 'kept_at'];
     
     public function groups()
     {

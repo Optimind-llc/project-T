@@ -123,7 +123,8 @@ class PartResult
                 $q->join('inspection_families as if', function ($join) use ($itionGId) {
                     $join->on('pages.family_id', '=', 'if.id')
                         ->where('if.inspection_group_id', '=', $itionGId)
-                        ->whereNull('if.deleted_at');
+                        ->whereNull('if.deleted_at')
+                        ->whereNull('if.kept_at');
                 })
                 ->orderBy('if.inspected_at')
                 ->select(['pages.*', 'if.inspection_group_id', 'if.inspector_group', 'if.created_by', 'if.updated_by', 'if.created_at', 'if.updated_at', 'if.inspected_at', 'if.status', 'if.comment']);

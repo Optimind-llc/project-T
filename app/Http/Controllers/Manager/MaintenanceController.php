@@ -13,6 +13,7 @@ use App\Models\Hole;
 use App\Models\Figure;
 use App\Models\Modification;
 use App\Models\Inspector;
+use App\Models\Inline;
 use App\Models\Client\FailurePosition;
 // Exceptions
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -651,5 +652,49 @@ class MaintenanceController extends Controller
         $hole->save();
 
         return ['message' => 'nothing to do'];
+    }
+
+    public function inlines(Request $request)
+    {
+        $partTypeIds = $request->partTypeIds;
+
+        $inlines = Inline::whereIn('part_type_id', $partTypeIds)
+            ->with(['partType' => function($q) {
+                $q->select(['id', 'name']);
+            }])
+            ->get()
+            ->map(function($h) {
+                return [
+                    'id' => $h->id,
+                    'sort' => $h->sort,
+                    'face' => $h->face,
+                    'position' => $h->position,
+                    'max1' => $h->max_tolerance,
+                    'min1' => $h->min_tolerance,
+                    'max2' => $h->max2,
+                    'min2' => $h->min2,
+                    'partName' => $h->partType->name
+                ];
+            })
+            ->sortBy('partName')
+            ->values();
+
+        return ['data' => $inlines];
+    }
+
+    public function updateInline(Request $request)
+    {
+        $x = $request->point[0];
+        $y = $request->point[1];
+        $point = $x.','.$y;
+
+        $inline = Inline::find($request->id);
+        $inline->max_tolerance = $request->max1;
+        $inline->min_tolerance = $request->min1;
+        $inline->max2 = $request->max2;
+        $inline->min2 = $request->min2;
+        $inline->save();
+
+        return ['message' => 'succeed'];
     }
 }

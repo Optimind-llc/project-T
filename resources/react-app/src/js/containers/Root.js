@@ -15,6 +15,7 @@ import Inspector from '../modules/inspector/containers/inspector';
 import Failure from '../modules/failure/containers/failure';
 import Modification from '../modules/modification/containers/modification';
 import Hole from '../modules/hole/containers/hole';
+import Inline from '../modules/inline/containers/inline';
 
 import Dashboard950A from '../modules/Vehicle950A/dashboard/containers/dashboard';
 import Mapping950A from '../modules/Vehicle950A/mapping/containers/mapping';
@@ -42,6 +43,7 @@ class Root extends Component {
             <Route name="不良区分マスタメンテ" path="failure" component={Failure}/>
             <Route name="手直区分マスタメンテ" path="modification" component={Modification}/>
             <Route name="穴あけ加工ポイント登録" path="hole" component={Hole}/>
+            <Route name="公差マスタメンテ" path="inline" component={Inline}/>
             <Route name="950A" path="950A">
               <Route name="ダッシュボード" path="dashboard" component={Dashboard950A}/>
               <Route name="マッピング" path="mapping" component={Mapping950A}/>

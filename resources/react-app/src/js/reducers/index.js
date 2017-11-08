@@ -24,6 +24,7 @@ import InspectorData from '../modules/inspector/ducks/inspector';
 import maintFailureData from '../modules/failure/ducks/failure';
 import maintModificationData from '../modules/modification/ducks/modification';
 import maintHoleData from '../modules/hole/ducks/hole';
+import maintInlineData from '../modules/inline/ducks/inline';
 
 // 950A
 import MappingData950A from '../modules/Vehicle950A/mapping/ducks/mapping';
@@ -55,6 +56,8 @@ const rootReducer = combineReducers(Object.assign({
   maintFailureData,
   maintModificationData,
   maintHoleData,
+  maintInlineData,
+
   MappingData950A,
   ReferenceData950A,
   ReportData950A,

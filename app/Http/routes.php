@@ -75,6 +75,8 @@ Route::get('manager/inspector', 'Manager\ReferenceController@index');
 Route::get('manager/failure', 'Manager\ReferenceController@index');
 Route::get('manager/modification', 'Manager\ReferenceController@index');
 Route::get('manager/hole', 'Manager\ReferenceController@index');
+//Update for inline maintenance
+Route::get('manager/inline', 'Manager\ReferenceController@index');
 
 
 
@@ -176,6 +178,9 @@ Route::post('maintenance/hole/update', 'Manager\MaintenanceController@updateHole
 Route::post('maintenance/hole/{id}/activate', 'Manager\MaintenanceController@activateHole');
 Route::post('maintenance/hole/{id}/deactivate', 'Manager\MaintenanceController@deactivateHole');
 
+//Update for inline maintenance
+Route::post('maintenance/inlines', 'Manager\MaintenanceController@inlines');
+Route::post('maintenance/hole/update', 'Manager\MaintenanceController@updateInline');
 
 /*
  * For 950A

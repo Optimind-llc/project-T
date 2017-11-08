@@ -442,7 +442,7 @@ class ShowController extends Controller
         ->with(['family'])
         ->get()
         ->filter(function($p) use ($itionGId) {
-            return $p->page_type_id != 14 && $p->family->inspection_group_id == $itionGId && $p->family->deleted_at == null;
+            return $p->page_type_id != 14 && $p->family->inspection_group_id == $itionGId && $p->family->deleted_at == null && $p->family->kept_at == null;
         })
         ->map(function($p) {
             return $p->id;
@@ -475,6 +475,7 @@ class ShowController extends Controller
                 },
                 'page.family' => function($q) {
                     $q->whereNull('inspection_families.deleted_at')
+                        ->whereNull('inspection_families.kept_at')
                         ->select(['id', 'inspector_group']);
                 }
             ])
@@ -717,6 +718,7 @@ class ShowController extends Controller
             $join->on('pages.family_id', '=', 'if.id')
                 ->whereIn('if.inspector_group', $tyoku)
                 ->whereNull('if.deleted_at')
+                ->whereNull('if.kept_at')
                 ->where('if.inspection_group_id', '=', $itionGId)
                 ->where('if.updated_at', '>=', $start_at)
                 ->where('if.updated_at', '<', $end_at);
@@ -894,6 +896,7 @@ class ShowController extends Controller
                         ->where('if.inspection_group_id', '=', $itionGId)
                         ->whereIn('if.inspector_group', $tyoku)
                         ->whereNull('if.deleted_at')
+                        ->whereNull('if.kept_at')
                         ->where('if.inspected_at', '>', $start_at)
                         ->where('if.inspected_at', '<=', $end_at);
                 })
@@ -1084,6 +1087,7 @@ class ShowController extends Controller
                     ->whereIn('if.inspector_group', $tyoku)
                     ->where('inspection_group_id', '=', $itionGId)
                     ->whereNull('if.deleted_at')
+                    ->whereNull('if.kept_at')
                     ->where(function($q) use ($start, $end) {
                         $q->whereNotNull('if.inspected_at')->orWhere(function($q) use ($start, $end) {
                             $q->where('if.created_at', '>=', $start)->where('if.created_at', '<', $end);
