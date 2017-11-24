@@ -118,6 +118,10 @@ class InspectionController extends Controller
             if (!is_null($formated)) {
                 $group[] = $formated;
                 $heritage[$name] = 1;
+
+                if ($formated['keptAt'] !== '') {
+                    $heritage[$name] = 5;
+                }
             }
         }
 
